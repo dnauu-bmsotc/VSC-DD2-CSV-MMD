@@ -23,7 +23,7 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
-import { parseIntoAST } from './schema/ast';
+import { parseIntoAST } from './components/parser';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.

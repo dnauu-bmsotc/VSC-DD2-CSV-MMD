@@ -118,6 +118,6 @@ function readFieldsDescription(filePath: string): FieldsDescription {
 	return result;
 }
 
-const desc = readFieldsDescription(path.resolve(__dirname, 'CSV Fields.ods'));
+const desc = readFieldsDescription(path.resolve(__dirname, '../CSV Description/CSV Fields.ods'));
 
 console.dir(desc["ActorDataExternalBuffs"], { depth: null, colors: true });
