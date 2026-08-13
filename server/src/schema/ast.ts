@@ -28,6 +28,7 @@ interface ASTParseResult {
 }
 
 export function parseIntoAST(text: string): ASTParseResult {
+	const t0 = performance.now();
     const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
 	let current: ASTElement | null = null;
@@ -48,7 +49,7 @@ export function parseIntoAST(text: string): ASTParseResult {
 
 		if (line.startsWith('element_start')) {
 			if (current) {
-				pushDiagnostic("Missing element_end", lineStartPos, lineEndPos);
+				pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
 			}
 			const parts = line.replace(/,+$/, "").split(',');
 			if (parts.length >= 3) {
@@ -74,7 +75,7 @@ export function parseIntoAST(text: string): ASTParseResult {
 		}
 		else {
 			if (current) {
-				const parts = [...text.matchAll(/[^,]+/g)].map(match => ({
+				const parts = [...line.matchAll(/[^,]+/g)].map(match => ({
 					value: match[0],
 					start: { line: i, character: match.index },
 					end: { line: i, character: match.index + match[0].length},
@@ -100,6 +101,7 @@ export function parseIntoAST(text: string): ASTParseResult {
 			}
 		}
     }
+	console.log(`AST parse: ${(performance.now() - t0).toFixed(1)} ms`);
 	return {
 		AST: { elements },
 		diagnostics: diagnostics,
