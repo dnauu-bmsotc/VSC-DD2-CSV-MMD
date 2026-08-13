@@ -1,5 +1,4 @@
 import * as XLSX from 'xlsx';
-import * as path from 'path';
 
 type TypeDefinition =
 	| { type: "int"; }
@@ -94,7 +93,8 @@ function parseType(input: string): TypeDefinition {
 	return { type: "nothing" };
 }
 
-function readFieldsDescription(filePath: string): FieldsDescription {
+export function readFieldsDescription(filePath: string): FieldsDescription {
+	const t0 = performance.now();
 	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
 	const result: FieldsDescription = {};
 	for (const sheetName of workbook.SheetNames) {
@@ -115,9 +115,6 @@ function readFieldsDescription(filePath: string): FieldsDescription {
 		}
 		result[sheetName] = element;
 	}
+	console.log(`Read schema: ${(performance.now() - t0).toFixed(1)} ms`);
 	return result;
 }
-
-const desc = readFieldsDescription(path.resolve(__dirname, '../CSV Description/CSV Fields.ods'));
-
-console.dir(desc["ActorDataExternalBuffs"], { depth: null, colors: true });

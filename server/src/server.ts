@@ -23,7 +23,10 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
+import * as path from 'path';
+
 import { parseIntoAST } from './components/parser';
+import { readFieldsDescription } from './components/schema';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -86,6 +89,7 @@ connection.onInitialized(() => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
+	const schema = readFieldsDescription(path.resolve(__dirname, '../../CSV Description/CSV Fields.ods'));
 });
 
 // The example settings
