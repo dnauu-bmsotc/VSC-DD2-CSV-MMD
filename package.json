@@ -28,6 +28,13 @@
 				"firstLine": "^.*element_start.*$"
 			}
 		],
+		"grammars": [
+			{
+				"language": "DD2MMD",
+				"scopeName": "source.DD2MMD",
+				"path": "./syntaxes/DD2MMD.tmGrammar.json"
+			}
+		],
 		"configuration": {
 			"type": "object",
 			"title": "Example configuration",
