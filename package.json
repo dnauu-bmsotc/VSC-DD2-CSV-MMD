@@ -17,15 +17,13 @@
 		"vscode": "^1.100.0"
 	},
 	"activationEvents": [
-		"onLanguage:DD2MMD"
+		"onLanguage:csv"
 	],
 	"main": "./client/out/extension",
 	"contributes": {
 		"languages": [
 			{
-				"id": "DD2MMD",
-				"extensions": [".csv"],
-				"firstLine": "^.*element_start.*$"
+				"id": "DD2MMD"
 			}
 		],
 		"grammars": [
@@ -39,6 +37,23 @@
 			"type": "object",
 			"title": "DD2 CSV MMD configuration",
 			"properties": {
+				"DD2CSVMMD.languageDetectionMethod": {
+					"type": "string",
+					"default": "firstLine",
+					"description": "Which files the extension will process",
+					"enum": [
+						"firstLine",
+						"allCsv"
+					],
+					"enumItemLabels": [
+						"element_start in the first line",
+						"All CSV files"
+					],
+					"markdownEnumDescriptions": [
+						"Only enable extension for CSV files that have element_start in the first line.",
+						"Enable extension for all CSV files."
+					]
+				},
 				"DD2CSVMMD.validateElementBoundaries": {
 					"scope": "resource",
 					"type": "boolean",

@@ -4,6 +4,7 @@
  * ------------------------------------------------------------------------------------------ */
 
 import * as path from 'path';
+import * as vscode from 'vscode';
 import { workspace, ExtensionContext } from 'vscode';
 
 import {
@@ -13,9 +14,28 @@ import {
 	TransportKind
 } from 'vscode-languageclient/node';
 
+import { checkAndSwitchLanguage } from './components/checkAndSwitchLanguage';
+
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
+    vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
+    context.subscriptions.push(
+        vscode.workspace.onDidOpenTextDocument(checkAndSwitchLanguage)
+    );
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument((event) => {
+			checkAndSwitchLanguage(event.document);
+        })
+    );
+	context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration((event) => {
+            if (event.affectsConfiguration('DD2CSVMMD.languageDetectionMethod')) {
+                vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
+            }
+        })
+    );
+
 	// The server is implemented in node
 	const serverModule = context.asAbsolutePath(
 		path.join('server', 'out', 'server.js')
