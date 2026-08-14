@@ -1,4 +1,5 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
+import { DD2CSVMMDSettings } from './configuration';
 
 interface AST {
 	elements: ASTElement[];
@@ -27,7 +28,7 @@ interface ASTParseResult {
 	diagnostics: Diagnostic[];
 }
 
-export function parseIntoAST(text: string): ASTParseResult {
+export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): ASTParseResult {
 	const t0 = performance.now();
     const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
@@ -35,11 +36,13 @@ export function parseIntoAST(text: string): ASTParseResult {
 	const diagnostics: Diagnostic[] = [];
 
 	function pushDiagnostic(message: string, start: Position, end: Position) {
-		diagnostics.push({
-			severity: DiagnosticSeverity.Error,
-			range: { start: start, end: end},
-			message: message,
-		});
+		if (configuration.validateElementBoundaries) {
+			diagnostics.push({
+				severity: DiagnosticSeverity.Error,
+				range: { start: start, end: end},
+				message: message,
+			});
+		}
 	}
 
     for (let i = 0; i < lines.length; i++) {

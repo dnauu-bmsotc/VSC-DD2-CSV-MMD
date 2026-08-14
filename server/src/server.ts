@@ -27,6 +27,7 @@ import * as path from 'path';
 
 import { parseIntoAST } from './components/parser';
 import { readFieldsDescription } from './components/schema';
+import { DD2CSVMMDSettings } from './components/configuration';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -92,19 +93,16 @@ connection.onInitialized(() => {
 	const schema = readFieldsDescription(path.resolve(__dirname, '../../CSV Description/CSV Fields.ods'));
 });
 
-// The example settings
-interface ExampleSettings {
-	maxNumberOfProblems: number;
-}
-
 // The global settings, used when the `workspace/configuration` request is not supported by the client.
 // Please note that this is not the case when using this server with the client provided in this example
 // but could happen with other clients.
-const defaultSettings: ExampleSettings = { maxNumberOfProblems: 1000 };
-let globalSettings: ExampleSettings = defaultSettings;
+const defaultSettings: DD2CSVMMDSettings = {
+	validateElementBoundaries: true,
+};
+let globalSettings: DD2CSVMMDSettings = defaultSettings;
 
 // Cache the settings of all open documents
-const documentSettings = new Map<string, Thenable<ExampleSettings>>();
+const documentSettings = new Map<string, Thenable<DD2CSVMMDSettings>>();
 
 connection.onDidChangeConfiguration(change => {
 	if (hasConfigurationCapability) {
@@ -121,7 +119,7 @@ connection.onDidChangeConfiguration(change => {
 	connection.languages.diagnostics.refresh();
 });
 
-function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
+function getDocumentSettings(resource: string): Thenable<DD2CSVMMDSettings> {
 	if (!hasConfigurationCapability) {
 		return Promise.resolve(globalSettings);
 	}
@@ -168,9 +166,10 @@ documents.onDidChangeContent(change => {
 async function validateTextDocument(textDocument: TextDocument): Promise<Diagnostic[]> {
 	// In this simple example we get the settings for every validate run.
 	const settings = await getDocumentSettings(textDocument.uri);
+	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 
 	const text = textDocument.getText();
-	const parseResult = parseIntoAST(text);
+	const parseResult = parseIntoAST(text, configuration);
 	return parseResult.diagnostics;
 }
 
