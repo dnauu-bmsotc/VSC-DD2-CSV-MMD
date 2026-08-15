@@ -1,0 +1,130 @@
+{
+    "MMD": {
+        "textMateRules": [
+            {
+                "scope": "comment.line.dd2mmd",
+                "settings": {
+                    "foreground": "#888888"
+                }
+            },
+            {
+                "scope": "meta.separator.comma.dd2mmd",
+                "settings": {
+                    "foreground": "#f2763d"
+                }
+            },
+            {
+                "scope": "keyword.control.start.dd2mmd",
+                "settings": {
+                    "foreground": "#85e02f"
+                }
+            },
+            {
+                "scope": "keyword.control.end.dd2mmd",
+                "settings": {
+                    "foreground": "#fc7a4e"
+                }
+            },
+            {
+                "scope": "entity.name.element-id.dd2mmd",
+                "settings": {
+                    "foreground": "#cd86fc"
+                }
+            },
+            {
+                "scope": "entity.name.element-type.dd2mmd",
+                "settings": {
+                    "foreground": "#f0e80c"
+                }
+            },
+            {
+                "scope": "constant.language.boolean.dd2mmd",
+                "settings": {
+                    "foreground": "#fcad4c"
+                }
+            },
+            {
+                "scope": "variable.language.dd2mmd",
+                "settings": {
+                    "foreground": "#78bfff"
+                }
+            },
+            {
+                "scope": "constant.numeric.dd2mmd",
+                "settings": {
+                    "foreground": "#fcad4c"
+                }
+            },
+            {
+                "scope": "variable.parameter.dd2mmd",
+                "settings": {
+                    "foreground": "#FFFFFF"
+                }
+            }
+        ]
+    },
+    "PHombie": {
+        "textMateRules": [
+            {
+                "scope": "comment.line.dd2mmd",
+                "settings": {
+                    "foreground": "#888888"
+                }
+            },
+            {
+                "scope": "meta.separator.comma.dd2mmd",
+                "settings": {
+                    "foreground": "#ff2121"
+                }
+            },
+            {
+                "scope": "keyword.control.start.dd2mmd",
+                "settings": {
+                    "foreground": "#3dff6b"
+                }
+            },
+            {
+                "scope": "keyword.control.end.dd2mmd",
+                "settings": {
+                    "foreground": "#ff5454"
+                }
+            },
+            {
+                "scope": "entity.name.element-id.dd2mmd",
+                "settings": {
+                    "foreground": "#ff5bf4"
+                }
+            },
+            {
+                "scope": "entity.name.element-type.dd2mmd",
+                "settings": {
+                    "foreground": "#fcff42"
+                }
+            },
+            {
+                "scope": "constant.language.boolean.dd2mmd",
+                "settings": {
+                    "foreground": "#ffae00"
+                }
+            },
+            {
+                "scope": "variable.language.dd2mmd",
+                "settings": {
+                    "foreground": "#50ceff"
+                }
+            },
+            {
+                "scope": "constant.numeric.dd2mmd",
+                "settings": {
+                    "foreground": "#ffae00"
+                }
+            },
+            {
+                "scope": "variable.parameter.dd2mmd",
+                "settings": {
+                    "foreground": "#FFFFFF"
+                }
+            }
+        ]
+    }
+}

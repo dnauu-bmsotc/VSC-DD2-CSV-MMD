@@ -54,6 +54,26 @@
 						"Enable extension for all CSV files."
 					]
 				},
+				"DD2CSVMMD.tokenColors": {
+					"type": "string",
+					"default": "mmd",
+					"description": "Syntax highlight colors",
+					"enum": [
+						"phombie",
+						"mmd",
+						"none"
+					],
+					"enumItemLabels": [
+						"PHombie",
+						"Alternative",
+						"None"
+					],
+					"markdownEnumDescriptions": [
+						"Use syntax highlight colors defined by PHombie.",
+						"Use alternative syntax highlight colors.",
+						"Don't use syntax highlight overrides."
+					]
+				},
 				"DD2CSVMMD.validateElementBoundaries": {
 					"scope": "resource",
 					"type": "boolean",

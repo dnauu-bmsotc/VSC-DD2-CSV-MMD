@@ -15,11 +15,14 @@ import {
 } from 'vscode-languageclient/node';
 
 import { checkAndSwitchLanguage } from './components/checkAndSwitchLanguage';
+import { updateTokenColors } from './components/updateTokenColors';
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
     vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
+	updateTokenColors(context);
+
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(checkAndSwitchLanguage)
     );
@@ -32,6 +35,9 @@ export function activate(context: ExtensionContext) {
         vscode.workspace.onDidChangeConfiguration((event) => {
             if (event.affectsConfiguration('DD2CSVMMD.languageDetectionMethod')) {
                 vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
+            }
+			if (event.affectsConfiguration('DD2CSVMMD.tokenColors')) {
+                updateTokenColors(context);
             }
         })
     );

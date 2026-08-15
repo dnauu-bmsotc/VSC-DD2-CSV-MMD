@@ -5,40 +5,44 @@
 		"expression": {
 			"patterns": [
 				{
-					"name": "comment.line",
+					"name": "comment.line.dd2mmd",
 					"match": "^\/\/.*|^#.*"
 				},
 				{
-					"name": "meta.separator.comma",
+					"name": "meta.separator.comma.dd2mmd",
 					"match": ","
 				},
 				{
-					"match": "^(element_start|element_end)",
-					"name": "keyword.control"
+					"name": "keyword.control.start.dd2mmd",
+					"match": "^element_start"
 				},
 				{
-					"match": "(?<=^element_start,)[^,]+(?=,)",
-					"name": "entity.name.function"
+					"name": "keyword.control.end.dd2mmd",
+					"match": "^element_end"
 				},
 				{
-					"match": "(?<=^element_start,[^,]+,)[^,]+$",
-					"name": "entity.name.type"
+					"name": "entity.name.element-id.dd2mmd",
+					"match": "(?<=^element_start,)[^,]+(?=,)"
 				},
 				{
-					"match": "^[^,]*",
-					"name": "variable.language"
+					"name": "entity.name.element-type.dd2mmd",
+					"match": "(?<=^element_start,[^,]+,)[^,]+$"
 				},
 				{
-					"match": "\\b(True|False)\\b",
-					"name": "constant.language.boolean"
+					"name": "variable.language.dd2mmd",
+					"match": "^[^,]*"
 				},
 				{
-					"match": "[+-]?\\d+(?:\\.\\d+)?",
-					"name": "constant.numeric"
+					"name": "constant.language.boolean.dd2mmd",
+					"match": "\\b(True|False)\\b"
 				},
 				{
-					"match": "(?<=,)[^,]+",
-					"name": "variable.other"
+					"name": "constant.numeric.dd2mmd",
+					"match": "[+-]?\\d+(?:\\.\\d+)?"
+				},
+				{
+					"name": "variable.parameter.dd2mmd",
+					"match": "(?<=,)[^,]+"
 				}
 			]
 		}
