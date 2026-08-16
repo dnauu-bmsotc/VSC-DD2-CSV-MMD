@@ -23,11 +23,12 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
-import * as path from 'path';
-
 import { parseIntoAST } from './components/parser';
 import { readFieldsDescription } from './components/schema';
 import { DD2CSVMMDSettings } from './components/configuration';
+import { CompiledData, getCompiledData } from './components/compiler';
+import { validateAstBySchema } from './components/validator';
+import { indexElements, newIndex } from './components/indexer';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -35,6 +36,8 @@ const connection = createConnection(ProposedFeatures.all);
 
 // Create a simple text document manager.
 const documents = new TextDocuments(TextDocument);
+
+let compiledData: CompiledData | null = null;
 
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
@@ -90,7 +93,10 @@ connection.onInitialized(() => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
-	const schema = readFieldsDescription(path.resolve(__dirname, '../../CSV Description/CSV Fields.ods'));
+
+	getCompiledData(false, true).then(data => {
+		compiledData = data;
+	});
 });
 
 // The global settings, used when the `workspace/configuration` request is not supported by the client.
@@ -98,6 +104,7 @@ connection.onInitialized(() => {
 // but could happen with other clients.
 const defaultSettings: DD2CSVMMDSettings = {
 	validateElementBoundaries: true,
+	validateElementTypes: true,
 };
 let globalSettings: DD2CSVMMDSettings = defaultSettings;
 
@@ -170,7 +177,17 @@ async function validateTextDocument(textDocument: TextDocument): Promise<Diagnos
 
 	const text = textDocument.getText();
 	const parseResult = parseIntoAST(text, configuration);
-	return parseResult.diagnostics;
+
+	const diagnostics = parseResult.diagnostics;
+
+	if (compiledData) {
+		const astIndex = newIndex();
+		indexElements(astIndex, compiledData.schema, parseResult.AST.elements);
+		const validationResult = validateAstBySchema(parseResult.AST, compiledData, astIndex, configuration);
+		diagnostics.push(...validationResult);
+	}
+
+	return diagnostics;
 }
 
 connection.onDidChangeWatchedFiles(_change => {

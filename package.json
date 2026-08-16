@@ -75,10 +75,14 @@
 					]
 				},
 				"DD2CSVMMD.validateElementBoundaries": {
-					"scope": "resource",
 					"type": "boolean",
 					"default": true,
 					"description": "Show mismatched element_start and element_end lines."
+				},
+				"DD2CSVMMD.validateElementTypes": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show unrecognized element types."
 				}
 			}
 		}

@@ -6,6 +6,13 @@ export interface Index {
 	tagGroups: Record<string, string[]>;
 }
 
+export function newIndex(): Index {
+	return {
+		idGroups: {},
+		tagGroups: {},
+	}
+}
+
 export function indexElements(index: Index, schema: FieldsDescription, elements: ASTElement[]) {
 	for (const element of elements) {
 		if (element.elementType === "KingdomMap") {

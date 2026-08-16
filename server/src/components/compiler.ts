@@ -1,9 +1,9 @@
-import path from 'path';
+import * as path from 'path';
 import * as fs from 'node:fs/promises'; 
 import * as XLSX from 'xlsx';
 
 import { FieldsDescription, parseType, readFieldsDescription, TypeDefinition } from './schema';
-import { Index, indexElements } from './indexer';
+import { Index, indexElements, newIndex } from './indexer';
 import { parseIntoAST } from './parser';
 
 const streamingAssetsPath = 'C:/Program Files (x86)/Steam/steamapps/common/Darkest Dungeon® II/Darkest Dungeon II_Data/StreamingAssets/Excel'
@@ -12,7 +12,7 @@ const fieldsDescriptionPath = path.resolve(__dirname, '../../../CSV Description/
 const valuesDescriptionPath = path.resolve(__dirname, '../../../CSV Description/CSV Values.ods');
 const elementsDescriptionPath = path.resolve(__dirname, '../../../CSV Description/CSV Elements.ods');
 
-interface CompiledData {
+export interface CompiledData {
 	schema: FieldsDescription;
 	index: Index;
 	keywords: ValuesDescription;
@@ -37,15 +37,18 @@ interface ElementDescription {
 
 type ElementsDescription = Record<string, ElementDescription>;
 
-compileData(true);
+export async function getCompiledData(rebuild=false, log=false) {
+	if (!rebuild) {
+		const json = await readJson<CompiledData>(outputFilePath);
+		if (json) return json;
+	}
+	return await compileData(log);
+}
 
 export async function compileData(log=false): Promise<CompiledData> {
 	const t0 = performance.now();
 	const schema = readFieldsDescription(fieldsDescriptionPath);
-	const index: Index = {
-		idGroups: {},
-		tagGroups: {},
-	}
+	const index = newIndex();
 
 	const csvFiles = await findCsvFiles(streamingAssetsPath);
 	for (const file of csvFiles) {
@@ -140,4 +143,14 @@ function readElementsDescription(filePath: string): ElementsDescription {
 	}
 
 	return result;
+}
+
+async function readJson<T>(filePath: string): Promise<T | null> {
+	try {
+		const rawData = await fs.readFile(filePath, 'utf-8');
+		return JSON.parse(rawData) as T;
+	}
+	catch (error: any) {
+		return null;
+	}
 }

@@ -10,6 +10,7 @@ export interface ASTElement {
 	elementType: string;
 	fields: ASTField[];
 	range: Range;
+	elementTypeRange: Range;
 }
 
 export interface ASTField {
@@ -61,6 +62,9 @@ export function parseIntoAST(text: string, configuration?:DD2CSVMMDSettings, log
 					elementType: parts[2],
 					fields: [],
 					range: Range.create(lineStartPos, lineEndPos),
+					elementTypeRange: Range.create(
+						{ line: i, character: line.indexOf(parts[2]) }, lineEndPos
+					)
 				};
 			}
 			else {
