@@ -67,24 +67,25 @@ export function parseType(input: string): TypeDefinition {
 		const element = parseType(content? content.trim() : "");
 		return { type: "list", element: element ? element : { type: "nothing" } };
 	}
-	if (input.match(funcRegEx("Seq"))) {
-		const content = input.match(funcRegEx("Seq"))?.[1];
-		const elements = content?.split(',').map(p => parseType(p.trim()));
-		return { type: "sequence", elements: elements ? elements : [] };
-	}
 	if (input.match(funcRegEx("Dep"))) {
 		const field = input.match(funcRegEx("Dep"))?.[1];
 		return { type: "dependent", field: field ? field : "" };
+	}
+	if (input.match(funcRegEx("Seq"))) {
+		const content = input.match(funcRegEx("Seq"))?.[1];
+		const elements = splitTopLevel(content).map(p => parseType(p.trim()));
+		return { type: "sequence", elements };
+	}
+	if (input.match(funcRegEx("Or"))) {
+		const content = input.match(funcRegEx("Or"))?.[1];
+		const elements = splitTopLevel(content).map(p => parseType(p.trim()));
+		return { type: "union", elements: elements };
 	}
 	if (input.match(/^Localization$/)) {
 		return { type: "localization" };
 	}
 	if (input.match(/^any$/)) {
 		return { type: "any" };
-	}
-	if (input.match(/^.*\|.*$/)) {
-		const elements = input.split("|").map(p => parseType(p));
-		return { type: "union", elements: elements };
 	}
 	if (input.match(/^nothing$/)) {
 		return { type: "nothing" };
@@ -117,4 +118,23 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 	}
 	console.log(`Read schema: ${(performance.now() - t0).toFixed(1)} ms`);
 	return result;
+}
+
+function splitTopLevel(content?: string): string[] {
+	if (!content) return [];
+	const parts = [];
+	let current = '';
+	let depth = 0;
+	for (const c of content) {
+		if (c === '(') depth++;
+		else if (c === ')') depth--;
+		else if (c === ',' && depth === 0) {
+			parts.push(current.trim());
+			current = '';
+			continue;
+		}
+		current += c;
+	}
+	if (current) parts.push(current.trim());
+	return parts;
 }
