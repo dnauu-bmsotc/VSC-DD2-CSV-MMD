@@ -30,7 +30,7 @@ export type Element = {
 
 export type FieldsDescription = Record<string, Element>;
 
-function parseType(input: string): TypeDefinition {
+export function parseType(input: string): TypeDefinition {
 	input = input.trim();
 	const funcRegEx = (funcName: string) =>
 		new RegExp(`^${funcName}\\(((?:[^()]+|\\([^()]*\\))*)\\)$`);

@@ -28,7 +28,7 @@ export interface ASTParseResult {
 	diagnostics: Diagnostic[];
 }
 
-export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings, log=false): ASTParseResult {
+export function parseIntoAST(text: string, configuration?:DD2CSVMMDSettings, log=false): ASTParseResult {
 	const t0 = performance.now();
 	const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
@@ -36,7 +36,7 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings, log
 	const diagnostics: Diagnostic[] = [];
 
 	function pushDiagnostic(message: string, start: Position, end: Position) {
-		if (configuration.validateElementBoundaries) {
+		if (configuration?.validateElementBoundaries) {
 			diagnostics.push({
 				severity: DiagnosticSeverity.Error,
 				range: { start: start, end: end},
