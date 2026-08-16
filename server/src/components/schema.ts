@@ -1,6 +1,6 @@
 import * as XLSX from 'xlsx';
 
-type TypeDefinition =
+export type TypeDefinition =
 	| { type: "int"; }
 	| { type: "range"; }
 	| { type: "float"; }
@@ -17,18 +17,18 @@ type TypeDefinition =
 	| { type: "any"; }
 	| { type: "nothing"; }
 
-type Field = {
+export type Field = {
 	inputString: string;
 	input: TypeDefinition;
 	comment: string;
 }
 
-type Element = {
+export type Element = {
 	name: string;
 	fields: Record<string, Field>;
 };
 
-type FieldsDescription = Record<string, Element>;
+export type FieldsDescription = Record<string, Element>;
 
 function parseType(input: string): TypeDefinition {
 	input = input.trim();

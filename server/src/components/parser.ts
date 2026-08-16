@@ -1,36 +1,36 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from './configuration';
 
-interface AST {
+export interface AST {
 	elements: ASTElement[];
 }
 
-interface ASTElement {
+export interface ASTElement {
 	name: string;
 	elementType: string;
 	fields: ASTField[];
 	range: Range;
 }
 
-interface ASTField {
+export interface ASTField {
 	name: string;
 	values: ASTValue[];
 	range: Range;
 }
 
-interface ASTValue {
+export interface ASTValue {
 	text: string;
 	range: Range;
 }
 
-interface ASTParseResult {
+export interface ASTParseResult {
 	AST: AST;
 	diagnostics: Diagnostic[];
 }
 
-export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): ASTParseResult {
+export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings, log=false): ASTParseResult {
 	const t0 = performance.now();
-    const lines = text.split(/\r?\n/);
+	const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
 	let current: ASTElement | null = null;
 	const diagnostics: Diagnostic[] = [];
@@ -45,8 +45,8 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): AS
 		}
 	}
 
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
 		const lineStartPos = { line: i, character: 0 };
 		const lineEndPos = { line: i, character: line.length };
 
@@ -78,11 +78,20 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): AS
 		}
 		else {
 			if (current) {
-				const parts = [...line.matchAll(/[^,]+/g)].map(match => ({
-					value: match[0],
-					start: { line: i, character: match.index },
-					end: { line: i, character: match.index + match[0].length},
-				}));
+				const parts = [];
+				let start = 0;
+				const lineTrunc = line.replace(/,+$/, "");
+				for (let j = 0; j <= lineTrunc.length; j++) {
+					if (j === lineTrunc.length || lineTrunc[j] === ',') {
+						const value = lineTrunc.substring(start, j);
+						parts.push({
+							value: value,
+							start: { line: i, character: start },
+							end: { line: i, character: j },
+						});
+						start = j + 1;
+					}
+				}
 				if (parts.length >= 1) {
 					current.fields.push({
 						name: parts[0].value,
@@ -103,8 +112,10 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): AS
 				}
 			}
 		}
-    }
-	console.log(`AST parse: ${(performance.now() - t0).toFixed(1)} ms`);
+	}
+	if (log) {
+		console.log(`AST parse: ${(performance.now() - t0).toFixed(1)} ms`);
+	}
 	return {
 		AST: { elements },
 		diagnostics: diagnostics,
