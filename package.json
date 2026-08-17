@@ -91,7 +91,12 @@
 				"DD2CSVMMD.validateFieldInput": {
 					"type": "boolean",
 					"default": true,
-					"description": "Validate inputs of fields"
+					"description": "Validate inputs of fields."
+				},
+				"DD2CSVMMD.showEmptyFields": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show empty element lines."
 				},
 				"DD2CSVMMD.devMode": {
 					"type": "boolean",

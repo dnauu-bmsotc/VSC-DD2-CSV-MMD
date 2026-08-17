@@ -4,4 +4,5 @@ export interface DD2CSVMMDSettings {
 	validateFieldNames: boolean;
 	validateFieldInput: boolean;
 	devMode: boolean;
+	showEmptyFields: boolean;
 }

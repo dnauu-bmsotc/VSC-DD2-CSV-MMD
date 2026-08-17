@@ -45,7 +45,13 @@ export function validateAstBySchema(
 			}
 			if (configuration.validateFieldInput) {
 				if (field.values.length === 0) {
-					
+					if (configuration.showEmptyFields) {
+						diagnostics.push({
+							severity: DiagnosticSeverity.Warning,
+							range: field.range,
+							message: `Empty field`
+						});
+					}
 				}
 				else {
 					const diagnostic = validateInput(field, field.values, fieldDefinition.input, compiledData, astIndex);
@@ -171,9 +177,6 @@ const isNumericString = (str: string) => !isNaN(Number(str));
 
 const isRangeStringRegex = /^\[\d+-\d+\]$/;
 const isRangeString = (str: string) =>isRangeStringRegex.test(str);
-
-const getFalse = () => false;
-const getTrue = () => true;
 
 function singleValueCheck(field: ASTField, values: ASTValue[], typeString: string, checker: (v: string) => boolean): Diagnostic | null {
 	if (values.length === 0) {

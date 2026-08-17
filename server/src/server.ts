@@ -113,6 +113,7 @@ const defaultSettings: DD2CSVMMDSettings = {
 	validateElementTypes: true,
 	validateFieldNames: true,
 	validateFieldInput: true,
+	showEmptyFields: true,
 	devMode: false,
 };
 let globalSettings: DD2CSVMMDSettings = defaultSettings;
