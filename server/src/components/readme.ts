@@ -6,20 +6,6 @@ import { Field, TypeDefinition } from './schema';
 const inputFilePath = path.resolve(__dirname, '../../../readmeBase.md');
 const outputFilePath = path.resolve(__dirname, '../../../README.md');
 
-(async function readJson<T>(filePath: string): Promise<T | null> {
-	try {
-		const rawData = await fs.readFile(filePath, 'utf-8');
-		return JSON.parse(rawData) as T;
-	}
-	catch (error: any) {
-		return null;
-	}
-})<CompiledData>(path.resolve(__dirname, '../../../CSV Description/data_compiled.json'))
-.then(data => {
-	if (data)
-assembleReadme(data);
-})
-
 export async function assembleReadme(compiledData: CompiledData) {
 	let readme = await fs.readFile(inputFilePath, 'utf-8');
 	

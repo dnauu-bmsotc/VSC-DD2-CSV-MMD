@@ -29,6 +29,7 @@ import { DD2CSVMMDSettings } from './components/configuration';
 import { CompiledData, getCompiledData } from './components/compiler';
 import { validateAstBySchema } from './components/validator';
 import { indexElements, newIndex } from './components/indexer';
+import { assembleReadme } from './components/readme';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -96,6 +97,7 @@ connection.onInitialized(() => {
 
 	getCompiledData(true, true).then(data => {
 		compiledData = data;
+		assembleReadme(compiledData);
 	});
 });
 
