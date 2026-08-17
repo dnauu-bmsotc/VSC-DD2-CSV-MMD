@@ -2,9 +2,12 @@ import { FieldsDescription, TypeDefinition } from './schema';
 import { ASTElement, ASTValue } from './parser';
 
 export interface Index {
-	idGroups: Record<string, string[]>;
-	tagGroups: Record<string, string[]>;
+	idGroups: IndexIdGroups;
+	tagGroups: IndexTagGroups;
 }
+
+export type IndexIdGroups = Record<string, string[]>;
+export type IndexTagGroups = Record<string, string[]>;
 
 export function newIndex(): Index {
 	return {

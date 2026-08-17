@@ -1,21 +1,37 @@
 import * as XLSX from 'xlsx';
 
 export type TypeDefinition =
-	| { type: "int"; }
-	| { type: "range"; }
-	| { type: "float"; }
-	| { type: "bool"; }
-	| { type: "id"; group: string; }
-	| { type: "kw"; group: string; }
-	| { type: "tagEmitter"; group: string; }
-	| { type: "tagReceiver"; group: string; }
-	| { type: "list"; element: TypeDefinition; }
-	| { type: "sequence"; elements: TypeDefinition[]; }
-	| { type: "union"; elements: TypeDefinition[]; }
-	| { type: "dependent"; field: string; }
-	| { type: "localization"; }
-	| { type: "any"; }
-	| { type: "nothing"; }
+	| TypeDefinitionInt
+	| TypeDefinitionRange
+	| TypeDefinitionFloat
+	| TypeDefinitionBool
+	| TypeDefinitionID
+	| TypeDefinitionKW
+	| TypeDefinitionTagEmitter
+	| TypeDefinitionTagReceiver
+	| TypeDefinitionList
+	| TypeDefinitionSequence
+	| TypeDefinitionUnion
+	| TypeDefinitionDependent
+	| TypeDefinitionLocalization
+	| TypeDefinitionAny
+	| TypeDefinitionNothing;
+
+export type TypeDefinitionInt = { type: "int"; };
+export type TypeDefinitionRange = { type: "range"; };
+export type TypeDefinitionFloat = { type: "float"; };
+export type TypeDefinitionBool = { type: "bool"; };
+export type TypeDefinitionID = { type: "id"; group: string; };
+export type TypeDefinitionKW = { type: "kw"; group: string; };
+export type TypeDefinitionTagEmitter = { type: "tagEmitter"; group: string; };
+export type TypeDefinitionTagReceiver = { type: "tagReceiver"; group: string; };
+export type TypeDefinitionList = { type: "list"; element: TypeDefinition; };
+export type TypeDefinitionSequence = { type: "sequence"; elements: TypeDefinition[]; };
+export type TypeDefinitionUnion = { type: "union"; elements: TypeDefinition[]; };
+export type TypeDefinitionDependent = { type: "dependent"; field: string; };
+export type TypeDefinitionLocalization = { type: "localization"; };
+export type TypeDefinitionAny = { type: "any"; };
+export type TypeDefinitionNothing = { type: "nothing"; };
 
 export type Field = {
 	inputString: string;

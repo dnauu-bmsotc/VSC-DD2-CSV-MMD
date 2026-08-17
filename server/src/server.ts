@@ -94,7 +94,7 @@ connection.onInitialized(() => {
 		});
 	}
 
-	getCompiledData(false, true).then(data => {
+	getCompiledData(true, true).then(data => {
 		compiledData = data;
 	});
 });

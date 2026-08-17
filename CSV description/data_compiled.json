@@ -2461,12 +2461,12 @@
           "comment": ""
         },
         "m_ConditionIdOverride": {
-          "inputString": "Condition ID",
+          "inputString": "ActorDataSkill ID",
           "input": {
             "type": "id",
-            "group": "Condition"
+            "group": "ActorDataSkill"
           },
-          "comment": ""
+          "comment": "Used in upgraded skills to make conditions insensitive to wether this skill is upgraded or not."
         },
         "m_Cooldown": {
           "inputString": "int",
@@ -2845,12 +2845,11 @@
           "comment": ""
         },
         "target_ranks": {
-          "inputString": "List(Buff ID)",
+          "inputString": "List(int)",
           "input": {
             "type": "list",
             "element": {
-              "type": "id",
-              "group": "Buff"
+              "type": "int"
             }
           },
           "comment": ""
@@ -3910,19 +3909,9 @@
           "comment": ""
         },
         "m_Chance": {
-          "inputString": "Or(ActorDataSkill ID,Unlock ID)",
+          "inputString": "float",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "id",
-                "group": "ActorDataSkill"
-              },
-              {
-                "type": "id",
-                "group": "Unlock"
-              }
-            ]
+            "type": "float"
           },
           "comment": ""
         },
@@ -4963,10 +4952,9 @@
           "comment": ""
         },
         "m_BarkId": {
-          "inputString": "Localization ID",
+          "inputString": "Localization",
           "input": {
-            "type": "id",
-            "group": "Localization"
+            "type": "localization"
           },
           "comment": ""
         },
@@ -5014,10 +5002,10 @@
           "comment": ""
         },
         "m_BiomeStatusAddId": {
-          "inputString": "RunDataStats ID",
+          "inputString": "BiomeStatus ID",
           "input": {
             "type": "id",
-            "group": "RunDataStats"
+            "group": "BiomeStatus"
           },
           "comment": ""
         },
@@ -5915,10 +5903,13 @@
           "comment": ""
         },
         "m_OrderedMidNarrationIds": {
-          "inputString": "NarrationEntry ID",
+          "inputString": "List(NarrationEntry ID)",
           "input": {
-            "type": "id",
-            "group": "NarrationEntry"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "NarrationEntry"
+            }
           },
           "comment": ""
         },
@@ -5939,10 +5930,13 @@
           "comment": ""
         },
         "m_RecurringMidNarrationIds": {
-          "inputString": "NarrationEntry ID",
+          "inputString": "List(NarrationEntry ID)",
           "input": {
-            "type": "id",
-            "group": "NarrationEntry"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "NarrationEntry"
+            }
           },
           "comment": ""
         },
@@ -7593,17 +7587,20 @@
           "comment": ""
         },
         "m_qtys": {
-          "inputString": "Or(int,range)",
+          "inputString": "List(Or(int,range))",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "int"
-              },
-              {
-                "type": "range"
-              }
-            ]
+            "type": "list",
+            "element": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
           },
           "comment": ""
         },
@@ -9772,7 +9769,7 @@
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Seq(RunStatType KW,Or(LootTableTag-,NodeType KW,RouteType KW,BattleConfigurationTable Tag-,Item ID),float)",
+          "inputString": "Seq(RunStatType KW,Or(LootTable Tag-,NodeType KW,RouteType KW,BattleConfigurationTable Tag-,Item ID),float)",
           "input": {
             "type": "sequence",
             "elements": [
@@ -9784,7 +9781,8 @@
                 "type": "union",
                 "elements": [
                   {
-                    "type": "nothing"
+                    "type": "tagReceiver",
+                    "group": "LootTable"
                   },
                   {
                     "type": "kw",
@@ -9883,10 +9881,9 @@
           "comment": ""
         },
         "m_GoalTooltipLocKeyOverride": {
-          "inputString": "Localization ID",
+          "inputString": "Localization",
           "input": {
-            "type": "id",
-            "group": "Localization"
+            "type": "localization"
           },
           "comment": ""
         },
@@ -10377,10 +10374,13 @@
           "comment": ""
         },
         "m_ResultLootIds": {
-          "inputString": "LootTable ID",
+          "inputString": "List(LootTable ID)",
           "input": {
-            "type": "id",
-            "group": "LootTable"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "LootTable"
+            }
           },
           "comment": ""
         },
@@ -10891,18 +10891,33 @@
           "comment": ""
         },
         "m_TokenGlossaryPathTag": {
-          "inputString": "ActorDataPath Tag-",
+          "inputString": "List(Or(ActorDataPath Tag-,ActorDataPath ID))",
           "input": {
-            "type": "tagReceiver",
-            "group": "ActorDataPath"
+            "type": "list",
+            "element": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "ActorDataPath"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataPath"
+                }
+              ]
+            }
           },
           "comment": ""
         },
         "m_TokenGlossaryTagDisplay": {
-          "inputString": "BattleConfiguration Tag-",
+          "inputString": "List(BattleConfiguration Tag-)",
           "input": {
-            "type": "tagReceiver",
-            "group": "BattleConfiguration"
+            "type": "list",
+            "element": {
+              "type": "tagReceiver",
+              "group": "BattleConfiguration"
+            }
           },
           "comment": ""
         },
@@ -44255,62 +44270,116 @@
       "party_relationship_pair": {
         "influences": {
           "m_allTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_anyTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_avoidTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_destinationTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_eachTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_sourceTags": {
-            "inputString": "List(AffinityRelationship Tag-|ActorDataClass Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           }
@@ -44383,62 +44452,116 @@
       "inventory_item_add": {
         "influences": {
           "m_allTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_anyTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_avoidTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_destinationTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_eachTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           },
           "m_sourceTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW|ActorDataClass Tag-)",
+            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "ALL_INVENTORY_TAGS KW|ActorDataClass"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  }
+                ]
               }
             }
           }
@@ -44447,45 +44570,99 @@
       "kingdom_victory_uninfected_heroes": {
         "influences": {
           "m_allTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           },
           "m_anyTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           },
           "m_avoidTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           },
           "m_destinationTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           },
           "m_eachTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           },
           "m_sourceTags": {
-            "inputString": "Gang ID|KingdomDifficulty ID",
+            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
-              "type": "id",
-              "group": "Gang ID|KingdomDifficulty"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Gang"
+                },
+                {
+                  "type": "id",
+                  "group": "KingdomDifficulty"
+                }
+              ]
             }
           }
         }
@@ -44493,45 +44670,99 @@
       "profile_unlock": {
         "influences": {
           "m_allTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           },
           "m_anyTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           },
           "m_avoidTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           },
           "m_destinationTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           },
           "m_eachTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           },
           "m_sourceTags": {
-            "inputString": "Unlock ID|ActorDataClass ID",
+            "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
-              "type": "id",
-              "group": "Unlock ID|ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                },
+                {
+                  "type": "id",
+                  "group": "ActorDataClass"
+                }
+              ]
             }
           }
         }
@@ -44769,62 +45000,116 @@
       "actor_death_inventory_full": {
         "influences": {
           "m_allTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           },
           "m_anyTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           },
           "m_avoidTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           },
           "m_destinationTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           },
           "m_eachTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           },
           "m_sourceTags": {
-            "inputString": "List(ActorDataClass Tag-|ALL_INVENTORY_TAGS KW)",
+            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
               "element": {
-                "type": "kw",
-                "group": "ActorDataClass Tag-|ALL_INVENTORY_TAGS"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ALL_INVENTORY_TAGS"
+                  }
+                ]
               }
             }
           }
@@ -44943,62 +45228,140 @@
       "actor_death_skill_use_active_tokens": {
         "influences": {
           "m_allTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           },
           "m_anyTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           },
           "m_avoidTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           },
           "m_destinationTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           },
           "m_eachTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           },
           "m_sourceTags": {
-            "inputString": "List(ActorDataClass ID|ActorDataSkill Tag-|Token ID)",
+            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
               "element": {
-                "type": "id",
-                "group": "ActorDataClass ID|ActorDataSkill Tag-|Token"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "id",
+                    "group": "ActorDataClass"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "ActorDataSkill"
+                  },
+                  {
+                    "type": "id",
+                    "group": "Token"
+                  }
+                ]
               }
             }
           }
@@ -45087,62 +45450,116 @@
       "party_relationships": {
         "influences": {
           "m_allTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           },
           "m_anyTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           },
           "m_avoidTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           },
           "m_destinationTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           },
           "m_eachTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           },
           "m_sourceTags": {
-            "inputString": "List(AffinityRelationship Tag-|Biome Tag-)",
+            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
               "element": {
-                "type": "tagReceiver",
-                "group": "AffinityRelationship Tag-|Biome"
+                "type": "union",
+                "elements": [
+                  {
+                    "type": "tagReceiver",
+                    "group": "AffinityRelationship"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "Biome"
+                  }
+                ]
               }
             }
           }
@@ -48095,10 +48512,19 @@
       "profile_has_defeated_boss": {
         "influences": {
           "m_ConditionString": {
-            "inputString": "Boss ID|BossExtended ID",
+            "inputString": "Or(Boss ID,BossExtended ID)",
             "input": {
-              "type": "id",
-              "group": "Boss ID|BossExtended"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Boss"
+                },
+                {
+                  "type": "id",
+                  "group": "BossExtended"
+                }
+              ]
             }
           }
         }
@@ -48275,10 +48701,27 @@
       "resist_tag": {
         "influences": {
           "m_ConditionString": {
-            "inputString": "Quirk Tag-|Token Tag-|Dot Tag-|Buff Tag-",
+            "inputString": "Or(Quirk Tag-,Token Tag-,Dot Tag-,Buff Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Quirk Tag-|Token Tag-|Dot Tag-|Buff"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "Quirk"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Token"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Buff"
+                }
+              ]
             }
           }
         }

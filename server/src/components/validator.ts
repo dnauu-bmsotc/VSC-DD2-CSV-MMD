@@ -3,7 +3,7 @@ import { DD2CSVMMDSettings } from './configuration';
 import { AST, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
-import { TypeDefinition } from './schema';
+import { TypeDefinition, TypeDefinitionID } from './schema';
 
 export function validateAstBySchema(
 	ast: AST,
@@ -41,10 +41,16 @@ export function validateAstBySchema(
 						message: `Unrecognized field name: ${field.name}`
 					});
 				}
+				continue;
 			}
 			if (configuration.validateFieldInput) {
-				const diagnostic = validateInput(field, field.values, fieldDefinition.input, compiledData, astIndex);
-				diagnostic && diagnostics.push(diagnostic);
+				if (field.values.length === 0) {
+					
+				}
+				else {
+					const diagnostic = validateInput(field, field.values, fieldDefinition.input, compiledData, astIndex);
+					diagnostic && diagnostics.push(diagnostic);
+				}
 			}
 		}
 	}
@@ -59,64 +65,16 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 			return null;
 
 		case "bool":
-			if (values.length === 0) {
-				return createExpectedTypeDiagnostic("boolean", field.range);
-			}
-			else {
-				const content = values[0].text;
-				if ((content !== "True") && (content !== "False")) {
-					return createExpectedTypeDiagnostic("boolean", values[0].range);
-				}
-				if (values.length > 1) {
-					return createExpectedEndOfInputDiagnostic(values.slice(1));
-				}
-				return null;
-			}
+			return singleValueCheck(field, values, "bool", isBoolString);
 
 		case "int":
-			if (values.length === 0) {
-				return createExpectedTypeDiagnostic("integer", field.range);
-			}
-			else {
-				const content = values[0].text;
-				if (!isIntegerString(content)) {
-					return createExpectedTypeDiagnostic("integer", values[0].range);
-				}
-				if (values.length > 1) {
-					return createExpectedEndOfInputDiagnostic(values.slice(1));
-				}
-				return null;
-			}
+			return singleValueCheck(field, values, "int", isIntegerString);
 
 		case "range":
-			if (values.length === 0) {
-				return createExpectedTypeDiagnostic("range", field.range);
-			}
-			else {
-				const content = values[0].text;
-				if (!isRangeString(content)) {
-					return createExpectedTypeDiagnostic("range", values[0].range);
-				}
-				if (values.length > 1) {
-					return createExpectedEndOfInputDiagnostic(values.slice(1));
-				}
-				return null;
-			}
+			return singleValueCheck(field, values, "range", isRangeString);
 	
 		case "float":
-			if (values.length === 0) {
-				return createExpectedTypeDiagnostic("float", field.range);
-			}
-			else {
-				const content = values[0].text;
-				if (!isNumericString(content)) {
-					return createExpectedTypeDiagnostic("float", values[0].range);
-				}
-				if (values.length > 1) {
-					return createExpectedEndOfInputDiagnostic(values.slice(1));
-				}
-				return null;
-			}
+			return singleValueCheck(field, values, "float", isNumericString);
 
 		case "nothing":
 			if (values.length > 0) {
@@ -186,11 +144,25 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 				return null;
 			}
 
+		case "id":
+			return singleRefCheck(field, values, definition.group + " ID",
+				astIndex.idGroups[definition.group], compiledData.index.idGroups[definition.group]);
+
+		case "tagEmitter":
+			return null;
+
+		case "tagReceiver":
+			return singleRefCheck(field, values, definition.group + " Tag",
+				astIndex.tagGroups[definition.group], compiledData.index.tagGroups[definition.group]);
+
 		default:
 			// console.log(`Unknown input type: ${definition.type}`)
 			return null;
 	}
 }
+
+
+const isBoolString = (str: string) => (str === "True") || (str === "False");
 
 const isIntegerStringRegex = /^-?\d+$/;
 const isIntegerString = (str: string) => isIntegerStringRegex.test(str);
@@ -199,6 +171,64 @@ const isNumericString = (str: string) => !isNaN(Number(str));
 
 const isRangeStringRegex = /^\[\d+-\d+\]$/;
 const isRangeString = (str: string) =>isRangeStringRegex.test(str);
+
+const getFalse = () => false;
+const getTrue = () => true;
+
+function singleValueCheck(field: ASTField, values: ASTValue[], typeString: string, checker: (v: string) => boolean): Diagnostic | null {
+	if (values.length === 0) {
+		return createExpectedTypeDiagnostic(typeString, field.range);
+	}
+	else {
+		const content = values[0].text;
+		if (!checker(content)) {
+			return createExpectedTypeDiagnostic(typeString, values[0].range);
+		}
+		if (values.length > 1) {
+			return createExpectedEndOfInputDiagnostic(values.slice(1));
+		}
+		return null;
+	}
+}
+
+function singleRefCheck(
+	field: ASTField,
+	values: ASTValue[],
+	groupNameVerbose: string,
+	astIndexGroupEntries?: string[],
+	compiledDataGroupEntries?: string[]
+): Diagnostic | null {
+	if (values.length === 0) {
+		return createExpectedTypeDiagnostic(groupNameVerbose, field.range);
+	}
+	else {
+		const inMod = astIndexGroupEntries?.includes(values[0].text);
+		if (!inMod) {
+			const inVanilla = compiledDataGroupEntries?.includes(values[0].text);
+			if (inVanilla) {
+				if (values.length > 1) {
+					return createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
+			}
+		}
+		else {
+			if (values.length > 1) {
+				return createExpectedEndOfInputDiagnostic(values.slice(1));
+			}
+			return null;
+		}
+		return createMissingGroupMemberDiagnostic(groupNameVerbose, values[0].range);
+	}
+}
+
+function createMissingGroupMemberDiagnostic(expectedType: string, range: Range) {
+	return {
+		severity: DiagnosticSeverity.Error,
+		range: range,
+		message: `Missing entity: ${expectedType}`
+	};
+}
 
 function createExpectedTypeDiagnostic(expectedType: string, range: Range): Diagnostic {
 	return {
