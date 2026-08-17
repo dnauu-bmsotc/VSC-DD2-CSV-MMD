@@ -48,7 +48,8 @@ for (const fieldName of Object.keys(element.fields)) {
 		.replaceAll(" ", "&nbsp;")
 		.replaceAll(",", ", ")
 		.replaceAll(/\bint\b/g, "integer")
-		.replaceAll(/\bbool\b/g, "boolean");
+		.replaceAll(/\bbool\b/g, "boolean")
+		.replaceAll(/\bany\b/g, "");
 	let valuesString = "";
 	for (const g of keywords.groups) {
 		valuesString += `${g.groupName}: `;

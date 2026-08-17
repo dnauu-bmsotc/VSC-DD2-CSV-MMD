@@ -83,6 +83,16 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Show unrecognized element types."
+				},
+				"DD2CSVMMD.validateFieldNames": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show unrecognized field names."
+				},
+				"DD2CSVMMD.validateFieldInput": {
+					"type": "boolean",
+					"default": true,
+					"description": "Validate inputs of fields"
 				}
 			}
 		}

@@ -10,10 +10,12 @@ export function validateAstBySchema(
 	astIndex: Index,
 	configuration: DD2CSVMMDSettings
 ): Diagnostic[] {
-	if (!configuration.validateElementTypes) {
+	if (!configuration.validateElementTypes &&
+		!configuration.validateFieldNames &&
+		!configuration.validateFieldInput
+	) {
 		return [];
 	}
-
 	const t0 = performance.now();
 	const diagnostics: Diagnostic[] = [];
 	for (const element of ast.elements) {
@@ -26,6 +28,18 @@ export function validateAstBySchema(
 				});
 			}
 			continue;
+		}
+		for (const field of element.fields) {
+			if (!(field.name in compiledData.schema[element.elementType].fields)) {
+				if (configuration.validateFieldNames) {
+					diagnostics.push({
+						severity: DiagnosticSeverity.Error,
+						range: field.range,
+						message: `Unrecognized field name: ${field.name}`
+					});
+				}
+			}
+			// validateFieldInput();
 		}
 	}
 	

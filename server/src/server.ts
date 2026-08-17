@@ -105,6 +105,8 @@ connection.onInitialized(() => {
 const defaultSettings: DD2CSVMMDSettings = {
 	validateElementBoundaries: true,
 	validateElementTypes: true,
+	validateFieldNames: true,
+	validateFieldInput: true,
 };
 let globalSettings: DD2CSVMMDSettings = defaultSettings;
 
