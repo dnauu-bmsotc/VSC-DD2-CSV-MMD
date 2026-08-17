@@ -1,17 +1,16 @@
 {
-	"name": "lsp-sample",
-	"description": "A language server example",
-	"author": "Microsoft Corporation",
+	"name": "DD2CSVMMD",
+	"description": "CSV Language support for modding Darkest Dungeon 2",
+	"author": "dnauu-bmsotc",
 	"license": "MIT",
 	"version": "1.0.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-extension-samples"
+		"url": "https://github.com/dnauu-bmsotc/VSC-DD2-CSV-MMD"
 	},
 	"publisher": "vscode-samples",
 	"categories": [],
 	"keywords": [
-		"multi-root ready"
 	],
 	"engines": {
 		"vscode": "^1.100.0"
@@ -93,6 +92,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Validate inputs of fields"
+				},
+				"DD2CSVMMD.devMode": {
+					"type": "boolean",
+					"default": false,
+					"description": "Rebuild data and readme on extension start"
 				}
 			}
 		}

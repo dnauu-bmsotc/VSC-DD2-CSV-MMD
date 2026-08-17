@@ -94,10 +94,14 @@ connection.onInitialized(() => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
-
-	getCompiledData(true, true).then(data => {
-		compiledData = data;
-		assembleReadme(compiledData);
+	
+	connection.workspace.getConfiguration("DD2CSVMMD").then((configuration: DD2CSVMMDSettings) => {
+		getCompiledData(configuration.devMode, true).then(data => {
+			compiledData = data;
+			if (configuration.devMode) {
+				assembleReadme(data);
+			}
+		});
 	});
 });
 
@@ -109,6 +113,7 @@ const defaultSettings: DD2CSVMMDSettings = {
 	validateElementTypes: true,
 	validateFieldNames: true,
 	validateFieldInput: true,
+	devMode: false,
 };
 let globalSettings: DD2CSVMMDSettings = defaultSettings;
 
