@@ -41,6 +41,10 @@
 					"match": "[+-]?\\d+(?:\\.\\d+)?"
 				},
 				{
+					"name": "constant.numeric.range.dd2mmd",
+					"match": "\\[\\d+-\\d+\\]"
+				},
+				{
 					"name": "variable.parameter.dd2mmd",
 					"match": "(?<=,)[^,]+"
 				}

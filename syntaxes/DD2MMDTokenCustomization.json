@@ -56,6 +56,12 @@
                 }
             },
             {
+                "scope": "constant.numeric.range.dd2mmd",
+                "settings": {
+                    "foreground": "#fcad4c"
+                }
+            },
+            {
                 "scope": "variable.parameter.dd2mmd",
                 "settings": {
                     "foreground": "#FFFFFF"
@@ -115,6 +121,12 @@
             },
             {
                 "scope": "constant.numeric.dd2mmd",
+                "settings": {
+                    "foreground": "#ffae00"
+                }
+            },
+            {
+                "scope": "constant.numeric.range.dd2mmd",
                 "settings": {
                     "foreground": "#ffae00"
                 }

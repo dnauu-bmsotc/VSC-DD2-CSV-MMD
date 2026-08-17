@@ -88,6 +88,21 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 				return null;
 			}
 
+		case "range":
+			if (values.length === 0) {
+				return createExpectedTypeDiagnostic("range", field.range);
+			}
+			else {
+				const content = values[0].text;
+				if (!isRangeString(content)) {
+					return createExpectedTypeDiagnostic("range", values[0].range);
+				}
+				if (values.length > 1) {
+					return createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
+			}
+	
 		case "float":
 			if (values.length === 0) {
 				return createExpectedTypeDiagnostic("float", field.range);
@@ -170,16 +185,20 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 				}
 				return null;
 			}
-	
+
 		default:
 			// console.log(`Unknown input type: ${definition.type}`)
 			return null;
 	}
 }
 
-const isIntegerString = (str: string) => /^-?\d+$/.test(str);
+const isIntegerStringRegex = /^-?\d+$/;
+const isIntegerString = (str: string) => isIntegerStringRegex.test(str);
 
 const isNumericString = (str: string) => !isNaN(Number(str));
+
+const isRangeStringRegex = /^\[\d+-\d+\]$/;
+const isRangeString = (str: string) =>isRangeStringRegex.test(str);
 
 function createExpectedTypeDiagnostic(expectedType: string, range: Range): Diagnostic {
 	return {
