@@ -59,8 +59,7 @@ function extractEmittedTags(index: Index, values: ASTValue[], definition: TypeDe
 				const sequenceLength = definition.element.elements.length;
 				for (let i = 0; i < values.length; i += sequenceLength) {
 					if (i + sequenceLength > values.length) {
-						console.log(`incomplete sequence ${values.map(v => v.text)}`)
-						console.log(values.length)
+						console.log(`incomplete sequence ${values.map(v => v.text)}`);
 					}
 					extractEmittedTags(index, values.slice(i, i + sequenceLength), definition.element);
 				}

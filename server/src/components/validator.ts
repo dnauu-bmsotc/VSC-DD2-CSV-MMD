@@ -68,7 +68,6 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 					return createExpectedTypeDiagnostic("boolean", values[0].range);
 				}
 				if (values.length > 1) {
-					console.log(values)
 					return createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
 				return null;
@@ -84,7 +83,6 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 					return createExpectedTypeDiagnostic("integer", values[0].range);
 				}
 				if (values.length > 1) {
-					console.log(values)
 					return createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
 				return null;
@@ -100,8 +98,75 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 					return createExpectedTypeDiagnostic("float", values[0].range);
 				}
 				if (values.length > 1) {
-					console.log(values)
 					return createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
+			}
+
+		case "nothing":
+			if (values.length > 0) {
+				return createExpectedEndOfInputDiagnostic(values);
+			}
+			return null;
+
+		case "localization":
+			return null;
+
+		case "list":
+			if (definition.element.type === "sequence") {
+				const listElementNumberOfValues = definition.element.elements.length;
+				for (let i = 0; i < values.length; i += listElementNumberOfValues) {
+					if (i + listElementNumberOfValues > values.length) {
+						createMissingSequenceValueDiagnostic(field, values.slice(i), definition.element);
+					}
+					const valuesSlice = values.slice(i, i + listElementNumberOfValues);
+					const diagnostic = validateInput(field, valuesSlice, definition.element, compiledData, astIndex);
+					if (diagnostic) {
+						return diagnostic;
+					}
+				}
+			}
+			else {
+				for (const v of values) {
+					const diagnostic = validateInput(field, [v], definition.element, compiledData, astIndex);
+					if (diagnostic) {
+						return diagnostic;
+					}
+				}
+			}
+			return null;
+
+		case "sequence":
+			for (let i = 0; i < definition.elements.length; i++) {
+				if (i >= values.length) {
+					return createMissingSequenceValueDiagnostic(field, values, definition);
+				}
+				const diagnostic = validateInput(field, [values[i]], definition.elements[i], compiledData, astIndex);
+				if (diagnostic) {
+					return diagnostic;
+				}
+			}
+			if (values.length > definition.elements.length) {
+				return createExpectedEndOfInputDiagnostic(values.slice(definition.elements.length));
+			}
+			return null;
+
+		case "union":
+			const expectedTypeString = definition.elements.map(e => e.type).join(" or ");
+			if (values.length === 0) {
+				return createExpectedTypeDiagnostic(expectedTypeString, field.range);
+			}
+			else {
+				let matchesAnyOption = false;
+				for (const optionType of definition.elements) {
+					const diagnostic = validateInput(field, values, optionType, compiledData, astIndex);
+					if (!diagnostic) {
+						matchesAnyOption = true;
+						break;
+					}
+				}
+				if (!matchesAnyOption) {
+					return createExpectedTypeDiagnostic(expectedTypeString, field.range);
 				}
 				return null;
 			}
@@ -136,5 +201,17 @@ function createExpectedEndOfInputDiagnostic(values: ASTValue[]): Diagnostic | nu
 		severity: DiagnosticSeverity.Error,
 		range: range,
 		message: `Expected end of input`
+	};
+}
+
+function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[], schema: TypeDefinition): Diagnostic | null {
+	if (schema.type !== "sequence") {
+		return null;
+	}
+	const missingValues = schema.elements.slice(values.length).map(x => x.type);
+	return {
+		severity: DiagnosticSeverity.Error,
+		range: field.range,
+		message: `Field misses more values: ${missingValues.join(", ")}.`
 	};
 }
