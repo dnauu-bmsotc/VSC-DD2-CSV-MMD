@@ -181,47 +181,59 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 			return singleRefCheck(field, values, definition, Object.keys(keywords), undefined);
 
-		// case "dependent":
-		// 	const influenceSourceField = element.fields.filter(f => f.name === values[0].text)?.[0];
-		// 	if (!influenceSourceField) {
-		// 		return {
-		// 			severity: DiagnosticSeverity.Error,
-		// 			range: field.range,
-		// 			message: `Missing required field ${values[0].text} in element ${element.name}.`,
-		// 		};
-		// 	}
-		// 	const influenceSourceValue = influenceSourceField.values.length && influenceSourceField.values[0];
-		// 	if (!influenceSourceValue) {
-		// 		return {
-		// 			severity: DiagnosticSeverity.Error,
-		// 			range: field.range,
-		// 			message: `Field-influencer ${influenceSourceField.name} in element ${element.name} is empty.`,
-		// 		};
-		// 	}
-		// 	const influenceSourceSchema = compiledData.schema[element.name].fields[influenceSourceField.name].input;
-		// 	if (influenceSourceSchema.type !== "kw") {
-		// 		console.log(`Influence field ${field.name} is not a keyword field.`);
-		// 		return null;
-		// 	}
-		// 	const influenceKWGroup = compiledData.keywords[influenceSourceSchema.group];
-		// 	if (!influenceKWGroup) {
-		// 		console.log(`Unrecognized dependency group ${definition.field}`);
-		// 		return null;
-		// 	}
-		// 	const influenceValueDesc = influenceKWGroup[influenceSourceValue.text];
-		// 	if (!influenceValueDesc) {
-		// 		console.log(`Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`);
-		// 		return null;
-		// 	}
-		// 	const influenceType = influenceValueDesc.influences?.[field.name];
-		// 	if (!influenceType) {
-		// 		console.log(`Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`);
-		// 		return null;
-		// 	}
-		// 	validateInput(element, field, values, influenceType.input, compiledData, astIndex);
+		case "dependent":
+			const influenceSourceField = element.fields.filter(f => f.name === definition.field)?.[0];
+			if (!influenceSourceField) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Missing required field ${definition.field} in element ${element.name}.`,
+				};
+			}
+			const influenceSourceValue = influenceSourceField.values.length && influenceSourceField.values[0];
+			if (!influenceSourceValue) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Field-influencer ${influenceSourceField.name} in element ${element.name} is empty.`,
+				};
+			}
+			const influenceSourceSchema = compiledData.schema[element.elementType].fields[influenceSourceField.name].input;
+			if (influenceSourceSchema.type !== "kw") {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Influence field ${field.name} is not a keyword field.`,
+				};
+			}
+			const influenceKWGroup = compiledData.keywords[influenceSourceSchema.group];
+			if (!influenceKWGroup) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Unrecognized dependency group ${definition.field}`,
+				};
+			}
+			const influenceValueDesc = influenceKWGroup[influenceSourceValue.text];
+			if (!influenceValueDesc) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`,
+				};
+			}
+			const influenceType = influenceValueDesc.influences?.[field.name];
+			if (!influenceType) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`,
+				};
+			}
+			return validateInput(element, field, values, influenceType.input, compiledData, astIndex);
 
 		default:
-			// console.log(`Unknown input type: ${definition.type}`)
+			console.log(`Unknown input type: ${definition}`);
 			return null;
 	}
 }
