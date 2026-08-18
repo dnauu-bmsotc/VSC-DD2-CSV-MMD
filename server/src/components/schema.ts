@@ -1,4 +1,6 @@
 import * as XLSX from 'xlsx';
+import { existsSync } from 'fs';
+import { logPerformanceTime } from '../../../shared/utils';
 
 export type TypeDefinition =
 	| TypeDefinitionInt
@@ -111,6 +113,9 @@ export function parseType(input: string): TypeDefinition {
 }
 
 export function readFieldsDescription(filePath: string): FieldsDescription {
+	if (!existsSync(filePath)) {
+		throw new Error(`File not found ${filePath}`);
+	}
 	const t0 = performance.now();
 	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
 	const result: FieldsDescription = {};
@@ -132,7 +137,7 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 		}
 		result[sheetName] = element;
 	}
-	console.log(`Read schema: ${(performance.now() - t0).toFixed(1)} ms`);
+	logPerformanceTime("Read schema", t0);
 	return result;
 }
 

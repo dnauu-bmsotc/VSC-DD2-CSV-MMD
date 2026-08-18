@@ -1,16 +1,13 @@
 import * as path from 'path';
 import * as fs from 'node:fs/promises'; 
 import * as XLSX from 'xlsx';
+import { existsSync } from 'fs';
 
 import { FieldsDescription, parseType, readFieldsDescription, TypeDefinition } from './schema';
 import { Index, indexElements, newIndex } from './indexer';
 import { parseIntoAST } from './parser';
-
-const streamingAssetsPath = 'C:/Program Files (x86)/Steam/steamapps/common/Darkest Dungeon® II/Darkest Dungeon II_Data/StreamingAssets/Excel'
-const outputFilePath = path.resolve(__dirname, '../../../CSV Description/data_compiled.json');
-const fieldsDescriptionPath = path.resolve(__dirname, '../../../CSV Description/CSV Fields.ods');
-const valuesDescriptionPath = path.resolve(__dirname, '../../../CSV Description/CSV Values.ods');
-const elementsDescriptionPath = path.resolve(__dirname, '../../../CSV Description/CSV Elements.ods');
+import { dataCompiledOutputFilePath, fieldsDescriptionPath, streamingAssetsPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths';
+import { logPerformanceTime } from '../../../shared/utils';
 
 export interface CompiledData {
 	schema: FieldsDescription;
@@ -39,7 +36,7 @@ type ElementsDescription = Record<string, ElementDescription>;
 
 export async function getCompiledData(rebuild=false, log=false) {
 	if (!rebuild) {
-		const json = await readJson<CompiledData>(outputFilePath);
+		const json = await readJson<CompiledData>(dataCompiledOutputFilePath);
 		if (json) return json;
 	}
 	return await compileData(log);
@@ -53,7 +50,7 @@ export async function compileData(log=false): Promise<CompiledData> {
 	const csvFiles = await findCsvFiles(streamingAssetsPath);
 	for (const file of csvFiles) {
 		const data = await fs.readFile(path.resolve(file), 'utf-8');
-		const parseResult = parseIntoAST(data, undefined, false);
+		const parseResult = parseIntoAST(data);
 		indexElements(index, schema, parseResult.AST)
 	}
 
@@ -69,10 +66,10 @@ export async function compileData(log=false): Promise<CompiledData> {
 	}
 
 	const jsonString = JSON.stringify(result, null, 2);
-	await fs.writeFile(outputFilePath, jsonString, 'utf-8');
+	await fs.writeFile(dataCompiledOutputFilePath, jsonString, 'utf-8');
 
 	if (log) {
-		console.log(`Compiling data: ${(performance.now() - t0).toFixed(1)} ms`);
+		logPerformanceTime("Compiling data", t0);
 	}
 	return result;
 }
@@ -86,6 +83,9 @@ async function findCsvFiles(folderPath: string) {
 }
 
 function readValuesDescription(filePath: string): ValuesDescription {
+	if (!existsSync(filePath)) {
+		throw new Error(`File not found ${filePath}`);
+	}
 	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
 	const result: ValuesDescription = {};
 
@@ -123,6 +123,9 @@ function readValuesDescription(filePath: string): ValuesDescription {
 }
 
 function readElementsDescription(filePath: string): ElementsDescription {
+	if (!existsSync(filePath)) {
+		throw new Error(`File not found ${filePath}`);
+	}
 	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
 	const result: ElementsDescription = {};
 
@@ -151,6 +154,6 @@ async function readJson<T>(filePath: string): Promise<T | null> {
 		return JSON.parse(rawData) as T;
 	}
 	catch (error: any) {
-		return null;
+		throw Error(`File not found: ${filePath}`);
 	}
 }

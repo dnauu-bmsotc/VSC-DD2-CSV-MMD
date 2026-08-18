@@ -27,21 +27,18 @@ export interface ASTParseResult {
 	diagnostics: Diagnostic[];
 }
 
-export function parseIntoAST(text: string, configuration?:DD2CSVMMDSettings, log=false): ASTParseResult {
-	const t0 = performance.now();
+export function parseIntoAST(text: string): ASTParseResult {
 	const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
 	let current: ASTElement | null = null;
 	const diagnostics: Diagnostic[] = [];
 
 	function pushDiagnostic(message: string, start: Position, end: Position) {
-		if (configuration?.validateElementBoundaries) {
-			diagnostics.push({
-				severity: DiagnosticSeverity.Error,
-				range: { start: start, end: end},
-				message: message,
-			});
-		}
+		diagnostics.push({
+			severity: DiagnosticSeverity.Error,
+			range: { start: start, end: end},
+			message: message,
+		});
 	}
 
 	for (let i = 0; i < lines.length; i++) {
@@ -114,9 +111,6 @@ export function parseIntoAST(text: string, configuration?:DD2CSVMMDSettings, log
 				}
 			}
 		}
-	}
-	if (log) {
-		console.log(`AST parse: ${(performance.now() - t0).toFixed(1)} ms`);
 	}
 	return {
 		AST: elements,

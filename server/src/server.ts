@@ -79,8 +79,16 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	}
 	const workspace = URI.parse(workspaceUri);
 	
-	project = await ProjectManager.create(workspace, params.initializationOptions);
-	await project.initialize();
+	try {
+		project = await ProjectManager.create(workspace, params.initializationOptions);
+		await project.initialize();
+	}
+	catch(error) {
+		const message = error instanceof Error ? error.message : String(error);
+		connection.console.error(message);
+		connection.window.showErrorMessage(message);
+		throw Error;
+	}
 	
 	return result;
 });

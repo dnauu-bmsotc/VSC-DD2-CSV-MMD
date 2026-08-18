@@ -2,8 +2,9 @@ import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
-import { TypeDefinition, TypeDefinitionID } from './schema';
+import { TypeDefinition } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
+import { logPerformanceTime } from '../../../shared/utils';
 
 export function validateAstBySchema(
 	ast: AST,
@@ -61,7 +62,7 @@ export function validateAstBySchema(
 		}
 	}
 	
-	console.log(`Validation: ${(performance.now() - t0).toFixed(1)} ms`);
+	logPerformanceTime("Validation", t0);
 	return diagnostics;
 }
 

@@ -2,18 +2,16 @@ import * as path from 'path';
 import * as fs from 'node:fs/promises';
 import { CompiledData } from './compiler';
 import { Field, TypeDefinition } from './schema';
-
-const inputFilePath = path.resolve(__dirname, '../../../readmeBase.md');
-const outputFilePath = path.resolve(__dirname, '../../../README.md');
+import { readmeBaseFilePath, readmeOutputFilePath } from '../../../shared/projectPaths';
 
 export async function assembleReadme(compiledData: CompiledData) {
-	let readme = await fs.readFile(inputFilePath, 'utf-8');
+	let readme = await fs.readFile(readmeBaseFilePath, 'utf-8');
 	
 	readme += "\n\n# CSV data description\n\n";
 
 	readme += generateFieldsDescription(compiledData);
 	
-	await fs.writeFile(outputFilePath, readme, 'utf-8');
+	await fs.writeFile(readmeOutputFilePath, readme, 'utf-8');
 }
 
 function generateFieldsDescription(compiledData: CompiledData): string {

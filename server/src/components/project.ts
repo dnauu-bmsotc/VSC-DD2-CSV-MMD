@@ -1,5 +1,5 @@
 import { URI } from 'vscode-uri'
-import path from 'node:path';
+import * as path from 'node:path';
 import * as fs from "node:fs"
 
 import { Index, indexElements, newIndex } from './indexer';
