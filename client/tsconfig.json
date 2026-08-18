@@ -6,12 +6,13 @@
 			"ES2024"
 		],
 		"outDir": "out",
-		"rootDir": "src",
+		"rootDir": "..",
 		"sourceMap": true,
 		"strict": true
 	},
 	"include": [
-		"src"
+		"src",
+		"../shared/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

@@ -8,10 +8,11 @@
 		"sourceMap": true,
 		"strict": true,
 		"outDir": "out",
-		"rootDir": "src"
+		"rootDir": ".."
 	},
 	"include": [
-		"src"
+		"src",
+		"../shared/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

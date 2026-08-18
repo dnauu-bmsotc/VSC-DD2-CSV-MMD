@@ -16,6 +16,7 @@ import {
 
 import { checkAndSwitchLanguage } from './components/checkAndSwitchLanguage';
 import { updateTokenColors } from './components/updateTokenColors';
+import { DD2CSVMMDInitializationSettings } from '../../shared/settings';
 
 let client: LanguageClient;
 
@@ -57,6 +58,13 @@ export function activate(context: ExtensionContext) {
 		}
 	};
 
+	const config = vscode.workspace.getConfiguration("DD2CSVMMD");
+	const initializationOptions: DD2CSVMMDInitializationSettings = {
+		devMode: config.get("devMode", false),
+		DD2ExcelDirs: config.get("DD2ExcelDirs", []),
+		modDirs: config.get("modDirs", []),
+	}
+
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
@@ -64,7 +72,8 @@ export function activate(context: ExtensionContext) {
 		synchronize: {
 			// Notify the server about file changes to '.clientrc files contained in the workspace
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-		}
+		},
+		initializationOptions: initializationOptions,
 	};
 
 	// Create the language client and start the client.

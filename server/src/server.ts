@@ -1,12 +1,6 @@
-/* --------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- * ------------------------------------------------------------------------------------------ */
 import {
 	createConnection,
 	TextDocuments,
-	Diagnostic,
-	DiagnosticSeverity,
 	ProposedFeatures,
 	InitializeParams,
 	DidChangeConfigurationNotification,
@@ -23,13 +17,10 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
-import { parseIntoAST } from './components/parser';
-import { readFieldsDescription } from './components/schema';
-import { DD2CSVMMDSettings } from './components/configuration';
-import { CompiledData, getCompiledData } from './components/compiler';
 import { validateAstBySchema } from './components/validator';
-import { indexElements, newIndex } from './components/indexer';
-import { assembleReadme } from './components/readme';
+import { ProjectManager } from './components/project';
+import { URI } from 'vscode-uri';
+import { DD2CSVMMDSettings } from '../../shared/settings';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -38,13 +29,13 @@ const connection = createConnection(ProposedFeatures.all);
 // Create a simple text document manager.
 const documents = new TextDocuments(TextDocument);
 
-let compiledData: CompiledData | null = null;
-
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
 let hasDiagnosticRelatedInformationCapability = false;
 
-connection.onInitialize((params: InitializeParams) => {
+let project: ProjectManager;
+
+connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const capabilities = params.capabilities;
 
 	// Does the client support the `workspace/configuration` request?
@@ -81,6 +72,16 @@ connection.onInitialize((params: InitializeParams) => {
 			}
 		};
 	}
+
+	const workspaceUri = params.workspaceFolders?.[0].uri;
+	if (!workspaceUri) {
+		throw new Error("Workspace required");
+	}
+	const workspace = URI.parse(workspaceUri);
+	
+	project = await ProjectManager.create(workspace, params.initializationOptions);
+	await project.initialize();
+	
 	return result;
 });
 
@@ -94,15 +95,6 @@ connection.onInitialized(() => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
-	
-	connection.workspace.getConfiguration("DD2CSVMMD").then((configuration: DD2CSVMMDSettings) => {
-		getCompiledData(configuration.devMode, true).then(data => {
-			compiledData = data;
-			if (configuration.devMode) {
-				assembleReadme(data);
-			}
-		});
-	});
 });
 
 // The global settings, used when the `workspace/configuration` request is not supported by the client.
@@ -114,7 +106,7 @@ const defaultSettings: DD2CSVMMDSettings = {
 	validateFieldNames: true,
 	validateFieldInput: true,
 	showEmptyFields: true,
-	devMode: false,
+	processProjectFolder: true,
 };
 let globalSettings: DD2CSVMMDSettings = defaultSettings;
 
@@ -130,9 +122,6 @@ connection.onDidChangeConfiguration(change => {
 			(change.settings.languageServerExample || defaultSettings)
 		);
 	}
-	// Refresh the diagnostics since the `maxNumberOfProblems` could have changed.
-	// We could optimize things here and re-fetch the setting first can compare it
-	// to the existing setting, but this is out of scope for this example.
 	connection.languages.diagnostics.refresh();
 });
 
@@ -151,9 +140,19 @@ function getDocumentSettings(resource: string): Thenable<DD2CSVMMDSettings> {
 	return result;
 }
 
+documents.onDidOpen(e => {
+	project.updateFileState(e.document.uri, e.document.getText());
+});
+
 // Only keep settings for open documents
 documents.onDidClose(e => {
 	documentSettings.delete(e.document.uri);
+});
+
+// The content of a text document has changed. This event is emitted
+// when the text document first opened or when its content has changed.
+documents.onDidChangeContent(e => {
+	project.updateFileState(e.document.uri, e.document.getText());
 });
 
 
@@ -174,30 +173,18 @@ connection.languages.diagnostics.on(async (params) => {
 	}
 });
 
-// The content of a text document has changed. This event is emitted
-// when the text document first opened or when its content has changed.
-documents.onDidChangeContent(change => {
-	validateTextDocument(change.document);
-});
-
-async function validateTextDocument(textDocument: TextDocument): Promise<Diagnostic[]> {
+async function validateTextDocument(textDocument: TextDocument) {
 	// In this simple example we get the settings for every validate run.
 	const settings = await getDocumentSettings(textDocument.uri);
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 
-	const text = textDocument.getText();
-	const parseResult = parseIntoAST(text, configuration);
-
-	const diagnostics = parseResult.diagnostics;
-
-	if (compiledData) {
-		const astIndex = newIndex();
-		indexElements(astIndex, compiledData.schema, parseResult.AST.elements);
-		const validationResult = validateAstBySchema(parseResult.AST, compiledData, astIndex, configuration);
-		diagnostics.push(...validationResult);
+	const fileState = project.updateFileState(textDocument.uri, textDocument.getText());
+	if (!fileState) {
+		return [];
 	}
+	const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, configuration);
 
-	return diagnostics;
+	return [...fileState.parseDiagnostics, ...validationResult];
 }
 
 connection.onDidChangeWatchedFiles(_change => {

@@ -1,9 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
-import { DD2CSVMMDSettings } from './configuration';
+import { DD2CSVMMDSettings } from '../../../shared/settings';
 
-export interface AST {
-	elements: ASTElement[];
-}
+export type AST = ASTElement[];
 
 export interface ASTElement {
 	name: string;
@@ -121,7 +119,7 @@ export function parseIntoAST(text: string, configuration?:DD2CSVMMDSettings, log
 		console.log(`AST parse: ${(performance.now() - t0).toFixed(1)} ms`);
 	}
 	return {
-		AST: { elements },
+		AST: elements,
 		diagnostics: diagnostics,
 	};
 }

@@ -54,7 +54,7 @@ export async function compileData(log=false): Promise<CompiledData> {
 	for (const file of csvFiles) {
 		const data = await fs.readFile(path.resolve(file), 'utf-8');
 		const parseResult = parseIntoAST(data, undefined, false);
-		indexElements(index, schema, parseResult.AST.elements)
+		indexElements(index, schema, parseResult.AST)
 	}
 
 	const keywords = readValuesDescription(valuesDescriptionPath);

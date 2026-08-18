@@ -1,9 +1,9 @@
 import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { DD2CSVMMDSettings } from './configuration';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
 import { TypeDefinition, TypeDefinitionID } from './schema';
+import { DD2CSVMMDSettings } from '../../../shared/settings';
 
 export function validateAstBySchema(
 	ast: AST,
@@ -19,7 +19,7 @@ export function validateAstBySchema(
 	}
 	const t0 = performance.now();
 	const diagnostics: Diagnostic[] = [];
-	for (const element of ast.elements) {
+	for (const element of ast) {
 		if (!compiledData.elementsDescription[element.elementType]) {
 			if (configuration.validateElementTypes) {
 				diagnostics.push({

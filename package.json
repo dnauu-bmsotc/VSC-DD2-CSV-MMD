@@ -45,7 +45,7 @@
 						"allCsv"
 					],
 					"enumItemLabels": [
-						"element_start in the first line",
+						"CSV files with element_start in the first line",
 						"All CSV files"
 					],
 					"markdownEnumDescriptions": [
@@ -98,10 +98,41 @@
 					"default": true,
 					"description": "Show empty element lines."
 				},
+				"DD2CSVMMD.DD2ExcelDirs": {
+					"type": "array",
+					"scope": "resource",
+					"description": "Directories containing DD2 CSV vanilla data.",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"C:/Program Files (x86)/Steam/steamapps/common/Darkest Dungeon® II/Darkest Dungeon II_Data/StreamingAssets/Excel",
+						"C:/Program Files/Epic Games/DarkestDungeonII/Darkest Dungeon II_Data/StreamingAssets/Excel",
+						"~/Library/Application Support/Steam/steamapps/common/Darkest Dungeon® II/Contents/Resources/Data/StreamingAssets/Excel"
+					]
+				},
+				"DD2CSVMMD.modDirs": {
+					"type": "array",
+					"scope": "resource",
+					"description": "List of directories with custom CSV data.",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"C:/Program Files (x86)/Steam/steamapps/common/Darkest Dungeon® II/Darkest Dungeon II_Data/StreamingAssets/Mods/",
+						"C:/Program Files/Epic Games/DarkestDungeonII/Darkest Dungeon II_Data/StreamingAssets/Mods/",
+						"~/Library/Application Support/Steam/steamapps/common/Darkest Dungeon® II/Contents/Resources/Data/StreamingAssets/Mods/"
+					]
+				},
+				"DD2CSVMMD.processProjectFolder": {
+					"type": "boolean",
+					"default": false,
+					"description": "Process CSV files in the opened VS project."
+				},
 				"DD2CSVMMD.devMode": {
 					"type": "boolean",
 					"default": false,
-					"description": "Rebuild data and readme on extension start"
+					"description": "Rebuild data and readme on extension start."
 				}
 			}
 		}
