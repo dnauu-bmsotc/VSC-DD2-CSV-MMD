@@ -6053,18 +6053,24 @@
           "comment": ""
         },
         "m_durationIds": {
-          "inputString": "HapticsDuration ID",
+          "inputString": "List(HapticsDuration ID)",
           "input": {
-            "type": "id",
-            "group": "HapticsDuration"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "HapticsDuration"
+            }
           },
           "comment": ""
         },
         "m_intensityIds": {
-          "inputString": "HapticsIntensity ID",
+          "inputString": "List(HapticsIntensity ID)",
           "input": {
-            "type": "id",
-            "group": "HapticsIntensity"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "HapticsIntensity"
+            }
           },
           "comment": ""
         },
@@ -6473,12 +6479,12 @@
           "comment": ""
         },
         "hero_effects": {
-          "inputString": "List(Condition ID)",
+          "inputString": "List(Effect ID)",
           "input": {
             "type": "list",
             "element": {
               "type": "id",
-              "group": "Condition"
+              "group": "Effect"
             }
           },
           "comment": ""
@@ -9769,7 +9775,7 @@
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Seq(RunStatType KW,Or(LootTable Tag-,NodeType KW,RouteType KW,BattleConfigurationTable Tag-,Item ID),float)",
+          "inputString": "Seq(RunStatType KW,Or(LootTable Tag-,NodeType KW,RouteType KW,BattleConfigurationTable Tag-,Item ID,ItemType KW,BattleConfigurationEntry Tag-,LootTableEntry Tag-),float)",
           "input": {
             "type": "sequence",
             "elements": [
@@ -9799,6 +9805,18 @@
                   {
                     "type": "id",
                     "group": "Item"
+                  },
+                  {
+                    "type": "kw",
+                    "group": "ItemType"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "BattleConfigurationEntry"
+                  },
+                  {
+                    "type": "tagReceiver",
+                    "group": "LootTableEntry"
                   }
                 ]
               },
@@ -10385,10 +10403,10 @@
           "comment": ""
         },
         "m_ResultType": {
-          "inputString": "m_ResultType KW",
+          "inputString": "StoryResultType KW",
           "input": {
             "type": "kw",
-            "group": "m_ResultType"
+            "group": "StoryResultType"
           },
           "comment": ""
         },
@@ -44266,7 +44284,7 @@
     }
   },
   "keywords": {
-    "AchievementType KW": {
+    "AchievementType": {
       "party_relationship_pair": {
         "influences": {
           "m_allTags": {
@@ -46966,14 +46984,14 @@
         }
       }
     },
-    "ActOutActorType KW": {
+    "ActOutActorType": {
       "OTHER": {},
       "PERFORMER": {},
       "PARTY": {},
       "TARGET": {},
       "SELF": {}
     },
-    "DurationType KW": {
+    "DurationType": {
       "performer_turn_start": {},
       "performer_turn_end": {},
       "every_turn_start": {},
@@ -46992,7 +47010,7 @@
       "node": {},
       "day": {}
     },
-    "m_Display KW": {
+    "m_Display": {
       "negative": {},
       "crimson_curse_craving": {},
       "positive": {},
@@ -47000,7 +47018,7 @@
       "crimson_curse_wasting": {},
       "crimson_curse_bloodlust": {}
     },
-    "ActOutType KW": {
+    "ActOutType": {
       "skill_before": {},
       "skill_after": {},
       "skill_block": {},
@@ -47010,17 +47028,17 @@
       "story_choice": {},
       "rest_item_block": {}
     },
-    "ActorChangeClassHealType KW": {
+    "ActorChangeClassHealType": {
       "MAX_HP": {},
       "MAX_HP_DELTA": {}
     },
-    "ActorControllerType KW": {
+    "ActorControllerType": {
       "INPUT": {},
       "RANDOM": {},
       "TEST": {},
       "SEQUENTIAL_SKILL_TEST": {}
     },
-    "SkillAttributeType KW": {
+    "SkillAttributeType": {
       "health_damage": {},
       "health_heal": {},
       "wound_add": {},
@@ -47047,13 +47065,16 @@
       "bark": {},
       "capture": {},
       "release": {},
-      "kill": {}
+      "kill": {},
+      "QUIRK_ADD": {},
+      "TOKEN_ADD": {},
+      "BUFF_ADD": {}
     },
-    "m_LocalizationGender KW": {
+    "m_LocalizationGender": {
       "female": {},
       "male": {}
     },
-    "RosterStatusType KW": {
+    "RosterStatusType": {
       "idle": {},
       "party": {},
       "reserve": {},
@@ -47064,7 +47085,7 @@
       "hire_replaced": {},
       "kingdom": {}
     },
-    "AdditionalDamageActorType KW": {
+    "AdditionalDamageActorType": {
       "PERFORMER": {},
       "PERFORMER_NEIGHBOR_FRONT": {},
       "PERFORMER_NEIGHBOR_BACK": {},
@@ -47072,10 +47093,10 @@
       "TARGET_NEIGHBOR_FRONT": {},
       "TARGET_NEIGHBOR_BACK": {}
     },
-    "AdditionalDamageValueType KW": {
+    "AdditionalDamageValueType": {
       "DOT_TAG_TOTAL_HEALTH_DAMAGE_OVER_TIME": {}
     },
-    "SkillTargetValidityType KW": {
+    "SkillTargetValidityType": {
       "valid": {},
       "valid_forced": {},
       "valid_editor_prefs": {},
@@ -47091,11 +47112,12 @@
       "invalid_pass": {},
       "invalid_condition": {}
     },
-    "SkillType KW": {
-      "turnstart_round": {},
-      "end_round": {}
+    "SkillType": {
+      "turn": {},
+      "end_round": {},
+      "start_round": {}
     },
-    "ActorStatType KW": {
+    "ActorStatType": {
       "speed": {},
       "speed_tie_breaker": {},
       "speed_number_of_turns": {},
@@ -47134,7 +47156,7 @@
       "effect_performer_chance_multiplier": {},
       "effect_target_chance_multiplier": {}
     },
-    "InnStatType KW": {
+    "InnStatType": {
       "health_max": {},
       "defense": {},
       "repair_percent": {},
@@ -47149,7 +47171,7 @@
       "storage_inventory_max_slots": {},
       "infection_adjacent_cure_percentage": {}
     },
-    "RunStatType KW": {
+    "RunStatType": {
       "loot_chance": {},
       "loot_qty": {},
       "torch_min_value": {},
@@ -47227,7 +47249,7 @@
       "camp_ambush_chance": {},
       "route_effect_apply_multiplier": {}
     },
-    "ActorStatSubType KW": {
+    "ActorStatSubType": {
       "Bridge": {},
       "Cache": {},
       "CreatureDen": {},
@@ -47269,16 +47291,16 @@
       "stress": {},
       "stun": {}
     },
-    "InnStatSubType KW": {
+    "InnStatSubType": {
       "General": {},
       "Pet": {},
       "Trophy": {}
     },
-    "ActorEffectTriggerSourceType KW": {
+    "ActorEffectTriggerSourceType": {
       "target": {},
       "performer": {}
     },
-    "ActorEffectTriggerTargetType KW": {
+    "ActorEffectTriggerTargetType": {
       "performer": {},
       "target": {},
       "friendly_team": {},
@@ -47286,7 +47308,7 @@
       "party": {},
       "neighbor": {}
     },
-    "ActorDataEffectType KW": {
+    "ActorDataEffectType": {
       "performer": {},
       "performer_per_target": {},
       "performer_per_crit": {},
@@ -47420,13 +47442,13 @@
       "kingdom_contagion": {},
       "kingdom_cleanse": {}
     },
-    "AffinityTickTriggerRoleType KW": {
+    "AffinityTickTriggerRoleType": {
       "PARTICIPATING": {},
       "PARTICIPATING_SELF": {},
       "OBSERVING_PERFORMER": {},
       "OBSERVING_TARGET": {}
     },
-    "AffinityTickTriggerType KW": {
+    "AffinityTickTriggerType": {
       "skill": {},
       "effect": {},
       "health_heal": {},
@@ -47435,13 +47457,13 @@
       "follow_up": {},
       "banter": {}
     },
-    "m_ClearContainer KW": {
+    "m_ClearContainer": {
       "TokenContainer": {},
       "BuffContainer": {},
       "DebuffContainer": {},
       "DotContainer": {}
     },
-    "BarkDisplayType KW": {
+    "BarkDisplayType": {
       "neutral": {},
       "positive": {},
       "negative": {},
@@ -47451,13 +47473,13 @@
       "crimson_curse_passive": {},
       "crimson_curse_wasting": {}
     },
-    "BarkTriggerRole KW": {
+    "BarkTriggerRole": {
       "PERFORMER": {},
       "TARGET": {},
       "OBSERVING_PERFORMER": {},
       "OBSERVING_TARGET": {}
     },
-    "BarkTriggerType KW": {
+    "BarkTriggerType": {
       "STALL": {},
       "DOT_APPLIED": {},
       "STRESS_DAMAGE": {},
@@ -47479,7 +47501,7 @@
       "SKILL_CALCULATED_HIT": {},
       "ALLY_DEATH": {}
     },
-    "BackgroundOverride KW": {
+    "BackgroundOverride": {
       "combat_arena_mountain_boss_eyes": {},
       "combat_arena_hero_story_duelist_origin_1": {},
       "combat_arena_farm_dungeon_exterior": {},
@@ -47534,13 +47556,13 @@
       "combat_arena_hero_story_crusader_origin_2": {},
       "combat_arena_hero_story_highwayman_origin_2": {}
     },
-    "m_TorchOverride KW": {
+    "m_TorchOverride": {
       "no_torch": {}
     },
-    "m_endBossCinematicName KW": {
+    "m_endBossCinematicName": {
       "EndBossVictory": {}
     },
-    "RunValueType KW": {
+    "RunValueType": {
       "torch": {},
       "hero_upgrade_points": {},
       "doom": {},
@@ -47548,20 +47570,20 @@
       "stage_coach_wheels": {},
       "escalation": {}
     },
-    "ItemSlotType KW": {
+    "ItemSlotType": {
       "None": {},
       "General": {},
       "Trophy": {},
       "Pet": {},
       "Flame": {}
     },
-    "BiomeGoalThresholdType KW": {
+    "BiomeGoalThresholdType": {
       "LESS_THAN": {},
       "LESS_THAN_OR_EQUAL": {},
       "GREATER_THAN": {},
       "GREATER_THAN_OR_EQUAL": {}
     },
-    "BiomeGoalType KW": {
+    "BiomeGoalType": {
       "STAGE_COACH_ITEM_EQUIPPED": {},
       "RUN_VALUE": {},
       "NODE_VISITED": {},
@@ -47570,7 +47592,7 @@
       "BATTLE_STARTED_TAG": {},
       "BATTLE_FINISHED_TAG": {}
     },
-    "BiomeType KW": {
+    "BiomeType": {
       "Valley": {},
       "ValleyIntro": {},
       "ValleyKingdom": {},
@@ -47588,7 +47610,7 @@
       "MountainBody": {},
       "Invalid": {}
     },
-    "CombatSourceType KW": {
+    "CombatSourceType": {
       "debug": {},
       "unset": {},
       "barricade": {},
@@ -47613,15 +47635,15 @@
       "beastmen_alpha": {},
       "camp_ambush": {}
     },
-    "m_PrefabSubdirectoryId KW": {
+    "m_PrefabSubdirectoryId": {
       "Resentment": {},
       "Denial": {}
     },
-    "m_cinematicName KW": {
+    "m_cinematicName": {
       "BossSelect": {},
       "EndBossVictory": {}
     },
-    "ConditionActorType KW": {
+    "ConditionActorType": {
       "NONE": {},
       "PERFORMER": {},
       "TARGET": {},
@@ -47635,7 +47657,7 @@
       "TARGET_NEIGHBOR_FRONT": {},
       "TARGET_NEIGHBOR_BACK": {}
     },
-    "ConditionNumberType KW": {
+    "ConditionNumberType": {
       "EQUAL": {},
       "LESS_THAN": {},
       "LESS_THAN_OR_EQUAL": {},
@@ -47645,7 +47667,7 @@
       "PARAMETER": {},
       "BOOL": {}
     },
-    "ConditionType KW": {
+    "ConditionType": {
       "always": {
         "influences": {
           "m_ConditionString": {
@@ -48793,10 +48815,10 @@
         }
       }
     },
-    "ProfileValueType KW": {
+    "ProfileValueType": {
       "candles": {}
     },
-    "m_TypeDot KW": {
+    "m_TypeDot": {
       "taproot_strangle": {},
       "horror": {},
       "blight": {},
@@ -48804,15 +48826,15 @@
       "burn": {},
       "bleed": {}
     },
-    "BattleConfigurationOptionType KW": {
+    "BattleConfigurationOptionType": {
       "sub_table": {},
       "nothing": {},
       "battle_config": {}
     },
-    "m_ChanceMultiplierStatSubTypes KW": {
+    "m_ChanceMultiplierStatSubTypes": {
       "abm_moribund_stress_multiplier": {}
     },
-    "m_DotRemoveAllTypes KW": {
+    "m_DotRemoveAllTypes": {
       "taproot_strangle": {},
       "horror": {},
       "blight": {},
@@ -48820,16 +48842,16 @@
       "burn": {},
       "bleed": {}
     },
-    "m_SortType KW": {
+    "m_SortType": {
       "NAME": {},
       "CLASS_NAME": {}
     },
-    "SummonLocationType KW": {
+    "SummonLocationType": {
       "FRONT": {},
       "BACK": {},
       "RANDOM": {}
     },
-    "InnFeatureType KW": {
+    "InnFeatureType": {
       "actor_path_change": {},
       "stage_coach_repair": {},
       "stage_coach_change_skin": {},
@@ -48843,7 +48865,7 @@
       "physician": {},
       "item_selling": {}
     },
-    "InnUpgradeCategory KW": {
+    "InnUpgradeCategory": {
       "defense": {},
       "provisioner": {},
       "wainwright": {},
@@ -48854,25 +48876,25 @@
       "stage_coach_inn": {},
       "stage_coach_camp": {}
     },
-    "m_DeliverableIcon KW": {
+    "m_DeliverableIcon": {
       "treasure": {},
       "hero_bones": {}
     },
-    "m_typesInnTable KW": {
+    "m_typesInnTable": {
       "inn": {}
     },
-    "m_OverrideBackgroundFileName KW": {
+    "m_OverrideBackgroundFileName": {
       "quest_coven": {},
       "quest_courtier": {},
       "quest_beastmen": {},
       "cru_quest": {}
     },
-    "m_QuestResourceId KW": {
+    "m_QuestResourceId": {
       "coven": {},
       "courtier": {},
       "beastmen": {}
     },
-    "ItemType KW": {
+    "ItemType": {
       "currency": {},
       "rest": {},
       "combat": {},
@@ -48881,18 +48903,18 @@
       "memory": {},
       "memory_reroll": {}
     },
-    "m_TrinketEquipSfxOverrideEventPath KW": {
+    "m_TrinketEquipSfxOverrideEventPath": {
       "event:/ui/shared/trinket_equip_cultist": {}
     },
-    "RosterReplacementType KW": {
+    "RosterReplacementType": {
       "none": {},
       "respawn": {},
       "refill": {}
     },
-    "m_EventTypeRarity KW": {
+    "m_EventTypeRarity": {
       "RARE": {}
     },
-    "m_EventTypeRef KW": {
+    "m_EventTypeRef": {
       "negative": {},
       "coast": {},
       "almanac_coast": {},
@@ -48911,7 +48933,7 @@
       "forest": {},
       "forerunner": {}
     },
-    "LootType KW": {
+    "LootType": {
       "provision": {},
       "item": {},
       "sub_table": {},
@@ -48923,16 +48945,16 @@
       "quest_step": {},
       "biome_reward": {}
     },
-    "GameType KW": {
+    "GameType": {
       "expedition": {},
       "kingdom": {}
     },
-    "m_guaranteeType KW": {
+    "m_guaranteeType": {
       "profile_first": {},
       "always": {},
       "none": {}
     },
-    "m_occurrenceTypes KW": {
+    "m_occurrenceTypes": {
       "inn": {},
       "biome": {},
       "node": {},
@@ -48940,7 +48962,7 @@
       "combat": {},
       "profile": {}
     },
-    "NodeType KW": {
+    "NodeType": {
       "Cache": {},
       "Gate": {},
       "Hospital": {},
@@ -48985,25 +49007,25 @@
       "CovenAssist": {},
       "null": {}
     },
-    "QuestType KW": {
+    "QuestType": {
       "profile": {},
       "game": {}
     },
-    "m_DisplayOverrideId KW": {
+    "m_DisplayOverrideId": {
       "inn_combined": {},
       "inn_exclusive": {},
       "start": {}
     },
-    "QuestStepType KW": {
+    "QuestStepType": {
       "stage_coach_upgrade_equip": {},
       "inn_bonus": {},
       "loot": {}
     },
-    "m_RarityQuirk KW": {
+    "m_RarityQuirk": {
       "NORMAL": {},
       "RARE": {}
     },
-    "m_ActorStatSubType KW": {
+    "m_ActorStatSubType": {
       "debuff": {},
       "stress": {},
       "blight": {},
@@ -49015,10 +49037,10 @@
       "bleed": {},
       "disease": {}
     },
-    "m_ActorStatType KW": {
+    "m_ActorStatType": {
       "resistance": {}
     },
-    "SourceType KW": {
+    "SourceType": {
       "debug": {},
       "combat": {},
       "skill": {},
@@ -49090,17 +49112,17 @@
       "mode": {},
       "siege": {}
     },
-    "m_RunStatSubType KW": {
+    "m_RunStatSubType": {
       "doom": {}
     },
-    "RoadEventCategory KW": {
+    "RoadEventCategory": {
       "Objects": {},
       "Banter": {},
       "Ambush": {},
       "Route": {},
       "null": {}
     },
-    "RouteType KW": {
+    "RouteType": {
       "safe": {},
       "rough_patch": {},
       "hazard": {},
@@ -49109,17 +49131,17 @@
       "oblivion_tear": {},
       "size": {}
     },
-    "m_SkipValleyRunValues KW": {
+    "m_SkipValleyRunValues": {
       "torch": {}
     },
-    "repeatable_item KW": {
+    "repeatable_item": {
       "trinket": {},
       "combat": {},
       "stage_coach_upgrade": {},
       "rest": {},
       "memory_reroll": {}
     },
-    "ScoreType KW": {
+    "ScoreType": {
       "leagues_passed": {},
       "start_biomes_cleared": {},
       "academics_honorarium": {},
@@ -49139,15 +49161,15 @@
       "heroes_hired": {},
       "inn_bonus": {}
     },
-    "m_GoalIconOverride KW": {
+    "m_GoalIconOverride": {
       "candle_item": {},
       "rest": {},
       "trinket": {}
     },
-    "m_StoreCostMultiplierId KW": {
+    "m_StoreCostMultiplierId": {
       "inn_wainwright": {}
     },
-    "effect_skill_attribute_tags KW": {
+    "effect_skill_attribute_tags": {
       "stealth": {},
       "taproot_tangle_c": {},
       "horror": {},
@@ -49165,7 +49187,7 @@
       "move": {},
       "token_add": {}
     },
-    "m_EnemyStoryChoicePreviewIds KW": {
+    "m_EnemyStoryChoicePreviewIds": {
       "icon_story_token_daze_Preview": {},
       "icon_story_token_vulnerable_Preview": {},
       "icon_story_token_strength_Preview": {},
@@ -49175,7 +49197,7 @@
       "icon_debuff_Preview": {},
       "icon_story_token_blind-line_Preview": {}
     },
-    "m_PlayerStoryChoicePreviewIds KW": {
+    "m_PlayerStoryChoicePreviewIds": {
       "icon_story_candle_loot_Preview": {},
       "icon_story_coven_Preview": {},
       "icon_story_quirk_negative_Preview": {},
@@ -49229,7 +49251,7 @@
       "icon_story_food_med_Preview": {},
       "icon_story_token_block_Preview": {}
     },
-    "m_ProgressGroupId KW": {
+    "m_ProgressGroupId": {
       "dlc_story": {},
       "base_story": {},
       "dlc_cosmetic": {},
@@ -49238,11 +49260,11 @@
       "base": {},
       "dlc": {}
     },
-    "m_ResultAudioOverrideId KW": {
+    "m_ResultAudioOverrideId": {
       "caretaker": {},
       "coven": {}
     },
-    "m_ResultType KW": {
+    "ResultType": {
       "NONE": {},
       "GAME_OBJECT": {},
       "FOUND_BONE": {},
@@ -49250,7 +49272,14 @@
       "HIDDEN": {},
       "UI": {}
     },
-    "StressTriggerType KW": {
+    "StoryResultType": {
+      "NONE": {},
+      "DRIVING": {},
+      "COMBAT": {},
+      "UI": {},
+      "COUNT": {}
+    },
+    "StressTriggerType": {
       "crit": {},
       "deaths_door": {},
       "death": {},
@@ -49258,20 +49287,20 @@
       "node_path_taken": {},
       "road_event_completed": {}
     },
-    "StressRoleType KW": {
+    "StressRoleType": {
       "PERFORMER": {},
       "TARGET": {},
       "OBSERVING_PERFORMER": {},
       "OBSERVING_TARGET": {},
       "PARTY": {}
     },
-    "m_FilterId KW": {
+    "m_FilterId": {
       "hazard": {},
       "Objects": {},
       "safe": {},
       "rough_patch": {}
     },
-    "TokenType KW": {
+    "TokenType": {
       "manual": {},
       "crit": {},
       "evade": {},
@@ -49304,33 +49333,33 @@
       "on_killed": {},
       "deaths_door_armor": {}
     },
-    "ActorStatusType KW": {
+    "ActorStatusType": {
       "deaths_door": {}
     },
-    "replace KW": {
+    "replace": {
       "WITH": {}
     },
-    "TorchTriggerType KW": {
+    "TorchTriggerType": {
       "CRIT": {},
       "DEATHS_DOOR": {},
       "DEATH": {},
       "RELATIONSHIP": {}
     },
-    "m_typesUnlockTable KW": {
+    "m_typesUnlockTable": {
       "unlock": {}
     },
-    "WoundTriggerInputType KW": {
+    "WoundTriggerInputType": {
       "health_max_percent": {},
       "kingdom_day": {}
     },
-    "WoundTriggerType KW": {
+    "WoundTriggerType": {
       "deaths_door": {},
       "kingdom_actor_transfer": {},
       "health_damage": {},
       "inn_start": {},
       "overstress": {}
     },
-    "ALL_INVENTORY_TAGS KW": {
+    "ALL_INVENTORY_TAGS": {
       "player_inventory": {},
       "stagecoach_general_inventory": {},
       "stagecoach_trophy_inventory": {},
@@ -49341,7 +49370,7 @@
       "memory_inventory": {},
       "trinket_inventory": {}
     },
-    "ActOutDisplayType KW": {
+    "ActOutDisplayType": {
       "negative": {},
       "crimson_curse_craving": {},
       "positive": {},
@@ -49349,20 +49378,20 @@
       "crimson_curse_wasting": {},
       "crimson_curse_bloodlust": {}
     },
-    "m_SelectDelayTags KW": {
+    "m_SelectDelayTags": {
       "minor": {}
     },
-    "BiomeSubType KW": {
+    "BiomeSubType": {
       "start": {},
       "typical": {},
       "optional": {},
       "end": {}
     },
-    "progressGroupId KW": {
+    "progressGroupId": {
       "base_altar": {},
       "dlc_altar": {}
     },
-    "InnUpgradeType KW": {
+    "InnUpgradeType": {
       "minor": {},
       "major": {},
       "ultimate": {},

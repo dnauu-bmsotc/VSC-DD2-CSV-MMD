@@ -72,10 +72,15 @@ function getInputKeywords(field: Field, compiledData: CompiledData): InputKeywor
 	}
 	for (const [index, value] of [...keywordGroups].entries()) {
 		const alias = keywordGroups.length === 1 ? "keyword" : `keyword${index + 1}`;
-		result.modifiedInputString = result.modifiedInputString.replaceAll(value, alias);
+		result.modifiedInputString = result.modifiedInputString.replaceAll(value + " KW", alias);
+		const kwgroup = compiledData.keywords[value];
+		if (!kwgroup) {
+			console.log(`README: Unknown keyword group ${value}`);
+			continue;
+		}
 		result.groups.push({
 			groupName: alias,
-			values: Object.keys(compiledData.keywords[value]),
+			values: Object.keys(kwgroup).toSorted(),
 		});
 	}
 
@@ -85,7 +90,7 @@ function getInputKeywords(field: Field, compiledData: CompiledData): InputKeywor
 function getInputKeywordsRecursive(content: TypeDefinition): string[] {
 	switch (content.type) {
 		case "kw":
-			return [ content.group + " KW" ];
+			return [ content.group ];
 		case "list":
 			return getInputKeywordsRecursive(content.element);
 		case "sequence":

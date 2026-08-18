@@ -1,6 +1,6 @@
 import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from './configuration';
-import { AST, ASTField, ASTValue } from './parser';
+import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
 import { TypeDefinition, TypeDefinitionID } from './schema';
@@ -54,7 +54,7 @@ export function validateAstBySchema(
 					}
 				}
 				else {
-					const diagnostic = validateInput(field, field.values, fieldDefinition.input, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, field.values, fieldDefinition.input, compiledData, astIndex);
 					diagnostic && diagnostics.push(diagnostic);
 				}
 			}
@@ -65,22 +65,23 @@ export function validateAstBySchema(
 	return diagnostics;
 }
 
-function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefinition, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
+function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
+	definition: TypeDefinition, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
 	switch (definition.type) {
 		case "any":
 			return null;
 
 		case "bool":
-			return singleValueCheck(field, values, "bool", isBoolString);
+			return singleValueCheck(field, values, definition, isBoolString);
 
 		case "int":
-			return singleValueCheck(field, values, "int", isIntegerString);
+			return singleValueCheck(field, values, definition, isIntegerString);
 
 		case "range":
-			return singleValueCheck(field, values, "range", isRangeString);
+			return singleValueCheck(field, values, definition, isRangeString);
 	
 		case "float":
-			return singleValueCheck(field, values, "float", isNumericString);
+			return singleValueCheck(field, values, definition, isNumericString);
 
 		case "nothing":
 			if (values.length > 0) {
@@ -99,7 +100,7 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 						createMissingSequenceValueDiagnostic(field, values.slice(i), definition.element);
 					}
 					const valuesSlice = values.slice(i, i + listElementNumberOfValues);
-					const diagnostic = validateInput(field, valuesSlice, definition.element, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, valuesSlice, definition.element, compiledData, astIndex);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -107,7 +108,7 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 			}
 			else {
 				for (const v of values) {
-					const diagnostic = validateInput(field, [v], definition.element, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, [v], definition.element, compiledData, astIndex);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -116,50 +117,107 @@ function validateInput(field: ASTField, values: ASTValue[], definition: TypeDefi
 			return null;
 
 		case "sequence":
+			let listInSequence = false;
 			for (let i = 0; i < definition.elements.length; i++) {
 				if (i >= values.length) {
 					return createMissingSequenceValueDiagnostic(field, values, definition);
 				}
-				const diagnostic = validateInput(field, [values[i]], definition.elements[i], compiledData, astIndex);
-				if (diagnostic) {
-					return diagnostic;
+				if (definition.elements[i].type === "list") {
+					listInSequence = true;
+					const diagnostic = validateInput(element, field, values.slice(i), definition.elements[i], compiledData, astIndex);
+					if (diagnostic) {
+						return diagnostic;
+					}
+					break;
+				}
+				else {
+					const diagnostic = validateInput(element, field, [values[i]], definition.elements[i], compiledData, astIndex);
+					if (diagnostic) {
+						return diagnostic;
+					}
 				}
 			}
-			if (values.length > definition.elements.length) {
+			if (!listInSequence && (values.length > definition.elements.length)) {
 				return createExpectedEndOfInputDiagnostic(values.slice(definition.elements.length));
 			}
 			return null;
 
 		case "union":
-			const expectedTypeString = definition.elements.map(e => e.type).join(" or ");
 			if (values.length === 0) {
-				return createExpectedTypeDiagnostic(expectedTypeString, field.range);
+				return createExpectedTypeDiagnostic(definition, field.range);
 			}
 			else {
 				let matchesAnyOption = false;
 				for (const optionType of definition.elements) {
-					const diagnostic = validateInput(field, values, optionType, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, values, optionType, compiledData, astIndex);
 					if (!diagnostic) {
 						matchesAnyOption = true;
 						break;
 					}
 				}
 				if (!matchesAnyOption) {
-					return createExpectedTypeDiagnostic(expectedTypeString, field.range);
+					return createExpectedTypeDiagnostic(definition, field.range);
 				}
 				return null;
 			}
 
 		case "id":
-			return singleRefCheck(field, values, definition.group + " ID",
+			return singleRefCheck(field, values, definition,
 				astIndex.idGroups[definition.group], compiledData.index.idGroups[definition.group]);
 
 		case "tagEmitter":
 			return null;
 
 		case "tagReceiver":
-			return singleRefCheck(field, values, definition.group + " Tag",
+			return singleRefCheck(field, values, definition,
 				astIndex.tagGroups[definition.group], compiledData.index.tagGroups[definition.group]);
+
+		case "kw":
+			const keywords = compiledData.keywords[definition.group];
+			if (!keywords) {
+				console.log(`Unrecognized KW group ${definition.group}`);
+				return null;
+			}
+			return singleRefCheck(field, values, definition, Object.keys(keywords), undefined);
+
+		// case "dependent":
+		// 	const influenceSourceField = element.fields.filter(f => f.name === values[0].text)?.[0];
+		// 	if (!influenceSourceField) {
+		// 		return {
+		// 			severity: DiagnosticSeverity.Error,
+		// 			range: field.range,
+		// 			message: `Missing required field ${values[0].text} in element ${element.name}.`,
+		// 		};
+		// 	}
+		// 	const influenceSourceValue = influenceSourceField.values.length && influenceSourceField.values[0];
+		// 	if (!influenceSourceValue) {
+		// 		return {
+		// 			severity: DiagnosticSeverity.Error,
+		// 			range: field.range,
+		// 			message: `Field-influencer ${influenceSourceField.name} in element ${element.name} is empty.`,
+		// 		};
+		// 	}
+		// 	const influenceSourceSchema = compiledData.schema[element.name].fields[influenceSourceField.name].input;
+		// 	if (influenceSourceSchema.type !== "kw") {
+		// 		console.log(`Influence field ${field.name} is not a keyword field.`);
+		// 		return null;
+		// 	}
+		// 	const influenceKWGroup = compiledData.keywords[influenceSourceSchema.group];
+		// 	if (!influenceKWGroup) {
+		// 		console.log(`Unrecognized dependency group ${definition.field}`);
+		// 		return null;
+		// 	}
+		// 	const influenceValueDesc = influenceKWGroup[influenceSourceValue.text];
+		// 	if (!influenceValueDesc) {
+		// 		console.log(`Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`);
+		// 		return null;
+		// 	}
+		// 	const influenceType = influenceValueDesc.influences?.[field.name];
+		// 	if (!influenceType) {
+		// 		console.log(`Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`);
+		// 		return null;
+		// 	}
+		// 	validateInput(element, field, values, influenceType.input, compiledData, astIndex);
 
 		default:
 			// console.log(`Unknown input type: ${definition.type}`)
@@ -178,14 +236,14 @@ const isNumericString = (str: string) => !isNaN(Number(str));
 const isRangeStringRegex = /^\[\d+-\d+\]$/;
 const isRangeString = (str: string) =>isRangeStringRegex.test(str);
 
-function singleValueCheck(field: ASTField, values: ASTValue[], typeString: string, checker: (v: string) => boolean): Diagnostic | null {
+function singleValueCheck(field: ASTField, values: ASTValue[], type: TypeDefinition, checker: (v: string) => boolean): Diagnostic | null {
 	if (values.length === 0) {
-		return createExpectedTypeDiagnostic(typeString, field.range);
+		return createExpectedTypeDiagnostic(type, field.range);
 	}
 	else {
 		const content = values[0].text;
 		if (!checker(content)) {
-			return createExpectedTypeDiagnostic(typeString, values[0].range);
+			return createExpectedTypeDiagnostic(type, values[0].range);
 		}
 		if (values.length > 1) {
 			return createExpectedEndOfInputDiagnostic(values.slice(1));
@@ -197,12 +255,12 @@ function singleValueCheck(field: ASTField, values: ASTValue[], typeString: strin
 function singleRefCheck(
 	field: ASTField,
 	values: ASTValue[],
-	groupNameVerbose: string,
+	referenceType: TypeDefinition,
 	astIndexGroupEntries?: string[],
 	compiledDataGroupEntries?: string[]
 ): Diagnostic | null {
 	if (values.length === 0) {
-		return createExpectedTypeDiagnostic(groupNameVerbose, field.range);
+		return createExpectedTypeDiagnostic(referenceType, field.range);
 	}
 	else {
 		const inMod = astIndexGroupEntries?.includes(values[0].text);
@@ -221,23 +279,23 @@ function singleRefCheck(
 			}
 			return null;
 		}
-		return createMissingGroupMemberDiagnostic(groupNameVerbose, values[0].range);
+		return createMissingGroupMemberDiagnostic(referenceType, values[0].range);
 	}
 }
 
-function createMissingGroupMemberDiagnostic(expectedType: string, range: Range) {
+function createMissingGroupMemberDiagnostic(expectedType: TypeDefinition, range: Range) {
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Missing entity: ${expectedType}`
+		message: `Unrecognized value. Expected value of type: ${typeToVerbose(expectedType)}`,
 	};
 }
 
-function createExpectedTypeDiagnostic(expectedType: string, range: Range): Diagnostic {
+function createExpectedTypeDiagnostic(expectedType: TypeDefinition, range: Range): Diagnostic {
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Expected type: ${expectedType}`
+		message: `Expected type: ${typeToVerbose(expectedType)}`
 	};
 }
 
@@ -260,10 +318,45 @@ function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[
 	if (schema.type !== "sequence") {
 		return null;
 	}
-	const missingValues = schema.elements.slice(values.length).map(x => x.type);
+	const missingValues = schema.elements.slice(values.length).map(typeToVerbose);
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: field.range,
 		message: `Field misses more values: ${missingValues.join(", ")}.`
 	};
+}
+
+function typeToVerbose(t: TypeDefinition): string {
+	switch (t.type) {
+		case "any":
+			return "Any";
+		case "bool":
+			return "Boolean";
+		case "dependent":
+			return `Dependent on ${t.field} field`;
+		case "float":
+			return "Float";
+		case "id":
+			return `${t.group} ID`;
+		case "int":
+			return "Integer";
+		case "kw":
+			return "keyword";
+		case "list":
+			return "List";
+		case "localization":
+			return "Localization";
+		case "nothing":
+			return "None";
+		case "range":
+			return "Range";
+		case "sequence":
+			return "Sequence";
+		case "tagEmitter":
+			return "Tag";
+		case "tagReceiver":
+			return `Tag of ${t.group}`;
+		case "union":
+			return t.elements.map(typeToVerbose).join(" or ");
+	}
 }

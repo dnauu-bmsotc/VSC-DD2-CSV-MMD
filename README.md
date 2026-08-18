@@ -25,7 +25,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_sourceTags|Dep(m_type)|||
 |m_targetFloat|float|Can't have both m_targetInt and m_targetFloat defined||
 |m_targetInt|integer|||
-|m_type|keyword||keyword: <details><summary>expand</summary>party_relationship_pair, kingdom_campaign_use_items, inventory_item_add, kingdom_victory_uninfected_heroes, profile_unlock, biome_complete, inn_treasure_campaign_sum, skill_mastery, inn_visit_all, inventory_full, actor_death_inventory_full, node_deliverable_campaign_sum, confession_victory_consecutive, actor_death_skill_use_active_tokens, kingdom_inn_capstones, kingdom_kill_contracts, party_relationships, roster_confirm, profile_unlock_group, skill_use_processed_tokens, actor_death_count_from_source, affinity_overstress, actor_death_combat_sum, inventory_item_purchase, actor_death_with_source, combat_party_has_quirk, roster_relationships_unique, affinity_overstress_chain, quest_complete, skill_health_damage, hospital_full_service, driving_distance, skill_use, release_anniversary, quest_step_story_choices, confession_victory, combat_skill_hits, game_mode_transition, tokens_removed_campaign_sum, run_end, item_triggered_effects, kingdom_victory, altar_of_hope_total_progress, actor_death, party_wipe, replacement_hero_add, actor_death_run_sum, combat_victory, biome_complete_group, party_classes, hire_mercenary, collected_trophies</details><br>|
+|m_type|keyword||keyword: <details><summary>expand</summary>actor_death, actor_death_combat_sum, actor_death_count_from_source, actor_death_inventory_full, actor_death_run_sum, actor_death_skill_use_active_tokens, actor_death_with_source, affinity_overstress, affinity_overstress_chain, altar_of_hope_total_progress, biome_complete, biome_complete_group, collected_trophies, combat_party_has_quirk, combat_skill_hits, combat_victory, confession_victory, confession_victory_consecutive, driving_distance, game_mode_transition, hire_mercenary, hospital_full_service, inn_treasure_campaign_sum, inn_visit_all, inventory_full, inventory_item_add, inventory_item_purchase, item_triggered_effects, kingdom_campaign_use_items, kingdom_inn_capstones, kingdom_kill_contracts, kingdom_victory, kingdom_victory_uninfected_heroes, node_deliverable_campaign_sum, party_classes, party_relationship_pair, party_relationships, party_wipe, profile_unlock, profile_unlock_group, quest_complete, quest_step_story_choices, release_anniversary, replacement_hero_add, roster_confirm, roster_relationships_unique, run_end, skill_health_damage, skill_mastery, skill_use, skill_use_processed_tokens, tokens_removed_campaign_sum</details><br>|
 </details>
 
 <details>
@@ -36,13 +36,13 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |all_conditions|List(Condition&nbsp;ID)|Conjunctive conditioning. If any of the conditions specified in this field aren’t met, there will be no roll for this act out.||
 |any_conditions|List(Condition&nbsp;ID)|Conjunctive conditioning. If all of the conditions specified in this field aren’t met, there will be no roll for this act out.||
 |effects|List(Effect&nbsp;ID)|||
-|m_ActorType|keyword|if this act out is skill-related then this field only accepts PERORMER, TARGET, or SELF.|keyword: OTHER, PERFORMER, PARTY, TARGET, SELF<br>|
+|m_ActorType|keyword|if this act out is skill-related then this field only accepts PERORMER, TARGET, or SELF.|keyword: OTHER, PARTY, PERFORMER, SELF, TARGET<br>|
 |m_AdditionalSkillTags|List(ActorDataSkill&nbsp;Tag-)|If m_Type is set to skill_aditional, this field is used to specify what skill to choose. If multiple tags are specified, it looks for a skill with any number of these tags. If multiple skills match this selector, only the first one is selected.||
 |m_BarkSwapPerformerAndTarget|boolean|||
 |m_Chance|float|Chance of triggering this act out if conditions are met.||
 |m_DelayCooldownDurationAmount|integer|||
-|m_DelayCooldownDurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
-|m_DisplayType|keyword||keyword: negative, crimson_curse_craving, positive, crimson_curse_passive, crimson_curse_wasting, crimson_curse_bloodlust<br>|
+|m_DelayCooldownDurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
+|m_DisplayType|keyword||keyword: crimson_curse_bloodlust, crimson_curse_craving, crimson_curse_passive, crimson_curse_wasting, negative, positive<br>|
 |m_EffectSwapPerformerAndTarget|boolean|||
 |m_IsFriendly|boolean|||
 |m_IsGuardingValid|boolean|Default True||
@@ -50,14 +50,14 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_IsZoomIn|boolean|Only act outs that have m_Type set to skill_after, skill_block, or start_turn can use this field.||
 |m_Priority|integer|||
 |m_RandomStartCooldownDurationAmount|integer|||
-|m_RandomStartCooldownDurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_RandomStartCooldownDurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_SelectCooldownDurationAmount|integer|||
-|m_SelectCooldownDurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_SelectCooldownDurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_SelectDelayTags|List(keyword)||keyword: minor<br>|
 |m_SourceIdLimit|integer|||
 |m_SourceTypeLimit|integer|||
 |m_Tags|List(ActOut&nbsp;Tag+)|||
-|m_Type|keyword||keyword: skill_before, skill_after, skill_block, skill_additional, start_turn, banter, story_choice, rest_item_block<br>|
+|m_Type|keyword||keyword: banter, rest_item_block, skill_additional, skill_after, skill_before, skill_block, start_turn, story_choice<br>|
 </details>
 
 <details>
@@ -74,9 +74,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_ActorChangeClassHealType|keyword||keyword: MAX_HP, MAX_HP_DELTA<br>|
-|m_ActorControllerType|keyword|RANDOM makes this actor to choose skills randomly. Move and wait actions count as skills too. This also supports INPUT which lets player to control what skill will be chosen.|keyword: INPUT, RANDOM, TEST, SEQUENTIAL_SKILL_TEST<br>|
+|m_ActorControllerType|keyword|RANDOM makes this actor to choose skills randomly. Move and wait actions count as skills too. This also supports INPUT which lets player to control what skill will be chosen.|keyword: INPUT, RANDOM, SEQUENTIAL_SKILL_TEST, TEST<br>|
 |m_ClearContainerKeepTags|List(Or(Dot&nbsp;Tag-, Buff&nbsp;Tag-, Token&nbsp;Tag-))|||
-|m_ClearContainerTypes|List(keyword)|If another actor was transformed into this actor, buffs/DOTs/tokens will be removed. This is important, for example, for the final Confession boss that uses hidden tokens to track if a hero is still alive.|keyword: TokenContainer, BuffContainer, DebuffContainer, DotContainer<br>|
+|m_ClearContainerTypes|List(keyword)|If another actor was transformed into this actor, buffs/DOTs/tokens will be removed. This is important, for example, for the final Confession boss that uses hidden tokens to track if a hero is still alive.|keyword: BuffContainer, DebuffContainer, DotContainer, TokenContainer<br>|
 |m_DeathBackActorClassIds|List(ActorDataClass&nbsp;ID)|||
 |m_DeathChainIds|List(ActorDataClass&nbsp;ID)|If the actor referenced by this field dies, this actor dies too||
 |m_DeathChainLootIds|List(LootTable&nbsp;ID)|||
@@ -88,7 +88,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_DefaultActorDataPathId|ActorDataPath&nbsp;ID|||
 |m_EquippedCombatSkillLimit|integer|It can be increased, but values above 6 lead to UI overlaps, at least on my screen.||
 |m_ExpeditionUnlockId|Unlock&nbsp;ID|||
-|m_IgnoredSkillAttributeTypes|List(keyword)|Disallows this actor to gain buffs/quirks/tokens|keyword: health_damage, health_heal, wound_add, wound_remove, stress_damage, stress_heal, move, token_add, token_remove, token_convert, token_steal, token_copy, token_invert, dot_add, dot_remove, dot_steal, dot_copy, buff_add, buff_remove, quirk_add, quirk_remove, affinity_positive, affinity_negative, bark, capture, release, kill<br>|
+|m_IgnoredSkillAttributeTypes|List(keyword)|Disallows this actor to gain buffs/quirks/tokens|keyword: BUFF_ADD, QUIRK_ADD, TOKEN_ADD, affinity_negative, affinity_positive, bark, buff_add, buff_remove, capture, dot_add, dot_copy, dot_remove, dot_steal, health_damage, health_heal, kill, move, quirk_add, quirk_remove, release, stress_damage, stress_heal, token_add, token_convert, token_copy, token_invert, token_remove, token_steal, wound_add, wound_remove<br>|
 |m_IsActOutSkillAdditionalInvalidating|boolean|||
 |m_IsActoutValid|boolean|||
 |m_IsBarkTriggerValid|boolean|||
@@ -116,7 +116,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_Size|integer|||
 |m_SkillBlockId|SkillBlock&nbsp;ID|||
 |m_SpawnLootIds|List(LootTable&nbsp;ID)|||
-|m_StartingRosterStatusType|keyword||keyword: idle, party, reserve, dead, load, captured, hire, hire_replaced, kingdom<br>|
+|m_StartingRosterStatusType|keyword||keyword: captured, dead, hire, hire_replaced, idle, kingdom, load, party, reserve<br>|
 |m_Tags|List(ActorDataClass&nbsp;Tag+)|brain_blessing tag indicates that this actor can become ordained in Act 1. Other blessings: lungs_blessing, eyes_blessing, arms_blessing, final_blessing||
 |m_TokenViewValid|boolean|Default True||
 |modes|List(ActorDataMode&nbsp;ID)|||
@@ -319,7 +319,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |launch_ranks|List(integer)|Ranks on which this skill can be used. If the actor occupies several ranks, only the rank closest to the front counts.||
 |m_ActorDataEffectsId|ActorDataEffects&nbsp;ID|||
 |m_ActorDataModeId|ActorDataMode&nbsp;ID|||
-|m_AdditionalDamageActorType|keyword||keyword: PERFORMER, PERFORMER_NEIGHBOR_FRONT, PERFORMER_NEIGHBOR_BACK, TARGET, TARGET_NEIGHBOR_FRONT, TARGET_NEIGHBOR_BACK<br>|
+|m_AdditionalDamageActorType|keyword||keyword: PERFORMER, PERFORMER_NEIGHBOR_BACK, PERFORMER_NEIGHBOR_FRONT, TARGET, TARGET_NEIGHBOR_BACK, TARGET_NEIGHBOR_FRONT<br>|
 |m_AdditionalDamageValueMultiplier|float|||
 |m_AdditionalDamageValueString|Dot&nbsp;Tag-|||
 |m_AdditionalDamageValueType|keyword||keyword: DOT_TAG_TOTAL_HEALTH_DAMAGE_OVER_TIME<br>|
@@ -331,7 +331,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_Cooldown|integer|||
 |m_DeathClassTagIgnores|List(ActorDataClass&nbsp;Tag-)|If used, enemies killed by this skill will not leave corpses||
 |m_HideIfNotValid|boolean|||
-|m_HideInvalidSkillTargetValidityTypes|List(keyword)||keyword: valid, valid_forced, valid_editor_prefs, valid_token, valid_target, invalid_target, invalid_launch, invalid_skill_block, invalid_cooldown, invalid_limit, invalid_cost, invalid_forced, invalid_pass, invalid_condition<br>|
+|m_HideInvalidSkillTargetValidityTypes|List(keyword)||keyword: invalid_condition, invalid_cooldown, invalid_cost, invalid_forced, invalid_launch, invalid_limit, invalid_pass, invalid_skill_block, invalid_target, valid, valid_editor_prefs, valid_forced, valid_target, valid_token<br>|
 |m_IgnoreDamageMultipliers|boolean|||
 |m_IsActOut|boolean|||
 |m_IsAdditionalEffectsValid|boolean|Default True||
@@ -367,8 +367,8 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_SkillModifierChanceModifiers|List(Seq(SkillModifier&nbsp;Tag-, float))|||
 |m_Tags|List(ActorDataSkill&nbsp;Tag+)|Common skill tags: melee,ranged,heal,stress_heal||
 |m_TargetRelativeRanks|List(integer)|||
-|m_Type|keyword|Default turn|keyword: turnstart_round, end_round<br>|
-|m_ValidActOutTypes|List(keyword)||keyword: skill_before, skill_after, skill_block, skill_additional, start_turn, banter, story_choice, rest_item_block<br>|
+|m_Type|keyword|Default turn|keyword: end_round, start_round, turn<br>|
+|m_ValidActOutTypes|List(keyword)||keyword: banter, rest_item_block, skill_additional, skill_after, skill_before, skill_block, start_turn, story_choice<br>|
 |multi_hit_guaranteed_ranks|List(integer)|||
 |multi_hit_shared_token_ignores|List(TokenIgnore&nbsp;ID)|||
 |performer_buffs|List(Buff&nbsp;ID)|||
@@ -390,12 +390,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|add_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>|
+|add_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |add_stats|List(float)|||
-|key_map|List(keyword)||keyword: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>|
-|multiply_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>|
+|key_map|List(keyword)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
+|multiply_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |multiply_stats|List(float)|||
-|sub_stat|Seq(keyword1, keyword2, float)||keyword1: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>keyword2: Bridge, Cache, CreatureDen, Dungeon, Gate, HeroSelect, Hospital, Inn, Oasis, Store, StoryAssist, StoryCosmic, StoryCultist, StoryHero, StoryHeroReplacement, StoryResist, Unknown, WatchTower, abm_moribund_stress_multiplier, bleed, blight, burn, death, debuff, disease, food, horror, hot, meltdown, move, neg_inn_normal, neg_inn_rare, negative, positive, positivetoken, resolute, rest_item, skill, stress, stun<br>|
+|sub_stat|Seq(keyword1, keyword2, float)||keyword1: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>keyword2: Bridge, Cache, CreatureDen, Dungeon, Gate, HeroSelect, Hospital, Inn, Oasis, Store, StoryAssist, StoryCosmic, StoryCultist, StoryHero, StoryHeroReplacement, StoryResist, Unknown, WatchTower, abm_moribund_stress_multiplier, bleed, blight, burn, death, debuff, disease, food, horror, hot, meltdown, move, neg_inn_normal, neg_inn_rare, negative, positive, positivetoken, resolute, rest_item, skill, stress, stun<br>|
 </details>
 
 <details>
@@ -405,13 +405,13 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |effects|List(Effect&nbsp;ID)|||
 |m_ActorCount|integer|||
-|m_ActorEffectTriggerSourceType|keyword||keyword: target, performer<br>|
-|m_ActorEffectTriggerTargetType|keyword||keyword: performer, target, friendly_team, enemy_team, party, neighbor<br>|
-|m_ActorEffectType|keyword||keyword: <details><summary>expand</summary>performer, performer_per_target, performer_per_crit, performer_from_target, target, target_self, target_team, target_team_hit, target_team_member_random, target_team_hit_member_random, target_team_others, target_team_hit_others, target_team_others_member_random, target_team_hit_others_member_random, spawn, change_class, respawn, performer_on_crit_single, death, combat_start, combat_end, inn_start, embark, round_start, round_end, performer_team, performer_team_hit, performer_team_member_random, performer_team_hit_member_random, performer_after_target, performer_on_kill_fail, performer_team_others, performer_team_hit_others, performer_team_others_member_random, performer_team_hit_others_member_random, combat_health_damage, combat_health_damage_friendly_team, combat_health_damage_friendly_team_random, combat_health_damage_enemy_team, combat_health_damage_enemy_team_random, combat_health_heal, combat_health_heal_friendly_team, combat_health_heal_friendly_team_random, combat_health_heal_enemy_team, combat_health_heal_enemy_team_random, turn_start, turn_start_friendly_team, turn_start_friendly_team_random, turn_start_enemy_team, turn_start_enemy_team_random, turn_skip, turn_delay, turn_end, turn_end_friendly_team, turn_end_friendly_team_random, turn_end_enemy_team, turn_end_enemy_team_random, enter_biome, node, deaths_door_enter, deaths_door_exit, deaths_door_survive, combat_stress_damage, combat_stress_damage_friendly_team, combat_stress_damage_friendly_team_random, combat_stress_damage_enemy_team, combat_stress_damage_enemy_team_random, combat_stress_heal, combat_stress_heal_friendly_team, combat_stress_heal_friendly_team_random, combat_stress_heal_enemy_team, combat_stress_heal_enemy_team_random, move, move_friendly, move_enemy, on_attack_as_performer_to_performer, on_attack_as_performer_to_target, on_attack_as_target_to_performer, on_attack_as_target_to_target, on_hit_as_performer_to_performer, on_hit_as_performer_to_target, on_hit_as_target_to_performer, on_hit_as_target_to_target, on_crit_as_performer_to_performer, on_crit_as_performer_to_target, on_crit_as_target_to_performer, on_crit_as_target_to_target, on_not_crit_as_performer_to_performer, on_not_crit_as_performer_to_target, on_not_crit_as_target_to_performer, on_not_crit_as_target_to_target, on_miss_as_performer_to_performer, on_miss_as_performer_to_target, on_miss_as_target_to_performer, on_miss_as_target_to_target, on_kill_as_performer_to_performer, on_kill_as_target_to_performer, affinity_leaning_positive_change_participating, affinity_leaning_positive_change_observing, affinity_leaning_negative_change_participating, affinity_leaning_negative_change_observing, friendly_team, friendly_team_hit, friendly_team_member_random, friendly_team_hit_member_random, enemy_team, enemy_team_hit, enemy_team_member_random, enemy_team_hit_member_random, friendly_death, enemy_death, friendly_death_team, enemy_death_team, node_before, node_execute_started, node_execute_completed, node_after, performer_neighbors, performer_neighbor_random, target_neighbors, target_neighbor_random, rest_item, on_release_per_round_captured, on_release_per_turn_captured, on_resist, roster_status_enter, roster_status_exit, on_overstress, on_relationship, kingdom, kingdom_contagion, kingdom_cleanse</details><br>|
+|m_ActorEffectTriggerSourceType|keyword||keyword: performer, target<br>|
+|m_ActorEffectTriggerTargetType|keyword||keyword: enemy_team, friendly_team, neighbor, party, performer, target<br>|
+|m_ActorEffectType|keyword||keyword: <details><summary>expand</summary>affinity_leaning_negative_change_observing, affinity_leaning_negative_change_participating, affinity_leaning_positive_change_observing, affinity_leaning_positive_change_participating, change_class, combat_end, combat_health_damage, combat_health_damage_enemy_team, combat_health_damage_enemy_team_random, combat_health_damage_friendly_team, combat_health_damage_friendly_team_random, combat_health_heal, combat_health_heal_enemy_team, combat_health_heal_enemy_team_random, combat_health_heal_friendly_team, combat_health_heal_friendly_team_random, combat_start, combat_stress_damage, combat_stress_damage_enemy_team, combat_stress_damage_enemy_team_random, combat_stress_damage_friendly_team, combat_stress_damage_friendly_team_random, combat_stress_heal, combat_stress_heal_enemy_team, combat_stress_heal_enemy_team_random, combat_stress_heal_friendly_team, combat_stress_heal_friendly_team_random, death, deaths_door_enter, deaths_door_exit, deaths_door_survive, embark, enemy_death, enemy_death_team, enemy_team, enemy_team_hit, enemy_team_hit_member_random, enemy_team_member_random, enter_biome, friendly_death, friendly_death_team, friendly_team, friendly_team_hit, friendly_team_hit_member_random, friendly_team_member_random, inn_start, kingdom, kingdom_cleanse, kingdom_contagion, move, move_enemy, move_friendly, node, node_after, node_before, node_execute_completed, node_execute_started, on_attack_as_performer_to_performer, on_attack_as_performer_to_target, on_attack_as_target_to_performer, on_attack_as_target_to_target, on_crit_as_performer_to_performer, on_crit_as_performer_to_target, on_crit_as_target_to_performer, on_crit_as_target_to_target, on_hit_as_performer_to_performer, on_hit_as_performer_to_target, on_hit_as_target_to_performer, on_hit_as_target_to_target, on_kill_as_performer_to_performer, on_kill_as_target_to_performer, on_miss_as_performer_to_performer, on_miss_as_performer_to_target, on_miss_as_target_to_performer, on_miss_as_target_to_target, on_not_crit_as_performer_to_performer, on_not_crit_as_performer_to_target, on_not_crit_as_target_to_performer, on_not_crit_as_target_to_target, on_overstress, on_relationship, on_release_per_round_captured, on_release_per_turn_captured, on_resist, performer, performer_after_target, performer_from_target, performer_neighbor_random, performer_neighbors, performer_on_crit_single, performer_on_kill_fail, performer_per_crit, performer_per_target, performer_team, performer_team_hit, performer_team_hit_member_random, performer_team_hit_others, performer_team_hit_others_member_random, performer_team_member_random, performer_team_others, performer_team_others_member_random, respawn, rest_item, roster_status_enter, roster_status_exit, round_end, round_start, spawn, target, target_neighbor_random, target_neighbors, target_self, target_team, target_team_hit, target_team_hit_member_random, target_team_hit_others, target_team_hit_others_member_random, target_team_member_random, target_team_others, target_team_others_member_random, turn_delay, turn_end, turn_end_enemy_team, turn_end_enemy_team_random, turn_end_friendly_team, turn_end_friendly_team_random, turn_skip, turn_start, turn_start_enemy_team, turn_start_enemy_team_random, turn_start_friendly_team, turn_start_friendly_team_random</details><br>|
 |m_ApplyLimit|integer|||
 |m_ApplyTargetToSource|boolean|||
 |m_IncludeSourceActor|boolean|||
-|m_NeighborActorEffectTriggerSourceType|keyword||keyword: target, performer<br>|
+|m_NeighborActorEffectTriggerSourceType|keyword||keyword: performer, target<br>|
 |m_NeighborBackCount|integer|||
 |m_NeighborFrontCount|integer|||
 |m_UseActorDataEffectsConditionCalculationInput|boolean|||
@@ -455,12 +455,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_Chance|float|||
 |m_IsTelegraphed|boolean|||
 |m_LeaningChange|float|||
-|m_RoleType|keyword||keyword: PARTICIPATING, PARTICIPATING_SELF, OBSERVING_PERFORMER, OBSERVING_TARGET<br>|
+|m_RoleType|keyword||keyword: OBSERVING_PERFORMER, OBSERVING_TARGET, PARTICIPATING, PARTICIPATING_SELF<br>|
 |m_SkillAttributeTags||||
-|m_SkillAttributes|List(keyword)||keyword: health_damage, health_heal, wound_add, wound_remove, stress_damage, stress_heal, move, token_add, token_remove, token_convert, token_steal, token_copy, token_invert, dot_add, dot_remove, dot_steal, dot_copy, buff_add, buff_remove, quirk_add, quirk_remove, affinity_positive, affinity_negative, bark, capture, release, kill<br>|
+|m_SkillAttributes|List(keyword)||keyword: BUFF_ADD, QUIRK_ADD, TOKEN_ADD, affinity_negative, affinity_positive, bark, buff_add, buff_remove, capture, dot_add, dot_copy, dot_remove, dot_steal, health_damage, health_heal, kill, move, quirk_add, quirk_remove, release, stress_damage, stress_heal, token_add, token_convert, token_copy, token_invert, token_remove, token_steal, wound_add, wound_remove<br>|
 |m_SkillIsCrit|boolean|||
 |m_SkillIsFriendly|boolean|||
-|m_Type|keyword||keyword: skill, effect, health_heal, performer_moved, revenge, follow_up, banter<br>|
+|m_Type|keyword||keyword: banter, effect, follow_up, health_heal, performer_moved, revenge, skill<br>|
 |performer_effects|List(Effect&nbsp;ID)|||
 </details>
 
@@ -475,7 +475,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_ActorDataTags|List(ActorDataClass&nbsp;Tag-)|||
 |m_Cooldown|integer|||
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_EnterActorEffectsApplyLimit|integer|||
 </details>
 
@@ -485,12 +485,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
-|m_DisplayType|keyword||keyword: neutral, positive, negative, quest_positive, crimson_curse_bloodlust, crimson_curse_craving, crimson_curse_passive, crimson_curse_wasting<br>|
+|m_DisplayType|keyword||keyword: crimson_curse_bloodlust, crimson_curse_craving, crimson_curse_passive, crimson_curse_wasting, negative, neutral, positive, quest_positive<br>|
 |m_Limit|integer|||
 |m_Priority|integer|||
-|m_RoleType|keyword||keyword: PERFORMER, TARGET, OBSERVING_PERFORMER, OBSERVING_TARGET<br>|
+|m_RoleType|keyword||keyword: OBSERVING_PERFORMER, OBSERVING_TARGET, PERFORMER, TARGET<br>|
 |m_Tags|List(BarkTrigger&nbsp;Tag+)|||
-|m_Type|keyword||keyword: STALL, DOT_APPLIED, STRESS_DAMAGE, TORCH_INCREASE, TORCH_DECREASE, STATUS_ENTER, STATUS_EXIT, DEATHS_DOOR_SURVIVE, SKILL_MOVE_FORWARD, SKILL_MOVE_BACK, SKILL_CRIT, ITEM_APPLIED, EFFECT, ARENA_MODIFIER_START, ARENA_MODIFIER_STOP, INN_STARTED, ROUTE_TRIGGERED, OVERSTRESS, SKILL_CALCULATED_HIT, ALLY_DEATH<br>|
+|m_Type|keyword||keyword: ALLY_DEATH, ARENA_MODIFIER_START, ARENA_MODIFIER_STOP, DEATHS_DOOR_SURVIVE, DOT_APPLIED, EFFECT, INN_STARTED, ITEM_APPLIED, OVERSTRESS, ROUTE_TRIGGERED, SKILL_CALCULATED_HIT, SKILL_CRIT, SKILL_MOVE_BACK, SKILL_MOVE_FORWARD, STALL, STATUS_ENTER, STATUS_EXIT, STRESS_DAMAGE, TORCH_DECREASE, TORCH_INCREASE<br>|
 </details>
 
 <details>
@@ -503,7 +503,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |end_actor_all_conditions|List(Condition&nbsp;ID)|||
 |hero_effects|List(Effect&nbsp;ID)|||
 |m_AdditionalBattleConfigurationTableId|List(BattleConfigurationTable&nbsp;ID)|||
-|m_BackgroundSceneOverride|keyword||keyword: <details><summary>expand</summary>combat_arena_mountain_boss_eyes, combat_arena_hero_story_duelist_origin_1, combat_arena_farm_dungeon_exterior, combat_arena_hero_story_occultist_origin_2, combat_arena_hero_story_graverobber_origin_2, combat_arena_hero_story_crusader_origin_1, combat_arena_stressworld, combat_arena_caves_creature_den, combat_arena_city_creature_den, combat_arena_farm_dungeon_interior, combat_arena_hero_story_manatarms_origin_2, combat_arena_hero_story_vestal_origin_1, combat_arena_city_dungeon_interior, combat_arena_hero_story_jester_origin_2, combat_arena_hero_story_duelist_origin_2, combat_arena_mountain_boss_brain, combat_arena_hero_story_jester_origin_1, combat_arena_forest_dungeon_interior, combat_arena_hero_story_manatarms_origin_1, combat_arena_hero_story_abomination_origin_1, combat_arena_hero_story_leper_origin_1, combat_arena_valley_barricade_gang_beastmen, combat_arena_tundra_creature_den, combat_arena_hero_story_plaguedoctor_origin_1, combat_arena_hero_story_hellion_origin_2, combat_arena_hero_story_abomination_origin_2, combat_arena_hero_story_graverobber_origin_1, combat_arena_hero_story_occultist_origin_1, combat_arena_mountain_boss_body, combat_arena_mountain_boss_lungs, combat_arena_hero_story_runaway_origin_1, combat_arena_forest_dungeon_exterior, combat_arena_tundra_dungeon_interior, combat_arena_hero_story_runaway_origin_2, combat_arena_hero_story_highwayman_origin_1, combat_arena_coast_creature_den, combat_arena_mountain_boss_arms, combat_arena_coast_dungeon_exterior, combat_arena_valley_barricade_gang_coven, combat_arena_forest_creature_den, combat_arena_hero_story_hellion_origin_1, combat_arena_tundra_dungeon_exterior, combat_arena_valley_barricade_gang_courtier, combat_arena_hero_story_vestal_origin_2, combat_arena_farm_creature_den, combat_arena_hero_story_flagellant_origin_1, combat_arena_city_dungeon_exterior, combat_arena_hero_story_plaguedoctor_origin_2, combat_arena_catacombs_creature_den, combat_arena_hero_story_leper_origin_2, combat_arena_coast_dungeon_interior, combat_arena_hero_story_crusader_origin_2, combat_arena_hero_story_highwayman_origin_2</details><br>|
+|m_BackgroundSceneOverride|keyword||keyword: <details><summary>expand</summary>combat_arena_catacombs_creature_den, combat_arena_caves_creature_den, combat_arena_city_creature_den, combat_arena_city_dungeon_exterior, combat_arena_city_dungeon_interior, combat_arena_coast_creature_den, combat_arena_coast_dungeon_exterior, combat_arena_coast_dungeon_interior, combat_arena_farm_creature_den, combat_arena_farm_dungeon_exterior, combat_arena_farm_dungeon_interior, combat_arena_forest_creature_den, combat_arena_forest_dungeon_exterior, combat_arena_forest_dungeon_interior, combat_arena_hero_story_abomination_origin_1, combat_arena_hero_story_abomination_origin_2, combat_arena_hero_story_crusader_origin_1, combat_arena_hero_story_crusader_origin_2, combat_arena_hero_story_duelist_origin_1, combat_arena_hero_story_duelist_origin_2, combat_arena_hero_story_flagellant_origin_1, combat_arena_hero_story_graverobber_origin_1, combat_arena_hero_story_graverobber_origin_2, combat_arena_hero_story_hellion_origin_1, combat_arena_hero_story_hellion_origin_2, combat_arena_hero_story_highwayman_origin_1, combat_arena_hero_story_highwayman_origin_2, combat_arena_hero_story_jester_origin_1, combat_arena_hero_story_jester_origin_2, combat_arena_hero_story_leper_origin_1, combat_arena_hero_story_leper_origin_2, combat_arena_hero_story_manatarms_origin_1, combat_arena_hero_story_manatarms_origin_2, combat_arena_hero_story_occultist_origin_1, combat_arena_hero_story_occultist_origin_2, combat_arena_hero_story_plaguedoctor_origin_1, combat_arena_hero_story_plaguedoctor_origin_2, combat_arena_hero_story_runaway_origin_1, combat_arena_hero_story_runaway_origin_2, combat_arena_hero_story_vestal_origin_1, combat_arena_hero_story_vestal_origin_2, combat_arena_mountain_boss_arms, combat_arena_mountain_boss_body, combat_arena_mountain_boss_brain, combat_arena_mountain_boss_eyes, combat_arena_mountain_boss_lungs, combat_arena_stressworld, combat_arena_tundra_creature_den, combat_arena_tundra_dungeon_exterior, combat_arena_tundra_dungeon_interior, combat_arena_valley_barricade_gang_beastmen, combat_arena_valley_barricade_gang_courtier, combat_arena_valley_barricade_gang_coven</details><br>|
 |m_BattleModifierOverrideId|List(BattleModifier&nbsp;ID)|||
 |m_Chance|float|||
 |m_CompleteLootTables|List(LootTable&nbsp;ID)|||
@@ -544,7 +544,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_conditions|List(Condition&nbsp;ID)|||
 |m_ids|List(Or(BattleConfiguration&nbsp;ID, BattleConfigurationTable&nbsp;ID))|||
 |m_tags|List(BattleConfigurationEntry&nbsp;Tag+)|||
-|m_types|List(keyword)||keyword: sub_table, nothing, battle_config<br>|
+|m_types|List(keyword)||keyword: battle_config, nothing, sub_table<br>|
 </details>
 
 <details>
@@ -564,9 +564,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_BiomeGroupTag|Biome&nbsp;Tag+|||
-|m_DisabledRunValueTypes|List(keyword)||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_DisabledRunValueTypes|List(keyword)||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_InnTable|InnTable&nbsp;ID|||
-|m_RequiredStageCoachItemSlotType|keyword||keyword: None, General, Trophy, Pet, Flame<br>|
+|m_RequiredStageCoachItemSlotType|keyword||keyword: Flame, General, None, Pet, Trophy<br>|
 |m_StoryDefaultBattleConfigurationTable|BattleConfigurationTable&nbsp;ID|||
 |road_events|List(RoadEvent&nbsp;ID)|||
 |routes|List(Route&nbsp;ID)|||
@@ -580,15 +580,15 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |invalid_biome_modifiers|List(BiomeModifier&nbsp;ID)|||
 |m_Chance|float|||
 |m_CompleteThresholdAmount|integer|Default -1||
-|m_CompleteThresholdType|keyword||keyword: LESS_THAN, LESS_THAN_OR_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL<br>|
+|m_CompleteThresholdType|keyword||keyword: GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL<br>|
 |m_FailThresholdAmount|integer|Default -1||
-|m_FailThresholdType|keyword||keyword: LESS_THAN, LESS_THAN_OR_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL<br>|
+|m_FailThresholdType|keyword||keyword: GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL<br>|
 |m_LootId|LootTable&nbsp;ID|||
 |m_NumberOfTypicalBiomesMin|integer|||
 |m_ShowCountProgressInDriving|boolean|Default True||
-|m_Type|keyword||keyword: STAGE_COACH_ITEM_EQUIPPED, RUN_VALUE, NODE_VISITED, BATTLE_STARTED_SOURCE, BATTLE_FINISHED_SOURCE, BATTLE_STARTED_TAG, BATTLE_FINISHED_TAG<br>|
-|m_TypeStrings|List(Or(Token&nbsp;ID, keyword1, keyword2, keyword3))||keyword1: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>keyword2: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>keyword3: None, General, Trophy, Pet, Flame<br>|
-|m_ValidBiomeTypes|List(keyword)||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_Type|keyword||keyword: BATTLE_FINISHED_SOURCE, BATTLE_FINISHED_TAG, BATTLE_STARTED_SOURCE, BATTLE_STARTED_TAG, NODE_VISITED, RUN_VALUE, STAGE_COACH_ITEM_EQUIPPED<br>|
+|m_TypeStrings|List(Or(Token&nbsp;ID, keyword1, keyword2, keyword3))||keyword1: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>keyword2: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>keyword3: Flame, General, None, Pet, Trophy<br>|
+|m_ValidBiomeTypes|List(keyword)||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 </details>
 
 <details>
@@ -597,12 +597,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
-|m_CombatSource|keyword||keyword: debug, unset, barricade, dungeon, cultist, cultist_mountain_01, cultist_mountain_02, story_assist, story_resist, story_cosmic, story_hero, guardian, oasis, creature_den, cathedral, gaunt_chirurgeon, repair, ambush, warlord, kingdom_inn_sieged, kingdom_boss, beastmen_alpha, camp_ambush<br>|
+|m_CombatSource|keyword||keyword: ambush, barricade, beastmen_alpha, camp_ambush, cathedral, creature_den, cultist, cultist_mountain_01, cultist_mountain_02, debug, dungeon, gaunt_chirurgeon, guardian, kingdom_boss, kingdom_inn_sieged, oasis, repair, story_assist, story_cosmic, story_hero, story_resist, unset, warlord<br>|
 |m_LootIds|LootTable&nbsp;ID|||
 |m_MaxDuration|integer|||
 |m_MinDuration|integer|||
 |m_OverrideBattleConfigurationTableId|BattleConfigurationTable&nbsp;ID|||
-|m_ValidBiomeTypes|List(keyword)||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_ValidBiomeTypes|List(keyword)||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 </details>
 
 <details>
@@ -620,7 +620,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_SpreadNumberMax|integer|Default int.MaxValue||
 |m_SpreadNumberMin|integer|||
 |m_Tags|List(BiomeModifier&nbsp;Tag+)|||
-|m_ValidBiomeTypes|List(keyword)||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_ValidBiomeTypes|List(keyword)||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 </details>
 
 <details>
@@ -629,7 +629,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_Tags|List(BiomeStatus&nbsp;Tag+)|||
 </details>
 
@@ -650,16 +650,16 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |doom_reset_actorless_effects|List(Effect&nbsp;ID)|||
 |doom_reset_hero_effects|List(Effect&nbsp;ID)|||
 |m_AcademicsHonorariumLimit|integer|||
-|m_EndBiomeType|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_EndBiomeType|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 |m_IntroNarrationId|List(NarrationEntry&nbsp;ID)|||
 |m_IsExtendedById|ExtendedBoss&nbsp;ID|||
 |m_IsRunGoalGenerating|boolean|||
 |m_OrderedMidNarrationIds|List(NarrationEntry&nbsp;ID)|||
 |m_OutroNarrationId|List(NarrationEntry&nbsp;ID)|||
-|m_PrefabSubdirectoryId|keyword||keyword: Resentment, Denial<br>|
+|m_PrefabSubdirectoryId|keyword||keyword: Denial, Resentment<br>|
 |m_PrerequisiteBossVictoryIds|List(Boss&nbsp;ID)|||
 |m_RecurringMidNarrationIds|List(NarrationEntry&nbsp;ID)|||
-|m_SelectBiomeType|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_SelectBiomeType|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 |m_TorchLevelGroupId|TorchLevelGroup&nbsp;ID|||
 </details>
 
@@ -683,7 +683,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |m_ConditionId|Condition&nbsp;ID|||
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_InstanceLimit|integer|||
 |m_IsVisible|boolean|Default True||
 |m_RemoveIfConditionNotMet|boolean|||
@@ -710,16 +710,16 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_ActorIsNotSource|boolean|||
-|m_ConditionActorType|keyword||keyword: NONE, PERFORMER, TARGET, BOTH, PARTY, MONSTERS, PERFORMER_TARGET_DIFFERENCE, TARGET_PERFORMER_DIFFERENCE, PERFORMER_NEIGHBOR_FRONT, PERFORMER_NEIGHBOR_BACK, TARGET_NEIGHBOR_FRONT, TARGET_NEIGHBOR_BACK<br>|
+|m_ConditionActorType|keyword||keyword: BOTH, MONSTERS, NONE, PARTY, PERFORMER, PERFORMER_NEIGHBOR_BACK, PERFORMER_NEIGHBOR_FRONT, PERFORMER_TARGET_DIFFERENCE, TARGET, TARGET_NEIGHBOR_BACK, TARGET_NEIGHBOR_FRONT, TARGET_PERFORMER_DIFFERENCE<br>|
 |m_ConditionMetTarget|boolean|Default True||
 |m_ConditionNumber|float|||
-|m_ConditionNumberType|keyword||keyword: EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL, MULTIPLE, PARAMETER, BOOL<br>|
+|m_ConditionNumberType|keyword||keyword: BOOL, EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, MULTIPLE, PARAMETER<br>|
 |m_ConditionString|Dep(m_ConditionType)|||
-|m_ConditionType|keyword||keyword: <details><summary>expand</summary>always, token_amount, token_tag_amount, health_percent, health_percent_wound_included, wound_percent, class, mode, size, tag, path, path_tag_amount, dot_tag_amount, stress, stress_percent, quirk, quirk_tag_amount, buff_tag_amount, rank, status, skill_use_history_amount, skill_use_history_last, skill_received_history_amount, skill_received_history_last, skill_equipped, skill_equipped_tag, trinket_equipped, trinket_equipped_tag, combat_item_equipped, combat_item_equipped_tag, actor_stat_value, actor_count_value, first_initiative, last_initiative, in_relationship, in_relationship_tag, incomplete_hero_story_choices_amount, party_class, kingdom_class, roster_status_amount, quest_complete, quest_step_complete, quest_step_current, run_value, run_value_percent, boss, biome, biome_sub_type, biome_modifier, biome_modifier_tag, biome_siege_strength, biome_end_node, biome_count, biome_history_count, biome_typical_count, biome_status, biome_status_tag_amount, item_amount, item_tag_amount, item_total_percent, stage_coach_upgrade_equipped, stage_coach_upgrade_equipped_tag, stage_coach_upgrade_equipped_general_amount, stage_coach_upgrade_equipped_trophy_amount, stage_coach_upgrade_equipped_pet_amount, doom_reset_count, game_type, gang, day, siege_count, battle_configuration_tag_count, map_cell_type, biome_modifier_tag_count, options_value_bool, skill, skill_tag, profile_unlock, profile_value, profile_run_end_streak_victory, profile_run_end_streak_failure, profile_calculated_group_progress, profile_has_defeated_boss, round, turn, killed_class_amount, arena_modifier, combat_source, item, item_tag, node, inn_tag, inn_upgrade, inn_days_since_last_siege_resolve, inn_days_since_last_siege_attack, inn_siege_resolve_visit, inn_respawn_visit, inn_destroy_count, resist, resist_tag, roster_status, relationship, relationship_tag, overstress, overstress_tag, item_equipped_tag</details><br>|
+|m_ConditionType|keyword||keyword: <details><summary>expand</summary>actor_count_value, actor_stat_value, always, arena_modifier, battle_configuration_tag_count, biome, biome_count, biome_end_node, biome_history_count, biome_modifier, biome_modifier_tag, biome_modifier_tag_count, biome_siege_strength, biome_status, biome_status_tag_amount, biome_sub_type, biome_typical_count, boss, buff_tag_amount, class, combat_item_equipped, combat_item_equipped_tag, combat_source, day, doom_reset_count, dot_tag_amount, first_initiative, game_type, gang, health_percent, health_percent_wound_included, in_relationship, in_relationship_tag, incomplete_hero_story_choices_amount, inn_days_since_last_siege_attack, inn_days_since_last_siege_resolve, inn_destroy_count, inn_respawn_visit, inn_siege_resolve_visit, inn_tag, inn_upgrade, item, item_amount, item_equipped_tag, item_tag, item_tag_amount, item_total_percent, killed_class_amount, kingdom_class, last_initiative, map_cell_type, mode, node, options_value_bool, overstress, overstress_tag, party_class, path, path_tag_amount, profile_calculated_group_progress, profile_has_defeated_boss, profile_run_end_streak_failure, profile_run_end_streak_victory, profile_unlock, profile_value, quest_complete, quest_step_complete, quest_step_current, quirk, quirk_tag_amount, rank, relationship, relationship_tag, resist, resist_tag, roster_status, roster_status_amount, round, run_value, run_value_percent, siege_count, size, skill, skill_equipped, skill_equipped_tag, skill_received_history_amount, skill_received_history_last, skill_tag, skill_use_history_amount, skill_use_history_last, stage_coach_upgrade_equipped, stage_coach_upgrade_equipped_general_amount, stage_coach_upgrade_equipped_pet_amount, stage_coach_upgrade_equipped_tag, stage_coach_upgrade_equipped_trophy_amount, status, stress, stress_percent, tag, token_amount, token_tag_amount, trinket_equipped, trinket_equipped_tag, turn, wound_percent</details><br>|
 |m_IsInverse|boolean|||
 |m_IsSkillConditionInputValid|boolean|||
 |m_IsVisible|boolean|Default True||
-|m_SourceConditionActorType|keyword||keyword: NONE, PERFORMER, TARGET, BOTH, PARTY, MONSTERS, PERFORMER_TARGET_DIFFERENCE, TARGET_PERFORMER_DIFFERENCE, PERFORMER_NEIGHBOR_FRONT, PERFORMER_NEIGHBOR_BACK, TARGET_NEIGHBOR_FRONT, TARGET_NEIGHBOR_BACK<br>|
+|m_SourceConditionActorType|keyword||keyword: BOTH, MONSTERS, NONE, PARTY, PERFORMER, PERFORMER_NEIGHBOR_BACK, PERFORMER_NEIGHBOR_FRONT, PERFORMER_TARGET_DIFFERENCE, TARGET, TARGET_NEIGHBOR_BACK, TARGET_NEIGHBOR_FRONT, TARGET_PERFORMER_DIFFERENCE<br>|
 </details>
 
 <details>
@@ -735,7 +735,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_ProfileValue|float|||
 |m_ProfileValueType|keyword||keyword: candles<br>|
 |m_RunValue|float|||
-|m_RunValueType|keyword||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_RunValueType|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 </details>
 
 <details>
@@ -787,13 +787,13 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |effects|List(Effect&nbsp;ID)|||
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_IgnoreEnemyDealtModifications|boolean|||
 |m_IgnoreEnemyReceivedModifications|boolean|||
 |m_IgnoreFriendlyDealtModifications|boolean|||
 |m_IgnoreFriendlyReceivedModifications|boolean|||
 |m_Tags|List(Dot&nbsp;Tag+)|||
-|m_Type|keyword||keyword: taproot_strangle, horror, blight, hot, burn, bleed<br>|
+|m_Type|keyword||keyword: bleed, blight, burn, horror, hot, taproot_strangle<br>|
 </details>
 
 <details>
@@ -811,7 +811,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_ArenaModifierStartId|ArenaModifier&nbsp;ID|||
 |m_ArenaModifierStopId|ArenaModifier&nbsp;ID|||
 |m_BarkId|Localization|||
-|m_BiomeKillContractSpawnAmount|List(Or(Token&nbsp;ID, keyword1, keyword2, keyword3))||keyword1: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>keyword2: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>keyword3: None, General, Trophy, Pet, Flame<br>|
+|m_BiomeKillContractSpawnAmount|List(Or(Token&nbsp;ID, keyword1, keyword2, keyword3))||keyword1: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>keyword2: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>keyword3: Flame, General, None, Pet, Trophy<br>|
 |m_BiomeModifierId|BiomeModifier&nbsp;ID|||
 |m_BiomeModifierSpawnRandom|integer|||
 |m_BiomeStatusAddId|BiomeStatus&nbsp;ID|||
@@ -837,7 +837,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_DotCopyTags|List(Dot&nbsp;Tag-)|||
 |m_DotGiveAmount|integer|||
 |m_DotGiveTags|List(Dot&nbsp;Tag-)|||
-|m_DotRemoveAllTypes|List(keyword)||keyword: taproot_strangle, horror, blight, hot, burn, bleed<br>|
+|m_DotRemoveAllTypes|List(keyword)||keyword: bleed, blight, burn, horror, hot, taproot_strangle<br>|
 |m_DotRemoveAmount|integer|||
 |m_DotRemoveId|Dot&nbsp;ID|||
 |m_DotStealAmount|integer|||
@@ -880,7 +880,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_SiegeAllStrengthChange|integer|||
 |m_SiegeSpawnAmount|integer|||
 |m_SiegeSpawnAmountRange|integer|||
-|m_SortType|keyword||keyword: NAME, CLASS_NAME<br>|
+|m_SortType|keyword||keyword: CLASS_NAME, NAME<br>|
 |m_StageCoachUpgradeRemoveId|Item&nbsp;ID|||
 |m_StressDamage|float|||
 |m_StressDamageRange|float|||
@@ -889,7 +889,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_SummonAddToTurnOrderAfterCurrentTurnIndex|integer|||
 |m_SummonClassActorId|ActorDataClass&nbsp;ID|||
 |m_SummonIfRoom|boolean|||
-|m_SummonLocationType|keyword||keyword: FRONT, BACK, RANDOM<br>|
+|m_SummonLocationType|keyword||keyword: BACK, FRONT, RANDOM<br>|
 |m_TokenAddAmount|integer|||
 |m_TokenAddAmountRange|integer|||
 |m_TokenAddId|Token&nbsp;ID|||
@@ -932,15 +932,15 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |doom_reset_actorless_effects|List(Effect&nbsp;ID)|||
 |doom_reset_hero_effects|List(Effect&nbsp;ID)|||
 |m_AcademicsHonorariumLimit|integer|||
-|m_EndBiomeType|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_EndBiomeType|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 |m_IntroNarrationId|NarrationEntry&nbsp;ID|||
 |m_IsRunGoalGenerating|boolean|||
 |m_OrderedMidNarrationIds|List(NarrationEntry&nbsp;ID)|||
 |m_OutroNarrationId|NarrationEntry&nbsp;ID|||
-|m_PrefabSubdirectoryId|keyword||keyword: Resentment, Denial<br>|
+|m_PrefabSubdirectoryId|keyword||keyword: Denial, Resentment<br>|
 |m_RecurringMidNarrationIds|List(NarrationEntry&nbsp;ID)|||
-|m_RequiredStageCoachItemSlotType|keyword||keyword: None, General, Trophy, Pet, Flame<br>|
-|m_SelectBiomeType|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_RequiredStageCoachItemSlotType|keyword||keyword: Flame, General, None, Pet, Trophy<br>|
+|m_SelectBiomeType|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 |m_TorchLevelGroupId|TorchLevelGroup&nbsp;ID|||
 </details>
 
@@ -950,7 +950,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |escalation_torch_level_groups|List(TorchLevelGroup&nbsp;ID)|||
-|m_BossBiomeType|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_BossBiomeType|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 |m_Escalation2KingdomEventId|KingdomEvent&nbsp;ID|||
 |m_Escalation3KingdomEventId|KingdomEvent&nbsp;ID|||
 |m_IsReleased|boolean|||
@@ -966,8 +966,8 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_audioSuffix||||
 |m_audioSuffixTags||||
 |m_audioTags||||
-|m_durationIds|HapticsDuration&nbsp;ID|||
-|m_intensityIds|HapticsIntensity&nbsp;ID|||
+|m_durationIds|List(HapticsDuration&nbsp;ID)|||
+|m_intensityIds|List(HapticsIntensity&nbsp;ID)|||
 |m_inventoryTags||||
 |m_skillUseTags||||
 |m_tags||||
@@ -1026,13 +1026,13 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_DestroyedCampId|Inn&nbsp;ID|||
 |m_HealthHealCostId|Cost&nbsp;ID|||
 |m_IgnoreVisitAllAchievement|boolean|||
-|m_InnFeatureTypes|List(keyword)||keyword: actor_path_change, stage_coach_repair, stage_coach_change_skin, fast_travel, trainer, wainwright, remove_positive_quirk, lock_positive_quirk, remove_negative_quirk, remove_disease, physician, item_selling<br>|
+|m_InnFeatureTypes|List(keyword)||keyword: actor_path_change, fast_travel, item_selling, lock_positive_quirk, physician, remove_disease, remove_negative_quirk, remove_positive_quirk, stage_coach_change_skin, stage_coach_repair, trainer, wainwright<br>|
 |m_InnRunDataStatsIds|List(RunDataStats&nbsp;ID)|||
 |m_InnStartBarkActorDataIds|List(ActorDataClass&nbsp;ID)|||
-|m_InnUpgradeCategories|List(keyword)||keyword: defense, provisioner, wainwright, trainer, physician, kingdom_inn, kingdom_camp, stage_coach_inn, stage_coach_camp<br>|
+|m_InnUpgradeCategories|List(keyword)||keyword: defense, kingdom_camp, kingdom_inn, physician, provisioner, stage_coach_camp, stage_coach_inn, trainer, wainwright<br>|
 |m_IsInnBonusValid|boolean|||
 |m_LimitInnLevel|integer|||
-|m_LimitInnUpgradeCategories|List(keyword)||keyword: defense, provisioner, wainwright, trainer, physician, kingdom_inn, kingdom_camp, stage_coach_inn, stage_coach_camp<br>|
+|m_LimitInnUpgradeCategories|List(keyword)||keyword: defense, kingdom_camp, kingdom_inn, physician, provisioner, stage_coach_camp, stage_coach_inn, trainer, wainwright<br>|
 |m_NextBiomeRunDataStatsIds|List(RunDataStats&nbsp;ID)|||
 |m_NumberOfBiomeChoices|integer|||
 |m_QuirkGenerationAmount|integer|||
@@ -1040,7 +1040,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_QuirkGenerationTags|List(Seq(Quirk&nbsp;Tag-, float))|||
 |m_StoreLootTableIds|List(LootTable&nbsp;ID)|||
 |m_Tags|List(Inn&nbsp;Tag+)|||
-|m_TemporaryInnUpgradeCategories|List(keyword)||keyword: defense, provisioner, wainwright, trainer, physician, kingdom_inn, kingdom_camp, stage_coach_inn, stage_coach_camp<br>|
+|m_TemporaryInnUpgradeCategories|List(keyword)||keyword: defense, kingdom_camp, kingdom_inn, physician, provisioner, stage_coach_camp, stage_coach_inn, trainer, wainwright<br>|
 |m_WoundHealCostId|Cost&nbsp;ID|||
 |run_value_transactions|List(RunValueTransaction&nbsp;ID)|||
 </details>
@@ -1052,9 +1052,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |actorless_effects|List(Effect&nbsp;ID)|||
 |all_conditions|List(Condition&nbsp;ID)|||
-|hero_effects|List(Condition&nbsp;ID)|||
+|hero_effects|List(Effect&nbsp;ID)|||
 |m_BonusLootTableIds|List(LootTable&nbsp;ID)|||
-|m_DeliverableIcon|keyword||keyword: treasure, hero_bones<br>|
+|m_DeliverableIcon|keyword||keyword: hero_bones, treasure<br>|
 |m_InnRunDataStatsIds|RunDataStats&nbsp;ID|||
 |m_IsBonusLootExclusive|boolean|||
 |m_QuestResource|Quest&nbsp;ID|||
@@ -1066,8 +1066,8 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|add_stat|Seq(keyword, float)||keyword: health_max, defense, repair_percent, upgrade_skill_limit, unlock_skill_limit, stage_coach_item_slot_equip_limit, siege_target_chance, siege_resolved_duration, siege_resolved_target_chance, physician_wound_heal_percentage, kingdom_wound_heal_percentage, storage_inventory_max_slots, infection_adjacent_cure_percentage<br>|
-|sub_stat|Seq(keyword1, keyword2, float)||keyword1: health_max, defense, repair_percent, upgrade_skill_limit, unlock_skill_limit, stage_coach_item_slot_equip_limit, siege_target_chance, siege_resolved_duration, siege_resolved_target_chance, physician_wound_heal_percentage, kingdom_wound_heal_percentage, storage_inventory_max_slots, infection_adjacent_cure_percentage<br>keyword2: General, Pet, Trophy<br>|
+|add_stat|Seq(keyword, float)||keyword: defense, health_max, infection_adjacent_cure_percentage, kingdom_wound_heal_percentage, physician_wound_heal_percentage, repair_percent, siege_resolved_duration, siege_resolved_target_chance, siege_target_chance, stage_coach_item_slot_equip_limit, storage_inventory_max_slots, unlock_skill_limit, upgrade_skill_limit<br>|
+|sub_stat|Seq(keyword1, keyword2, float)||keyword1: defense, health_max, infection_adjacent_cure_percentage, kingdom_wound_heal_percentage, physician_wound_heal_percentage, repair_percent, siege_resolved_duration, siege_resolved_target_chance, siege_target_chance, stage_coach_item_slot_equip_limit, storage_inventory_max_slots, unlock_skill_limit, upgrade_skill_limit<br>keyword2: General, Pet, Trophy<br>|
 </details>
 
 <details>
@@ -1092,11 +1092,11 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |kingdom_contagion_effects|List(Effect&nbsp;ID)|||
 |kingdom_hero_effects|List(Effect&nbsp;ID)|||
 |m_BonusLootTableIds|List(LootTable&nbsp;ID)|||
-|m_InnFeatureTypes|List(keyword)||keyword: actor_path_change, stage_coach_repair, stage_coach_change_skin, fast_travel, trainer, wainwright, remove_positive_quirk, lock_positive_quirk, remove_negative_quirk, remove_disease, physician, item_selling<br>|
+|m_InnFeatureTypes|List(keyword)||keyword: actor_path_change, fast_travel, item_selling, lock_positive_quirk, physician, remove_disease, remove_negative_quirk, remove_positive_quirk, stage_coach_change_skin, stage_coach_repair, trainer, wainwright<br>|
 |m_InnLevel|integer|||
 |m_InnRunDataStatsIds|List(RunDataStats&nbsp;ID)|||
-|m_InnUpgradeCategory|keyword||keyword: defense, provisioner, wainwright, trainer, physician, kingdom_inn, kingdom_camp, stage_coach_inn, stage_coach_camp<br>|
-|m_InnUpgradeType|keyword||keyword: minor, major, ultimate, kingdom, stage_coach<br>|
+|m_InnUpgradeCategory|keyword||keyword: defense, kingdom_camp, kingdom_inn, physician, provisioner, stage_coach_camp, stage_coach_inn, trainer, wainwright<br>|
+|m_InnUpgradeType|keyword||keyword: kingdom, major, minor, stage_coach, ultimate<br>|
 |m_IsBonusLootExclusive|boolean|||
 |m_LevelSpriteIndex|integer|Default -1||
 |m_OnPurchaseStoreLootTableIds|List(LootTable&nbsp;ID)|||
@@ -1112,13 +1112,13 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |m_DiscardGameScorePerQty|float|||
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_InnUpgradeIds|List(InnUpgrade&nbsp;ID)|||
 |m_IsStressTriggerBarking|boolean|||
 |m_IsUnequipIfNotInParty|boolean|||
 |m_IsUnequipInvalid|boolean|||
-|m_OverrideBackgroundFileName|keyword||keyword: quest_coven, quest_courtier, quest_beastmen, cru_quest<br>|
-|m_QuestResourceId|keyword||keyword: coven, courtier, beastmen<br>|
+|m_OverrideBackgroundFileName|keyword||keyword: cru_quest, quest_beastmen, quest_courtier, quest_coven<br>|
+|m_QuestResourceId|keyword||keyword: beastmen, courtier, coven<br>|
 |m_QuestStepId|QuestStep&nbsp;ID|||
 |m_RunEndGameScorePerQty|float|||
 |m_UnlockId|Unlock&nbsp;ID|||
@@ -1147,9 +1147,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_rewardLinkedTooltipVisible|boolean|Default True||
 |m_sellCostId|Cost&nbsp;ID|||
 |m_showTargettingInfoInTooltip|boolean|Default True||
-|m_slot|keyword||keyword: None, General, Trophy, Pet, Flame<br>|
+|m_slot|keyword||keyword: Flame, General, None, Pet, Trophy<br>|
 |m_tags|List(Item&nbsp;Tag+)|||
-|m_type|keyword||keyword: currency, rest, combat, trinket, stage_coach_upgrade, memory, memory_reroll<br>|
+|m_type|keyword||keyword: combat, currency, memory, memory_reroll, rest, stage_coach_upgrade, trinket<br>|
 |m_useTagLimit|integer|||
 |m_usedInCombat|boolean|||
 |m_usedInDriving|boolean|Unused field||
@@ -1187,7 +1187,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |loss_day|integer|||
 |loss_percentage_of_inns_destroyed|integer|||
 |m_IsDefault|boolean|||
-|m_RosterReplacementType|keyword||keyword: none, respawn, refill<br>|
+|m_RosterReplacementType|keyword||keyword: none, refill, respawn<br>|
 |roster_active_entry_limit|integer|||
 |siege_run_stat_index|integer|||
 |skill_set_type|integer|||
@@ -1206,9 +1206,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_BiomeModifierId|BiomeModifier&nbsp;ID|||
 |m_Chance|float|||
 |m_Cooldown|integer|||
-|m_EffectRosterStatusTypes|keyword||keyword: idle, party, reserve, dead, load, captured, hire, hire_replaced, kingdom<br>|
+|m_EffectRosterStatusTypes|keyword||keyword: captured, dead, hire, hire_replaced, idle, kingdom, load, party, reserve<br>|
 |m_EventTypeRarity|keyword||keyword: RARE<br>|
-|m_EventTypeRef|keyword||keyword: negative, coast, almanac_coast, farm, almanac_farm, almanac_forest, positive, wagonmaster, regent, warmaster, city, almanac_city, tundra, almanac_tundra, escalation, forest, forerunner<br>|
+|m_EventTypeRef|keyword||keyword: almanac_city, almanac_coast, almanac_farm, almanac_forest, almanac_tundra, city, coast, escalation, farm, forerunner, forest, negative, positive, regent, tundra, wagonmaster, warmaster<br>|
 |m_IsGeneratedInAdvance|boolean|||
 |m_KingdomLimit|integer|||
 |m_LootIds|List(LootTable&nbsp;ID)|||
@@ -1266,7 +1266,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_ids|List(Or(Item&nbsp;ID, LootTable&nbsp;ID))|||
 |m_qtys|List(Or(integer, range))|||
 |m_tags|List(LootTableEntry&nbsp;Tag+)|||
-|m_types|List(keyword)||keyword: provision, item, sub_table, unique_sub_table, exclusive_sub_table, all_sub_table, nothing, profile_unlock, quest_step, biome_reward<br>|
+|m_types|List(keyword)||keyword: all_sub_table, biome_reward, exclusive_sub_table, item, nothing, profile_unlock, provision, quest_step, sub_table, unique_sub_table<br>|
 |m_unlockId|Unlock&nbsp;ID|||
 |undefined|Or(Item&nbsp;ID, ActOut&nbsp;ID, QuestStep&nbsp;ID)|||
 </details>
@@ -1282,10 +1282,10 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_avoidTags||||
 |m_chance|float|||
 |m_disabledGameTypes|keyword||keyword: expedition, kingdom<br>|
-|m_guaranteeType|keyword||keyword: profile_first, always, none<br>|
+|m_guaranteeType|keyword||keyword: always, none, profile_first<br>|
 |m_maxOccurrences|integer|||
 |m_numberOfPanels|integer|||
-|m_occurrenceTypes|keyword||keyword: inn, biome, node, run, combat, profile<br>|
+|m_occurrenceTypes|keyword||keyword: biome, combat, inn, node, profile, run<br>|
 |m_type|NarrationType&nbsp;ID|||
 </details>
 
@@ -1297,7 +1297,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_chance|float|||
 |m_disabledGameTypes|keyword||keyword: expedition, kingdom<br>|
 |m_maxOccurrences|integer|||
-|m_occurrenceTypes|keyword||keyword: inn, biome, node, run, combat, profile<br>|
+|m_occurrenceTypes|keyword||keyword: biome, combat, inn, node, profile, run<br>|
 </details>
 
 <details>
@@ -1307,7 +1307,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |all_conditions|List(Condition&nbsp;ID)|||
 |m_LootIds|List(LootTable&nbsp;ID)|||
-|m_NodeType|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
+|m_NodeType|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
 |m_Tags|List(NodeDeliverable&nbsp;Tag+)|||
 </details>
 
@@ -1316,14 +1316,14 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_AdditionalEndNodeTypes|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
-|m_AdditionalStartNodeTypes|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
-|m_FromNodeType|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
+|m_AdditionalEndNodeTypes|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
+|m_AdditionalStartNodeTypes|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
+|m_FromNodeType|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
 |m_IsVisible|boolean|Default True||
-|m_NodeExitBarkOverrideNodeTypes|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
+|m_NodeExitBarkOverrideNodeTypes|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
 |m_NodeExitBarkPreferredActorDataIds|List(ActorDataClass&nbsp;ID)|||
-|m_ToNodeType|keyword||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
-|m_ValidBiomeTypes|keyword||keyword: Valley, ValleyIntro, ValleyKingdom, City, Farm, Forest, Coast, Tundra, Cave, Catacombs, MountainBrain, MountainLungs, MountainEyes, MountainArms, MountainBody, Invalid<br>|
+|m_ToNodeType|keyword||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
+|m_ValidBiomeTypes|keyword||keyword: Catacombs, Cave, City, Coast, Farm, Forest, Invalid, MountainArms, MountainBody, MountainBrain, MountainEyes, MountainLungs, Tundra, Valley, ValleyIntro, ValleyKingdom<br>|
 </details>
 
 <details>
@@ -1342,7 +1342,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_QuestType|keyword||keyword: profile, game<br>|
+|m_QuestType|keyword||keyword: game, profile<br>|
 |m_ValidGameTypes|keyword||keyword: expedition, kingdom<br>|
 |on_completion_unlocks|List(Unlock&nbsp;ID)|||
 |quest_steps|List(QuestStep&nbsp;ID)|||
@@ -1359,7 +1359,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_IsKingdomTimelineValid|boolean|||
 |m_QuestStepNumber|integer|||
 |m_QuestStepString|Or(Item&nbsp;ID, InnBonus&nbsp;ID)|||
-|m_QuestStepType|keyword||keyword: stage_coach_upgrade_equip, inn_bonus, loot<br>|
+|m_QuestStepType|keyword||keyword: inn_bonus, loot, stage_coach_upgrade_equip<br>|
 |m_SkipGuaranteedLootIds|List(LootTable&nbsp;ID)|||
 </details>
 
@@ -1370,7 +1370,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |generation_all_conditions|List(Condition&nbsp;ID)|||
 |m_DurationAmount|integer|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_EscalationTags|List(Quirk&nbsp;Tag+)|||
 |m_Rarity|keyword||keyword: NORMAL, RARE<br>|
 |m_ShowDescriptionExplicit|boolean|||
@@ -1394,22 +1394,22 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_ActorStatSubType|keyword||keyword: debuff, stress, blight, death, positivetoken, stun, burn, move, bleed, disease<br>|
-|m_ActorStatType|keyword||keyword: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>|
+|m_ActorStatSubType|keyword||keyword: bleed, blight, burn, death, debuff, disease, move, positivetoken, stress, stun<br>|
+|m_ActorStatType|keyword||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |m_BuffTags|List(Buff&nbsp;Tag-)|||
 |m_CritMod|float|||
 |m_DotTags|List(Dot&nbsp;Tag-)|||
-|m_IgnoreActorStatType|keyword||keyword: <details><summary>expand</summary>speed, speed_tie_breaker, speed_number_of_turns, crit_chance, health_damage, health_damage_range, health_damage_dealt_percent, health_damage_dealt_mult_percent, health_damage_received_percent, health_max, wound_percent_max, stress_max, deaths_door_chance, resistance, resistance_ignore, health_heal_dealt_percent, health_heal_received_percent, health_heal_percent_between_nodes, route_choice_chance, route_choice_preference, dot_extra_duration_dealt, dot_extra_duration_received, dot_effect_value_dealt_change, dot_effect_value_received_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_multiplier, affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, overstress_chance_modifier, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, rest_item_effect_chance_modifier, token_limit, effect_performer_chance_multiplier, effect_target_chance_multiplier</details><br>|
-|m_IgnorePopTextSourceTypes|keyword||keyword: <details><summary>expand</summary>debug, combat, skill, skill_buff, skill_actor, dot, driving, death, status, story, act_out, inn, inn_upgrade, inn_bonus, stress, overstress, hospital, class, torch, relationship, party, quirk, disease, quirk_curse, trinket, stage_coach_general, stage_coach_trophy, stage_coach_pet, stage_coach_flame, stage_coach_armor, stage_coach_wheels, buff, store, inventory, retreat, stall, duration, affinity, token, route, route_choice, doom, run, run_goal, biome, biome_goal, biome_modifier, biome_status, biome_upgrade, locked_team_position_transfer, rest_item, effect, bark, path, boss, capture, arena, resist, memory, roster, node, quest, altar_of_hope, kingdom, kingdom_event, kingdom_treasure, escalation, wound, mode, siege</details><br>|
+|m_IgnoreActorStatType|keyword||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
+|m_IgnorePopTextSourceTypes|keyword||keyword: <details><summary>expand</summary>act_out, affinity, altar_of_hope, arena, bark, biome, biome_goal, biome_modifier, biome_status, biome_upgrade, boss, buff, capture, class, combat, death, debug, disease, doom, dot, driving, duration, effect, escalation, hospital, inn, inn_bonus, inn_upgrade, inventory, kingdom, kingdom_event, kingdom_treasure, locked_team_position_transfer, memory, mode, node, overstress, party, path, quest, quirk, quirk_curse, relationship, resist, rest_item, retreat, roster, route, route_choice, run, run_goal, siege, skill, skill_actor, skill_buff, stage_coach_armor, stage_coach_flame, stage_coach_general, stage_coach_pet, stage_coach_trophy, stage_coach_wheels, stall, status, store, story, stress, token, torch, trinket, wound</details><br>|
 |m_IsDeath|boolean|||
 |m_IsStress|boolean|||
 |m_Max|float|Default float.MinValue||
 |m_Min|float|Default float.maxValue||
-|m_PositiveRunValueTypes|keyword||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_PositiveRunValueTypes|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_QuirkTags|List(Quirk&nbsp;Tag-)|||
 |m_RunStatSubType|keyword||keyword: doom<br>|
-|m_RunStatType|keyword||keyword: <details><summary>expand</summary>loot_chance, loot_qty, torch_min_value, torch_max_value, torch_default_value, torch_add_percent, torch_remove_percent, torch_drain_between_nodes, hero_upgrade_points_min_value, hero_upgrade_points_max_value, hero_upgrade_points_default_value, doom_min_value, doom_max_value, doom_default_value, doom_reset_value, doom_effect_number_of_nodes, stage_coach_armor_min_value, stage_coach_armor_max_value, stage_coach_armor_default_value, stage_coach_wheels_min_value, stage_coach_wheels_max_value, stage_coach_wheels_default_value, item_max_qty, item_discard_game_score_chance, player_inventory_max_slots, retreat_chance, scout_node_chance, scout_route_chance, store_cost_buy_multiplier, affinity_tick_trigger_positive_chance_multiplier, affinity_tick_trigger_negative_chance_multiplier, affinity_relationship_tag_chance_modifier, battle_modifier_chance, story_choice_multiplier, map_generation_nodes_per_row_min, map_generation_nodes_per_row_max, map_generation_nodes_per_row_multiplier, map_generation_length_multiplier, map_generation_node_spawn_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, score_bonus_multiplier, score_penalty_multiplier, run_generation_number_of_typical_biomes, run_generation_typical_biome_chance, run_generation_number_of_optional_biomes, run_generation_optional_biome_chance, resistance, battle_configuration_chance, hire_typical_biomes_min, hire_typical_biomes_max, hire_chance, boss_modifier_chance_modifier, escalation_min_value, escalation_max_value, escalation_default_value, siege_accrual, siege_accrual_range, siege_spawn_threshold, siege_spawn_limit, siege_strength, siege_strength_range, siege_delay, siege_delay_range, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_threshold, kill_contract_spawn_limit, kingdom_event_generation_chance, camp_ambush_chance, route_effect_apply_multiplier</details><br>|
-|m_SkillAttributes|keyword||keyword: health_damage, health_heal, wound_add, wound_remove, stress_damage, stress_heal, move, token_add, token_remove, token_convert, token_steal, token_copy, token_invert, dot_add, dot_remove, dot_steal, dot_copy, buff_add, buff_remove, quirk_add, quirk_remove, affinity_positive, affinity_negative, bark, capture, release, kill<br>|
+|m_RunStatType|keyword||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>|
+|m_SkillAttributes|keyword||keyword: BUFF_ADD, QUIRK_ADD, TOKEN_ADD, affinity_negative, affinity_positive, bark, buff_add, buff_remove, capture, dot_add, dot_copy, dot_remove, dot_steal, health_damage, health_heal, kill, move, quirk_add, quirk_remove, release, stress_damage, stress_heal, token_add, token_convert, token_copy, token_invert, token_remove, token_steal, wound_add, wound_remove<br>|
 |m_TokenIds|List(Token&nbsp;ID)|||
 |m_TokenTags|List(Token&nbsp;Tag-)|||
 </details>
@@ -1420,7 +1420,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
-|m_RoadEventCategory|keyword||keyword: Objects, Banter, Ambush, Route, null<br>|
+|m_RoadEventCategory|keyword||keyword: Ambush, Banter, Objects, Route, null<br>|
 |m_ValidGameType|keyword||keyword: expedition, kingdom<br>|
 </details>
 
@@ -1435,7 +1435,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_Chance|float|||
 |m_EndingRowsToSkip|integer|||
 |m_OverrideNarrationTags||||
-|m_RouteType|keyword||keyword: safe, rough_patch, hazard, combat, gang_combat, oblivion_tear, size<br>|
+|m_RouteType|keyword||keyword: combat, gang_combat, hazard, oblivion_tear, rough_patch, safe, size<br>|
 </details>
 
 <details>
@@ -1488,9 +1488,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_PointsMin|integer|||
 |m_PointsProfileValueType|keyword||keyword: candles<br>|
 |m_RemoveQuirkByTagCosts|Seq(Quirk&nbsp;Tag-, integer)|||
-|m_RespawnStageCoachRefillRunValueTypes|keyword||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_RespawnStageCoachRefillRunValueTypes|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_RunDataStatsId|RunDataStats&nbsp;ID|||
-|m_SellExecutingNodeTypes|List(keyword)||keyword: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>|
+|m_SellExecutingNodeTypes|List(keyword)||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
 |m_SiegeCounterStartMax|integer|||
 |m_SiegeCounterStartMin|integer|||
 |m_SiegeKingdomTreasureId|KingdomTreasure&nbsp;ID|||
@@ -1571,15 +1571,15 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |node_doom_effects|List(Effect&nbsp;ID)|||
 |on_added_to_roster_effects|List(Effect&nbsp;ID)|||
 |pet_slot_unlocks|List(Unlock&nbsp;ID)|||
-|repeatable_item|Seq(keyword, LootTable&nbsp;ID, List(Cost&nbsp;ID))||keyword: trinket, combat, stage_coach_upgrade, rest, memory_reroll<br>|
+|repeatable_item|Seq(keyword, LootTable&nbsp;ID, List(Cost&nbsp;ID))||keyword: combat, memory_reroll, rest, stage_coach_upgrade, trinket<br>|
 |reroll_quirks_costs|List(Cost&nbsp;ID)|||
 |retreat_effects|List(Effect&nbsp;ID)|||
 |retreat_per_hero_effects|List(Effect&nbsp;ID)|||
 |retreat_single_hero_effects|List(Effect&nbsp;ID)|||
 |route_choice_unwanted_effects|List(Effect&nbsp;ID)|||
 |route_choice_wanted_effects|List(Effect&nbsp;ID)|||
-|score_multiplier|Seq(keyword, float)||keyword: leagues_passed, start_biomes_cleared, academics_honorarium, typical_biomes_cleared, optional_biomes_cleared, hero_stories_cleared, fights_won, biome_bosses_cleared, inventory_items, items_discarded, run_goals_path, run_goals_class, faced_end_boss, first_end_boss_victory, victory, heroes_survived, heroes_hired, inn_bonus<br>|
-|score_replacement|Seq(keyword, List(integer))||keyword: leagues_passed, start_biomes_cleared, academics_honorarium, typical_biomes_cleared, optional_biomes_cleared, hero_stories_cleared, fights_won, biome_bosses_cleared, inventory_items, items_discarded, run_goals_path, run_goals_class, faced_end_boss, first_end_boss_victory, victory, heroes_survived, heroes_hired, inn_bonus<br>|
+|score_multiplier|Seq(keyword, float)||keyword: academics_honorarium, biome_bosses_cleared, faced_end_boss, fights_won, first_end_boss_victory, hero_stories_cleared, heroes_hired, heroes_survived, inn_bonus, inventory_items, items_discarded, leagues_passed, optional_biomes_cleared, run_goals_class, run_goals_path, start_biomes_cleared, typical_biomes_cleared, victory<br>|
+|score_replacement|Seq(keyword, List(integer))||keyword: academics_honorarium, biome_bosses_cleared, faced_end_boss, fights_won, first_end_boss_victory, hero_stories_cleared, heroes_hired, heroes_survived, inn_bonus, inventory_items, items_discarded, leagues_passed, optional_biomes_cleared, run_goals_class, run_goals_path, start_biomes_cleared, typical_biomes_cleared, victory<br>|
 |siege_loss_hero_effects|List(Effect&nbsp;ID)|||
 |siege_run_data_stats|RunDataStats&nbsp;ID|||
 |stall_effects|List(Effect&nbsp;ID)|||
@@ -1593,12 +1593,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|add_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>loot_chance, loot_qty, torch_min_value, torch_max_value, torch_default_value, torch_add_percent, torch_remove_percent, torch_drain_between_nodes, hero_upgrade_points_min_value, hero_upgrade_points_max_value, hero_upgrade_points_default_value, doom_min_value, doom_max_value, doom_default_value, doom_reset_value, doom_effect_number_of_nodes, stage_coach_armor_min_value, stage_coach_armor_max_value, stage_coach_armor_default_value, stage_coach_wheels_min_value, stage_coach_wheels_max_value, stage_coach_wheels_default_value, item_max_qty, item_discard_game_score_chance, player_inventory_max_slots, retreat_chance, scout_node_chance, scout_route_chance, store_cost_buy_multiplier, affinity_tick_trigger_positive_chance_multiplier, affinity_tick_trigger_negative_chance_multiplier, affinity_relationship_tag_chance_modifier, battle_modifier_chance, story_choice_multiplier, map_generation_nodes_per_row_min, map_generation_nodes_per_row_max, map_generation_nodes_per_row_multiplier, map_generation_length_multiplier, map_generation_node_spawn_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, score_bonus_multiplier, score_penalty_multiplier, run_generation_number_of_typical_biomes, run_generation_typical_biome_chance, run_generation_number_of_optional_biomes, run_generation_optional_biome_chance, resistance, battle_configuration_chance, hire_typical_biomes_min, hire_typical_biomes_max, hire_chance, boss_modifier_chance_modifier, escalation_min_value, escalation_max_value, escalation_default_value, siege_accrual, siege_accrual_range, siege_spawn_threshold, siege_spawn_limit, siege_strength, siege_strength_range, siege_delay, siege_delay_range, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_threshold, kill_contract_spawn_limit, kingdom_event_generation_chance, camp_ambush_chance, route_effect_apply_multiplier</details><br>|
+|add_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>|
 |add_stats|List(float)|||
-|key_map|List(keyword)||keyword: <details><summary>expand</summary>loot_chance, loot_qty, torch_min_value, torch_max_value, torch_default_value, torch_add_percent, torch_remove_percent, torch_drain_between_nodes, hero_upgrade_points_min_value, hero_upgrade_points_max_value, hero_upgrade_points_default_value, doom_min_value, doom_max_value, doom_default_value, doom_reset_value, doom_effect_number_of_nodes, stage_coach_armor_min_value, stage_coach_armor_max_value, stage_coach_armor_default_value, stage_coach_wheels_min_value, stage_coach_wheels_max_value, stage_coach_wheels_default_value, item_max_qty, item_discard_game_score_chance, player_inventory_max_slots, retreat_chance, scout_node_chance, scout_route_chance, store_cost_buy_multiplier, affinity_tick_trigger_positive_chance_multiplier, affinity_tick_trigger_negative_chance_multiplier, affinity_relationship_tag_chance_modifier, battle_modifier_chance, story_choice_multiplier, map_generation_nodes_per_row_min, map_generation_nodes_per_row_max, map_generation_nodes_per_row_multiplier, map_generation_length_multiplier, map_generation_node_spawn_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, score_bonus_multiplier, score_penalty_multiplier, run_generation_number_of_typical_biomes, run_generation_typical_biome_chance, run_generation_number_of_optional_biomes, run_generation_optional_biome_chance, resistance, battle_configuration_chance, hire_typical_biomes_min, hire_typical_biomes_max, hire_chance, boss_modifier_chance_modifier, escalation_min_value, escalation_max_value, escalation_default_value, siege_accrual, siege_accrual_range, siege_spawn_threshold, siege_spawn_limit, siege_strength, siege_strength_range, siege_delay, siege_delay_range, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_threshold, kill_contract_spawn_limit, kingdom_event_generation_chance, camp_ambush_chance, route_effect_apply_multiplier</details><br>|
-|multiply_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>loot_chance, loot_qty, torch_min_value, torch_max_value, torch_default_value, torch_add_percent, torch_remove_percent, torch_drain_between_nodes, hero_upgrade_points_min_value, hero_upgrade_points_max_value, hero_upgrade_points_default_value, doom_min_value, doom_max_value, doom_default_value, doom_reset_value, doom_effect_number_of_nodes, stage_coach_armor_min_value, stage_coach_armor_max_value, stage_coach_armor_default_value, stage_coach_wheels_min_value, stage_coach_wheels_max_value, stage_coach_wheels_default_value, item_max_qty, item_discard_game_score_chance, player_inventory_max_slots, retreat_chance, scout_node_chance, scout_route_chance, store_cost_buy_multiplier, affinity_tick_trigger_positive_chance_multiplier, affinity_tick_trigger_negative_chance_multiplier, affinity_relationship_tag_chance_modifier, battle_modifier_chance, story_choice_multiplier, map_generation_nodes_per_row_min, map_generation_nodes_per_row_max, map_generation_nodes_per_row_multiplier, map_generation_length_multiplier, map_generation_node_spawn_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, score_bonus_multiplier, score_penalty_multiplier, run_generation_number_of_typical_biomes, run_generation_typical_biome_chance, run_generation_number_of_optional_biomes, run_generation_optional_biome_chance, resistance, battle_configuration_chance, hire_typical_biomes_min, hire_typical_biomes_max, hire_chance, boss_modifier_chance_modifier, escalation_min_value, escalation_max_value, escalation_default_value, siege_accrual, siege_accrual_range, siege_spawn_threshold, siege_spawn_limit, siege_strength, siege_strength_range, siege_delay, siege_delay_range, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_threshold, kill_contract_spawn_limit, kingdom_event_generation_chance, camp_ambush_chance, route_effect_apply_multiplier</details><br>|
+|key_map|List(keyword)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>|
+|multiply_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>|
 |multiply_stats|List(float)|||
-|sub_stat|Seq(keyword1, Or(LootTable&nbsp;Tag-, keyword2, keyword3, BattleConfigurationTable&nbsp;Tag-, Item&nbsp;ID), float)||keyword1: <details><summary>expand</summary>loot_chance, loot_qty, torch_min_value, torch_max_value, torch_default_value, torch_add_percent, torch_remove_percent, torch_drain_between_nodes, hero_upgrade_points_min_value, hero_upgrade_points_max_value, hero_upgrade_points_default_value, doom_min_value, doom_max_value, doom_default_value, doom_reset_value, doom_effect_number_of_nodes, stage_coach_armor_min_value, stage_coach_armor_max_value, stage_coach_armor_default_value, stage_coach_wheels_min_value, stage_coach_wheels_max_value, stage_coach_wheels_default_value, item_max_qty, item_discard_game_score_chance, player_inventory_max_slots, retreat_chance, scout_node_chance, scout_route_chance, store_cost_buy_multiplier, affinity_tick_trigger_positive_chance_multiplier, affinity_tick_trigger_negative_chance_multiplier, affinity_relationship_tag_chance_modifier, battle_modifier_chance, story_choice_multiplier, map_generation_nodes_per_row_min, map_generation_nodes_per_row_max, map_generation_nodes_per_row_multiplier, map_generation_length_multiplier, map_generation_node_spawn_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, score_bonus_multiplier, score_penalty_multiplier, run_generation_number_of_typical_biomes, run_generation_typical_biome_chance, run_generation_number_of_optional_biomes, run_generation_optional_biome_chance, resistance, battle_configuration_chance, hire_typical_biomes_min, hire_typical_biomes_max, hire_chance, boss_modifier_chance_modifier, escalation_min_value, escalation_max_value, escalation_default_value, siege_accrual, siege_accrual_range, siege_spawn_threshold, siege_spawn_limit, siege_strength, siege_strength_range, siege_delay, siege_delay_range, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_threshold, kill_contract_spawn_limit, kingdom_event_generation_chance, camp_ambush_chance, route_effect_apply_multiplier</details><br>keyword2: Cache, Gate, Hospital, Inn, Store, WatchTower, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryAssist, StoryResist, StoryCosmic, StoryHero, StoryHeroReplacement, Dungeon, Guardian, CreatureDen, Oasis, HeroSelect, AltarOfHope, Bridge, GameResults, BossSelect, Landmark, Cathedral, Dummy, Mountain, LandmarkTreesDense, LandmarkTreesSparse, LandmarkInkfireField, Unknown, GauntChirurgeon, Warlord, BeastmenAlpha, KingdomInn, KingdomInnSieged, KingdomCamp, KingdomBoss, StoryAssistGang, CacheGang, BridgeGang, CovenAssist, null<br>keyword3: safe, rough_patch, hazard, combat, gang_combat, oblivion_tear, size<br>|
+|sub_stat|Seq(keyword1, Or(LootTable&nbsp;Tag-, keyword2, keyword3, BattleConfigurationTable&nbsp;Tag-, Item&nbsp;ID, keyword4, BattleConfigurationEntry&nbsp;Tag-, LootTableEntry&nbsp;Tag-), float)||keyword1: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>keyword2: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>keyword3: combat, gang_combat, hazard, oblivion_tear, rough_patch, safe, size<br>keyword4: combat, currency, memory, memory_reroll, rest, stage_coach_upgrade, trinket<br>|
 </details>
 
 <details>
@@ -1646,7 +1646,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_IsVisible|boolean|Default True||
 |m_Max|float|||
 |m_Min|float|||
-|m_RunValueType|keyword||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_RunValueType|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_Tags|List(ActorDataClass&nbsp;Tag-)|||
 </details>
 
@@ -1655,7 +1655,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_RunValueType|keyword||keyword: torch, hero_upgrade_points, doom, stage_coach_armor, stage_coach_wheels, escalation<br>|
+|m_RunValueType|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_StoreCostMultiplierId|keyword||keyword: inn_wainwright<br>|
 |m_TransactionAmount|float|||
 |m_isDiscounted|boolean|||
@@ -1666,7 +1666,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|effect_skill_attribute_tags|List(keyword)||keyword: stealth, taproot_tangle_c, horror, health_heal, dot_add, immobilize, dodge, enrage, vulnerable, bark, block, strength, weak, stress_heal, move, token_add<br>|
+|effect_skill_attribute_tags|List(keyword)||keyword: bark, block, dodge, dot_add, enrage, health_heal, horror, immobilize, move, stealth, strength, stress_heal, taproot_tangle_c, token_add, vulnerable, weak<br>|
 |m_PerformerSkillTags|List(ActorDataSkill&nbsp;Tag-)|||
 |m_TargetSkillTags|List(ActorDataSkill&nbsp;Tag-)|||
 </details>
@@ -1729,20 +1729,20 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_Chance|float|||
 |m_CostId|Cost&nbsp;ID|||
 |m_DrawTags|List(StoryChoiceDraw&nbsp;Tag+)|||
-|m_EnemyStoryChoicePreviewIds|List(keyword)||keyword: icon_story_token_daze_Preview, icon_story_token_vulnerable_Preview, icon_story_token_strength_Preview, icon_move_Preview, icon_blight_Preview, icon_story_token_combo_Preview, icon_debuff_Preview, icon_story_token_blind-line_Preview<br>|
+|m_EnemyStoryChoicePreviewIds|List(keyword)||keyword: icon_blight_Preview, icon_debuff_Preview, icon_move_Preview, icon_story_token_blind-line_Preview, icon_story_token_combo_Preview, icon_story_token_daze_Preview, icon_story_token_strength_Preview, icon_story_token_vulnerable_Preview<br>|
 |m_EnemyStoryChoicePreviewShowNumbers|List(boolean)|||
 |m_EnemyStoryChoicePreviewValues|List(integer)|||
 |m_ExclusiveTags||||
-|m_PlayerStoryChoicePreviewIds|List(keyword)||keyword: <details><summary>expand</summary>icon_story_candle_loot_Preview, icon_story_coven_Preview, icon_story_quirk_negative_Preview, icon_story_wine_Preview, icon_story_team_token_crit_Preview, icon_story_token_speed_Preview, icon_story_scouting_Preview, icon_story_quirk_positive_Preview, icon_story_combat_item_loot_Preview, icon_story_materials_Preview, icon_story_team_stress_heal_Preview, icon_story_combat_Preview, icon_story_relic_large_Preview, icon_story_team_token_strength_Preview, icon_story_mystery_treasure_loot_Preview, icon_buff_Preview, icon_story_treasure_large, icon_story_coach_upgrade_loot_Preview, icon_story_trinket_loot_Preview, icon_story_rest_loot_Preview, icon_story_signature_inn_loot_Preview, icon_story_quirk_mixed_Preview, icon_story_ancestor_Preview, icon_story_token_weak_Preview, icon_story_team_token_dodge+_Preview, icon_story_food_loot_Preview, icon_story_food_large_Preview, icon_story_avoid_Preview, icon_story_token_stealth_Preview, icon_story_token_vulnerable_Preview, icon_story_token_strength_Preview, icon_story_stress_heal_Preview, icon_story_team_token_block_Preview, icon_story_armor_Preview, icon_story_books_Preview, icon_story_token_crit_Preview, icon_story_stress_mixed_Preview, icon_story_supplies_med_Preview, icon_story_relic_loot_Preview, icon_story_team_buff_Preview, icon_story_token_daze_Preview, icon_story_token_taunt_Preview, icon_story_stress_dmg_Preview, icon_story_buff_Preview, icon_story_supplies_small_Preview, icon_story_torch_Preview, icon_story_team_health_heal_Preview, icon_story_courtier_Preview, icon_story_wheel_Preview, icon_story_health_heal_Preview, icon_story_food_med_Preview, icon_story_token_block_Preview</details><br>|
+|m_PlayerStoryChoicePreviewIds|List(keyword)||keyword: <details><summary>expand</summary>icon_buff_Preview, icon_story_ancestor_Preview, icon_story_armor_Preview, icon_story_avoid_Preview, icon_story_books_Preview, icon_story_buff_Preview, icon_story_candle_loot_Preview, icon_story_coach_upgrade_loot_Preview, icon_story_combat_Preview, icon_story_combat_item_loot_Preview, icon_story_courtier_Preview, icon_story_coven_Preview, icon_story_food_large_Preview, icon_story_food_loot_Preview, icon_story_food_med_Preview, icon_story_health_heal_Preview, icon_story_materials_Preview, icon_story_mystery_treasure_loot_Preview, icon_story_quirk_mixed_Preview, icon_story_quirk_negative_Preview, icon_story_quirk_positive_Preview, icon_story_relic_large_Preview, icon_story_relic_loot_Preview, icon_story_rest_loot_Preview, icon_story_scouting_Preview, icon_story_signature_inn_loot_Preview, icon_story_stress_dmg_Preview, icon_story_stress_heal_Preview, icon_story_stress_mixed_Preview, icon_story_supplies_med_Preview, icon_story_supplies_small_Preview, icon_story_team_buff_Preview, icon_story_team_health_heal_Preview, icon_story_team_stress_heal_Preview, icon_story_team_token_block_Preview, icon_story_team_token_crit_Preview, icon_story_team_token_dodge+_Preview, icon_story_team_token_strength_Preview, icon_story_token_block_Preview, icon_story_token_crit_Preview, icon_story_token_daze_Preview, icon_story_token_speed_Preview, icon_story_token_stealth_Preview, icon_story_token_strength_Preview, icon_story_token_taunt_Preview, icon_story_token_vulnerable_Preview, icon_story_token_weak_Preview, icon_story_torch_Preview, icon_story_treasure_large, icon_story_trinket_loot_Preview, icon_story_wheel_Preview, icon_story_wine_Preview</details><br>|
 |m_PlayerStoryChoicePreviewShowNumbers|List(boolean)|||
 |m_PlayerStoryChoicePreviewValues|List(integer)|||
-|m_ProgressGroupId|keyword||keyword: dlc_story, base_story, dlc_cosmetic, base_item, base_cosmetic, base, dlc<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_cosmetic, dlc_story<br>|
 |m_ResultActorClassId|ActorDataClass&nbsp;ID|||
 |m_ResultAudioOverrideId|keyword||keyword: caretaker, coven<br>|
 |m_ResultBattleConfigurationId|BattleConfiguration&nbsp;ID|||
 |m_ResultBattleConfigurationTableId|BattleConfigurationTable&nbsp;ID|||
 |m_ResultLootIds|List(LootTable&nbsp;ID)|||
-|m_ResultType|keyword||keyword: NONE, GAME_OBJECT, FOUND_BONE, MISSING_BONE, HIDDEN, UI<br>|
+|m_ResultType|keyword||keyword: COMBAT, COUNT, DRIVING, NONE, UI<br>|
 |m_ScoutDist|integer|||
 |m_ScoutPercent|float|||
 </details>
@@ -1776,12 +1776,12 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |all_conditions|Condition&nbsp;ID|||
 |m_Chance|float|||
-|m_FilterId|keyword||keyword: hazard, Objects, safe, rough_patch<br>|
+|m_FilterId|keyword||keyword: Objects, hazard, rough_patch, safe<br>|
 |m_QueueFailedPresentationChance|float|||
-|m_RoleType|keyword||keyword: PERFORMER, TARGET, OBSERVING_PERFORMER, OBSERVING_TARGET, PARTY<br>|
+|m_RoleType|keyword||keyword: OBSERVING_PERFORMER, OBSERVING_TARGET, PARTY, PERFORMER, TARGET<br>|
 |m_Stress|float|||
 |m_TriggerLimit|integer|||
-|m_Type|keyword||keyword: crit, deaths_door, death, pet_inspect, node_path_taken, road_event_completed<br>|
+|m_Type|keyword||keyword: crit, death, deaths_door, node_path_taken, pet_inspect, road_event_completed<br>|
 </details>
 
 <details>
@@ -1801,7 +1801,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |all_conditions|List(Condition&nbsp;ID)|||
 |m_ActorClassId|ActorDataClass&nbsp;ID|||
 |m_IfRoom|boolean|||
-|m_LocationType|keyword||keyword: FRONT, BACK, RANDOM<br>|
+|m_LocationType|keyword||keyword: BACK, FRONT, RANDOM<br>|
 </details>
 
 <details>
@@ -1815,10 +1815,10 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_ConditionId|Condition&nbsp;ID|||
 |m_ConsumeLimit|integer|||
 |m_ConsumePriority|integer|||
-|m_ConsumeTypes|keyword||keyword: manual, crit, evade, block_move, turn, skill_buff, skill_calculate_damage_buff, skill_damage_buff, round_start_buff, round_end_buff, skill_effect, skill_token_ignore, extra_launch, extra_target, skip_turn, forced_target, block_stress_damage, delay_turn, stealth, guard, guarding, riposte, block_dot_apply, passive, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_non_damaging_miss, on_non_damaging_hit, on_killed, deaths_door_armor<br>|
+|m_ConsumeTypes|keyword||keyword: block_dot_apply, block_move, block_stress_damage, crit, deaths_door_armor, delay_turn, evade, extra_launch, extra_target, forced_target, guard, guarding, manual, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_killed, on_non_damaging_hit, on_non_damaging_miss, passive, riposte, round_end_buff, round_start_buff, skill_buff, skill_calculate_damage_buff, skill_damage_buff, skill_effect, skill_token_ignore, skip_turn, stealth, turn<br>|
 |m_DurationAmount|integer|||
 |m_DurationIsSingleRemove|boolean|||
-|m_DurationType|keyword||keyword: performer_turn_start, performer_turn_end, every_turn_start, every_turn_end, round_start, round_end, combat_end, inn_start, inn_end, embark_start, embark_end, infinite, skill_calculate, skill_cooldown, token_calculate_damage, node, day<br>|
+|m_DurationType|keyword||keyword: combat_end, day, embark_end, embark_start, every_turn_end, every_turn_start, infinite, inn_end, inn_start, node, performer_turn_end, performer_turn_start, round_end, round_start, skill_calculate, skill_cooldown, token_calculate_damage<br>|
 |m_InvertTokenId|Token&nbsp;ID|||
 |m_IsExclusiveSource|boolean|||
 |m_IsHidden|boolean|||
@@ -1831,7 +1831,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |m_NegateAllIds|List(Token&nbsp;ID)|||
 |m_NegateIds|List(Token&nbsp;ID)|||
 |m_PreviewValidStatuses|List(keyword)||keyword: deaths_door<br>|
-|m_RemoveTypes|List(keyword)||keyword: manual, crit, evade, block_move, turn, skill_buff, skill_calculate_damage_buff, skill_damage_buff, round_start_buff, round_end_buff, skill_effect, skill_token_ignore, extra_launch, extra_target, skip_turn, forced_target, block_stress_damage, delay_turn, stealth, guard, guarding, riposte, block_dot_apply, passive, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_non_damaging_miss, on_non_damaging_hit, on_killed, deaths_door_armor<br>|
+|m_RemoveTypes|List(keyword)||keyword: block_dot_apply, block_move, block_stress_damage, crit, deaths_door_armor, delay_turn, evade, extra_launch, extra_target, forced_target, guard, guarding, manual, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_killed, on_non_damaging_hit, on_non_damaging_miss, passive, riposte, round_end_buff, round_start_buff, skill_buff, skill_calculate_damage_buff, skill_damage_buff, skill_effect, skill_token_ignore, skip_turn, stealth, turn<br>|
 |m_ShowCombatDuration|boolean|Default True||
 |m_ShowConsumePopText|boolean|Default True||
 |m_ShowDescription|boolean|Default True||
@@ -1855,7 +1855,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 |all_conditions|List(Condition&nbsp;ID)|||
 |any_conditions|List(Condition&nbsp;ID)|||
 |m_IgnoredTokenIds|List(Token&nbsp;ID)|||
-|m_IgnoredTokenTypes|List(keyword)||keyword: manual, crit, evade, block_move, turn, skill_buff, skill_calculate_damage_buff, skill_damage_buff, round_start_buff, round_end_buff, skill_effect, skill_token_ignore, extra_launch, extra_target, skip_turn, forced_target, block_stress_damage, delay_turn, stealth, guard, guarding, riposte, block_dot_apply, passive, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_non_damaging_miss, on_non_damaging_hit, on_killed, deaths_door_armor<br>|
+|m_IgnoredTokenTypes|List(keyword)||keyword: block_dot_apply, block_move, block_stress_damage, crit, deaths_door_armor, delay_turn, evade, extra_launch, extra_target, forced_target, guard, guarding, manual, on_damaging_blocked, on_damaging_hit, on_damaging_miss, on_killed, on_non_damaging_hit, on_non_damaging_miss, passive, riposte, round_end_buff, round_start_buff, skill_buff, skill_calculate_damage_buff, skill_damage_buff, skill_effect, skill_token_ignore, skip_turn, stealth, turn<br>|
 |m_IsInstanceAddedToPerformer|boolean|||
 |m_IsInstanceAddedToTarget|boolean|||
 |m_IsInstanceSourcePerformer|boolean|||
@@ -1888,7 +1888,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |m_Tags|List(ActorDataClass&nbsp;Tag-)|||
 |m_TorchChange|float|||
-|m_Type|keyword||keyword: CRIT, DEATHS_DOOR, DEATH, RELATIONSHIP<br>|
+|m_Type|keyword||keyword: CRIT, DEATH, DEATHS_DOOR, RELATIONSHIP<br>|
 </details>
 
 <details>
@@ -1915,7 +1915,7 @@ Unused Element
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |cost|Seq(Cost&nbsp;ID, float, float)|Sets cost depending on unlock progress||
-|m_ProgressGroupId|keyword||keyword: dlc_story, base_story, dlc_cosmetic, base_item, base_cosmetic, base, dlc<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_cosmetic, dlc_story<br>|
 |m_chances|List(float)|||
 |m_ids|List(Unlock&nbsp;ID)|||
 |m_types|List(keyword)||keyword: unlock<br>|
@@ -1926,7 +1926,7 @@ Unused Element
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_ProgressGroupId|keyword||keyword: dlc_story, base_story, dlc_cosmetic, base_item, base_cosmetic, base, dlc<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_cosmetic, dlc_story<br>|
 |unlocks|List(Unlock&nbsp;ID)|||
 </details>
 
@@ -1940,7 +1940,7 @@ Unused Element
 |m_InputMin|float|Default float.MinValue||
 |m_InputType|keyword||keyword: health_max_percent, kingdom_day<br>|
 |m_SourceId|Overstress&nbsp;ID|||
-|m_Type|keyword||keyword: deaths_door, kingdom_actor_transfer, health_damage, inn_start, overstress<br>|
+|m_Type|keyword||keyword: deaths_door, health_damage, inn_start, kingdom_actor_transfer, overstress<br>|
 |m_WoundPercentChange|float|||
 |m_WoundPercentMax|float|Default float.MaxValue||
 </details>
