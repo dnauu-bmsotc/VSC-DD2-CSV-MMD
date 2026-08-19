@@ -276,31 +276,58 @@ function singleRefCheck(
 		return createExpectedTypeDiagnostic(referenceType, field.range);
 	}
 	else {
-		const inMod = astIndexGroupEntries?.includes(values[0].text);
-		if (!inMod) {
-			const inVanilla = compiledDataGroupEntries?.includes(values[0].text);
-			if (inVanilla) {
-				if (values.length > 1) {
-					return createExpectedEndOfInputDiagnostic(values.slice(1));
+		if (typeSupportsConditionMerge(referenceType)) {
+			let idx = 0;
+			for (const id of values[0].text.split("+")) {
+				if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
+					const line = values[0].range.start.line;
+					const charStart = values[0].range.start.character;
+					const range: Range = {
+						start: { line, character: charStart + idx },
+						end: { line, character: charStart + idx + id.length },
+					};
+					return createMissingGroupMemberDiagnostic(id, referenceType, range);
 				}
-				return null;
+				idx += id.length + 1;
 			}
-		}
-		else {
 			if (values.length > 1) {
 				return createExpectedEndOfInputDiagnostic(values.slice(1));
 			}
 			return null;
 		}
-		return createMissingGroupMemberDiagnostic(referenceType, values[0].range);
+		if (isValueInGroupEntries(values[0].text, astIndexGroupEntries, compiledDataGroupEntries)) {
+			if (values.length > 1) {
+				return createExpectedEndOfInputDiagnostic(values.slice(1));
+			}
+			return null;
+		}
+		return createMissingGroupMemberDiagnostic(values[0].text, referenceType, values[0].range);
 	}
 }
 
-function createMissingGroupMemberDiagnostic(expectedType: TypeDefinition, range: Range) {
+function isValueInGroupEntries(value: string, astIndexGroupEntries?: string[], compiledDataGroupEntries?: string[]): boolean {
+	const inMod = astIndexGroupEntries?.includes(value);
+	if (inMod) {
+		return true;
+	}
+	else {
+		const inVanilla = compiledDataGroupEntries?.includes(value);
+		if (inVanilla) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function typeSupportsConditionMerge(referenceType: TypeDefinition) {
+	return ((referenceType.type === "id") && (referenceType.group === "Condition"))
+}
+
+function createMissingGroupMemberDiagnostic(value: string, expectedType: TypeDefinition, range: Range) {
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Unrecognized value. Expected value of type: ${typeToVerbose(expectedType)}`,
+		message: `Unrecognized value ${value}. Expected value of type: ${typeToVerbose(expectedType)}`,
 	};
 }
 
