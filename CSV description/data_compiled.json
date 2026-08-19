@@ -3719,54 +3719,34 @@
       "name": "BattleConfigurationTable",
       "fields": {
         "m_chances": {
-          "inputString": "List(float)",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_conditions": {
-          "inputString": "List(Condition ID)",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "id",
-              "group": "Condition"
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_ids": {
-          "inputString": "List(Or(BattleConfiguration ID,BattleConfigurationTable ID))",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "BattleConfiguration"
-                },
-                {
-                  "type": "id",
-                  "group": "BattleConfigurationTable"
-                }
-              ]
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_tags": {
-          "inputString": "List(BattleConfigurationEntry Tag+)",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "tagEmitter",
-              "group": "BattleConfigurationEntry"
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
@@ -7573,22 +7553,10 @@
           "comment": ""
         },
         "m_ids": {
-          "inputString": "List(Or(Item ID,LootTable ID))",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Item"
-                },
-                {
-                  "type": "id",
-                  "group": "LootTable"
-                }
-              ]
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
@@ -43677,13 +43645,6 @@
         "glossary_dul_2",
         "glossary_abm_1"
       ],
-      "BattleConfigurationEntry": [
-        "",
-        "wandering",
-        "KINGDOM_CHAMPS",
-        "death",
-        "COVEN_CAULDRON"
-      ],
       "ActorDataClass": [
         "corpse",
         "monster",
@@ -44287,7 +44248,7 @@
     "AchievementType": {
       "party_relationship_pair": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44306,7 +44267,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44325,7 +44286,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44344,7 +44305,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44363,7 +44324,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44382,7 +44343,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44405,7 +44366,7 @@
       },
       "kingdom_campaign_use_items": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44415,7 +44376,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44425,7 +44386,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44435,7 +44396,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44445,7 +44406,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44455,7 +44416,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Item Tag-)",
             "input": {
               "type": "list",
@@ -44469,7 +44430,7 @@
       },
       "inventory_item_add": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44488,7 +44449,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44507,7 +44468,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44526,7 +44487,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44545,7 +44506,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44564,7 +44525,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
             "input": {
               "type": "list",
@@ -44587,7 +44548,7 @@
       },
       "kingdom_victory_uninfected_heroes": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44603,7 +44564,7 @@
               ]
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44619,7 +44580,7 @@
               ]
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44635,7 +44596,7 @@
               ]
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44651,7 +44612,7 @@
               ]
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44667,7 +44628,7 @@
               ]
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "Or(Gang ID,KingdomDifficulty ID)",
             "input": {
               "type": "union",
@@ -44687,7 +44648,7 @@
       },
       "profile_unlock": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44703,7 +44664,7 @@
               ]
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44719,7 +44680,7 @@
               ]
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44735,7 +44696,7 @@
               ]
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44751,7 +44712,7 @@
               ]
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44767,7 +44728,7 @@
               ]
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "Or(Unlock ID,ActorDataClass ID)",
             "input": {
               "type": "union",
@@ -44787,83 +44748,83 @@
       },
       "biome_complete": {
         "influences": {
-          "m_allTags": {
-            "inputString": "Biome KW",
+          "Achievement m_allTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           },
-          "m_anyTags": {
-            "inputString": "Biome KW",
+          "Achievement m_anyTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           },
-          "m_avoidTags": {
-            "inputString": "Biome KW",
+          "Achievement m_avoidTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           },
-          "m_destinationTags": {
-            "inputString": "Biome KW",
+          "Achievement m_destinationTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           },
-          "m_eachTags": {
-            "inputString": "Biome KW",
+          "Achievement m_eachTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           },
-          "m_sourceTags": {
-            "inputString": "Biome KW",
+          "Achievement m_sourceTags": {
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           }
         }
       },
       "inn_treasure_campaign_sum": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -44873,37 +44834,37 @@
       },
       "skill_mastery": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -44913,37 +44874,37 @@
       },
       "inn_visit_all": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -44953,7 +44914,7 @@
       },
       "inventory_full": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -44963,7 +44924,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -44973,7 +44934,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -44983,7 +44944,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -44993,7 +44954,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -45003,7 +44964,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(ALL_INVENTORY_TAGS KW)",
             "input": {
               "type": "list",
@@ -45017,7 +44978,7 @@
       },
       "actor_death_inventory_full": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45036,7 +44997,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45055,7 +45016,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45074,7 +45035,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45093,7 +45054,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45112,7 +45073,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
             "input": {
               "type": "list",
@@ -45135,42 +45096,42 @@
       },
       "node_deliverable_campaign_sum": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
               "group": "NodeDeliverable"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
               "group": "NodeDeliverable"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
               "group": "NodeDeliverable"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
               "group": "NodeDeliverable"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
               "group": "NodeDeliverable"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "NodeDeliverable Tag-",
             "input": {
               "type": "tagReceiver",
@@ -45181,7 +45142,7 @@
       },
       "confession_victory_consecutive": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45191,7 +45152,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45201,7 +45162,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45211,7 +45172,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45221,7 +45182,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45231,7 +45192,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Boss ID)",
             "input": {
               "type": "list",
@@ -45245,7 +45206,7 @@
       },
       "actor_death_skill_use_active_tokens": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45268,7 +45229,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45291,7 +45252,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45314,7 +45275,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45337,7 +45298,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45360,7 +45321,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
             "input": {
               "type": "list",
@@ -45387,37 +45348,37 @@
       },
       "kingdom_inn_capstones": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -45427,37 +45388,37 @@
       },
       "kingdom_kill_contracts": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -45467,7 +45428,7 @@
       },
       "party_relationships": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45486,7 +45447,7 @@
               }
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45505,7 +45466,7 @@
               }
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45524,7 +45485,7 @@
               }
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45543,7 +45504,7 @@
               }
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45562,7 +45523,7 @@
               }
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
             "input": {
               "type": "list",
@@ -45585,37 +45546,37 @@
       },
       "roster_confirm": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45625,37 +45586,37 @@
       },
       "profile_unlock_group": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45665,37 +45626,37 @@
       },
       "skill_use_processed_tokens": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45705,37 +45666,37 @@
       },
       "actor_death_count_from_source": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45745,37 +45706,37 @@
       },
       "affinity_overstress": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45785,37 +45746,37 @@
       },
       "actor_death_combat_sum": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45825,37 +45786,37 @@
       },
       "inventory_item_purchase": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45865,37 +45826,37 @@
       },
       "actor_death_with_source": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45905,37 +45866,37 @@
       },
       "combat_party_has_quirk": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45945,37 +45906,37 @@
       },
       "roster_relationships_unique": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -45985,37 +45946,37 @@
       },
       "affinity_overstress_chain": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46025,37 +45986,37 @@
       },
       "quest_complete": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46065,37 +46026,37 @@
       },
       "skill_health_damage": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46105,37 +46066,37 @@
       },
       "hospital_full_service": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46145,37 +46106,37 @@
       },
       "driving_distance": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46185,37 +46146,37 @@
       },
       "skill_use": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46225,37 +46186,37 @@
       },
       "release_anniversary": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46265,37 +46226,37 @@
       },
       "quest_step_story_choices": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46305,37 +46266,37 @@
       },
       "confession_victory": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46345,37 +46306,37 @@
       },
       "combat_skill_hits": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46385,37 +46346,37 @@
       },
       "game_mode_transition": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46425,37 +46386,37 @@
       },
       "tokens_removed_campaign_sum": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46465,37 +46426,37 @@
       },
       "run_end": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46505,37 +46466,37 @@
       },
       "item_triggered_effects": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46545,37 +46506,37 @@
       },
       "kingdom_victory": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46585,37 +46546,37 @@
       },
       "altar_of_hope_total_progress": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46625,37 +46586,37 @@
       },
       "actor_death": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46665,37 +46626,37 @@
       },
       "party_wipe": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46705,37 +46666,37 @@
       },
       "replacement_hero_add": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46745,37 +46706,37 @@
       },
       "actor_death_run_sum": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46785,37 +46746,37 @@
       },
       "combat_victory": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46825,37 +46786,37 @@
       },
       "biome_complete_group": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46865,37 +46826,37 @@
       },
       "party_classes": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46905,37 +46866,37 @@
       },
       "hire_mercenary": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -46945,37 +46906,37 @@
       },
       "collected_trophies": {
         "influences": {
-          "m_allTags": {
+          "Achievement m_allTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_anyTags": {
+          "Achievement m_anyTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_avoidTags": {
+          "Achievement m_avoidTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_destinationTags": {
+          "Achievement m_destinationTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_eachTags": {
+          "Achievement m_eachTags": {
             "inputString": "any",
             "input": {
               "type": "any"
             }
           },
-          "m_sourceTags": {
+          "Achievement m_sourceTags": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -47670,7 +47631,7 @@
     "ConditionType": {
       "always": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47680,7 +47641,7 @@
       },
       "token_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Token ID",
             "input": {
               "type": "id",
@@ -47691,7 +47652,7 @@
       },
       "token_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Token Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47702,7 +47663,7 @@
       },
       "health_percent": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47712,7 +47673,7 @@
       },
       "health_percent_wound_included": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47722,7 +47683,7 @@
       },
       "wound_percent": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47732,7 +47693,7 @@
       },
       "class": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataClass ID",
             "input": {
               "type": "id",
@@ -47743,7 +47704,7 @@
       },
       "mode": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataMode ID",
             "input": {
               "type": "id",
@@ -47754,7 +47715,7 @@
       },
       "size": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47764,7 +47725,7 @@
       },
       "tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataClass Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47775,7 +47736,7 @@
       },
       "path": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataPath ID",
             "input": {
               "type": "id",
@@ -47786,7 +47747,7 @@
       },
       "path_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataPath Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47797,7 +47758,7 @@
       },
       "dot_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47808,7 +47769,7 @@
       },
       "stress": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47818,7 +47779,7 @@
       },
       "stress_percent": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47828,7 +47789,7 @@
       },
       "quirk": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Quirk ID",
             "input": {
               "type": "id",
@@ -47839,7 +47800,7 @@
       },
       "quirk_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47849,7 +47810,7 @@
       },
       "buff_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47859,7 +47820,7 @@
       },
       "rank": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -47869,7 +47830,7 @@
       },
       "status": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorStatus Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47880,7 +47841,7 @@
       },
       "skill_use_history_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -47891,7 +47852,7 @@
       },
       "skill_use_history_last": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -47902,7 +47863,7 @@
       },
       "skill_received_history_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -47913,7 +47874,7 @@
       },
       "skill_received_history_last": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -47924,7 +47885,7 @@
       },
       "skill_equipped": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -47935,7 +47896,7 @@
       },
       "skill_equipped_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47946,7 +47907,7 @@
       },
       "trinket_equipped": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item ID",
             "input": {
               "type": "id",
@@ -47957,7 +47918,7 @@
       },
       "trinket_equipped_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47968,7 +47929,7 @@
       },
       "combat_item_equipped": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item ID",
             "input": {
               "type": "id",
@@ -47979,7 +47940,7 @@
       },
       "combat_item_equipped_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47990,7 +47951,7 @@
       },
       "actor_stat_value": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorStatType KW",
             "input": {
               "type": "kw",
@@ -48001,7 +47962,7 @@
       },
       "actor_count_value": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -48011,7 +47972,7 @@
       },
       "first_initiative": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48021,7 +47982,7 @@
       },
       "last_initiative": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48031,7 +47992,7 @@
       },
       "in_relationship": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "AffinityRelationship ID",
             "input": {
               "type": "id",
@@ -48042,7 +48003,7 @@
       },
       "in_relationship_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "AffinityRelationship Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48053,7 +48014,7 @@
       },
       "incomplete_hero_story_choices_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48063,7 +48024,7 @@
       },
       "party_class": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataClass ID",
             "input": {
               "type": "id",
@@ -48074,7 +48035,7 @@
       },
       "kingdom_class": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataClass ID",
             "input": {
               "type": "id",
@@ -48085,7 +48046,7 @@
       },
       "roster_status_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "RosterStatusType KW",
             "input": {
               "type": "kw",
@@ -48096,7 +48057,7 @@
       },
       "quest_complete": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Quest ID",
             "input": {
               "type": "id",
@@ -48107,7 +48068,7 @@
       },
       "quest_step_complete": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "QuestStep ID",
             "input": {
               "type": "id",
@@ -48118,7 +48079,7 @@
       },
       "quest_step_current": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "QuestStep ID",
             "input": {
               "type": "id",
@@ -48129,7 +48090,7 @@
       },
       "run_value": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "RunValueType KW",
             "input": {
               "type": "kw",
@@ -48140,7 +48101,7 @@
       },
       "run_value_percent": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "RunValueType KW",
             "input": {
               "type": "kw",
@@ -48151,7 +48112,7 @@
       },
       "boss": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Boss ID|BossExtended ID",
             "input": {
               "type": "id",
@@ -48162,7 +48123,7 @@
       },
       "biome": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Biome KW",
             "input": {
               "type": "kw",
@@ -48173,7 +48134,7 @@
       },
       "biome_sub_type": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeSubType KW",
             "input": {
               "type": "kw",
@@ -48184,7 +48145,7 @@
       },
       "biome_modifier": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeModifier ID",
             "input": {
               "type": "id",
@@ -48195,7 +48156,7 @@
       },
       "biome_modifier_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeModifier Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48206,7 +48167,7 @@
       },
       "biome_siege_strength": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48216,7 +48177,7 @@
       },
       "biome_end_node": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -48227,7 +48188,7 @@
       },
       "biome_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48237,7 +48198,7 @@
       },
       "biome_history_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Biome KW",
             "input": {
               "type": "kw",
@@ -48248,7 +48209,7 @@
       },
       "biome_typical_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48258,7 +48219,7 @@
       },
       "biome_status": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeStatus ID",
             "input": {
               "type": "id",
@@ -48269,7 +48230,7 @@
       },
       "biome_status_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeStatus Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48280,7 +48241,7 @@
       },
       "item_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item ID",
             "input": {
               "type": "id",
@@ -48291,7 +48252,7 @@
       },
       "item_tag_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48302,7 +48263,7 @@
       },
       "item_total_percent": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48312,7 +48273,7 @@
       },
       "stage_coach_upgrade_equipped": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item ID",
             "input": {
               "type": "id",
@@ -48323,7 +48284,7 @@
       },
       "stage_coach_upgrade_equipped_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48334,7 +48295,7 @@
       },
       "stage_coach_upgrade_equipped_general_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48344,7 +48305,7 @@
       },
       "stage_coach_upgrade_equipped_trophy_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48354,7 +48315,7 @@
       },
       "stage_coach_upgrade_equipped_pet_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48364,7 +48325,7 @@
       },
       "doom_reset_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48374,7 +48335,7 @@
       },
       "game_type": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "GameType KW",
             "input": {
               "type": "kw",
@@ -48385,7 +48346,7 @@
       },
       "gang": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Gang ID",
             "input": {
               "type": "id",
@@ -48396,7 +48357,7 @@
       },
       "day": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48406,7 +48367,7 @@
       },
       "siege_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48416,7 +48377,7 @@
       },
       "battle_configuration_tag_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BattleConfiguration Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48427,7 +48388,7 @@
       },
       "map_cell_type": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -48437,7 +48398,7 @@
       },
       "biome_modifier_tag_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "BiomeModifier Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48448,7 +48409,7 @@
       },
       "options_value_bool": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -48458,7 +48419,7 @@
       },
       "skill": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill ID",
             "input": {
               "type": "id",
@@ -48469,7 +48430,7 @@
       },
       "skill_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataSkill Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48480,7 +48441,7 @@
       },
       "profile_unlock": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Unlock ID",
             "input": {
               "type": "id",
@@ -48491,7 +48452,7 @@
       },
       "profile_value": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ProfileValueType KW",
             "input": {
               "type": "kw",
@@ -48502,7 +48463,7 @@
       },
       "profile_run_end_streak_victory": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48512,7 +48473,7 @@
       },
       "profile_run_end_streak_failure": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48522,7 +48483,7 @@
       },
       "profile_calculated_group_progress": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "progressGroup ID",
             "input": {
               "type": "id",
@@ -48533,7 +48494,7 @@
       },
       "profile_has_defeated_boss": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Or(Boss ID,BossExtended ID)",
             "input": {
               "type": "union",
@@ -48553,7 +48514,7 @@
       },
       "round": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48563,7 +48524,7 @@
       },
       "turn": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48573,7 +48534,7 @@
       },
       "killed_class_amount": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ActorDataClass ID",
             "input": {
               "type": "id",
@@ -48584,7 +48545,7 @@
       },
       "arena_modifier": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "ArenaModifier ID",
             "input": {
               "type": "id",
@@ -48595,7 +48556,7 @@
       },
       "combat_source": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "CombatSourceType KW",
             "input": {
               "type": "kw",
@@ -48606,7 +48567,7 @@
       },
       "item": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item ID",
             "input": {
               "type": "id",
@@ -48617,7 +48578,7 @@
       },
       "item_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48628,7 +48589,7 @@
       },
       "node": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -48639,7 +48600,7 @@
       },
       "inn_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Inn Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48650,7 +48611,7 @@
       },
       "inn_upgrade": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "InnUpgrade ID",
             "input": {
               "type": "id",
@@ -48661,7 +48622,7 @@
       },
       "inn_days_since_last_siege_resolve": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48671,7 +48632,7 @@
       },
       "inn_days_since_last_siege_attack": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48681,7 +48642,7 @@
       },
       "inn_siege_resolve_visit": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48691,7 +48652,7 @@
       },
       "inn_respawn_visit": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48701,7 +48662,7 @@
       },
       "inn_destroy_count": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "nothing",
             "input": {
               "type": "nothing"
@@ -48711,7 +48672,7 @@
       },
       "resist": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Resist ID",
             "input": {
               "type": "id",
@@ -48722,7 +48683,7 @@
       },
       "resist_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Or(Quirk Tag-,Token Tag-,Dot Tag-,Buff Tag-)",
             "input": {
               "type": "union",
@@ -48750,7 +48711,7 @@
       },
       "roster_status": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "RosterStatusType KW",
             "input": {
               "type": "kw",
@@ -48761,7 +48722,7 @@
       },
       "relationship": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "AffinityRelationship ID",
             "input": {
               "type": "id",
@@ -48772,7 +48733,7 @@
       },
       "relationship_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "AffinityRelationship Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48783,7 +48744,7 @@
       },
       "overstress": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Overstress ID",
             "input": {
               "type": "id",
@@ -48794,7 +48755,7 @@
       },
       "overstress_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Overstress Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48805,7 +48766,7 @@
       },
       "item_equipped_tag": {
         "influences": {
-          "m_ConditionString": {
+          "Condition m_ConditionString": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -48827,9 +48788,99 @@
       "bleed": {}
     },
     "BattleConfigurationOptionType": {
-      "sub_table": {},
-      "nothing": {},
-      "battle_config": {}
+      "sub_table": {
+        "influences": {
+          "BattleConfigurationTable m_ids": {
+            "inputString": "BattleConfigurationTable ID",
+            "input": {
+              "type": "id",
+              "group": "BattleConfigurationTable"
+            }
+          },
+          "BattleConfigurationTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "BattleConfigurationTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "BattleConfigurationTable m_tags": {
+            "inputString": "BattleConfigurationEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "BattleConfigurationEntry"
+            }
+          }
+        }
+      },
+      "nothing": {
+        "influences": {
+          "BattleConfigurationTable m_ids": {
+            "inputString": "nothing KW",
+            "input": {
+              "type": "kw",
+              "group": "nothing"
+            }
+          },
+          "BattleConfigurationTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "BattleConfigurationTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "BattleConfigurationTable m_tags": {
+            "inputString": "BattleConfigurationEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "BattleConfigurationEntry"
+            }
+          }
+        }
+      },
+      "battle_config": {
+        "influences": {
+          "BattleConfigurationTable m_ids": {
+            "inputString": "BattleConfiguration ID",
+            "input": {
+              "type": "id",
+              "group": "BattleConfiguration"
+            }
+          },
+          "BattleConfigurationTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "BattleConfigurationTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "BattleConfigurationTable m_tags": {
+            "inputString": "BattleConfigurationEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "BattleConfigurationEntry"
+            }
+          }
+        }
+      }
     },
     "m_ChanceMultiplierStatSubTypes": {
       "abm_moribund_stress_multiplier": {}
@@ -48934,16 +48985,122 @@
       "forerunner": {}
     },
     "LootType": {
-      "provision": {},
-      "item": {},
-      "sub_table": {},
-      "unique_sub_table": {},
-      "exclusive_sub_table": {},
-      "all_sub_table": {},
-      "nothing": {},
-      "profile_unlock": {},
-      "quest_step": {},
+      "provision": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "RunValueType KW",
+            "input": {
+              "type": "kw",
+              "group": "RunValueType"
+            }
+          }
+        }
+      },
+      "item": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "Item ID",
+            "input": {
+              "type": "id",
+              "group": "Item"
+            }
+          }
+        }
+      },
+      "sub_table": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "LootTable ID",
+            "input": {
+              "type": "id",
+              "group": "LootTable"
+            }
+          }
+        }
+      },
+      "unique_sub_table": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "LootTable ID",
+            "input": {
+              "type": "id",
+              "group": "LootTable"
+            }
+          }
+        }
+      },
+      "exclusive_sub_table": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "LootTable ID",
+            "input": {
+              "type": "id",
+              "group": "LootTable"
+            }
+          }
+        }
+      },
+      "all_sub_table": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "LootTable ID",
+            "input": {
+              "type": "id",
+              "group": "LootTable"
+            }
+          }
+        }
+      },
+      "nothing": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "nothing KW",
+            "input": {
+              "type": "kw",
+              "group": "nothing"
+            }
+          }
+        }
+      },
+      "profile_unlock": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "Unlock ID",
+            "input": {
+              "type": "id",
+              "group": "Unlock"
+            }
+          }
+        }
+      },
+      "quest_step": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "QuestStep ID",
+            "input": {
+              "type": "id",
+              "group": "QuestStep"
+            }
+          }
+        }
+      },
+      "biome_reward": {
+        "influences": {
+          "LootTable m_ids": {
+            "inputString": "biome_reward KW",
+            "input": {
+              "type": "kw",
+              "group": "biome_reward"
+            }
+          }
+        }
+      }
+    },
+    "biome_reward": {
       "biome_reward": {}
+    },
+    "nothing": {
+      "nothing": {}
     },
     "GameType": {
       "expedition": {},

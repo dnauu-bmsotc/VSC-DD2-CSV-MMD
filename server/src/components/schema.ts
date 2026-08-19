@@ -108,7 +108,7 @@ export function parseType(input: string): TypeDefinition {
 	if (input.match(/^nothing$/)) {
 		return { type: "nothing" };
 	}
-	console.log(`Unhandled input type: ${input}`);
+	console.error(`Unhandled input type: ${input}`);
 	return { type: "nothing" };
 }
 

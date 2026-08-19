@@ -73,7 +73,7 @@ function getInputKeywords(field: Field, compiledData: CompiledData): InputKeywor
 		result.modifiedInputString = result.modifiedInputString.replaceAll(value + " KW", alias);
 		const kwgroup = compiledData.keywords[value];
 		if (!kwgroup) {
-			console.log(`README: Unknown keyword group ${value}`);
+			console.error(`Unknown keyword group ${value}`);
 			continue;
 		}
 		result.groups.push({

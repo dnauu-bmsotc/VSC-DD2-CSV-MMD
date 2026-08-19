@@ -540,10 +540,10 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_chances|List(float)|||
-|m_conditions|List(Condition&nbsp;ID)|||
-|m_ids|List(Or(BattleConfiguration&nbsp;ID, BattleConfigurationTable&nbsp;ID))|||
-|m_tags|List(BattleConfigurationEntry&nbsp;Tag+)|||
+|m_chances|Dep(m_types)|||
+|m_conditions|Dep(m_types)|||
+|m_ids|Dep(m_types)|||
+|m_tags|Dep(m_types)|||
 |m_types|List(keyword)||keyword: battle_config, nothing, sub_table<br>|
 </details>
 
@@ -1263,7 +1263,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 | ---------- | ---------- | ------- | ------ |
 |m_chances|List(float)|||
 |m_conditions|List(Condition&nbsp;ID)|||
-|m_ids|List(Or(Item&nbsp;ID, LootTable&nbsp;ID))|||
+|m_ids|Dep(m_types)|||
 |m_qtys|List(Or(integer, range))|||
 |m_tags|List(LootTableEntry&nbsp;Tag+)|||
 |m_types|List(keyword)||keyword: all_sub_table, biome_reward, exclusive_sub_table, item, nothing, profile_unlock, provision, quest_step, sub_table, unique_sub_table<br>|

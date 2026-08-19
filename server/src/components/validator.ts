@@ -2,7 +2,7 @@ import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
-import { TypeDefinition } from './schema';
+import { TypeDefinition, TypeDefinitionDependent, TypeDefinitionKW } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { logPerformanceTime } from '../../../shared/utils';
 
@@ -85,8 +85,10 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			return singleValueCheck(field, values, definition, isNumericString);
 
 		case "nothing":
-			if (values.length > 0) {
-				return createExpectedEndOfInputDiagnostic(values);
+			for (const v of values) {
+				if (v.text) {
+					return createExpectedEndOfInputDiagnostic(values);
+				}
 			}
 			return null;
 
@@ -157,7 +159,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					}
 				}
 				if (!matchesAnyOption) {
-					return createExpectedTypeDiagnostic(definition, field.range);
+					return createExpectedTypeDiagnostic(definition, values[0].range);
 				}
 				return null;
 			}
@@ -176,64 +178,68 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 		case "kw":
 			const keywords = compiledData.keywords[definition.group];
 			if (!keywords) {
-				console.log(`Unrecognized KW group ${definition.group}`);
+				console.error(`Unrecognized KW group ${definition.group}`);
 				return null;
 			}
 			return singleRefCheck(field, values, definition, Object.keys(keywords), undefined);
 
 		case "dependent":
-			const influenceSourceField = element.fields.filter(f => f.name === definition.field)?.[0];
+			const influencedFieldDefinition = definition;
+			const influenceSourceField = element.fields.find(f => f.name === influencedFieldDefinition.field);
 			if (!influenceSourceField) {
 				return {
 					severity: DiagnosticSeverity.Error,
 					range: field.range,
-					message: `Missing required field ${definition.field} in element ${element.name}.`,
-				};
-			}
-			const influenceSourceValue = influenceSourceField.values.length && influenceSourceField.values[0];
-			if (!influenceSourceValue) {
-				return {
-					severity: DiagnosticSeverity.Error,
-					range: field.range,
-					message: `Field-influencer ${influenceSourceField.name} in element ${element.name} is empty.`,
+					message: `Missing required field ${influencedFieldDefinition.field}.`,
 				};
 			}
 			const influenceSourceSchema = compiledData.schema[element.elementType].fields[influenceSourceField.name].input;
-			if (influenceSourceSchema.type !== "kw") {
+			const influenceSourceSchemaContent = influenceSourceSchema.type === "list" ? influenceSourceSchema.element : influenceSourceSchema;
+			if (influenceSourceSchemaContent.type !== "kw") {
+				console.error(`Influence field ${field.name} in element ${element.name} is not a KW or List(KW) field.`);
+				return null;
+			}
+			if ((field.values.length) && (influenceSourceField.values.length === 0)) {
 				return {
 					severity: DiagnosticSeverity.Error,
 					range: field.range,
-					message: `Influence field ${field.name} is not a keyword field.`,
+					message: `Field-influencer ${influenceSourceField.name} is empty.`,
 				};
 			}
-			const influenceKWGroup = compiledData.keywords[influenceSourceSchema.group];
+			if ((influenceSourceSchema.type === "list") && (influenceSourceField.values.length != field.values.length)) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Field-influencer ${influenceSourceField.name} has a different number of values than this field.`,
+				};
+			}
+			const influenceKWGroup = compiledData.keywords[influenceSourceSchemaContent.group];
 			if (!influenceKWGroup) {
-				return {
-					severity: DiagnosticSeverity.Error,
-					range: field.range,
-					message: `Unrecognized dependency group ${definition.field}`,
-				};
+				console.error(`Unrecognized dependency group ${influenceSourceSchemaContent.group}`);
+				return null;
 			}
-			const influenceValueDesc = influenceKWGroup[influenceSourceValue.text];
-			if (!influenceValueDesc) {
-				return {
-					severity: DiagnosticSeverity.Error,
-					range: field.range,
-					message: `Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`,
-				};
+			for (let i = 0; i < influenceSourceField.values.length; i++) {
+				const sourceValue = influenceSourceField.values[i];
+				const influenceValueDesc = influenceKWGroup[sourceValue.text];
+				if (!influenceValueDesc) {
+					console.error(`Dependency of field ${field.name} by value ${sourceValue.text} is not found.`);
+					return null;
+				}
+				const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
+				if (!influenceType) {
+					console.error(`Dependency of field ${field.name} by value ${sourceValue.text} is empty.`);
+					return null;
+				}
+				const valuesToValidate = influenceSourceSchema.type === "list" ? field.values.slice(i, i + 1) : field.values;
+				const validationResult = validateInput(element, field, valuesToValidate, influenceType.input, compiledData, astIndex);
+				if (validationResult) {
+					return validationResult;
+				}
 			}
-			const influenceType = influenceValueDesc.influences?.[field.name];
-			if (!influenceType) {
-				return {
-					severity: DiagnosticSeverity.Error,
-					range: field.range,
-					message: `Dependency of field ${field.name} by value ${influenceSourceValue.text} is not found.`,
-				};
-			}
-			return validateInput(element, field, values, influenceType.input, compiledData, astIndex);
+			return null;
 
 		default:
-			console.log(`Unknown input type: ${definition}`);
+			console.error(`Unknown input type: ${definition}`);
 			return null;
 	}
 }
@@ -272,29 +278,33 @@ function singleRefCheck(
 	astIndexGroupEntries?: string[],
 	compiledDataGroupEntries?: string[]
 ): Diagnostic | null {
+	if (typeSupportsConditionMerge(referenceType)) {
+		let idx = 0;
+		for (const id of values[0].text.split("+")) {
+			if (id === "") {
+				continue;
+			}
+			if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
+				const line = values[0].range.start.line;
+				const charStart = values[0].range.start.character;
+				const range: Range = {
+					start: { line, character: charStart + idx },
+					end: { line, character: charStart + idx + id.length },
+				};
+				return createMissingGroupMemberDiagnostic(id, referenceType, range);
+			}
+			idx += id.length + 1;
+		}
+		if (values.length > 1) {
+			return createExpectedEndOfInputDiagnostic(values.slice(1));
+		}
+		return null;
+	}
+
 	if (values.length === 0) {
 		return createExpectedTypeDiagnostic(referenceType, field.range);
 	}
 	else {
-		if (typeSupportsConditionMerge(referenceType)) {
-			let idx = 0;
-			for (const id of values[0].text.split("+")) {
-				if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
-					const line = values[0].range.start.line;
-					const charStart = values[0].range.start.character;
-					const range: Range = {
-						start: { line, character: charStart + idx },
-						end: { line, character: charStart + idx + id.length },
-					};
-					return createMissingGroupMemberDiagnostic(id, referenceType, range);
-				}
-				idx += id.length + 1;
-			}
-			if (values.length > 1) {
-				return createExpectedEndOfInputDiagnostic(values.slice(1));
-			}
-			return null;
-		}
 		if (isValueInGroupEntries(values[0].text, astIndexGroupEntries, compiledDataGroupEntries)) {
 			if (values.length > 1) {
 				return createExpectedEndOfInputDiagnostic(values.slice(1));
