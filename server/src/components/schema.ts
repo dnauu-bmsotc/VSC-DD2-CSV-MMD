@@ -18,7 +18,8 @@ export type TypeDefinition =
 	| TypeDefinitionDependentRequired
 	| TypeDefinitionLocalization
 	| TypeDefinitionAny
-	| TypeDefinitionNothing;
+	| TypeDefinitionNothing
+	| TypeDefinitionSubtype;
 
 export type TypeDefinitionInt = { type: "int"; };
 export type TypeDefinitionRange = { type: "range"; };
@@ -36,6 +37,7 @@ export type TypeDefinitionDependentRequired = Omit<TypeDefinitionDependent, "typ
 export type TypeDefinitionLocalization = { type: "localization"; };
 export type TypeDefinitionAny = { type: "any"; };
 export type TypeDefinitionNothing = { type: "nothing"; };
+export type TypeDefinitionSubtype = { type: "sub"; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
 
 export type Field = {
 	inputString: string;
@@ -51,6 +53,7 @@ export type Element = {
 export type FieldsDescription = Record<string, Element>;
 
 export function parseType(input: string): TypeDefinition {
+	const defaultReturnValue = Object.freeze({ type: "any" });
 	input = input.trim();
 	const funcRegEx = (funcName: string) =>
 		new RegExp(`^${funcName}\\(((?:[^()]+|\\([^()]*\\))*)\\)$`);
@@ -105,6 +108,23 @@ export function parseType(input: string): TypeDefinition {
 		const elements = splitTopLevel(content).map(p => parseType(p.trim()));
 		return { type: "union", elements: elements };
 	}
+	if (input.match(funcRegEx("Sub"))) {
+		const content = input.match(funcRegEx("Sub"))?.[1];
+		if (!content) {
+			return defaultReturnValue;
+		}
+		const elements = content.split(",");
+		if (!elements || elements.length !== 3) {
+			console.error(`Subtype ${input} needs to have 3 elements.`);
+			return defaultReturnValue;
+		}
+		const firstElementDefinition = parseType(elements[0]);
+		if (firstElementDefinition.type !== "kw") {
+			console.error(`Subtype ${input} needs a keyword group as the first type`);
+			return defaultReturnValue;
+		}
+		return { type: "sub", group: firstElementDefinition.group, subtypeString: elements[1], subtypeValueType: parseType(elements[2]) };
+	}
 	if (input.match(/^Localization$/)) {
 		return { type: "localization" };
 	}
@@ -115,7 +135,7 @@ export function parseType(input: string): TypeDefinition {
 		return { type: "nothing" };
 	}
 	console.error(`Unhandled input type: ${input}`);
-	return { type: "nothing" };
+	return defaultReturnValue;
 }
 
 export function readFieldsDescription(filePath: string): FieldsDescription {

@@ -33,6 +33,9 @@ export function validateAstBySchema(
 		}
 		const elementDefinition = compiledData.schema[element.elementType];
 		for (const field of element.fields) {
+			if (!field.name) {
+				continue;
+			}
 			const fieldDefinition = elementDefinition.fields[field.name];
 			if (!fieldDefinition) {
 				if (configuration.validateFieldNames) {
@@ -241,6 +244,39 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 			return null;
 
+		case 'sub':
+			if (values.length !== 3) {
+				return {
+					severity: DiagnosticSeverity.Error,
+					range: field.range,
+					message: `Three values are required`,
+				};
+			}
+			const groupValidateResult = validateInput(element, field, [values[0]], { type: "kw", group: definition.group }, compiledData, astIndex);
+			if (groupValidateResult) {
+				return groupValidateResult;
+			}
+			const KWGroup = compiledData.keywords[definition.group];
+			if (!KWGroup) {
+				console.error(`Unrecognized subtype group ${definition.group}`);
+				return null;
+			}
+			const valueDesc = KWGroup[values[0].text];
+			if (!valueDesc) {
+				console.error(`Subtype group ${definition.group} has no ${values[0].text}.`);
+				return null;
+			}
+			const derivedType = valueDesc.influences?.[definition.subtypeString];
+			if (!derivedType) {
+				console.error(`Subtype ${definition.subtypeString} has empty fields.`);
+				return null;
+			}
+			const subtypeValidateResult = validateInput(element, field, [values[1]], derivedType.input, compiledData, astIndex);
+			if (subtypeValidateResult) {
+				return subtypeValidateResult;
+			}
+			return validateInput(element, field, [values[2]], definition.subtypeValueType, compiledData, astIndex);
+
 		default:
 			console.error(`Unknown input type: ${definition}`);
 			return null;
@@ -413,5 +449,7 @@ function typeToVerbose(t: TypeDefinition): string {
 			return `Tag of ${t.group}`;
 		case "union":
 			return t.elements.map(typeToVerbose).join(" or ");
+		case "sub":
+			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
 	}
 }

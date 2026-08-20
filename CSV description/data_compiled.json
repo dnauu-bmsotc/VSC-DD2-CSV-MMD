@@ -33,7 +33,7 @@
             "type": "dependent",
             "field": "m_type"
           },
-          "comment": "m_sourceTags and m_destinationTags must both be empty or not empty"
+          "comment": ""
         },
         "m_eachTags": {
           "inputString": "Dep(m_type)",
@@ -48,7 +48,7 @@
           "input": {
             "type": "int"
           },
-          "comment": "Incompatible with m_targetInt and m_targetFloat"
+          "comment": ""
         },
         "m_sourceTags": {
           "inputString": "Dep(m_type)",
@@ -63,7 +63,7 @@
           "input": {
             "type": "float"
           },
-          "comment": "Can't have both m_targetInt and m_targetFloat defined"
+          "comment": ""
         },
         "m_targetInt": {
           "inputString": "int",
@@ -2903,12 +2903,10 @@
           "comment": ""
         },
         "add_stats": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(key_map)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "key_map"
           },
           "comment": ""
         },
@@ -2940,32 +2938,22 @@
           "comment": ""
         },
         "multiply_stats": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(key_map)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "key_map"
           },
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Seq(ActorStatType KW,ActorStatSubType KW,float)",
+          "inputString": "Sub(ActorStatSubType KW,Sub 1,float)",
           "input": {
-            "type": "sequence",
-            "elements": [
-              {
-                "type": "kw",
-                "group": "ActorStatType"
-              },
-              {
-                "type": "kw",
-                "group": "ActorStatSubType"
-              },
-              {
-                "type": "float"
-              }
-            ]
+            "type": "sub",
+            "group": "ActorStatSubType",
+            "subtypeString": "Sub 1",
+            "subtypeValueType": {
+              "type": "float"
+            }
           },
           "comment": ""
         }
@@ -7182,10 +7170,9 @@
           "comment": ""
         },
         "m_TrinketEquipSfxOverrideEventPath": {
-          "inputString": "m_TrinketEquipSfxOverrideEventPath KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_TrinketEquipSfxOverrideEventPath"
+            "type": "any"
           },
           "comment": ""
         }
@@ -8940,13 +8927,13 @@
           "comment": ""
         },
         "m_SkipValleyRunValues": {
-          "inputString": "Seq(m_SkipValleyRunValues KW,float)",
+          "inputString": "Seq(RunValueType KW,float)",
           "input": {
             "type": "sequence",
             "elements": [
               {
                 "type": "kw",
-                "group": "m_SkipValleyRunValues"
+                "group": "RunValueType"
               },
               {
                 "type": "float"
@@ -9673,12 +9660,10 @@
           "comment": ""
         },
         "add_stats": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(key_map)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "key_map"
           },
           "comment": ""
         },
@@ -9710,65 +9695,22 @@
           "comment": ""
         },
         "multiply_stats": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(key_map)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "key_map"
           },
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Seq(RunStatType KW,Or(LootTable Tag-,NodeType KW,RouteType KW,BattleConfigurationTable Tag-,Item ID,ItemType KW,BattleConfigurationEntry Tag-,LootTableEntry Tag-),float)",
+          "inputString": "Sub(RunStatSubType KW,Sub 1,float)",
           "input": {
-            "type": "sequence",
-            "elements": [
-              {
-                "type": "kw",
-                "group": "RunStatType"
-              },
-              {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "LootTable"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "NodeType"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "RouteType"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "BattleConfigurationTable"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Item"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ItemType"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "BattleConfigurationEntry"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "LootTableEntry"
-                  }
-                ]
-              },
-              {
-                "type": "float"
-              }
-            ]
+            "type": "sub",
+            "group": "RunStatSubType",
+            "subtypeString": "Sub 1",
+            "subtypeValueType": {
+              "type": "float"
+            }
           },
           "comment": ""
         }
@@ -10266,13 +10208,9 @@
           "comment": ""
         },
         "m_PlayerStoryChoicePreviewIds": {
-          "inputString": "List(m_PlayerStoryChoicePreviewIds KW)",
+          "inputString": "List(Or(m_PlayerStoryChoicePreviewIds KW,any)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "kw",
-              "group": "m_PlayerStoryChoicePreviewIds"
-            }
+            "type": "any"
           },
           "comment": ""
         },
@@ -47063,43 +47001,784 @@
       "start_round": {}
     },
     "ActorStatType": {
-      "speed": {},
-      "speed_tie_breaker": {},
-      "speed_number_of_turns": {},
-      "crit_chance": {},
-      "health_damage": {},
-      "health_damage_range": {},
-      "health_damage_dealt_percent": {},
-      "health_damage_dealt_mult_percent": {},
-      "health_damage_received_percent": {},
-      "health_max": {},
-      "wound_percent_max": {},
-      "stress_max": {},
-      "deaths_door_chance": {},
-      "resistance": {},
-      "resistance_ignore": {},
-      "health_heal_dealt_percent": {},
-      "health_heal_received_percent": {},
-      "health_heal_percent_between_nodes": {},
-      "route_choice_chance": {},
-      "route_choice_preference": {},
-      "dot_extra_duration_dealt": {},
-      "dot_extra_duration_received": {},
-      "dot_effect_value_dealt_change": {},
-      "dot_effect_value_received_change": {},
-      "dot_effect_value_dealt_multiplier": {},
-      "dot_effect_value_received_multiplier": {},
-      "affinity_relationship_tag_chance_modifier": {},
-      "affinity_relationship_tag_extra_duration": {},
-      "overstress_chance_modifier": {},
-      "inn_quirk_generation_chance_modifier": {},
-      "kingdom_actor_travel_distance": {},
-      "kingdom_actor_travel_effect_chance": {},
-      "kingdom_wound_heal_multiplier": {},
-      "rest_item_effect_chance_modifier": {},
-      "token_limit": {},
-      "effect_performer_chance_multiplier": {},
-      "effect_target_chance_multiplier": {}
+      "speed": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "speed_tie_breaker": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "speed_number_of_turns": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "crit_chance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_damage": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_damage_range": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_damage_dealt_percent": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_damage_dealt_mult_percent": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_damage_received_percent": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_max": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "wound_percent_max": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stress_max": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "deaths_door_chance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "resistance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "resistance_ignore": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_heal_dealt_percent": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_heal_received_percent": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "health_heal_percent_between_nodes": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "route_choice_chance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "route_choice_preference": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_extra_duration_dealt": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_extra_duration_received": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_effect_value_dealt_change": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_effect_value_received_change": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_effect_value_dealt_multiplier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dot_effect_value_received_multiplier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "affinity_relationship_tag_chance_modifier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "affinity_relationship_tag_extra_duration": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "overstress_chance_modifier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "inn_quirk_generation_chance_modifier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kingdom_actor_travel_distance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kingdom_actor_travel_effect_chance": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kingdom_wound_heal_multiplier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "rest_item_effect_chance_modifier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "token_limit": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "effect_performer_chance_multiplier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "effect_target_chance_multiplier": {
+        "influences": {
+          "ActorDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "ActorDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      }
+    },
+    "ActorStatSubType": {
+      "affinity_relationship_tag_chance_modifier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "AffinityRelationship Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "AffinityRelationship"
+            }
+          }
+        }
+      },
+      "affinity_relationship_tag_extra_duration": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "AffinityRelationship Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "AffinityRelationship"
+            }
+          }
+        }
+      },
+      "dot_effect_value_dealt_change": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "dot_effect_value_dealt_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "dot_effect_value_received_change": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "dot_effect_value_received_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "dot_extra_duration_dealt": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "dot_extra_duration_received": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "effect_performer_chance_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "any",
+            "input": {
+              "type": "any"
+            }
+          }
+        }
+      },
+      "health_heal_dealt_percent": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "any",
+            "input": {
+              "type": "any"
+            }
+          }
+        }
+      },
+      "health_heal_received_percent": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "any",
+            "input": {
+              "type": "any"
+            }
+          }
+        }
+      },
+      "inn_quirk_generation_chance_modifier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Quirk Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Quirk"
+            }
+          }
+        }
+      },
+      "overstress_chance_modifier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Overstress ID",
+            "input": {
+              "type": "id",
+              "group": "Overstress"
+            }
+          }
+        }
+      },
+      "resistance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Resist ID",
+            "input": {
+              "type": "id",
+              "group": "Resist"
+            }
+          }
+        }
+      },
+      "resistance_ignore": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Resist ID",
+            "input": {
+              "type": "id",
+              "group": "Resist"
+            }
+          }
+        }
+      },
+      "rest_item_effect_chance_modifier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Item Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Item"
+            }
+          }
+        }
+      },
+      "route_choice_preference": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "NodeType KW",
+            "input": {
+              "type": "kw",
+              "group": "NodeType"
+            }
+          }
+        }
+      }
     },
     "InnStatType": {
       "health_max": {},
@@ -47116,130 +47795,1405 @@
       "storage_inventory_max_slots": {},
       "infection_adjacent_cure_percentage": {}
     },
-    "RunStatType": {
-      "loot_chance": {},
-      "loot_qty": {},
-      "torch_min_value": {},
-      "torch_max_value": {},
-      "torch_default_value": {},
-      "torch_add_percent": {},
-      "torch_remove_percent": {},
-      "torch_drain_between_nodes": {},
-      "hero_upgrade_points_min_value": {},
-      "hero_upgrade_points_max_value": {},
-      "hero_upgrade_points_default_value": {},
-      "doom_min_value": {},
-      "doom_max_value": {},
-      "doom_default_value": {},
-      "doom_reset_value": {},
-      "doom_effect_number_of_nodes": {},
-      "stage_coach_armor_min_value": {},
-      "stage_coach_armor_max_value": {},
-      "stage_coach_armor_default_value": {},
-      "stage_coach_wheels_min_value": {},
-      "stage_coach_wheels_max_value": {},
-      "stage_coach_wheels_default_value": {},
-      "item_max_qty": {},
-      "item_discard_game_score_chance": {},
-      "player_inventory_max_slots": {},
-      "retreat_chance": {},
-      "scout_node_chance": {},
-      "scout_route_chance": {},
-      "store_cost_buy_multiplier": {},
-      "affinity_tick_trigger_positive_chance_multiplier": {},
-      "affinity_tick_trigger_negative_chance_multiplier": {},
-      "affinity_relationship_tag_chance_modifier": {},
-      "battle_modifier_chance": {},
-      "story_choice_multiplier": {},
-      "map_generation_nodes_per_row_min": {},
-      "map_generation_nodes_per_row_max": {},
-      "map_generation_nodes_per_row_multiplier": {},
-      "map_generation_length_multiplier": {},
-      "map_generation_node_spawn_multiplier": {},
-      "map_generation_node_execute_loot_chance": {},
-      "map_generation_node_filler_limit_modifier": {},
-      "map_generation_road_event_spawn_multiplier": {},
-      "map_generation_route_chance_multiplier": {},
-      "score_bonus_multiplier": {},
-      "score_penalty_multiplier": {},
-      "run_generation_number_of_typical_biomes": {},
-      "run_generation_typical_biome_chance": {},
-      "run_generation_number_of_optional_biomes": {},
-      "run_generation_optional_biome_chance": {},
-      "resistance": {},
-      "battle_configuration_chance": {},
-      "hire_typical_biomes_min": {},
-      "hire_typical_biomes_max": {},
-      "hire_chance": {},
-      "boss_modifier_chance_modifier": {},
-      "escalation_min_value": {},
-      "escalation_max_value": {},
-      "escalation_default_value": {},
-      "siege_accrual": {},
-      "siege_accrual_range": {},
-      "siege_spawn_threshold": {},
-      "siege_spawn_limit": {},
-      "siege_strength": {},
-      "siege_strength_range": {},
-      "siege_delay": {},
-      "siege_delay_range": {},
-      "treasure_accrual": {},
-      "treasure_accrual_range": {},
-      "treasure_spawn_threshold": {},
-      "kill_contract_accrual": {},
-      "kill_contract_accrual_range": {},
-      "kill_contract_spawn_threshold": {},
-      "kill_contract_spawn_limit": {},
-      "kingdom_event_generation_chance": {},
-      "camp_ambush_chance": {},
-      "route_effect_apply_multiplier": {}
-    },
-    "ActorStatSubType": {
-      "Bridge": {},
-      "Cache": {},
-      "CreatureDen": {},
-      "Dungeon": {},
-      "Gate": {},
-      "HeroSelect": {},
-      "Hospital": {},
-      "Inn": {},
-      "Oasis": {},
-      "Store": {},
-      "StoryAssist": {},
-      "StoryCosmic": {},
-      "StoryCultist": {},
-      "StoryHero": {},
-      "StoryHeroReplacement": {},
-      "StoryResist": {},
-      "Unknown": {},
-      "WatchTower": {},
-      "abm_moribund_stress_multiplier": {},
-      "bleed": {},
-      "blight": {},
-      "burn": {},
-      "death": {},
-      "debuff": {},
-      "disease": {},
-      "food": {},
-      "horror": {},
-      "hot": {},
-      "meltdown": {},
-      "move": {},
-      "neg_inn_normal": {},
-      "neg_inn_rare": {},
-      "negative": {},
-      "positive": {},
-      "positivetoken": {},
-      "resolute": {},
-      "rest_item": {},
-      "skill": {},
-      "stress": {},
-      "stun": {}
-    },
     "InnStatSubType": {
       "General": {},
       "Pet": {},
       "Trophy": {}
+    },
+    "RunStatType": {
+      "loot_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "loot_qty": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_add_percent": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_remove_percent": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "torch_drain_between_nodes": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hero_upgrade_points_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hero_upgrade_points_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hero_upgrade_points_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "doom_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "doom_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "doom_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "doom_reset_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "doom_effect_number_of_nodes": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_armor_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_armor_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_armor_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_wheels_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_wheels_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "stage_coach_wheels_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "item_max_qty": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "item_discard_game_score_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "player_inventory_max_slots": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "retreat_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "scout_node_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "scout_route_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "store_cost_buy_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "affinity_tick_trigger_positive_chance_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "affinity_tick_trigger_negative_chance_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "affinity_relationship_tag_chance_modifier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "battle_modifier_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "story_choice_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_nodes_per_row_min": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_nodes_per_row_max": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_nodes_per_row_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_length_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_node_spawn_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_node_execute_loot_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_node_filler_limit_modifier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_road_event_spawn_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "map_generation_route_chance_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "score_bonus_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "score_penalty_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "run_generation_number_of_typical_biomes": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "run_generation_typical_biome_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "run_generation_number_of_optional_biomes": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "run_generation_optional_biome_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "resistance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "battle_configuration_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hire_typical_biomes_min": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hire_typical_biomes_max": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "hire_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "boss_modifier_chance_modifier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "escalation_min_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "escalation_max_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "escalation_default_value": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_accrual": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_accrual_range": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_spawn_threshold": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_spawn_limit": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_strength": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_strength_range": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_delay": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "siege_delay_range": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "treasure_accrual": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "treasure_accrual_range": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "treasure_spawn_threshold": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kill_contract_accrual": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kill_contract_accrual_range": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kill_contract_spawn_threshold": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kill_contract_spawn_limit": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "kingdom_event_generation_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "camp_ambush_chance": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "route_effect_apply_multiplier": {
+        "influences": {
+          "RunDataStats add_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "RunDataStats multiply_stats": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      }
+    },
+    "RunStatSubType": {
+      "battle_configuration_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "BattleConfigurationTableEntry Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "BattleConfigurationTableEntry"
+            }
+          }
+        }
+      },
+      "item_max_qty": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Item Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Item"
+            }
+          }
+        }
+      },
+      "loot_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "LootTableEntry Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "LootTableEntry"
+            }
+          }
+        }
+      },
+      "loot_qty": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "LootTableEntry Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "LootTableEntry"
+            }
+          }
+        }
+      },
+      "map_generation_node_execute_loot_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "NodeType KW",
+            "input": {
+              "type": "kw",
+              "group": "NodeType"
+            }
+          }
+        }
+      },
+      "map_generation_node_filler_limit_modifier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "NodeType KW",
+            "input": {
+              "type": "kw",
+              "group": "NodeType"
+            }
+          }
+        }
+      },
+      "map_generation_node_spawn_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "NodeType KW",
+            "input": {
+              "type": "kw",
+              "group": "NodeType"
+            }
+          }
+        }
+      },
+      "map_generation_route_chance_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "RouteType KW",
+            "input": {
+              "type": "kw",
+              "group": "RouteType"
+            }
+          }
+        }
+      },
+      "resistance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "Dot Tag-",
+            "input": {
+              "type": "tagReceiver",
+              "group": "Dot"
+            }
+          }
+        }
+      },
+      "route_effect_apply_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "RouteType KW",
+            "input": {
+              "type": "kw",
+              "group": "RouteType"
+            }
+          }
+        }
+      },
+      "run_generation_typical_biome_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "BiomeType KW",
+            "input": {
+              "type": "kw",
+              "group": "BiomeType"
+            }
+          }
+        }
+      },
+      "score_penalty_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "ScoreType KW",
+            "input": {
+              "type": "kw",
+              "group": "ScoreType"
+            }
+          }
+        }
+      },
+      "scout_node_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "NodeType KW",
+            "input": {
+              "type": "kw",
+              "group": "NodeType"
+            }
+          }
+        }
+      },
+      "scout_route_chance": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "RouteType KW",
+            "input": {
+              "type": "kw",
+              "group": "RouteType"
+            }
+          }
+        }
+      },
+      "store_cost_buy_multiplier": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "ItemType KW",
+            "input": {
+              "type": "kw",
+              "group": "ItemType"
+            }
+          }
+        }
+      },
+      "torch_remove_percent": {
+        "influences": {
+          "Sub 1": {
+            "inputString": "any",
+            "input": {
+              "type": "any"
+            }
+          }
+        }
+      }
     },
     "ActorEffectTriggerSourceType": {
       "target": {},
@@ -48954,9 +50908,6 @@
       "memory": {},
       "memory_reroll": {}
     },
-    "m_TrinketEquipSfxOverrideEventPath": {
-      "event:/ui/shared/trinket_equip_cultist": {}
-    },
     "RosterReplacementType": {
       "none": {},
       "respawn": {},
@@ -49627,9 +51578,6 @@
       "gang_combat": {},
       "oblivion_tear": {},
       "size": {}
-    },
-    "m_SkipValleyRunValues": {
-      "torch": {}
     },
     "repeatable_item": {
       "trinket": {},
