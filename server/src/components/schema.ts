@@ -15,6 +15,7 @@ export type TypeDefinition =
 	| TypeDefinitionSequence
 	| TypeDefinitionUnion
 	| TypeDefinitionDependent
+	| TypeDefinitionDependentRequired
 	| TypeDefinitionLocalization
 	| TypeDefinitionAny
 	| TypeDefinitionNothing;
@@ -31,6 +32,7 @@ export type TypeDefinitionList = { type: "list"; element: TypeDefinition; };
 export type TypeDefinitionSequence = { type: "sequence"; elements: TypeDefinition[]; };
 export type TypeDefinitionUnion = { type: "union"; elements: TypeDefinition[]; };
 export type TypeDefinitionDependent = { type: "dependent"; field: string; };
+export type TypeDefinitionDependentRequired = Omit<TypeDefinitionDependent, "type"> & { type: "dependentRequired" };
 export type TypeDefinitionLocalization = { type: "localization"; };
 export type TypeDefinitionAny = { type: "any"; };
 export type TypeDefinitionNothing = { type: "nothing"; };
@@ -84,6 +86,10 @@ export function parseType(input: string): TypeDefinition {
 		const content = input.match(funcRegEx("List"))?.[1];
 		const element = parseType(content? content.trim() : "");
 		return { type: "list", element: element ? element : { type: "nothing" } };
+	}
+	if (input.match(funcRegEx("Dep\\*"))) {
+		const field = input.match(funcRegEx("Dep\\*"))?.[1];
+		return { type: "dependentRequired", field: field ? field : "" };
 	}
 	if (input.match(funcRegEx("Dep"))) {
 		const field = input.match(funcRegEx("Dep"))?.[1];

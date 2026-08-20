@@ -3719,9 +3719,9 @@
       "name": "BattleConfigurationTable",
       "fields": {
         "m_chances": {
-          "inputString": "Dep(m_types)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "dependent",
+            "type": "dependentRequired",
             "field": "m_types"
           },
           "comment": ""
@@ -3735,9 +3735,9 @@
           "comment": ""
         },
         "m_ids": {
-          "inputString": "Dep(m_types)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "dependent",
+            "type": "dependentRequired",
             "field": "m_types"
           },
           "comment": ""
@@ -6565,23 +6565,18 @@
       "name": "InnTable",
       "fields": {
         "m_chances": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_ids": {
-          "inputString": "List(Inn ID)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "id",
-              "group": "Inn"
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
@@ -7532,27 +7527,14 @@
       "name": "LootTable",
       "fields": {
         "m_chances": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_conditions": {
-          "inputString": "List(Condition ID)",
-          "input": {
-            "type": "list",
-            "element": {
-              "type": "id",
-              "group": "Condition"
-            }
-          },
-          "comment": ""
-        },
-        "m_ids": {
           "inputString": "Dep(m_types)",
           "input": {
             "type": "dependent",
@@ -7560,32 +7542,27 @@
           },
           "comment": ""
         },
-        "m_qtys": {
-          "inputString": "List(Or(int,range))",
+        "m_ids": {
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "int"
-                },
-                {
-                  "type": "range"
-                }
-              ]
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
+          },
+          "comment": ""
+        },
+        "m_qtys": {
+          "inputString": "Dep*(m_types)",
+          "input": {
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_tags": {
-          "inputString": "List(LootTableEntry Tag+)",
+          "inputString": "Dep(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "tagEmitter",
-              "group": "LootTableEntry"
-            }
+            "type": "dependent",
+            "field": "m_types"
           },
           "comment": ""
         },
@@ -48939,7 +48916,23 @@
       "hero_bones": {}
     },
     "m_typesInnTable": {
-      "inn": {}
+      "inn": {
+        "influences": {
+          "InnTable m_ids": {
+            "inputString": "Inn ID",
+            "input": {
+              "type": "id",
+              "group": "Inn"
+            }
+          },
+          "InnTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          }
+        }
+      }
     },
     "m_OverrideBackgroundFileName": {
       "quest_coven": {},
@@ -49000,6 +48993,40 @@
               "type": "kw",
               "group": "RunValueType"
             }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
+            }
           }
         }
       },
@@ -49010,6 +49037,40 @@
             "input": {
               "type": "id",
               "group": "Item"
+            }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
             }
           }
         }
@@ -49022,6 +49083,40 @@
               "type": "id",
               "group": "LootTable"
             }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
+            }
           }
         }
       },
@@ -49032,6 +49127,40 @@
             "input": {
               "type": "id",
               "group": "LootTable"
+            }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
             }
           }
         }
@@ -49044,6 +49173,40 @@
               "type": "id",
               "group": "LootTable"
             }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
+            }
           }
         }
       },
@@ -49054,6 +49217,40 @@
             "input": {
               "type": "id",
               "group": "LootTable"
+            }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
             }
           }
         }
@@ -49066,6 +49263,40 @@
               "type": "kw",
               "group": "nothing"
             }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
+            }
           }
         }
       },
@@ -49076,6 +49307,40 @@
             "input": {
               "type": "id",
               "group": "Unlock"
+            }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
             }
           }
         }
@@ -49088,6 +49353,40 @@
               "type": "id",
               "group": "QuestStep"
             }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
+            }
           }
         }
       },
@@ -49098,6 +49397,40 @@
             "input": {
               "type": "kw",
               "group": "biome_reward"
+            }
+          },
+          "LootTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "LootTable m_conditions": {
+            "inputString": "Condition ID",
+            "input": {
+              "type": "id",
+              "group": "Condition"
+            }
+          },
+          "LootTable m_qtys": {
+            "inputString": "Or(int,range)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "int"
+                },
+                {
+                  "type": "range"
+                }
+              ]
+            }
+          },
+          "LootTable m_tags": {
+            "inputString": "LootTableEntry Tag+",
+            "input": {
+              "type": "tagEmitter",
+              "group": "LootTableEntry"
             }
           }
         }

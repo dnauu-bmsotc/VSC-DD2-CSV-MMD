@@ -183,6 +183,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 			return singleRefCheck(field, values, definition, Object.keys(keywords), undefined);
 
+		case "dependentRequired":
 		case "dependent":
 			const influencedFieldDefinition = definition;
 			const influenceSourceField = element.fields.find(f => f.name === influencedFieldDefinition.field);
@@ -206,11 +207,13 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					message: `Field-influencer ${influenceSourceField.name} is empty.`,
 				};
 			}
-			if ((influenceSourceSchema.type === "list") && (influenceSourceField.values.length != field.values.length)) {
+			if ((influenceSourceSchema.type === "list")) {
+				if ((definition.type === "dependentRequired") && (influenceSourceField.values.length != field.values.length)
+					|| (definition.type === "dependent") && (influenceSourceField.values.length < field.values.length))
 				return {
 					severity: DiagnosticSeverity.Error,
 					range: field.range,
-					message: `Field-influencer ${influenceSourceField.name} has a different number of values than this field.`,
+					message: `Field-influencer ${influenceSourceField.name} has a different number of values (${influenceSourceField.values.length}) than this field (${field.values.length}).`,
 				};
 			}
 			const influenceKWGroup = compiledData.keywords[influenceSourceSchemaContent.group];
@@ -384,6 +387,8 @@ function typeToVerbose(t: TypeDefinition): string {
 			return "Boolean";
 		case "dependent":
 			return `Dependent on ${t.field} field`;
+		case "dependentRequired":
+			return `Dependent on ${t.field} field (with required values)`;
 		case "float":
 			return "Float";
 		case "id":

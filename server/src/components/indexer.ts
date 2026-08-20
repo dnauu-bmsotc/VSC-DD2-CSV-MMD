@@ -88,6 +88,7 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 		case "union":
 			// union is not processed because no tag emitters are unionized
 			break;
+		case "dependentRequired":
 		case "dependent":
 			try {
 				const influenceSourceField = element.fields.find(f => f.name === definition.field);
