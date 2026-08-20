@@ -43645,6 +43645,13 @@
         "glossary_dul_2",
         "glossary_abm_1"
       ],
+      "BattleConfigurationEntry": [
+        "",
+        "wandering",
+        "KINGDOM_CHAMPS",
+        "death",
+        "COVEN_CAULDRON"
+      ],
       "ActorDataClass": [
         "corpse",
         "monster",

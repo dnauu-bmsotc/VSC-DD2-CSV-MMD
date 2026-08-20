@@ -16,9 +16,9 @@ export interface CompiledData {
 	elementsDescription: ElementsDescription;
 }
 
-type ValuesDescription = Record<string, KWGroup>;
+export type ValuesDescription = Record<string, KWGroup>;
 
-type KWGroup = Record<string, ValueDescription>;
+export type KWGroup = Record<string, ValueDescription>;
 
 interface ValueDescription {
 	influences?: Record<string, {
@@ -28,7 +28,7 @@ interface ValueDescription {
 	comment?: string;
 };
 
-interface ElementDescription {
+export interface ElementDescription {
 	comment?: string;
 }
 
@@ -45,18 +45,16 @@ export async function getCompiledData(rebuild=false, log=false) {
 export async function compileData(log=false): Promise<CompiledData> {
 	const t0 = performance.now();
 	const schema = readFieldsDescription(fieldsDescriptionPath);
-	const index = newIndex();
+	const keywords = readValuesDescription(valuesDescriptionPath);
+	const elementsDescription = readElementsDescription(elementsDescriptionPath);
 
+	const index = newIndex();
 	const csvFiles = await findCsvFiles(streamingAssetsPath);
 	for (const file of csvFiles) {
 		const data = await fs.readFile(path.resolve(file), 'utf-8');
 		const parseResult = parseIntoAST(data);
-		indexElements(index, schema, parseResult.AST)
+		indexElements(index, schema, parseResult.AST, keywords);
 	}
-
-	const keywords = readValuesDescription(valuesDescriptionPath);
-
-	const elementsDescription = readElementsDescription(elementsDescriptionPath);
 
 	const result: CompiledData = {
 		schema,

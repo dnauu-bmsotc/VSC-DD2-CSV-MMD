@@ -51,7 +51,7 @@ export class ProjectManager {
 		}
 		const parseResult = parseIntoAST(text);
 		const index = newIndex();
-		indexElements(index, this.compiledData.schema, parseResult.AST);
+		indexElements(index, this.compiledData.schema, parseResult.AST, this.compiledData.keywords);
 		const fileState = {
 			uri: uri,
 			ast: parseResult.AST,
@@ -66,7 +66,7 @@ export class ProjectManager {
 		const result: string[] = [];
 		const entries = await fs.promises.readdir(dir, {
 			withFileTypes: true,
-		})
+		});
 		for (const entry of entries) {
 			const filePath = path.join(dir, entry.name);
 			if (entry.isDirectory()) {
