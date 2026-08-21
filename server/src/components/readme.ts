@@ -1,7 +1,6 @@
-import * as path from 'path';
 import * as fs from 'node:fs/promises';
 import { CompiledData } from './compiler';
-import { Field, TypeDefinition } from './schema';
+import { Element, Field, TypeDefinition } from './schema';
 import { readmeBaseFilePath, readmeOutputFilePath } from '../../../shared/projectPaths';
 
 export async function assembleReadme(compiledData: CompiledData) {
@@ -26,6 +25,17 @@ ${elementDesc ? elementDesc + "\n" : ""}
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |`
 for (const fieldName of Object.keys(element.fields)) {
+	const desc = makeFieldDescription(element, fieldName, compiledData);
+	result += `\n|${desc.name}|${desc.typeString}|${desc.comment}|${desc.values}|`
+}
+result += `
+</details>
+`
+	}
+	return result;
+}
+
+function makeFieldDescription(element: Element, fieldName: string, compiledData: CompiledData): { name: string, typeString: string, comment: string, values: string } {
 	const field = element.fields[fieldName];
 	const keywords = getInputKeywords(field, compiledData);
 	const inputTypeString = keywords.modifiedInputString
@@ -45,13 +55,12 @@ for (const fieldName of Object.keys(element.fields)) {
 		}
 		valuesString += `<br>`;
 	}
-	result += `\n|${fieldName}|${inputTypeString}|${field.comment}|${valuesString}|`
-}
-result += `
-</details>
-`
+	return {
+		name: fieldName,
+		typeString: inputTypeString,
+		comment: field.comment,
+		values: valuesString,
 	}
-	return result;
 }
 
 interface InputKeywordsFunctionResult {
@@ -78,7 +87,7 @@ function getInputKeywords(field: Field, compiledData: CompiledData): InputKeywor
 		}
 		result.groups.push({
 			groupName: alias,
-			values: Object.keys(kwgroup).toSorted(),
+			values: removeCaseDuplicates(Object.keys(kwgroup)).toSorted(),
 		});
 	}
 
@@ -94,8 +103,19 @@ function getInputKeywordsRecursive(content: TypeDefinition): string[] {
 		case "sequence":
 		case "union":
 			return content.elements.map(x => getInputKeywordsRecursive(x)).flat();
+		case "sub":
+			return [ content.group ];
 		default:
 			return [];
 	}
 }
 
+function removeCaseDuplicates(arr: string[]) {
+	const seen = new Set();
+	return arr.filter(str => {
+		const key = str.toLowerCase();
+		if (seen.has(key)) return false;
+		seen.add(key);
+		return true;
+	});
+}

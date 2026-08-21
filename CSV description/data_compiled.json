@@ -105,7 +105,7 @@
               "group": "Condition"
             }
           },
-          "comment": "Conjunctive conditioning. If all of the conditions specified in this field aren’t met, there will be no roll for this act out."
+          "comment": "Disjunctive conditioning. If all of the conditions specified in this field aren’t met, there will be no roll for this act out."
         },
         "effects": {
           "inputString": "List(Effect ID)",
@@ -247,13 +247,9 @@
           "comment": ""
         },
         "m_SelectDelayTags": {
-          "inputString": "List(m_SelectDelayTags KW)",
+          "inputString": "any",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "kw",
-              "group": "m_SelectDelayTags"
-            }
+            "type": "any"
           },
           "comment": ""
         },
@@ -328,7 +324,7 @@
           "comment": "RANDOM makes this actor to choose skills randomly. Move and wait actions count as skills too. This also supports INPUT which lets player to control what skill will be chosen."
         },
         "m_ClearContainerKeepTags": {
-          "inputString": "List(Or(Dot Tag-,Buff Tag-,Token Tag-))",
+          "inputString": "List(Or(Token Tag-,Buff Tag-,Buff Tag-,Dot Tag-))",
           "input": {
             "type": "list",
             "element": {
@@ -336,7 +332,7 @@
               "elements": [
                 {
                   "type": "tagReceiver",
-                  "group": "Dot"
+                  "group": "Token"
                 },
                 {
                   "type": "tagReceiver",
@@ -344,7 +340,11 @@
                 },
                 {
                   "type": "tagReceiver",
-                  "group": "Token"
+                  "group": "Buff"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
                 }
               ]
             }
@@ -578,17 +578,16 @@
           "comment": ""
         },
         "m_LocalizationGender": {
-          "inputString": "m_LocalizationGender KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_LocalizationGender"
+            "type": "any"
           },
           "comment": ""
         },
         "m_NameOverrideId": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
           "comment": ""
         },
@@ -2280,9 +2279,9 @@
       "name": "ActorDataMode",
       "fields": {
         "m_BarkOverrideKey": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
           "comment": ""
         }
@@ -2946,11 +2945,11 @@
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Sub(ActorStatSubType KW,Sub 1,float)",
+          "inputString": "Sub(ActorStatSubType KW,Substat,float)",
           "input": {
             "type": "sub",
             "group": "ActorStatSubType",
-            "subtypeString": "Sub 1",
+            "subtypeString": "Substat",
             "subtypeValueType": {
               "type": "float"
             }
@@ -3445,10 +3444,9 @@
           "comment": ""
         },
         "m_BackgroundSceneOverride": {
-          "inputString": "BackgroundOverride KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "BackgroundOverride"
+            "type": "any"
           },
           "comment": ""
         },
@@ -3694,10 +3692,9 @@
           "comment": ""
         },
         "m_endBossCinematicName": {
-          "inputString": "m_endBossCinematicName KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_endBossCinematicName"
+            "type": "any"
           },
           "comment": ""
         }
@@ -3944,30 +3941,10 @@
           "comment": ""
         },
         "m_TypeStrings": {
-          "inputString": "List(Or(Token ID,NodeType KW,RunValueType KW,ItemSlotType KW))",
+          "inputString": "Dep(m_Type)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Token"
-                },
-                {
-                  "type": "kw",
-                  "group": "NodeType"
-                },
-                {
-                  "type": "kw",
-                  "group": "RunValueType"
-                },
-                {
-                  "type": "kw",
-                  "group": "ItemSlotType"
-                }
-              ]
-            }
+            "type": "dependent",
+            "field": "m_Type"
           },
           "comment": ""
         },
@@ -4178,11 +4155,11 @@
       "name": "BiomeUpgrade",
       "fields": {
         "m_Tags": {
-          "inputString": "List(ActorDataClass ID)",
+          "inputString": "List(ActorDataClass Tag-)",
           "input": {
             "type": "list",
             "element": {
-              "type": "id",
+              "type": "tagReceiver",
               "group": "ActorDataClass"
             }
           },
@@ -4290,10 +4267,9 @@
           "comment": ""
         },
         "m_PrefabSubdirectoryId": {
-          "inputString": "m_PrefabSubdirectoryId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_PrefabSubdirectoryId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -4488,17 +4464,16 @@
       "name": "CinematicSubtitles",
       "fields": {
         "m_cinematicName": {
-          "inputString": "m_cinematicName KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_cinematicName"
+            "type": "any"
           },
           "comment": ""
         },
         "m_locKey": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
           "comment": ""
         },
@@ -4552,10 +4527,19 @@
           "comment": ""
         },
         "m_ConditionString": {
-          "inputString": "Dep(m_ConditionType)",
+          "inputString": "Or(null KW,Dep(m_ConditionType))",
           "input": {
-            "type": "dependent",
-            "field": "m_ConditionType"
+            "type": "union",
+            "elements": [
+              {
+                "type": "kw",
+                "group": "null"
+              },
+              {
+                "type": "dependent",
+                "field": "m_ConditionType"
+              }
+            ]
           },
           "comment": ""
         },
@@ -4602,9 +4586,9 @@
       "name": "Cost",
       "fields": {
         "m_AddedLocTag": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
           "comment": ""
         },
@@ -4830,10 +4814,10 @@
           "comment": ""
         },
         "m_Type": {
-          "inputString": "m_TypeDot KW",
+          "inputString": "DotType Tag+",
           "input": {
-            "type": "kw",
-            "group": "m_TypeDot"
+            "type": "tagEmitter",
+            "group": "DotType"
           },
           "comment": ""
         }
@@ -4851,7 +4835,7 @@
               "group": "Condition"
             }
           },
-          "comment": ""
+          "comment": "Conjunctive conditioning."
         },
         "any_conditions": {
           "inputString": "List(Condition ID)",
@@ -4862,7 +4846,7 @@
               "group": "Condition"
             }
           },
-          "comment": ""
+          "comment": "Disjunctive conditioning."
         },
         "buffs": {
           "inputString": "List(Buff ID)",
@@ -4873,14 +4857,14 @@
               "group": "Buff"
             }
           },
-          "comment": ""
+          "comment": "List of buffs to apply."
         },
         "doom": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Change amount of Loathing."
         },
         "escalation": {
           "inputString": "int",
@@ -4894,14 +4878,14 @@
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Add Action"
         },
         "m_AffinityLeaningChange": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Change relationship point amount."
         },
         "m_ArenaModifierStartId": {
           "inputString": "ArenaModifier ID",
@@ -4909,7 +4893,7 @@
             "type": "id",
             "group": "ArenaModifier"
           },
-          "comment": ""
+          "comment": "Add ArenaModifier during combat."
         },
         "m_ArenaModifierStopId": {
           "inputString": "ArenaModifier ID",
@@ -4917,40 +4901,19 @@
             "type": "id",
             "group": "ArenaModifier"
           },
-          "comment": ""
+          "comment": "Remove ArenaModifier during combat."
         },
         "m_BarkId": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
-          "comment": ""
+          "comment": "Trigger a bark."
         },
         "m_BiomeKillContractSpawnAmount": {
-          "inputString": "List(Or(Token ID,NodeType KW,RunValueType KW,ItemSlotType KW))",
+          "inputString": "int",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Token"
-                },
-                {
-                  "type": "kw",
-                  "group": "NodeType"
-                },
-                {
-                  "type": "kw",
-                  "group": "RunValueType"
-                },
-                {
-                  "type": "kw",
-                  "group": "ItemSlotType"
-                }
-              ]
-            }
+            "type": "int"
           },
           "comment": ""
         },
@@ -5029,16 +4992,12 @@
           "input": {
             "type": "float"
           },
-          "comment": "Default 1"
+          "comment": "Chance of this effect to be triggered when conditions are met. Default 1."
         },
         "m_ChanceMultiplierStatSubTypes": {
-          "inputString": "List(m_ChanceMultiplierStatSubTypes KW)",
+          "inputString": "any",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "kw",
-              "group": "m_ChanceMultiplierStatSubTypes"
-            }
+            "type": "any"
           },
           "comment": ""
         },
@@ -5055,7 +5014,7 @@
             "type": "id",
             "group": "ActorDataClass"
           },
-          "comment": ""
+          "comment": "Replace this actor with another."
         },
         "m_ChangeModeId": {
           "inputString": "Mode ID",
@@ -5153,12 +5112,12 @@
           "comment": ""
         },
         "m_DotRemoveAllTypes": {
-          "inputString": "List(m_DotRemoveAllTypes KW)",
+          "inputString": "List(DotType Tag-)",
           "input": {
             "type": "list",
             "element": {
-              "type": "kw",
-              "group": "m_DotRemoveAllTypes"
+              "type": "tagReceiver",
+              "group": "DotType"
             }
           },
           "comment": ""
@@ -5299,14 +5258,14 @@
           "input": {
             "type": "bool"
           },
-          "comment": ""
+          "comment": "Instant kill."
         },
         "m_IsLockedTeamPosition": {
           "inputString": "bool",
           "input": {
             "type": "bool"
           },
-          "comment": ""
+          "comment": "Locks Token or Dot to the target rank."
         },
         "m_IsSourceOnly": {
           "inputString": "bool",
@@ -5320,7 +5279,7 @@
           "input": {
             "type": "bool"
           },
-          "comment": "Default True"
+          "comment": "Is this effect visible in tooktips. Default True"
         },
         "m_LootIds": {
           "inputString": "List(LootTable ID)",
@@ -5331,10 +5290,10 @@
               "group": "LootTable"
             }
           },
-          "comment": ""
+          "comment": "Get loot from tables."
         },
         "m_LootReasonId": {
-          "inputString": "Or(Item ID,ActOut ID,QuestStep ID)",
+          "inputString": "Or(Item ID,ActOut ID,QuestStep ID,LootTable ID)",
           "input": {
             "type": "union",
             "elements": [
@@ -5349,6 +5308,10 @@
               {
                 "type": "id",
                 "group": "QuestStep"
+              },
+              {
+                "type": "id",
+                "group": "LootTable"
               }
             ]
           },
@@ -5359,7 +5322,7 @@
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Move target. Negative moves target forward. Positive moves target backward."
         },
         "m_MoveRange": {
           "inputString": "int",
@@ -5380,7 +5343,7 @@
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of Quirks to add."
         },
         "m_QuirkAddAmountRange": {
           "inputString": "int",
@@ -5395,14 +5358,14 @@
             "type": "tagReceiver",
             "group": "Quirk"
           },
-          "comment": ""
+          "comment": "Add some amount of Quirks that have the specified tag."
         },
         "m_QuirkRemoveAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of Quirks to remove."
         },
         "m_QuirkRemoveAmountRange": {
           "inputString": "int",
@@ -5424,7 +5387,7 @@
             "type": "tagReceiver",
             "group": "Quirk"
           },
-          "comment": ""
+          "comment": "Remove some amount of Quriks that have the specified tag."
         },
         "m_Release": {
           "inputString": "bool",
@@ -5445,14 +5408,14 @@
           "input": {
             "type": "bool"
           },
-          "comment": ""
+          "comment": "Specifies if the number of changed tokens should be displayed in tooltips."
         },
         "m_Shuffle": {
           "inputString": "bool",
           "input": {
             "type": "bool"
           },
-          "comment": ""
+          "comment": "Shuffle target team."
         },
         "m_SiegeAllDelayChange": {
           "inputString": "int",
@@ -5503,7 +5466,7 @@
           "input": {
             "type": "float"
           },
-          "comment": ""
+          "comment": "Deal stress damage to target."
         },
         "m_StressDamageRange": {
           "inputString": "float",
@@ -5524,7 +5487,7 @@
           "input": {
             "type": "float"
           },
-          "comment": ""
+          "comment": "Heal target’s stress."
         },
         "m_SummonAddToTurnOrderAfterCurrentTurnIndex": {
           "inputString": "int",
@@ -5539,7 +5502,7 @@
             "type": "id",
             "group": "ActorDataClass"
           },
-          "comment": ""
+          "comment": "Summon another actor to target team."
         },
         "m_SummonIfRoom": {
           "inputString": "bool",
@@ -5554,21 +5517,21 @@
             "type": "kw",
             "group": "SummonLocationType"
           },
-          "comment": ""
+          "comment": "Specifies on what rank the summoned actor should be placed."
         },
         "m_TokenAddAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to add."
         },
         "m_TokenAddAmountRange": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Adds randomness to the number of added tokens. For example if `m_TokenAddAmount` is 1 and `m_TokenAddAmountRange` is 2, the number of added tokens will vary from 1 to 3."
         },
         "m_TokenAddId": {
           "inputString": "Token ID",
@@ -5576,7 +5539,7 @@
             "type": "id",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Add some amount of the specified token."
         },
         "m_TokenAddTag": {
           "inputString": "Token Tag-",
@@ -5584,14 +5547,14 @@
             "type": "tagReceiver",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Add some amount of tokens that have the specified tag."
         },
         "m_TokenConvertAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to convert."
         },
         "m_TokenConvertFromDotTags": {
           "inputString": "List(Dot Tag-)",
@@ -5613,7 +5576,7 @@
               "group": "Token"
             }
           },
-          "comment": ""
+          "comment": "Token conversion will target the specified tokens on target."
         },
         "m_TokenConvertToId": {
           "inputString": "Token ID",
@@ -5621,14 +5584,14 @@
             "type": "id",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Tokens valid for conversion will be converted to the specified token."
         },
         "m_TokenCopyAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to copy from target to performer."
         },
         "m_TokenCopyTags": {
           "inputString": "List(Token Tag-)",
@@ -5639,14 +5602,14 @@
               "group": "Token"
             }
           },
-          "comment": ""
+          "comment": "Copy some amount of tokens from target to performer. Tokens that have at least one of the specified tags will be copied."
         },
         "m_TokenInvertAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to invert. Pairs of inverse tokens are defined in Token elements."
         },
         "m_TokenInvertAmountRange": {
           "inputString": "int",
@@ -5664,14 +5627,14 @@
               "group": "Token"
             }
           },
-          "comment": ""
+          "comment": "Specifies what tokens will be inverted. Pairs of inverse tokens are defined in Token elements."
         },
         "m_TokenRemoveAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to remove."
         },
         "m_TokenRemoveId": {
           "inputString": "Token ID",
@@ -5679,7 +5642,7 @@
             "type": "id",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Remove some number of specified tokens."
         },
         "m_TokenRemoveRandom": {
           "inputString": "bool",
@@ -5694,14 +5657,14 @@
             "type": "tagReceiver",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Remove some number of tokens that have the specified tag."
         },
         "m_TokenStealAmount": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Number of tokens to steal."
         },
         "m_TokenStealTags": {
           "inputString": "List(Token Tag-)",
@@ -5712,7 +5675,7 @@
               "group": "Token"
             }
           },
-          "comment": ""
+          "comment": "Steal some amount of tokens from target to performer. Tokens that have at least one of the specified tags will be stolen."
         },
         "m_TreasureAllDurationChange": {
           "inputString": "int",
@@ -5761,14 +5724,14 @@
           "input": {
             "type": "float"
           },
-          "comment": ""
+          "comment": "Add fatigue percent. From 0 to 1."
         },
         "m_WoundRemovePercent": {
           "inputString": "float",
           "input": {
             "type": "float"
           },
-          "comment": ""
+          "comment": "Remove fatigue percent. From 0 to 1."
         },
         "quirks": {
           "inputString": "List(Quirk ID)",
@@ -5779,28 +5742,28 @@
               "group": "Quirk"
             }
           },
-          "comment": ""
+          "comment": "Add specified quirks."
         },
         "stage_coach_armor": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Change stagecoach armor. Can be negative."
         },
         "stage_coach_wheels": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Change stagecoach wheels. Can be negative."
         },
         "torch": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Change torch value. From -100 to 100."
         }
       }
     },
@@ -5890,10 +5853,9 @@
           "comment": ""
         },
         "m_PrefabSubdirectoryId": {
-          "inputString": "m_PrefabSubdirectoryId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_PrefabSubdirectoryId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -6469,10 +6431,9 @@
           "comment": ""
         },
         "m_DeliverableIcon": {
-          "inputString": "m_DeliverableIcon KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_DeliverableIcon"
+            "type": "any"
           },
           "comment": ""
         },
@@ -6528,22 +6489,14 @@
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Seq(InnStatType KW,InnStatSubType KW,float)",
+          "inputString": "Sub(InnStatSubType KW,Substat,float)",
           "input": {
-            "type": "sequence",
-            "elements": [
-              {
-                "type": "kw",
-                "group": "InnStatType"
-              },
-              {
-                "type": "kw",
-                "group": "InnStatSubType"
-              },
-              {
-                "type": "float"
-              }
-            ]
+            "type": "sub",
+            "group": "InnStatSubType",
+            "subtypeString": "Substat",
+            "subtypeValueType": {
+              "type": "float"
+            }
           },
           "comment": ""
         }
@@ -6824,18 +6777,16 @@
           "comment": ""
         },
         "m_OverrideBackgroundFileName": {
-          "inputString": "m_OverrideBackgroundFileName KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_OverrideBackgroundFileName"
+            "type": "any"
           },
           "comment": ""
         },
         "m_QuestResourceId": {
-          "inputString": "m_QuestResourceId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_QuestResourceId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -7327,26 +7278,27 @@
           "comment": ""
         },
         "m_EffectRosterStatusTypes": {
-          "inputString": "RosterStatusType KW",
+          "inputString": "List(RosterStatusType KW)",
           "input": {
-            "type": "kw",
-            "group": "RosterStatusType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "RosterStatusType"
+            }
           },
           "comment": ""
         },
         "m_EventTypeRarity": {
-          "inputString": "m_EventTypeRarity KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_EventTypeRarity"
+            "type": "any"
           },
           "comment": ""
         },
         "m_EventTypeRef": {
-          "inputString": "m_EventTypeRef KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_EventTypeRef"
+            "type": "any"
           },
           "comment": ""
         },
@@ -7571,27 +7523,6 @@
             "group": "Unlock"
           },
           "comment": ""
-        },
-        "undefined": {
-          "inputString": "Or(Item ID,ActOut ID,QuestStep ID)",
-          "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "id",
-                "group": "Item"
-              },
-              {
-                "type": "id",
-                "group": "ActOut"
-              },
-              {
-                "type": "id",
-                "group": "QuestStep"
-              }
-            ]
-          },
-          "comment": ""
         }
       }
     },
@@ -7664,10 +7595,10 @@
           "comment": ""
         },
         "m_occurrenceTypes": {
-          "inputString": "m_occurrenceTypes KW",
+          "inputString": "NarrationOccurrenceType KW",
           "input": {
             "type": "kw",
-            "group": "m_occurrenceTypes"
+            "group": "NarrationOccurrenceType"
           },
           "comment": ""
         },
@@ -7707,10 +7638,13 @@
           "comment": ""
         },
         "m_occurrenceTypes": {
-          "inputString": "m_occurrenceTypes KW",
+          "inputString": "List(NarrationOccurrenceType KW)",
           "input": {
-            "type": "kw",
-            "group": "m_occurrenceTypes"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "NarrationOccurrenceType"
+            }
           },
           "comment": ""
         }
@@ -7824,10 +7758,13 @@
           "comment": ""
         },
         "m_ValidBiomeTypes": {
-          "inputString": "BiomeType KW",
+          "inputString": "List(BiomeType KW)",
           "input": {
-            "type": "kw",
-            "group": "BiomeType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "BiomeType"
+            }
           },
           "comment": ""
         }
@@ -7925,10 +7862,9 @@
           "comment": ""
         },
         "m_DisplayOverrideId": {
-          "inputString": "m_DisplayOverrideId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_DisplayOverrideId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -7958,19 +7894,10 @@
           "comment": ""
         },
         "m_QuestStepString": {
-          "inputString": "Or(Item ID,InnBonus ID)",
+          "inputString": "Dep(m_QuestStepType)",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "id",
-                "group": "Item"
-              },
-              {
-                "type": "id",
-                "group": "InnBonus"
-              }
-            ]
+            "type": "dependent",
+            "field": "m_QuestStepType"
           },
           "comment": ""
         },
@@ -8255,10 +8182,9 @@
           "comment": ""
         },
         "m_RunStatSubType": {
-          "inputString": "m_RunStatSubType KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_RunStatSubType"
+            "type": "any"
           },
           "comment": ""
         },
@@ -8691,18 +8617,21 @@
           "comment": ""
         },
         "m_LockQuirkByTagCosts": {
-          "inputString": "Seq(Quirk Tag-,int)",
+          "inputString": "List(Seq(Quirk Tag-,int))",
           "input": {
-            "type": "sequence",
-            "elements": [
-              {
-                "type": "tagReceiver",
-                "group": "Quirk"
-              },
-              {
-                "type": "int"
-              }
-            ]
+            "type": "list",
+            "element": {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "Quirk"
+                },
+                {
+                  "type": "int"
+                }
+              ]
+            }
           },
           "comment": ""
         },
@@ -8801,18 +8730,21 @@
           "comment": ""
         },
         "m_RemoveQuirkByTagCosts": {
-          "inputString": "Seq(Quirk Tag-,int)",
+          "inputString": "List(Seq(Quirk Tag-,int))",
           "input": {
-            "type": "sequence",
-            "elements": [
-              {
-                "type": "tagReceiver",
-                "group": "Quirk"
-              },
-              {
-                "type": "int"
-              }
-            ]
+            "type": "list",
+            "element": {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "Quirk"
+                },
+                {
+                  "type": "int"
+                }
+              ]
+            }
           },
           "comment": ""
         },
@@ -9703,11 +9635,11 @@
           "comment": ""
         },
         "sub_stat": {
-          "inputString": "Sub(RunStatSubType KW,Sub 1,float)",
+          "inputString": "Sub(RunStatSubType KW,Substat,float)",
           "input": {
             "type": "sub",
             "group": "RunStatSubType",
-            "subtypeString": "Sub 1",
+            "subtypeString": "Substat",
             "subtypeValueType": {
               "type": "float"
             }
@@ -9786,9 +9718,9 @@
           "comment": ""
         },
         "m_GoalTooltipLocKeyOverride": {
-          "inputString": "Localization",
+          "inputString": "any",
           "input": {
-            "type": "localization"
+            "type": "any"
           },
           "comment": ""
         },
@@ -9948,13 +9880,9 @@
       "name": "SkillBlock",
       "fields": {
         "effect_skill_attribute_tags": {
-          "inputString": "List(effect_skill_attribute_tags KW)",
+          "inputString": "any",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "kw",
-              "group": "effect_skill_attribute_tags"
-            }
+            "type": "any"
           },
           "comment": ""
         },
@@ -10170,13 +10098,9 @@
           "comment": ""
         },
         "m_EnemyStoryChoicePreviewIds": {
-          "inputString": "List(m_EnemyStoryChoicePreviewIds KW)",
+          "inputString": "any",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "kw",
-              "group": "m_EnemyStoryChoicePreviewIds"
-            }
+            "type": "any"
           },
           "comment": ""
         },
@@ -10208,7 +10132,7 @@
           "comment": ""
         },
         "m_PlayerStoryChoicePreviewIds": {
-          "inputString": "List(Or(m_PlayerStoryChoicePreviewIds KW,any)",
+          "inputString": "any",
           "input": {
             "type": "any"
           },
@@ -10251,10 +10175,9 @@
           "comment": ""
         },
         "m_ResultAudioOverrideId": {
-          "inputString": "m_ResultAudioOverrideId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_ResultAudioOverrideId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -10426,10 +10349,9 @@
           "comment": ""
         },
         "m_FilterId": {
-          "inputString": "m_FilterId KW",
+          "inputString": "any",
           "input": {
-            "type": "kw",
-            "group": "m_FilterId"
+            "type": "any"
           },
           "comment": ""
         },
@@ -10620,7 +10542,7 @@
             "type": "id",
             "group": "Token"
           },
-          "comment": ""
+          "comment": "Specifies an inverse token pair for this one. This information is used in effects that inverse tokens."
         },
         "m_IsExclusiveSource": {
           "inputString": "bool",
@@ -10676,7 +10598,7 @@
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Maximum number of tokens on an actor."
         },
         "m_NegateAllIds": {
           "inputString": "List(Token ID)",
@@ -10759,14 +10681,14 @@
               "group": "Token"
             }
           },
-          "comment": ""
+          "comment": "Arbitrary tags of this token."
         },
         "m_TeamLimit": {
           "inputString": "int",
           "input": {
             "type": "int"
           },
-          "comment": ""
+          "comment": "Maximum number of tokens on all team actors."
         },
         "m_TokenGlossaryAlwaysDisplay": {
           "inputString": "bool",
@@ -10831,7 +10753,7 @@
               "group": "Condition"
             }
           },
-          "comment": ""
+          "comment": "Removes this token when specified condition is met."
         },
         "replace": {
           "inputString": "Seq(Token ID,replace KW,Token ID)",
@@ -10852,7 +10774,7 @@
               }
             ]
           },
-          "comment": ""
+          "comment": "When this token is applied, it will replace specified token with another specified token."
         }
       }
     },
@@ -11083,7 +11005,7 @@
               }
             ]
           },
-          "comment": "Sets cost depending on unlock progress"
+          "comment": "Sets cost depending on unlock progress. Numbers are the decimal proportion of progress. Between these bounds the cost is set to the specified Cost."
         },
         "m_ProgressGroupId": {
           "inputString": "m_ProgressGroupId KW",
@@ -11094,23 +11016,18 @@
           "comment": ""
         },
         "m_chances": {
-          "inputString": "List(float)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "float"
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
         "m_ids": {
-          "inputString": "List(Unlock ID)",
+          "inputString": "Dep*(m_types)",
           "input": {
-            "type": "list",
-            "element": {
-              "type": "id",
-              "group": "Unlock"
-            }
+            "type": "dependentRequired",
+            "field": "m_types"
           },
           "comment": ""
         },
@@ -43560,7 +43477,7 @@
         "glossary_dul_2",
         "glossary_abm_1"
       ],
-      "BattleConfigurationEntry": [
+      "BattleConfigurationTableEntry": [
         "",
         "wandering",
         "KINGDOM_CHAMPS",
@@ -43820,6 +43737,14 @@
         "resist_basic",
         "valley_assist",
         "assist_sanctified_scroll"
+      ],
+      "DotType": [
+        "hot",
+        "horror",
+        "bleed",
+        "blight",
+        "burn",
+        "taproot_strangle"
       ],
       "Dot": [
         "hot",
@@ -46953,10 +46878,6 @@
       "TOKEN_ADD": {},
       "BUFF_ADD": {}
     },
-    "m_LocalizationGender": {
-      "female": {},
-      "male": {}
-    },
     "RosterStatusType": {
       "idle": {},
       "party": {},
@@ -47597,7 +47518,7 @@
     "ActorStatSubType": {
       "affinity_relationship_tag_chance_modifier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "AffinityRelationship Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47608,7 +47529,7 @@
       },
       "affinity_relationship_tag_extra_duration": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "AffinityRelationship Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47619,7 +47540,7 @@
       },
       "dot_effect_value_dealt_change": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47630,7 +47551,7 @@
       },
       "dot_effect_value_dealt_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47641,7 +47562,7 @@
       },
       "dot_effect_value_received_change": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47652,7 +47573,7 @@
       },
       "dot_effect_value_received_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47663,7 +47584,7 @@
       },
       "dot_extra_duration_dealt": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47674,7 +47595,7 @@
       },
       "dot_extra_duration_received": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47685,7 +47606,7 @@
       },
       "effect_performer_chance_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -47695,7 +47616,7 @@
       },
       "health_heal_dealt_percent": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -47705,7 +47626,7 @@
       },
       "health_heal_received_percent": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -47715,7 +47636,7 @@
       },
       "inn_quirk_generation_chance_modifier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Quirk Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47726,7 +47647,7 @@
       },
       "overstress_chance_modifier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Overstress ID",
             "input": {
               "type": "id",
@@ -47737,7 +47658,7 @@
       },
       "resistance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Resist ID",
             "input": {
               "type": "id",
@@ -47748,7 +47669,7 @@
       },
       "resistance_ignore": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Resist ID",
             "input": {
               "type": "id",
@@ -47759,7 +47680,7 @@
       },
       "rest_item_effect_chance_modifier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -47770,7 +47691,7 @@
       },
       "route_choice_preference": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -47796,9 +47717,17 @@
       "infection_adjacent_cure_percentage": {}
     },
     "InnStatSubType": {
-      "General": {},
-      "Pet": {},
-      "Trophy": {}
+      "stage_coach_item_slot_equip_limit": {
+        "influences": {
+          "Substat": {
+            "inputString": "ItemSlotType KW",
+            "input": {
+              "type": "kw",
+              "group": "ItemSlotType"
+            }
+          }
+        }
+      }
     },
     "RunStatType": {
       "loot_chance": {
@@ -49021,7 +48950,7 @@
     "RunStatSubType": {
       "battle_configuration_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "BattleConfigurationTableEntry Tag-",
             "input": {
               "type": "tagReceiver",
@@ -49032,7 +48961,7 @@
       },
       "item_max_qty": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Item Tag-",
             "input": {
               "type": "tagReceiver",
@@ -49043,7 +48972,7 @@
       },
       "loot_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "LootTableEntry Tag-",
             "input": {
               "type": "tagReceiver",
@@ -49054,7 +48983,7 @@
       },
       "loot_qty": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "LootTableEntry Tag-",
             "input": {
               "type": "tagReceiver",
@@ -49065,7 +48994,7 @@
       },
       "map_generation_node_execute_loot_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -49076,7 +49005,7 @@
       },
       "map_generation_node_filler_limit_modifier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -49087,7 +49016,7 @@
       },
       "map_generation_node_spawn_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -49098,18 +49027,27 @@
       },
       "map_generation_route_chance_multiplier": {
         "influences": {
-          "Sub 1": {
-            "inputString": "RouteType KW",
+          "Substat": {
+            "inputString": "Or(RouteType KW,Route ID)",
             "input": {
-              "type": "kw",
-              "group": "RouteType"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "RouteType"
+                },
+                {
+                  "type": "id",
+                  "group": "Route"
+                }
+              ]
             }
           }
         }
       },
       "resistance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "Dot Tag-",
             "input": {
               "type": "tagReceiver",
@@ -49120,7 +49058,7 @@
       },
       "route_effect_apply_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "RouteType KW",
             "input": {
               "type": "kw",
@@ -49131,7 +49069,7 @@
       },
       "run_generation_typical_biome_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
@@ -49142,7 +49080,7 @@
       },
       "score_penalty_multiplier": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "ScoreType KW",
             "input": {
               "type": "kw",
@@ -49153,7 +49091,7 @@
       },
       "scout_node_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "NodeType KW",
             "input": {
               "type": "kw",
@@ -49164,7 +49102,7 @@
       },
       "scout_route_chance": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "RouteType KW",
             "input": {
               "type": "kw",
@@ -49175,18 +49113,27 @@
       },
       "store_cost_buy_multiplier": {
         "influences": {
-          "Sub 1": {
-            "inputString": "ItemType KW",
+          "Substat": {
+            "inputString": "Or(ItemType KW,InnFeatureType KW)",
             "input": {
-              "type": "kw",
-              "group": "ItemType"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "ItemType"
+                },
+                {
+                  "type": "kw",
+                  "group": "InnFeatureType"
+                }
+              ]
             }
           }
         }
       },
       "torch_remove_percent": {
         "influences": {
-          "Sub 1": {
+          "Substat": {
             "inputString": "any",
             "input": {
               "type": "any"
@@ -49304,6 +49251,7 @@
       "on_miss_as_target_to_performer": {},
       "on_miss_as_target_to_target": {},
       "on_kill_as_performer_to_performer": {},
+      "On_Kill_As_Performer_To_Performer": {},
       "on_kill_as_target_to_performer": {},
       "affinity_leaning_positive_change_participating": {},
       "affinity_leaning_positive_change_observing": {},
@@ -49400,66 +49348,8 @@
       "SKILL_CALCULATED_HIT": {},
       "ALLY_DEATH": {}
     },
-    "BackgroundOverride": {
-      "combat_arena_mountain_boss_eyes": {},
-      "combat_arena_hero_story_duelist_origin_1": {},
-      "combat_arena_farm_dungeon_exterior": {},
-      "combat_arena_hero_story_occultist_origin_2": {},
-      "combat_arena_hero_story_graverobber_origin_2": {},
-      "combat_arena_hero_story_crusader_origin_1": {},
-      "combat_arena_stressworld": {},
-      "combat_arena_caves_creature_den": {},
-      "combat_arena_city_creature_den": {},
-      "combat_arena_farm_dungeon_interior": {},
-      "combat_arena_hero_story_manatarms_origin_2": {},
-      "combat_arena_hero_story_vestal_origin_1": {},
-      "combat_arena_city_dungeon_interior": {},
-      "combat_arena_hero_story_jester_origin_2": {},
-      "combat_arena_hero_story_duelist_origin_2": {},
-      "combat_arena_mountain_boss_brain": {},
-      "combat_arena_hero_story_jester_origin_1": {},
-      "combat_arena_forest_dungeon_interior": {},
-      "combat_arena_hero_story_manatarms_origin_1": {},
-      "combat_arena_hero_story_abomination_origin_1": {},
-      "combat_arena_hero_story_leper_origin_1": {},
-      "combat_arena_valley_barricade_gang_beastmen": {},
-      "combat_arena_tundra_creature_den": {},
-      "combat_arena_hero_story_plaguedoctor_origin_1": {},
-      "combat_arena_hero_story_hellion_origin_2": {},
-      "combat_arena_hero_story_abomination_origin_2": {},
-      "combat_arena_hero_story_graverobber_origin_1": {},
-      "combat_arena_hero_story_occultist_origin_1": {},
-      "combat_arena_mountain_boss_body": {},
-      "combat_arena_mountain_boss_lungs": {},
-      "combat_arena_hero_story_runaway_origin_1": {},
-      "combat_arena_forest_dungeon_exterior": {},
-      "combat_arena_tundra_dungeon_interior": {},
-      "combat_arena_hero_story_runaway_origin_2": {},
-      "combat_arena_hero_story_highwayman_origin_1": {},
-      "combat_arena_coast_creature_den": {},
-      "combat_arena_mountain_boss_arms": {},
-      "combat_arena_coast_dungeon_exterior": {},
-      "combat_arena_valley_barricade_gang_coven": {},
-      "combat_arena_forest_creature_den": {},
-      "combat_arena_hero_story_hellion_origin_1": {},
-      "combat_arena_tundra_dungeon_exterior": {},
-      "combat_arena_valley_barricade_gang_courtier": {},
-      "combat_arena_hero_story_vestal_origin_2": {},
-      "combat_arena_farm_creature_den": {},
-      "combat_arena_hero_story_flagellant_origin_1": {},
-      "combat_arena_city_dungeon_exterior": {},
-      "combat_arena_hero_story_plaguedoctor_origin_2": {},
-      "combat_arena_catacombs_creature_den": {},
-      "combat_arena_hero_story_leper_origin_2": {},
-      "combat_arena_coast_dungeon_interior": {},
-      "combat_arena_hero_story_crusader_origin_2": {},
-      "combat_arena_hero_story_highwayman_origin_2": {}
-    },
     "m_TorchOverride": {
       "no_torch": {}
-    },
-    "m_endBossCinematicName": {
-      "EndBossVictory": {}
     },
     "RunValueType": {
       "torch": {},
@@ -49483,13 +49373,104 @@
       "GREATER_THAN_OR_EQUAL": {}
     },
     "BiomeGoalType": {
-      "STAGE_COACH_ITEM_EQUIPPED": {},
-      "RUN_VALUE": {},
-      "NODE_VISITED": {},
-      "BATTLE_STARTED_SOURCE": {},
-      "BATTLE_FINISHED_SOURCE": {},
-      "BATTLE_STARTED_TAG": {},
-      "BATTLE_FINISHED_TAG": {}
+      "STAGE_COACH_ITEM_EQUIPPED": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(ItemSlotType KW)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "kw",
+                "group": "ItemSlotType"
+              }
+            }
+          }
+        }
+      },
+      "RUN_VALUE": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(RunValueType KW)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "kw",
+                "group": "RunValueType"
+              }
+            }
+          }
+        }
+      },
+      "NODE_VISITED": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(NodeType KW)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "kw",
+                "group": "NodeType"
+              }
+            }
+          }
+        }
+      },
+      "BATTLE_STARTED_SOURCE": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(CombatSourceType KW)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "kw",
+                "group": "CombatSourceType"
+              }
+            }
+          }
+        }
+      },
+      "BATTLE_FINISHED_SOURCE": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(CombatSourceType KW)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "kw",
+                "group": "CombatSourceType"
+              }
+            }
+          }
+        }
+      },
+      "BATTLE_STARTED_TAG": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(BattleConfiguration Tag-)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "tagReceiver",
+                "group": "BattleConfiguration"
+              }
+            }
+          }
+        }
+      },
+      "BATTLE_FINISHED_TAG": {
+        "influences": {
+          "BiomeGoal m_TypeStrings": {
+            "inputString": "List(BattleConfiguration Tag-)",
+            "input": {
+              "type": "list",
+              "element": {
+                "type": "tagReceiver",
+                "group": "BattleConfiguration"
+              }
+            }
+          }
+        }
+      }
     },
     "BiomeType": {
       "Valley": {},
@@ -49507,7 +49488,13 @@
       "MountainEyes": {},
       "MountainArms": {},
       "MountainBody": {},
-      "Invalid": {}
+      "Invalid": {},
+      "cave": {},
+      "city": {},
+      "coast": {},
+      "farm": {},
+      "forest": {},
+      "tundra": {}
     },
     "CombatSourceType": {
       "debug": {},
@@ -49533,14 +49520,6 @@
       "kingdom_boss": {},
       "beastmen_alpha": {},
       "camp_ambush": {}
-    },
-    "m_PrefabSubdirectoryId": {
-      "Resentment": {},
-      "Denial": {}
-    },
-    "m_cinematicName": {
-      "BossSelect": {},
-      "EndBossVictory": {}
     },
     "ConditionActorType": {
       "NONE": {},
@@ -49664,10 +49643,27 @@
       "tag": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "ActorDataClass Tag-",
+            "inputString": "Or(ActorDataClass Tag-,Rank Tag-,Buff Tag-,Token Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "ActorDataClass"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "ActorDataClass"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Rank"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Buff"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Token"
+                }
+              ]
             }
           }
         }
@@ -49739,9 +49735,10 @@
       "quirk_tag_amount": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "nothing",
+            "inputString": "Quirk Tag-",
             "input": {
-              "type": "nothing"
+              "type": "tagReceiver",
+              "group": "Quirk"
             }
           }
         }
@@ -49749,9 +49746,10 @@
       "buff_tag_amount": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "nothing",
+            "inputString": "Buff Tag-",
             "input": {
-              "type": "nothing"
+              "type": "tagReceiver",
+              "group": "Buff"
             }
           }
         }
@@ -49769,9 +49767,9 @@
       "status": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "ActorStatus Tag-",
+            "inputString": "ActorStatus ID",
             "input": {
-              "type": "tagReceiver",
+              "type": "id",
               "group": "ActorStatus"
             }
           }
@@ -50051,10 +50049,19 @@
       "boss": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "Boss ID|BossExtended ID",
+            "inputString": "Or(Boss ID,ExtendedBoss ID)",
             "input": {
-              "type": "id",
-              "group": "Boss ID|BossExtended"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Boss"
+                },
+                {
+                  "type": "id",
+                  "group": "ExtendedBoss"
+                }
+              ]
             }
           }
         }
@@ -50062,10 +50069,10 @@
       "biome": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "Biome KW",
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           }
         }
@@ -50717,14 +50724,6 @@
     "ProfileValueType": {
       "candles": {}
     },
-    "m_TypeDot": {
-      "taproot_strangle": {},
-      "horror": {},
-      "blight": {},
-      "hot": {},
-      "burn": {},
-      "bleed": {}
-    },
     "BattleConfigurationOptionType": {
       "sub_table": {
         "influences": {
@@ -50749,10 +50748,10 @@
             }
           },
           "BattleConfigurationTable m_tags": {
-            "inputString": "BattleConfigurationEntry Tag+",
+            "inputString": "BattleConfigurationTableEntry Tag+",
             "input": {
               "type": "tagEmitter",
-              "group": "BattleConfigurationEntry"
+              "group": "BattleConfigurationTableEntry"
             }
           }
         }
@@ -50780,10 +50779,10 @@
             }
           },
           "BattleConfigurationTable m_tags": {
-            "inputString": "BattleConfigurationEntry Tag+",
+            "inputString": "BattleConfigurationTableEntry Tag+",
             "input": {
               "type": "tagEmitter",
-              "group": "BattleConfigurationEntry"
+              "group": "BattleConfigurationTableEntry"
             }
           }
         }
@@ -50811,25 +50810,14 @@
             }
           },
           "BattleConfigurationTable m_tags": {
-            "inputString": "BattleConfigurationEntry Tag+",
+            "inputString": "BattleConfigurationTableEntry Tag+",
             "input": {
               "type": "tagEmitter",
-              "group": "BattleConfigurationEntry"
+              "group": "BattleConfigurationTableEntry"
             }
           }
         }
       }
-    },
-    "m_ChanceMultiplierStatSubTypes": {
-      "abm_moribund_stress_multiplier": {}
-    },
-    "m_DotRemoveAllTypes": {
-      "taproot_strangle": {},
-      "horror": {},
-      "blight": {},
-      "hot": {},
-      "burn": {},
-      "bleed": {}
     },
     "m_SortType": {
       "NAME": {},
@@ -50865,10 +50853,6 @@
       "stage_coach_inn": {},
       "stage_coach_camp": {}
     },
-    "m_DeliverableIcon": {
-      "treasure": {},
-      "hero_bones": {}
-    },
     "m_typesInnTable": {
       "inn": {
         "influences": {
@@ -50888,17 +50872,6 @@
         }
       }
     },
-    "m_OverrideBackgroundFileName": {
-      "quest_coven": {},
-      "quest_courtier": {},
-      "quest_beastmen": {},
-      "cru_quest": {}
-    },
-    "m_QuestResourceId": {
-      "coven": {},
-      "courtier": {},
-      "beastmen": {}
-    },
     "ItemType": {
       "currency": {},
       "rest": {},
@@ -50912,28 +50885,6 @@
       "none": {},
       "respawn": {},
       "refill": {}
-    },
-    "m_EventTypeRarity": {
-      "RARE": {}
-    },
-    "m_EventTypeRef": {
-      "negative": {},
-      "coast": {},
-      "almanac_coast": {},
-      "farm": {},
-      "almanac_farm": {},
-      "almanac_forest": {},
-      "positive": {},
-      "wagonmaster": {},
-      "regent": {},
-      "warmaster": {},
-      "city": {},
-      "almanac_city": {},
-      "tundra": {},
-      "almanac_tundra": {},
-      "escalation": {},
-      "forest": {},
-      "forerunner": {}
     },
     "LootType": {
       "provision": {
@@ -51390,6 +51341,9 @@
     "biome_reward": {
       "biome_reward": {}
     },
+    "null": {
+      "null": {}
+    },
     "nothing": {
       "nothing": {}
     },
@@ -51402,13 +51356,14 @@
       "always": {},
       "none": {}
     },
-    "m_occurrenceTypes": {
+    "NarrationOccurrenceType": {
       "inn": {},
       "biome": {},
       "node": {},
       "run": {},
       "combat": {},
-      "profile": {}
+      "profile": {},
+      "kingdom": {}
     },
     "NodeType": {
       "Cache": {},
@@ -51453,7 +51408,8 @@
       "CacheGang": {},
       "BridgeGang": {},
       "CovenAssist": {},
-      "null": {}
+      "null": {},
+      "Watchtower": {}
     },
     "QuestType": {
       "profile": {},
@@ -51465,9 +51421,47 @@
       "start": {}
     },
     "QuestStepType": {
-      "stage_coach_upgrade_equip": {},
-      "inn_bonus": {},
-      "loot": {}
+      "stage_coach_upgrade_equip": {
+        "influences": {
+          "QuestStep m_QuestStepString": {
+            "inputString": "Or(Item ID,Item Tag-)",
+            "input": {
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Item"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Item"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "inn_bonus": {
+        "influences": {
+          "QuestStep m_QuestStepString": {
+            "inputString": "InnBonus ID",
+            "input": {
+              "type": "id",
+              "group": "InnBonus"
+            }
+          }
+        }
+      },
+      "loot": {
+        "influences": {
+          "QuestStep m_QuestStepString": {
+            "inputString": "nothing",
+            "input": {
+              "type": "nothing"
+            }
+          }
+        }
+      }
     },
     "m_RarityQuirk": {
       "NORMAL": {},
@@ -51560,9 +51554,6 @@
       "mode": {},
       "siege": {}
     },
-    "m_RunStatSubType": {
-      "doom": {}
-    },
     "RoadEventCategory": {
       "Objects": {},
       "Banter": {},
@@ -51614,88 +51605,6 @@
     "m_StoreCostMultiplierId": {
       "inn_wainwright": {}
     },
-    "effect_skill_attribute_tags": {
-      "stealth": {},
-      "taproot_tangle_c": {},
-      "horror": {},
-      "health_heal": {},
-      "dot_add": {},
-      "immobilize": {},
-      "dodge": {},
-      "enrage": {},
-      "vulnerable": {},
-      "bark": {},
-      "block": {},
-      "strength": {},
-      "weak": {},
-      "stress_heal": {},
-      "move": {},
-      "token_add": {}
-    },
-    "m_EnemyStoryChoicePreviewIds": {
-      "icon_story_token_daze_Preview": {},
-      "icon_story_token_vulnerable_Preview": {},
-      "icon_story_token_strength_Preview": {},
-      "icon_move_Preview": {},
-      "icon_blight_Preview": {},
-      "icon_story_token_combo_Preview": {},
-      "icon_debuff_Preview": {},
-      "icon_story_token_blind-line_Preview": {}
-    },
-    "m_PlayerStoryChoicePreviewIds": {
-      "icon_story_candle_loot_Preview": {},
-      "icon_story_coven_Preview": {},
-      "icon_story_quirk_negative_Preview": {},
-      "icon_story_wine_Preview": {},
-      "icon_story_team_token_crit_Preview": {},
-      "icon_story_token_speed_Preview": {},
-      "icon_story_scouting_Preview": {},
-      "icon_story_quirk_positive_Preview": {},
-      "icon_story_combat_item_loot_Preview": {},
-      "icon_story_materials_Preview": {},
-      "icon_story_team_stress_heal_Preview": {},
-      "icon_story_combat_Preview": {},
-      "icon_story_relic_large_Preview": {},
-      "icon_story_team_token_strength_Preview": {},
-      "icon_story_mystery_treasure_loot_Preview": {},
-      "icon_buff_Preview": {},
-      "icon_story_treasure_large": {},
-      "icon_story_coach_upgrade_loot_Preview": {},
-      "icon_story_trinket_loot_Preview": {},
-      "icon_story_rest_loot_Preview": {},
-      "icon_story_signature_inn_loot_Preview": {},
-      "icon_story_quirk_mixed_Preview": {},
-      "icon_story_ancestor_Preview": {},
-      "icon_story_token_weak_Preview": {},
-      "icon_story_team_token_dodge+_Preview": {},
-      "icon_story_food_loot_Preview": {},
-      "icon_story_food_large_Preview": {},
-      "icon_story_avoid_Preview": {},
-      "icon_story_token_stealth_Preview": {},
-      "icon_story_token_vulnerable_Preview": {},
-      "icon_story_token_strength_Preview": {},
-      "icon_story_stress_heal_Preview": {},
-      "icon_story_team_token_block_Preview": {},
-      "icon_story_armor_Preview": {},
-      "icon_story_books_Preview": {},
-      "icon_story_token_crit_Preview": {},
-      "icon_story_stress_mixed_Preview": {},
-      "icon_story_supplies_med_Preview": {},
-      "icon_story_relic_loot_Preview": {},
-      "icon_story_team_buff_Preview": {},
-      "icon_story_token_daze_Preview": {},
-      "icon_story_token_taunt_Preview": {},
-      "icon_story_stress_dmg_Preview": {},
-      "icon_story_buff_Preview": {},
-      "icon_story_supplies_small_Preview": {},
-      "icon_story_torch_Preview": {},
-      "icon_story_team_health_heal_Preview": {},
-      "icon_story_courtier_Preview": {},
-      "icon_story_wheel_Preview": {},
-      "icon_story_health_heal_Preview": {},
-      "icon_story_food_med_Preview": {},
-      "icon_story_token_block_Preview": {}
-    },
     "m_ProgressGroupId": {
       "dlc_story": {},
       "base_story": {},
@@ -51703,11 +51612,9 @@
       "base_item": {},
       "base_cosmetic": {},
       "base": {},
-      "dlc": {}
-    },
-    "m_ResultAudioOverrideId": {
-      "caretaker": {},
-      "coven": {}
+      "dlc": {},
+      "dlc_item": {},
+      "dlc_altar": {}
     },
     "ResultType": {
       "NONE": {},
@@ -51738,12 +51645,6 @@
       "OBSERVING_PERFORMER": {},
       "OBSERVING_TARGET": {},
       "PARTY": {}
-    },
-    "m_FilterId": {
-      "hazard": {},
-      "Objects": {},
-      "safe": {},
-      "rough_patch": {}
     },
     "TokenType": {
       "manual": {},
@@ -51791,7 +51692,23 @@
       "RELATIONSHIP": {}
     },
     "m_typesUnlockTable": {
-      "unlock": {}
+      "unlock": {
+        "influences": {
+          "UnlockTable m_chances": {
+            "inputString": "float",
+            "input": {
+              "type": "float"
+            }
+          },
+          "UnlockTable m_ids": {
+            "inputString": "Unlock ID",
+            "input": {
+              "type": "id",
+              "group": "Unlock"
+            }
+          }
+        }
+      }
     },
     "WoundTriggerInputType": {
       "health_max_percent": {},
@@ -51823,18 +51740,11 @@
       "crimson_curse_wasting": {},
       "crimson_curse_bloodlust": {}
     },
-    "m_SelectDelayTags": {
-      "minor": {}
-    },
     "BiomeSubType": {
       "start": {},
       "typical": {},
       "optional": {},
       "end": {}
-    },
-    "progressGroupId": {
-      "base_altar": {},
-      "dlc_altar": {}
     },
     "InnUpgradeType": {
       "minor": {},

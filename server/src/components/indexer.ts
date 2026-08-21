@@ -100,7 +100,7 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 						for (let i = 0; i < influenceSourceField.values.length; i++) {
 							const sourceValue = influenceSourceField.values[i];
 							const influenceValueDesc = influenceKWGroup[sourceValue.text];
-							if (influenceValueDesc.influences) {
+							if (influenceValueDesc?.influences) {
 								const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
 								if (influenceType) {
 									const influencedValues = influenceSourceSchema.type === "list" ? field.values.slice(i, i + 1) : field.values;

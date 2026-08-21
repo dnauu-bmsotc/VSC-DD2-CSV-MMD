@@ -21,6 +21,9 @@ export function validateAstBySchema(
 	const t0 = performance.now();
 	const diagnostics: Diagnostic[] = [];
 	for (const element of ast) {
+		if (element.elementType === "KingdomMap") {
+			continue;
+		}
 		if (!compiledData.elementsDescription[element.elementType]) {
 			if (configuration.validateElementTypes) {
 				diagnostics.push({
@@ -237,6 +240,9 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					return null;
 				}
 				const valuesToValidate = influenceSourceSchema.type === "list" ? field.values.slice(i, i + 1) : field.values;
+				if ((definition.type === "dependentRequired") && (valuesToValidate.some(v => !v.text.trim()))) {
+					return createExpectedTypeDiagnostic(influenceType.input, field.values[i].range);
+				}
 				const validationResult = validateInput(element, field, valuesToValidate, influenceType.input, compiledData, astIndex);
 				if (validationResult) {
 					return validationResult;
@@ -296,7 +302,7 @@ const isRangeString = (str: string) =>isRangeStringRegex.test(str);
 
 function singleValueCheck(field: ASTField, values: ASTValue[], type: TypeDefinition, checker: (v: string) => boolean): Diagnostic | null {
 	if (values.length === 0) {
-		return createExpectedTypeDiagnostic(type, field.range);
+		return null;
 	}
 	else {
 		const content = values[0].text;
@@ -317,33 +323,32 @@ function singleRefCheck(
 	astIndexGroupEntries?: string[],
 	compiledDataGroupEntries?: string[]
 ): Diagnostic | null {
-	if (typeSupportsConditionMerge(referenceType)) {
-		let idx = 0;
-		for (const id of values[0].text.split("+")) {
-			if (id === "") {
-				continue;
-			}
-			if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
-				const line = values[0].range.start.line;
-				const charStart = values[0].range.start.character;
-				const range: Range = {
-					start: { line, character: charStart + idx },
-					end: { line, character: charStart + idx + id.length },
-				};
-				return createMissingGroupMemberDiagnostic(id, referenceType, range);
-			}
-			idx += id.length + 1;
-		}
-		if (values.length > 1) {
-			return createExpectedEndOfInputDiagnostic(values.slice(1));
-		}
+	if (values.length === 0) {
 		return null;
 	}
-
-	if (values.length === 0) {
-		return createExpectedTypeDiagnostic(referenceType, field.range);
-	}
 	else {
+		if (isCondition(referenceType)) {
+			let idx = 0;
+			for (const id of values[0].text.split("+")) {
+				if (id === "") {
+					continue;
+				}
+				if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
+					const line = values[0].range.start.line;
+					const charStart = values[0].range.start.character;
+					const range: Range = {
+						start: { line, character: charStart + idx },
+						end: { line, character: charStart + idx + id.length },
+					};
+					return createMissingGroupMemberDiagnostic(id, referenceType, range);
+				}
+				idx += id.length + 1;
+			}
+			if (values.length > 1) {
+				return createExpectedEndOfInputDiagnostic(values.slice(1));
+			}
+			return null;
+		}
 		if (isValueInGroupEntries(values[0].text, astIndexGroupEntries, compiledDataGroupEntries)) {
 			if (values.length > 1) {
 				return createExpectedEndOfInputDiagnostic(values.slice(1));
@@ -368,7 +373,7 @@ function isValueInGroupEntries(value: string, astIndexGroupEntries?: string[], c
 	return false;
 }
 
-function typeSupportsConditionMerge(referenceType: TypeDefinition) {
+function isCondition(referenceType: TypeDefinition) {
 	return ((referenceType.type === "id") && (referenceType.group === "Condition"))
 }
 
@@ -376,7 +381,7 @@ function createMissingGroupMemberDiagnostic(value: string, expectedType: TypeDef
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Unrecognized value ${value}. Expected value of type: ${typeToVerbose(expectedType)}`,
+		message: `Unrecognized value "${value}". Expected value of type: ${typeToVerbose(expectedType)}`,
 	};
 }
 

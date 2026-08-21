@@ -182,17 +182,21 @@ connection.languages.diagnostics.on(async (params) => {
 });
 
 async function validateTextDocument(textDocument: TextDocument) {
-	// In this simple example we get the settings for every validate run.
-	const settings = await getDocumentSettings(textDocument.uri);
-	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
+	try {
+		const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 
-	const fileState = project.updateFileState(textDocument.uri, textDocument.getText());
-	if (!fileState) {
+		const fileState = project.updateFileState(textDocument.uri, textDocument.getText());
+		if (!fileState) {
+			return [];
+		}
+		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, configuration);
+
+		return [...fileState.parseDiagnostics, ...validationResult];
+	}
+	catch (error) {
+		console.error(error);
 		return [];
 	}
-	const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, configuration);
-
-	return [...fileState.parseDiagnostics, ...validationResult];
 }
 
 connection.onDidChangeWatchedFiles(_change => {
