@@ -117,6 +117,9 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 			else {
 				for (const v of values) {
+					if (!v.text.trim()) {
+						continue;
+					}
 					const diagnostic = validateInput(element, field, [v], definition.element, compiledData, astIndex);
 					if (diagnostic) {
 						return diagnostic;
