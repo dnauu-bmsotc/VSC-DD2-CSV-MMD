@@ -24,7 +24,7 @@
 			{
 				"id": "DD2MMD",
 				"aliases": ["DD2 CSV"],
-				"filenamePatterns": ["*.Group.csv"]
+				"filenamePatterns": ["**/*.Group.csv"]
 			}
 		],
 		"grammars": [

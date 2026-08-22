@@ -29,17 +29,14 @@ export function indexElements(index: Index, schema: FieldsDescription, elements:
 		}
 		const elementDefinition = schema[element.elementType];
 		if (!elementDefinition) {
-			console.error(`Unknown element type: ${element.elementType}.`);
 			continue;
 		}
 		for (const field of element.fields) {
 			if (!field.name) {
-				// line starts with a comma
 				continue;
 			}
 			const fieldDefinition = elementDefinition.fields[field.name];
 			if (!fieldDefinition) {
-				console.error(`Unknown field: ${field.name}, in element ${element.name}`);
 				continue;
 			}
 			extractEmittedTags(index, element, field, field.values, fieldDefinition.input, schema, keywords);
@@ -65,7 +62,8 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 				const sequenceLength = definition.element.elements.length;
 				for (let i = 0; i < values.length; i += sequenceLength) {
 					if (i + sequenceLength > values.length) {
-						console.error(`incomplete sequence ${values.map(v => v.text)}`);
+						// if incomplete sequence
+						break;
 					}
 					extractEmittedTags(index, element, field, values.slice(i, i + sequenceLength), definition.element, schema, keywords);
 				}
@@ -79,7 +77,8 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 		case "sequence":
 			for (let i = 0; i < definition.elements.length; i++) {
 				if (i >= values.length) {
-					console.error(`incomplete sequence ${values.map(v => v.text)}`);
+					// if incomplete sequence
+					break;
 				}
 				extractEmittedTags(index, element, field, [values[i]], definition.elements[i], schema, keywords);
 			}
@@ -111,10 +110,7 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 				}
 			}
 			catch(error) {
-				if (error instanceof Error) {
-					console.error(`Error during tag extraction from dependent fields`);
-					console.log(error);
-				}
+				console.error(error);
 			}
 			break;
 		default:

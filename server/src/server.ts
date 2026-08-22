@@ -34,6 +34,7 @@ const documents = new TextDocuments(TextDocument);
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
 let hasDiagnosticRelatedInformationCapability = false;
+let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
 
@@ -53,6 +54,11 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 		capabilities.textDocument.publishDiagnostics &&
 		capabilities.textDocument.publishDiagnostics.relatedInformation
 	);
+	hasWatchedFilesCapability = !!(
+        capabilities.workspace && 
+        capabilities.workspace.didChangeWatchedFiles && 
+        capabilities.workspace.didChangeWatchedFiles.dynamicRegistration
+    );
 
 	const result: InitializeResult = {
 		capabilities: {
@@ -105,9 +111,11 @@ connection.onInitialized(async () => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
-	await connection.client.register(DidChangeWatchedFilesNotification.type, {
-		watchers: [{ globPattern: "**/*.Group.csv" }],
-	});
+	if (hasWatchedFilesCapability) {
+		await connection.client.register(DidChangeWatchedFilesNotification.type, {
+			watchers: [{ globPattern: "**/*.Group.csv" }],
+		});
+	}
 });
 
 connection.onDidChangeConfiguration(async () => {
@@ -117,14 +125,17 @@ connection.onDidChangeConfiguration(async () => {
 });
 
 connection.onDidChangeWatchedFiles(async event => {
-	console.log("change")
 	for (const change of event.changes) {
 		switch (change.type) {
 			case FileChangeType.Created:
+				console.log(`A .Group.csv file was created: ${change.uri}`);
+				await project.updateFromDisk(change.uri);
+				break;
 			case FileChangeType.Changed:
 				await project.updateFromDisk(change.uri);
 				break;
 			case FileChangeType.Deleted:
+				console.log(`A .Group.csv file was deleted: ${change.uri}`);
 				project.remove(change.uri);
 				break;
 		}
@@ -179,11 +190,6 @@ async function validateTextDocument(textDocument: TextDocument) {
 		return [];
 	}
 }
-
-connection.onDidChangeWatchedFiles(_change => {
-	// Monitored files have change in VSCode
-	connection.console.log('We received a file change event');
-});
 
 // This handler provides the initial list of the completion items.
 connection.onCompletion(

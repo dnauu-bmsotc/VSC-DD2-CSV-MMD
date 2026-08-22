@@ -56,8 +56,10 @@ export function activate(context: ExtensionContext) {
 		// Register the server for plain text documents
 		documentSelector: [{ scheme: 'file', language: 'DD2MMD' }],
 		synchronize: {
-			// Notify the server about file changes to '.clientrc files contained in the workspace
-			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
+			fileEvents: [
+				workspace.createFileSystemWatcher('**/*.Group.csv'),
+				workspace.createFileSystemWatcher('**/.clientrc')
+			]
 		},
 		initializationOptions: initializationOptions,
 	};
