@@ -3,12 +3,11 @@ import { ASTElement, ASTField, ASTValue } from './parser';
 import { ValuesDescription } from './compiler';
 
 export interface Index {
-	idGroups: IndexIdGroups;
-	tagGroups: IndexTagGroups;
+	idGroups: IndexGroups;
+	tagGroups: IndexGroups;
 }
 
-export type IndexIdGroups = Record<string, string[]>;
-export type IndexTagGroups = Record<string, string[]>;
+export type IndexGroups = Record<string, string[]>;
 
 export function newIndex(): Index {
 	return {

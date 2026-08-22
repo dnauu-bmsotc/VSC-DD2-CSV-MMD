@@ -10,7 +10,9 @@ import {
 	TextDocumentSyncKind,
 	InitializeResult,
 	DocumentDiagnosticReportKind,
-	type DocumentDiagnosticReport
+	type DocumentDiagnosticReport,
+	DidChangeWatchedFilesNotification,
+	FileChangeType
 } from 'vscode-languageserver/node';
 
 import {
@@ -62,7 +64,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 			diagnosticProvider: {
 				interFileDependencies: false,
 				workspaceDiagnostics: false
-			}
+			},
 		}
 	};
 	if (hasWorkspaceFolderCapability) {
@@ -93,7 +95,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	return result;
 });
 
-connection.onInitialized(() => {
+connection.onInitialized(async () => {
 	if (hasConfigurationCapability) {
 		// Register for all configuration changes.
 		connection.client.register(DidChangeConfigurationNotification.type, undefined);
@@ -103,12 +105,30 @@ connection.onInitialized(() => {
 			connection.console.log('Workspace folder change event received.');
 		});
 	}
+	await connection.client.register(DidChangeWatchedFilesNotification.type, {
+		watchers: [{ globPattern: "**/*.Group.csv" }],
+	});
 });
 
 connection.onDidChangeConfiguration(async () => {
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 	project.setConfiguration(configuration);
 	connection.languages.diagnostics.refresh();
+});
+
+connection.onDidChangeWatchedFiles(async event => {
+	console.log("change")
+	for (const change of event.changes) {
+		switch (change.type) {
+			case FileChangeType.Created:
+			case FileChangeType.Changed:
+				await project.updateFromDisk(change.uri);
+				break;
+			case FileChangeType.Deleted:
+				project.remove(change.uri);
+				break;
+		}
+	}
 });
 
 documents.onDidOpen(e => {
@@ -150,7 +170,7 @@ async function validateTextDocument(textDocument: TextDocument) {
 		if (!fileState) {
 			return [];
 		}
-		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, project.configuration);
+		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, [...project.files.values()], project.configuration);
 
 		return [...fileState.parseDiagnostics, ...validationResult];
 	}

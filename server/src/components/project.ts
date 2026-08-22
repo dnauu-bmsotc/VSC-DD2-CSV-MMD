@@ -9,7 +9,7 @@ import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings, defaultConfiguratio
 import { assembleReadme } from './readme';
 import { Diagnostic } from 'vscode-languageserver';
 
-interface FileState {
+export interface FileState {
 	uri: string;
 	ast: AST;
 	index: Index;
@@ -18,6 +18,7 @@ interface FileState {
 
 export class ProjectManager {
 	readonly files = new Map<string, FileState>();
+	readonly openDocuments = new Set<string>();
 	compiledData: CompiledData;
 	initializationOptions: DD2CSVMMDInitializationSettings;
 	workspaceRoot: URI;
@@ -52,9 +53,10 @@ export class ProjectManager {
 	}
 
 	public updateFileState(uri: string, text: string) {
-		if (!uri.endsWith(".csv")) {
+		if (!uri.endsWith(".Group.csv")) {
 			return;
 		}
+		this.openDocuments.add(uri);
 		const parseResult = parseIntoAST(text, this.configuration);
 		const index = newIndex();
 		indexElements(index, this.compiledData.schema, parseResult.AST, this.compiledData.keywords);
@@ -92,11 +94,15 @@ export class ProjectManager {
 	}
 
 	public async updateFromDisk(uri: string) {
+		if (this.openDocuments.has(uri)) {
+			return;
+		}
 		return this.loadFromDisk(URI.parse(uri).fsPath);
 	}
 
 	public remove(uri: string) {
 		this.files.delete(uri);
+		this.openDocuments.delete(uri);
 	}
 
 	public get(uri: string): FileState | undefined {

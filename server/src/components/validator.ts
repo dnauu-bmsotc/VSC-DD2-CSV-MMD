@@ -1,15 +1,16 @@
 import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
-import { Index } from './indexer';
-import { TypeDefinition } from './schema';
+import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { logPerformanceTime } from '../../../shared/utils';
+import { FileState } from './project';
+import { Index, IndexGroups } from './indexer';
 
 export function validateAstBySchema(
 	ast: AST,
 	compiledData: CompiledData,
-	astIndex: Index,
+	files: FileState[],
 	configuration: DD2CSVMMDSettings
 ): Diagnostic[] {
 	if (!configuration.validateElementTypes &&
@@ -61,7 +62,7 @@ export function validateAstBySchema(
 					}
 				}
 				else {
-					const diagnostic = validateInput(element, field, field.values, fieldDefinition.input, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, field.values, fieldDefinition.input, compiledData, files);
 					diagnostic && diagnostics.push(diagnostic);
 				}
 			}
@@ -79,22 +80,22 @@ export function validateAstBySchema(
  * @returns One diagnostic object for the first error encountered.
  */
 function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
-	definition: TypeDefinition, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
+	definition: TypeDefinition, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
 	switch (definition.type) {
 		case "any":
 			return null;
 
 		case "bool":
-			return singleValueCheck(field, values, definition, isBoolString);
+			return singleValueCheck(values, definition, isBoolString);
 
 		case "int":
-			return singleValueCheck(field, values, definition, isIntegerString);
+			return singleValueCheck(values, definition, isIntegerString);
 
 		case "range":
-			return singleValueCheck(field, values, definition, isRangeString);
+			return singleValueCheck(values, definition, isRangeString);
 	
 		case "float":
-			return singleValueCheck(field, values, definition, isNumericString);
+			return singleValueCheck(values, definition, isNumericString);
 
 		case "nothing":
 			for (const v of values) {
@@ -112,7 +113,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 						createMissingSequenceValueDiagnostic(field, values.slice(i), definition.element);
 					}
 					const valuesSlice = values.slice(i, i + listElementNumberOfValues);
-					const diagnostic = validateInput(element, field, valuesSlice, definition.element, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, valuesSlice, definition.element, compiledData, files);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -123,7 +124,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					if (!v.text.trim()) {
 						continue;
 					}
-					const diagnostic = validateInput(element, field, [v], definition.element, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, [v], definition.element, compiledData, files);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -139,14 +140,14 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				}
 				if (definition.elements[i].type === "list") {
 					listInSequence = true;
-					const diagnostic = validateInput(element, field, values.slice(i), definition.elements[i], compiledData, astIndex);
+					const diagnostic = validateInput(element, field, values.slice(i), definition.elements[i], compiledData, files);
 					if (diagnostic) {
 						return diagnostic;
 					}
 					break;
 				}
 				else {
-					const diagnostic = validateInput(element, field, [values[i]], definition.elements[i], compiledData, astIndex);
+					const diagnostic = validateInput(element, field, [values[i]], definition.elements[i], compiledData, files);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -164,7 +165,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			else {
 				let matchesAnyOption = false;
 				for (const optionType of definition.elements) {
-					const diagnostic = validateInput(element, field, values, optionType, compiledData, astIndex);
+					const diagnostic = validateInput(element, field, values, optionType, compiledData, files);
 					if (!diagnostic) {
 						matchesAnyOption = true;
 						break;
@@ -177,15 +178,13 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 
 		case "id":
-			return singleRefCheck(field, values, definition,
-				astIndex.idGroups[definition.group], compiledData.index.idGroups[definition.group]);
+			return validateID(values, definition, files, compiledData);
 
 		case "tagEmitter":
 			return null;
 
 		case "tagReceiver":
-			return singleRefCheck(field, values, definition,
-				astIndex.tagGroups[definition.group], compiledData.index.tagGroups[definition.group]);
+			return validateTagReceived(values, definition, files, compiledData);
 
 		case "kw":
 			const keywords = compiledData.keywords[definition.group];
@@ -193,7 +192,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				console.error(`Unrecognized KW group ${definition.group}`);
 				return null;
 			}
-			return singleRefCheck(field, values, definition, Object.keys(keywords), undefined);
+			return validateKeyword(values, definition, files, compiledData);
 
 		case "dependentRequired":
 		case "dependent":
@@ -234,7 +233,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				return null;
 			}
 			if (influenceSourceField.values[0].text === "actor_stat_value") {
-				return validateConditionStringForActorStatValue(element, field, compiledData, astIndex);
+				return validateConditionStringForActorStatValue(element, field, compiledData, files);
 			}
 			for (let i = 0; i < influenceSourceField.values.length; i++) {
 				if (i >= field.values.length) {
@@ -255,7 +254,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				if ((definition.type === "dependentRequired") && (valuesToValidate.some(v => !v.text.trim()))) {
 					return createExpectedTypeDiagnostic(influenceType.input, field.values[i].range);
 				}
-				const validationResult = validateInput(element, field, valuesToValidate, influenceType.input, compiledData, astIndex);
+				const validationResult = validateInput(element, field, valuesToValidate, influenceType.input, compiledData, files);
 				if (validationResult) {
 					return validationResult;
 				}
@@ -270,7 +269,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					message: `Three values are required`,
 				};
 			}
-			const groupValidateResult = validateInput(element, field, [values[0]], { type: "kw", group: definition.group }, compiledData, astIndex);
+			const groupValidateResult = validateInput(element, field, [values[0]], { type: "kw", group: definition.group }, compiledData, files);
 			if (groupValidateResult) {
 				return groupValidateResult;
 			}
@@ -289,11 +288,11 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				console.error(`Subtype ${definition.subtypeString} has empty fields.`);
 				return null;
 			}
-			const subtypeValidateResult = validateInput(element, field, [values[1]], derivedType.input, compiledData, astIndex);
+			const subtypeValidateResult = validateInput(element, field, [values[1]], derivedType.input, compiledData, files);
 			if (subtypeValidateResult) {
 				return subtypeValidateResult;
 			}
-			return validateInput(element, field, [values[2]], definition.subtypeValueType, compiledData, astIndex);
+			return validateInput(element, field, [values[2]], definition.subtypeValueType, compiledData, files);
 
 		default:
 			console.error(`Unknown input type: ${definition}`);
@@ -312,7 +311,7 @@ const isNumericString = (str: string) => !isNaN(Number(str));
 const isRangeStringRegex = /^\[\d+-\d+\]$/;
 const isRangeString = (str: string) =>isRangeStringRegex.test(str);
 
-function singleValueCheck(field: ASTField, values: ASTValue[], type: TypeDefinition, checker: (v: string) => boolean): Diagnostic | null {
+function singleValueCheck(values: ASTValue[], type: TypeDefinition, checker: (v: string) => boolean): Diagnostic | null {
 	if (values.length === 0) {
 		return null;
 	}
@@ -328,61 +327,99 @@ function singleValueCheck(field: ASTField, values: ASTValue[], type: TypeDefinit
 	}
 }
 
-function singleRefCheck(
-	field: ASTField,
-	values: ASTValue[],
-	referenceType: TypeDefinition,
-	astIndexGroupEntries?: string[],
-	compiledDataGroupEntries?: string[]
-): Diagnostic | null {
+function validateID(values: ASTValue[], definition: TypeDefinitionID, files: FileState[], compiledData: CompiledData) {
 	if (values.length === 0) {
 		return null;
 	}
-	else {
-		if (isCondition(referenceType)) {
-			let idx = 0;
-			for (const id of values[0].text.split("+")) {
-				if (id === "") {
-					continue;
-				}
-				if (!isValueInGroupEntries(id, astIndexGroupEntries, compiledDataGroupEntries)) {
-					const line = values[0].range.start.line;
-					const charStart = values[0].range.start.character;
-					const range: Range = {
-						start: { line, character: charStart + idx },
-						end: { line, character: charStart + idx + id.length },
-					};
-					return createMissingGroupMemberDiagnostic(id, referenceType, range);
-				}
-				idx += id.length + 1;
-			}
-			if (values.length > 1) {
-				return createExpectedEndOfInputDiagnostic(values.slice(1));
-			}
-			return null;
+	if (isCondition(definition)) {
+		const validationResult = validateConditionID(values[0], definition, compiledData, files);
+		if (validationResult) {
+			return validationResult;
 		}
-		if (isValueInGroupEntries(values[0].text, astIndexGroupEntries, compiledDataGroupEntries)) {
-			if (values.length > 1) {
-				return createExpectedEndOfInputDiagnostic(values.slice(1));
-			}
-			return null;
-		}
-		return createMissingGroupMemberDiagnostic(values[0].text, referenceType, values[0].range);
 	}
+	else {
+		if (!isValueInGroupEntries(values[0].text, definition.group, compiledData, files, getIdGroupsFromIndex)) {
+			return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+		}
+	}
+	if (values.length > 1) {
+		return createExpectedEndOfInputDiagnostic(values.slice(1));
+	}
+	return null;
 }
 
-function isValueInGroupEntries(value: string, astIndexGroupEntries?: string[], compiledDataGroupEntries?: string[]): boolean {
-	const inMod = astIndexGroupEntries?.includes(value);
-	if (inMod) {
-		return true;
+function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagReceiver, files: FileState[], compiledData: CompiledData) {
+	if (values.length === 0) {
+		return null;
 	}
-	else {
-		const inVanilla = compiledDataGroupEntries?.includes(value);
-		if (inVanilla) {
+	if (!isValueInGroupEntries(values[0].text, definition.group, compiledData, files, getTagGroupsFromIndex)) {
+		return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+	}
+	if (values.length > 1) {
+		return createExpectedEndOfInputDiagnostic(values.slice(1));
+	}
+	return null;
+}
+
+function validateKeyword(values: ASTValue[], definition: TypeDefinitionKW, files: FileState[], compiledData: CompiledData): Diagnostic | null {
+	if (values.length === 0) {
+		return null;
+	}
+	const kwgroup = compiledData.keywords[definition.group];
+	if (!kwgroup) {
+		console.error(`Keyword group ${definition.group} is not found.`);
+		return null;
+	}
+	if (!Object.hasOwn(kwgroup, values[0].text)) {
+		return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+	}
+	if (values.length > 1) {
+		return createExpectedEndOfInputDiagnostic(values.slice(1));
+	}
+	return null;
+}
+
+type CallbackIsValueInGroupEntries = (index: Index) => IndexGroups;
+
+const getIdGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.idGroups;
+const getTagGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.tagGroups;
+
+function isValueInGroupEntries(value: string, groupName: string, compiledData: CompiledData, files: FileState[], getGroups: CallbackIsValueInGroupEntries): boolean {
+	for (const fileState of files) {
+		const groups = getGroups(fileState.index)[groupName];
+		if (groups?.includes(value)) {
 			return true;
 		}
 	}
+	const groups = getGroups(compiledData.index)[groupName];
+	if (!groups) {
+		console.error(`Group ${groupName} is not found.`);
+		return false;
+	}
+	if (groups.includes(value)) {
+		return true;
+	}
 	return false;
+}
+
+function validateConditionID(value: ASTValue, definition: TypeDefinitionID, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
+	let idx = 0;
+	for (const id of value.text.split("+")) {
+		if (id === "") {
+			continue;
+		}
+		if (!isValueInGroupEntries(id, definition.group, compiledData, files, getIdGroupsFromIndex)) {
+			const line = value.range.start.line;
+			const charStart = value.range.start.character;
+			const range: Range = {
+				start: { line, character: charStart + idx },
+				end: { line, character: charStart + idx + id.length },
+			};
+			return createMissingGroupMemberDiagnostic(id, definition, range);
+		}
+		idx += id.length + 1;
+	}
+	return null;
 }
 
 function isCondition(referenceType: TypeDefinition) {
@@ -432,7 +469,7 @@ function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[
 	};
 }
 
-function validateConditionStringForActorStatValue(element: ASTElement, field: ASTField, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
+function validateConditionStringForActorStatValue(element: ASTElement, field: ASTField, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
 	const valuesToValidate = [...field.values[0].text.matchAll(/[^+]+/g)].map<ASTValue>(match => ({
 		text: match[0],
 		range: {
@@ -444,14 +481,14 @@ function validateConditionStringForActorStatValue(element: ASTElement, field: AS
 		return null;
 	}
 	if (valuesToValidate.length === 1) {
-		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatType" }, compiledData, astIndex);
+		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatType" }, compiledData, files);
 		if (statValidationResult) {
 			return statValidationResult;
 		}
 		return null;
 	}
 	if (valuesToValidate.length === 2) {
-		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatSubType" }, compiledData, astIndex);
+		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatSubType" }, compiledData, files);
 		if (statValidationResult) {
 			return statValidationResult;
 		}
@@ -460,7 +497,7 @@ function validateConditionStringForActorStatValue(element: ASTElement, field: AS
 			console.error(`ActorStatSubType does not have substat for value ${valuesToValidate[0].text}`);
 			return null;
 		}
-		const substatValidationResult = validateInput(element, field, [valuesToValidate[1]], substatDefinition, compiledData, astIndex);
+		const substatValidationResult = validateInput(element, field, [valuesToValidate[1]], substatDefinition, compiledData, files);
 		if (substatValidationResult) {
 			return substatValidationResult;
 		}
