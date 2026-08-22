@@ -105,48 +105,11 @@ connection.onInitialized(() => {
 	}
 });
 
-// The global settings, used when the `workspace/configuration` request is not supported by the client.
-// Please note that this is not the case when using this server with the client provided in this example
-// but could happen with other clients.
-const defaultSettings: DD2CSVMMDSettings = {
-	validateElementBoundaries: true,
-	validateElementTypes: true,
-	validateFieldNames: true,
-	validateFieldInput: true,
-	showEmptyFields: true,
-	processProjectFolder: true,
-};
-let globalSettings: DD2CSVMMDSettings = defaultSettings;
-
-// Cache the settings of all open documents
-const documentSettings = new Map<string, Thenable<DD2CSVMMDSettings>>();
-
-connection.onDidChangeConfiguration(change => {
-	if (hasConfigurationCapability) {
-		// Reset all cached document settings
-		documentSettings.clear();
-	} else {
-		globalSettings = (
-			(change.settings.languageServerExample || defaultSettings)
-		);
-	}
+connection.onDidChangeConfiguration(async () => {
+	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
+	project.setConfiguration(configuration);
 	connection.languages.diagnostics.refresh();
 });
-
-function getDocumentSettings(resource: string): Thenable<DD2CSVMMDSettings> {
-	if (!hasConfigurationCapability) {
-		return Promise.resolve(globalSettings);
-	}
-	let result = documentSettings.get(resource);
-	if (!result) {
-		result = connection.workspace.getConfiguration({
-			scopeUri: resource,
-			section: 'languageServerExample'
-		});
-		documentSettings.set(resource, result);
-	}
-	return result;
-}
 
 documents.onDidOpen(e => {
 	project.updateFileState(e.document.uri, e.document.getText());
@@ -154,7 +117,7 @@ documents.onDidOpen(e => {
 
 // Only keep settings for open documents
 documents.onDidClose(e => {
-	documentSettings.delete(e.document.uri);
+	
 });
 
 // The content of a text document has changed. This event is emitted
@@ -183,13 +146,11 @@ connection.languages.diagnostics.on(async (params) => {
 
 async function validateTextDocument(textDocument: TextDocument) {
 	try {
-		const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
-
 		const fileState = project.updateFileState(textDocument.uri, textDocument.getText());
 		if (!fileState) {
 			return [];
 		}
-		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, configuration);
+		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileState.index, project.configuration);
 
 		return [...fileState.parseDiagnostics, ...validationResult];
 	}

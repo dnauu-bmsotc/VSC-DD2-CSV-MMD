@@ -5,6 +5,7 @@ export interface DD2CSVMMDSettings {
 	showEmptyFields: boolean;
 	processProjectFolder: boolean;
 	validateFieldInput: boolean;
+	allowComments: boolean;
 }
 
 export interface DD2CSVMMDInitializationSettings {

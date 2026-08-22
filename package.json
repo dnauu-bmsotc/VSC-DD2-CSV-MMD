@@ -98,6 +98,11 @@
 					"default": true,
 					"description": "Show empty element lines."
 				},
+				"DD2CSVMMD.allowComments": {
+					"type": "boolean",
+					"default": false,
+					"description": "Does not mark lines that start with // or # as errors"
+				},
 				"DD2CSVMMD.DD2ExcelDirs": {
 					"type": "array",
 					"scope": "resource",

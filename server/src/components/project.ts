@@ -5,9 +5,9 @@ import * as fs from "node:fs"
 import { Index, indexElements, newIndex } from './indexer';
 import { AST, parseIntoAST } from './parser';
 import { CompiledData, getCompiledData } from './compiler';
-import { DD2CSVMMDInitializationSettings } from '../../../shared/settings';
+import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings } from '../../../shared/settings';
 import { assembleReadme } from './readme';
-import { Diagnostic } from 'vscode-languageserver';
+import { Diagnostic, DidChangeConfigurationParams } from 'vscode-languageserver';
 
 interface FileState {
 	uri: string;
@@ -16,16 +16,28 @@ interface FileState {
 	parseDiagnostics: Diagnostic[];
 }
 
+const defaultConfiguration: DD2CSVMMDSettings = {
+	validateElementBoundaries: true,
+	validateElementTypes: true,
+	validateFieldNames: true,
+	validateFieldInput: true,
+	showEmptyFields: true,
+	processProjectFolder: true,
+	allowComments: false,
+}
+
 export class ProjectManager {
 	readonly files = new Map<string, FileState>();
 	compiledData: CompiledData;
 	initializationOptions: DD2CSVMMDInitializationSettings;
 	workspaceRoot: URI;
+	configuration: DD2CSVMMDSettings;
 
 	private constructor(workspaceRoot: URI, compiledData: CompiledData, initializationOptions: DD2CSVMMDInitializationSettings) {
 		this.compiledData = compiledData;
 		this.workspaceRoot = workspaceRoot;
 		this.initializationOptions = initializationOptions;
+		this.configuration = defaultConfiguration;
 	}
 
 	public static async create(workspaceRoot: URI, initializationOptions: DD2CSVMMDInitializationSettings): Promise<ProjectManager> {
@@ -45,11 +57,15 @@ export class ProjectManager {
 		}
 	}
 
+	public async setConfiguration(conf: DD2CSVMMDSettings) {
+		this.configuration = conf;
+	}
+
 	public updateFileState(uri: string, text: string) {
 		if (!uri.endsWith(".csv")) {
 			return;
 		}
-		const parseResult = parseIntoAST(text);
+		const parseResult = parseIntoAST(text, this.configuration);
 		const index = newIndex();
 		indexElements(index, this.compiledData.schema, parseResult.AST, this.compiledData.keywords);
 		const fileState = {

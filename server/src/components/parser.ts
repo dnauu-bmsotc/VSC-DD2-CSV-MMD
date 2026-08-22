@@ -27,15 +27,15 @@ export interface ASTParseResult {
 	diagnostics: Diagnostic[];
 }
 
-export function parseIntoAST(text: string): ASTParseResult {
+export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings | null): ASTParseResult {
 	const lines = text.split(/\r?\n/);
 	const elements: ASTElement[] = [];
 	let current: ASTElement | null = null;
 	const diagnostics: Diagnostic[] = [];
 
-	function pushDiagnostic(message: string, start: Position, end: Position) {
+	function pushDiagnostic(message: string, start: Position, end: Position, severity?: DiagnosticSeverity) {
 		diagnostics.push({
-			severity: DiagnosticSeverity.Error,
+			severity: severity ? severity : DiagnosticSeverity.Error,
 			range: { start: start, end: end},
 			message: message,
 		});
@@ -48,7 +48,9 @@ export function parseIntoAST(text: string): ASTParseResult {
 
 		if (line.startsWith('element_start')) {
 			if (current) {
-				pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
+				if (configuration?.validateElementBoundaries) {
+					pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
+				}
 			}
 			const parts = line.replace(/,+$/, "").split(',');
 			if (parts.length >= 3) {
@@ -63,16 +65,25 @@ export function parseIntoAST(text: string): ASTParseResult {
 				};
 			}
 			else {
-				pushDiagnostic("Incomplete element definition", lineStartPos, lineEndPos);
+				if (configuration?.validateElementBoundaries) {
+					pushDiagnostic("Incomplete element definition", lineStartPos, lineEndPos);
+				}
 			}
 		}
 		else if (line.startsWith('element_end')) {
 			if (current) {
 				elements.push(current);
 				current = null;
+				if (line.replaceAll(',', '') !== 'element_end') {
+					if (configuration?.validateElementBoundaries) {
+						pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
+					}
+				}
 			}
 			else {
-				pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+				if (configuration?.validateElementBoundaries) {
+					pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+				}
 			}
 		}
 		else {
@@ -105,9 +116,16 @@ export function parseIntoAST(text: string): ASTParseResult {
 					});
 				}
 			}
+			else if (line.startsWith('//') || line.startsWith('#')) {
+				if (!configuration || !configuration.allowComments) {
+					pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticSeverity.Warning);
+				}
+			}
 			else {
 				if (line.trim()) {
-					pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+					if (configuration?.validateElementBoundaries) {
+						pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+					}
 				}
 			}
 		}

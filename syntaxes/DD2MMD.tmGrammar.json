@@ -26,7 +26,7 @@
 				},
 				{
 					"name": "entity.name.element-type.dd2mmd",
-					"match": "(?<=^element_start,[^,]+,)[^,]+$"
+					"match": "(?<=^element_start,[^,]+,)[^,]+"
 				},
 				{
 					"name": "variable.language.dd2mmd",
