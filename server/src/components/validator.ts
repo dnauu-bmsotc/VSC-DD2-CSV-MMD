@@ -1,4 +1,4 @@
-import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
+import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
@@ -230,6 +230,9 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				console.error(`Unrecognized dependency group ${influenceSourceSchemaContent.group}`);
 				return null;
 			}
+			if (influenceSourceField.values[0].text === "actor_stat_value") {
+				return validateConditionStringForActorStatValue(element, field, compiledData, astIndex);
+			}
 			for (let i = 0; i < influenceSourceField.values.length; i++) {
 				const sourceValue = influenceSourceField.values[i];
 				const influenceValueDesc = influenceKWGroup[sourceValue.text];
@@ -421,6 +424,55 @@ function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[
 		range: field.range,
 		message: `Field misses more values: ${missingValues.join(", ")}.`
 	};
+}
+
+function validateConditionStringForActorStatValue(element: ASTElement, field: ASTField, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
+	const valuesToValidate = [...field.values[0].text.matchAll(/[^+]+/g)].map<ASTValue>(match => ({
+		text: match[0],
+		range: {
+			start: { line: field.range.start.line, character: field.values[0].range.start.character + match.index },
+			end: { line: field.range.start.line, character: field.values[0].range.start.character + match.index + match[0].length },
+		}
+	}));
+	if (valuesToValidate.length === 0) {
+		return null;
+	}
+	if (valuesToValidate.length === 1) {
+		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatType" }, compiledData, astIndex);
+		if (statValidationResult) {
+			return statValidationResult;
+		}
+		return null;
+	}
+	if (valuesToValidate.length === 2) {
+		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatSubType" }, compiledData, astIndex);
+		if (statValidationResult) {
+			return statValidationResult;
+		}
+		const substatDefinition = getSubstatDefinition("ActorStatSubType", valuesToValidate[0].text, 'Substat', compiledData);
+		if (!substatDefinition) {
+			console.error(`ActorStatSubType does not have substat for value ${valuesToValidate[0].text}`);
+			return null;
+		}
+		const substatValidationResult = validateInput(element, field, [valuesToValidate[1]], substatDefinition, compiledData, astIndex);
+		if (substatValidationResult) {
+			return substatValidationResult;
+		}
+		return null;
+	}
+	if (valuesToValidate.length > 2) {
+		return {
+			severity: DiagnosticSeverity.Error,
+			range: field.values[0].range,
+			message: `Can't have multiple "+" symbols.`,
+		};
+	}
+	return null;
+}
+
+function getSubstatDefinition(stat: string, statValue: string, substat: string, compiledData: CompiledData): TypeDefinition | null {
+	const result = compiledData.keywords[stat]?.[statValue]?.influences?.[substat]?.input;
+	return result ? result : null;
 }
 
 function typeToVerbose(t: TypeDefinition): string {

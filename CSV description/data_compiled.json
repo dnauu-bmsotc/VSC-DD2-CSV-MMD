@@ -4527,19 +4527,10 @@
           "comment": ""
         },
         "m_ConditionString": {
-          "inputString": "Or(null KW,Dep(m_ConditionType))",
+          "inputString": "Dep(m_ConditionType)",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "kw",
-                "group": "null"
-              },
-              {
-                "type": "dependent",
-                "field": "m_ConditionType"
-              }
-            ]
+            "type": "dependent",
+            "field": "m_ConditionType"
           },
           "comment": ""
         },
@@ -47519,10 +47510,19 @@
       "affinity_relationship_tag_chance_modifier": {
         "influences": {
           "Substat": {
-            "inputString": "AffinityRelationship Tag-",
+            "inputString": "Or(null KW,AffinityRelationship Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "AffinityRelationship"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "AffinityRelationship"
+                }
+              ]
             }
           }
         }
@@ -47530,10 +47530,19 @@
       "affinity_relationship_tag_extra_duration": {
         "influences": {
           "Substat": {
-            "inputString": "AffinityRelationship Tag-",
+            "inputString": "Or(null KW,AffinityRelationship Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "AffinityRelationship"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "AffinityRelationship"
+                }
+              ]
             }
           }
         }
@@ -47541,10 +47550,19 @@
       "dot_effect_value_dealt_change": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47552,10 +47570,19 @@
       "dot_effect_value_dealt_multiplier": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47563,10 +47590,19 @@
       "dot_effect_value_received_change": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47574,10 +47610,19 @@
       "dot_effect_value_received_multiplier": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47585,10 +47630,19 @@
       "dot_extra_duration_dealt": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47596,10 +47650,19 @@
       "dot_extra_duration_received": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Or(null KW,Dot Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Dot"
+                }
+              ]
             }
           }
         }
@@ -47637,10 +47700,19 @@
       "inn_quirk_generation_chance_modifier": {
         "influences": {
           "Substat": {
-            "inputString": "Quirk Tag-",
+            "inputString": "Or(null KW,Quirk Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Quirk"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Quirk"
+                }
+              ]
             }
           }
         }
@@ -47648,10 +47720,19 @@
       "overstress_chance_modifier": {
         "influences": {
           "Substat": {
-            "inputString": "Overstress ID",
+            "inputString": "Or(null KW,Overstress ID)",
             "input": {
-              "type": "id",
-              "group": "Overstress"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "id",
+                  "group": "Overstress"
+                }
+              ]
             }
           }
         }
@@ -47659,10 +47740,19 @@
       "resistance": {
         "influences": {
           "Substat": {
-            "inputString": "Resist ID",
+            "inputString": "Or(null KW,Resist ID)",
             "input": {
-              "type": "id",
-              "group": "Resist"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "id",
+                  "group": "Resist"
+                }
+              ]
             }
           }
         }
@@ -47670,10 +47760,19 @@
       "resistance_ignore": {
         "influences": {
           "Substat": {
-            "inputString": "Resist ID",
+            "inputString": "Or(null KW,Resist ID)",
             "input": {
-              "type": "id",
-              "group": "Resist"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "id",
+                  "group": "Resist"
+                }
+              ]
             }
           }
         }
@@ -47681,10 +47780,19 @@
       "rest_item_effect_chance_modifier": {
         "influences": {
           "Substat": {
-            "inputString": "Item Tag-",
+            "inputString": "Or(null KW,Item Tag-)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Item"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "tagReceiver",
+                  "group": "Item"
+                }
+              ]
             }
           }
         }
@@ -47692,10 +47800,19 @@
       "route_choice_preference": {
         "influences": {
           "Substat": {
-            "inputString": "NodeType KW",
+            "inputString": "Or(null KW,NodeType KW)",
             "input": {
-              "type": "kw",
-              "group": "NodeType"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "null"
+                },
+                {
+                  "type": "kw",
+                  "group": "NodeType"
+                }
+              ]
             }
           }
         }

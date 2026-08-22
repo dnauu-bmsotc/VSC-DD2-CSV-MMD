@@ -25,6 +25,7 @@ CSV data can be separated into multiple files, but it is not necessary. They sho
 - Conditions can be combined using `+`. For example, `is_confessions+has_0_stagecoach_wheels`. But `+` can also be used in IDs, for example, `quirk_dare_devil_dmg_+10pct` Buff. `+` as an operator is used in `KingdomMap`, `Condition`, `LootTable`, `BattleConfigurationTable`, `InnTable` elements.
 - `m_ConditionString` fields can use `+` too. For example, `m_ConditionString,resistance+bleed,`. The first value needs to be an actor stat, the second needs to be a substat.
 - Some CSV parts are case-sensitive. IDs, tags, and field names are case-sensitive. Keywords like `resistance` in `sub_stat,resistance,stun,0.1,` or `TOKEN_ADD` in `m_IgnoredSkillAttributeTypes` are not case-sensitive.
+- `m_ConditionString` field allows `null` keyword as input. `m_DeathChainLootIds` field allows `none` keyword as input.
 - Some fields that depend on other fields can have empty strings as valid values. For example:
 	```csv
 	element_start,swine_mashes_resist_kingdoms,BattleConfigurationTable
@@ -51,7 +52,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 - `X KW` -- a hardcoded value from a list of values `X`, for example `m_DurationType,round_end`.
 - `X Tag+` -- an arbitrary tag of group `X`, for example `m_Tags,debuff` in `Buff` definitions.
 - `X Tag-` -- an existing tag, for example `m_BuffRemoveAllTags,debuff` in `Effect` definitions.
-- `List(T)` -- a list of values of the same type `T`, for example `List(Effect ID)` is satisfied by `target_effects,add_1_torso_target,end_combo,`.
+- `List(T)` -- a list of values of the same type `T`, for example `List(Effect ID)` is satisfied by `target_effects,add_1_torso_target,end_combo,`. Lists can have empty values like `m_conditions,,is_kingdoms,,`.
 - `Seq(T1,T2,T3,...)` -- a sequence of values of certain types. First value has to have `T1` type, second value has to have `T2` type, and so on. For example, `Seq(Cost ID,float,float)` is satisfied by `cost,char_cosmetics_price_1,0,0.167`.
 - `Or(T1,T2,T3,...)` -- a single value of one of the specified types. For example, `List(Or(int,range))` is satisfied by `m_qtys,1,[12-24],20`.
 - `Dep(X)` -- a field that uses different types of values depending on the `X` field from the same element. For example, `m_ConditionString` can accept a `Token` tag, `ActorDataClass` ID, `Unlock ID` etc. depending on the value of the `m_ConditionType` field.
@@ -766,7 +767,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_ConditionMetTarget|boolean|Default True||
 |m_ConditionNumber|float|||
 |m_ConditionNumberType|keyword||keyword: BOOL, EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, MULTIPLE, PARAMETER<br>|
-|m_ConditionString|Or(keyword, Dep(m_ConditionType))||keyword: null<br>|
+|m_ConditionString|Dep(m_ConditionType)|||
 |m_ConditionType|keyword||keyword: <details><summary>expand</summary>actor_count_value, actor_stat_value, always, arena_modifier, battle_configuration_tag_count, biome, biome_count, biome_end_node, biome_history_count, biome_modifier, biome_modifier_tag, biome_modifier_tag_count, biome_siege_strength, biome_status, biome_status_tag_amount, biome_sub_type, biome_typical_count, boss, buff_tag_amount, class, combat_item_equipped, combat_item_equipped_tag, combat_source, day, doom_reset_count, dot_tag_amount, first_initiative, game_type, gang, health_percent, health_percent_wound_included, in_relationship, in_relationship_tag, incomplete_hero_story_choices_amount, inn_days_since_last_siege_attack, inn_days_since_last_siege_resolve, inn_destroy_count, inn_respawn_visit, inn_siege_resolve_visit, inn_tag, inn_upgrade, item, item_amount, item_equipped_tag, item_tag, item_tag_amount, item_total_percent, killed_class_amount, kingdom_class, last_initiative, map_cell_type, mode, node, options_value_bool, overstress, overstress_tag, party_class, path, path_tag_amount, profile_calculated_group_progress, profile_has_defeated_boss, profile_run_end_streak_failure, profile_run_end_streak_victory, profile_unlock, profile_value, quest_complete, quest_step_complete, quest_step_current, quirk, quirk_tag_amount, rank, relationship, relationship_tag, resist, resist_tag, roster_status, roster_status_amount, round, run_value, run_value_percent, siege_count, size, skill, skill_equipped, skill_equipped_tag, skill_received_history_amount, skill_received_history_last, skill_tag, skill_use_history_amount, skill_use_history_last, stage_coach_upgrade_equipped, stage_coach_upgrade_equipped_general_amount, stage_coach_upgrade_equipped_pet_amount, stage_coach_upgrade_equipped_tag, stage_coach_upgrade_equipped_trophy_amount, status, stress, stress_percent, tag, token_amount, token_tag_amount, trinket_equipped, trinket_equipped_tag, turn, wound_percent</details><br>|
 |m_IsInverse|boolean|||
 |m_IsSkillConditionInputValid|boolean|||
