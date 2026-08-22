@@ -69,13 +69,13 @@ This extension tries to describe all this data in a formal way. Outer structure 
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_allTags|Dep(m_type)|||
-|m_anyTags|Dep(m_type)|||
-|m_avoidTags|Dep(m_type)|||
-|m_destinationTags|Dep(m_type)|||
-|m_eachTags|Dep(m_type)|||
+|m_allTags||||
+|m_anyTags||||
+|m_avoidTags||||
+|m_destinationTags||||
+|m_eachTags||||
 |m_number|integer|||
-|m_sourceTags|Dep(m_type)|||
+|m_sourceTags||||
 |m_targetFloat|float|||
 |m_targetInt|integer|||
 |m_type|keyword||keyword: <details><summary>expand</summary>actor_death, actor_death_combat_sum, actor_death_count_from_source, actor_death_inventory_full, actor_death_run_sum, actor_death_skill_use_active_tokens, actor_death_with_source, affinity_overstress, affinity_overstress_chain, altar_of_hope_total_progress, biome_complete, biome_complete_group, collected_trophies, combat_party_has_quirk, combat_skill_hits, combat_victory, confession_victory, confession_victory_consecutive, driving_distance, game_mode_transition, hire_mercenary, hospital_full_service, inn_treasure_campaign_sum, inn_visit_all, inventory_full, inventory_item_add, inventory_item_purchase, item_triggered_effects, kingdom_campaign_use_items, kingdom_inn_capstones, kingdom_kill_contracts, kingdom_victory, kingdom_victory_uninfected_heroes, node_deliverable_campaign_sum, party_classes, party_relationship_pair, party_relationships, party_wipe, profile_unlock, profile_unlock_group, quest_complete, quest_step_story_choices, release_anniversary, replacement_hero_add, roster_confirm, roster_relationships_unique, run_end, skill_health_damage, skill_mastery, skill_use, skill_use_processed_tokens, tokens_removed_campaign_sum</details><br>|
@@ -132,7 +132,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_ClearContainerTypes|List(keyword)|If another actor was transformed into this actor, buffs/DOTs/tokens will be removed. This is important, for example, for the final Confession boss that uses hidden tokens to track if a hero is still alive.|keyword: BuffContainer, DebuffContainer, DotContainer, TokenContainer<br>|
 |m_DeathBackActorClassIds|List(ActorDataClass&nbsp;ID)|||
 |m_DeathChainIds|List(ActorDataClass&nbsp;ID)|If the actor referenced by this field dies, this actor dies too||
-|m_DeathChainLootIds|List(LootTable&nbsp;ID)|||
+|m_DeathChainLootIds|List(Or(keyword, LootTable&nbsp;ID))||keyword: none<br>|
 |m_DeathClassAddsTurn|boolean|||
 |m_DeathClassRemovesTurns|boolean|Default True||
 |m_DeathFrontActorClassIds|List(ActorDataClass&nbsp;ID)|||
@@ -878,7 +878,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_ChanceMultiplierStatSubTypes||||
 |m_ChancePerRoundSuffix|boolean|||
 |m_ChangeClassActorId|ActorDataClass&nbsp;ID|Replace this actor with another.||
-|m_ChangeModeId|Mode&nbsp;ID|||
+|m_ChangeModeId|ActorDataMode&nbsp;ID|||
 |m_ClearSkillCooldowns|boolean|||
 |m_ClearSkillUses|boolean|||
 |m_ConditionId|Condition&nbsp;ID|||
@@ -914,7 +914,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_IsSourceOnly|boolean|||
 |m_IsVisible|boolean|Is this effect visible in tooktips. Default True||
 |m_LootIds|List(LootTable&nbsp;ID)|Get loot from tables.||
-|m_LootReasonId|Or(Item&nbsp;ID, ActOut&nbsp;ID, QuestStep&nbsp;ID, LootTable&nbsp;ID)|||
+|m_LootReasonId||||
 |m_Move|integer|Move target. Negative moves target forward. Positive moves target backward.||
 |m_MoveRange|integer|||
 |m_Priority|integer|||
@@ -1335,9 +1335,9 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_chance|float|||
 |m_disabledGameTypes|keyword||keyword: expedition, kingdom<br>|
 |m_guaranteeType|keyword||keyword: always, none, profile_first<br>|
-|m_maxOccurrences|integer|||
+|m_maxOccurrences|Dep(m_occurrenceTypes)|||
 |m_numberOfPanels|integer|||
-|m_occurrenceTypes|keyword||keyword: biome, combat, inn, kingdom, node, profile, run<br>|
+|m_occurrenceTypes|List(keyword)||keyword: altar_of_hope, biome, combat, inn, kingdom, node, profile, run<br>|
 |m_type|NarrationType&nbsp;ID|||
 </details>
 
@@ -1347,9 +1347,9 @@ This extension tries to describe all this data in a formal way. Outer structure 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_chance|float|||
-|m_disabledGameTypes|keyword||keyword: expedition, kingdom<br>|
-|m_maxOccurrences|integer|||
-|m_occurrenceTypes|List(keyword)||keyword: biome, combat, inn, kingdom, node, profile, run<br>|
+|m_disabledGameTypes|List(keyword)||keyword: expedition, kingdom<br>|
+|m_maxOccurrences|Dep*(m_occurrenceTypes)|||
+|m_occurrenceTypes|List(keyword)||keyword: altar_of_hope, biome, combat, inn, kingdom, node, profile, run<br>|
 </details>
 
 <details>
@@ -1461,7 +1461,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_QuirkTags|List(Quirk&nbsp;Tag-)|||
 |m_RunStatSubType||||
 |m_RunStatType|keyword||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_tick_trigger_negative_chance_multiplier, affinity_tick_trigger_positive_chance_multiplier, battle_configuration_chance, battle_modifier_chance, boss_modifier_chance_modifier, camp_ambush_chance, doom_default_value, doom_effect_number_of_nodes, doom_max_value, doom_min_value, doom_reset_value, escalation_default_value, escalation_max_value, escalation_min_value, hero_upgrade_points_default_value, hero_upgrade_points_max_value, hero_upgrade_points_min_value, hire_chance, hire_typical_biomes_max, hire_typical_biomes_min, item_discard_game_score_chance, item_max_qty, kill_contract_accrual, kill_contract_accrual_range, kill_contract_spawn_limit, kill_contract_spawn_threshold, kingdom_event_generation_chance, loot_chance, loot_qty, map_generation_length_multiplier, map_generation_node_execute_loot_chance, map_generation_node_filler_limit_modifier, map_generation_node_spawn_multiplier, map_generation_nodes_per_row_max, map_generation_nodes_per_row_min, map_generation_nodes_per_row_multiplier, map_generation_road_event_spawn_multiplier, map_generation_route_chance_multiplier, player_inventory_max_slots, resistance, retreat_chance, route_effect_apply_multiplier, run_generation_number_of_optional_biomes, run_generation_number_of_typical_biomes, run_generation_optional_biome_chance, run_generation_typical_biome_chance, score_bonus_multiplier, score_penalty_multiplier, scout_node_chance, scout_route_chance, siege_accrual, siege_accrual_range, siege_delay, siege_delay_range, siege_spawn_limit, siege_spawn_threshold, siege_strength, siege_strength_range, stage_coach_armor_default_value, stage_coach_armor_max_value, stage_coach_armor_min_value, stage_coach_wheels_default_value, stage_coach_wheels_max_value, stage_coach_wheels_min_value, store_cost_buy_multiplier, story_choice_multiplier, torch_add_percent, torch_default_value, torch_drain_between_nodes, torch_max_value, torch_min_value, torch_remove_percent, treasure_accrual, treasure_accrual_range, treasure_spawn_threshold</details><br>|
-|m_SkillAttributes|keyword||keyword: affinity_negative, affinity_positive, bark, buff_add, buff_remove, capture, dot_add, dot_copy, dot_remove, dot_steal, health_damage, health_heal, kill, move, quirk_add, quirk_remove, release, stress_damage, stress_heal, token_add, token_convert, token_copy, token_invert, token_remove, token_steal, wound_add, wound_remove<br>|
+|m_SkillAttributes|List(keyword)||keyword: affinity_negative, affinity_positive, bark, buff_add, buff_remove, capture, dot_add, dot_copy, dot_remove, dot_steal, health_damage, health_heal, kill, move, quirk_add, quirk_remove, release, stress_damage, stress_heal, token_add, token_convert, token_copy, token_invert, token_remove, token_steal, wound_add, wound_remove<br>|
 |m_TokenIds|List(Token&nbsp;ID)|||
 |m_TokenTags|List(Token&nbsp;Tag-)|||
 </details>
@@ -1892,7 +1892,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_TeamLimit|integer|Maximum number of tokens on all team actors.||
 |m_TokenGlossaryAlwaysDisplay|boolean|||
 |m_TokenGlossaryBiomeTag|Biome&nbsp;Tag-|||
-|m_TokenGlossaryHeroTag|ActorDataClass&nbsp;Tag-|||
+|m_TokenGlossaryHeroTag|Or(ActorDataClass&nbsp;Tag-, ActorDataClass&nbsp;ID)|||
 |m_TokenGlossaryPathTag|List(Or(ActorDataPath&nbsp;Tag-, ActorDataPath&nbsp;ID))|||
 |m_TokenGlossaryTagDisplay|List(BattleConfiguration&nbsp;Tag-)|||
 |remove_any_conditions|List(Condition&nbsp;ID)|Removes this token when specified condition is met.||

@@ -16,7 +16,6 @@ export type TypeDefinition =
 	| TypeDefinitionUnion
 	| TypeDefinitionDependent
 	| TypeDefinitionDependentRequired
-	| TypeDefinitionLocalization
 	| TypeDefinitionAny
 	| TypeDefinitionNothing
 	| TypeDefinitionSubtype;
@@ -34,7 +33,6 @@ export type TypeDefinitionSequence = { type: "sequence"; elements: TypeDefinitio
 export type TypeDefinitionUnion = { type: "union"; elements: TypeDefinition[]; };
 export type TypeDefinitionDependent = { type: "dependent"; field: string; };
 export type TypeDefinitionDependentRequired = Omit<TypeDefinitionDependent, "type"> & { type: "dependentRequired" };
-export type TypeDefinitionLocalization = { type: "localization"; };
 export type TypeDefinitionAny = { type: "any"; };
 export type TypeDefinitionNothing = { type: "nothing"; };
 export type TypeDefinitionSubtype = { type: "sub"; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
@@ -124,9 +122,6 @@ export function parseType(input: string): TypeDefinition {
 			return defaultReturnValue;
 		}
 		return { type: "sub", group: firstElementDefinition.group, subtypeString: elements[1], subtypeValueType: parseType(elements[2]) };
-	}
-	if (input.match(/^Localization$/)) {
-		return { type: "localization" };
 	}
 	if (input.match(/^any$/)) {
 		return { type: "any" };

@@ -66,7 +66,7 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): AS
 			}
 			else {
 				if (configuration.validateElementBoundaries) {
-					pushDiagnostic("Incomplete element definition", lineStartPos, lineEndPos);
+					pushDiagnostic("Incomplete element definition.", lineStartPos, lineEndPos);
 				}
 			}
 		}

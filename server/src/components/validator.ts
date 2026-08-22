@@ -1,8 +1,8 @@
-import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
+import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { Index } from './indexer';
-import { TypeDefinition, TypeDefinitionDependent, TypeDefinitionKW } from './schema';
+import { TypeDefinition } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { logPerformanceTime } from '../../../shared/utils';
 
@@ -29,7 +29,7 @@ export function validateAstBySchema(
 				diagnostics.push({
 					severity: DiagnosticSeverity.Error,
 					range: element.elementTypeRange,
-					message: `Unrecognized element type: ${element.elementType}`
+					message: `Unrecognized element type "${element.elementType}"`
 				});
 			}
 			continue;
@@ -45,7 +45,7 @@ export function validateAstBySchema(
 					diagnostics.push({
 						severity: DiagnosticSeverity.Error,
 						range: field.range,
-						message: `Unrecognized field name: ${field.name}`
+						message: `Unrecognized field name "${field.name}"`
 					});
 				}
 				continue;
@@ -72,6 +72,12 @@ export function validateAstBySchema(
 	return diagnostics;
 }
 
+/**
+ * Validates values against the provided type definition.
+ * @param values List of values to validate. These values might differ from field.values because this function is called recursively for groups of values.
+ * @param astIndex Index of values encountered in non-vanilla data.
+ * @returns One diagnostic object for the first error encountered.
+ */
 function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 	definition: TypeDefinition, compiledData: CompiledData, astIndex: Index): Diagnostic | null {
 	switch (definition.type) {
@@ -96,9 +102,6 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					return createExpectedEndOfInputDiagnostic(values);
 				}
 			}
-			return null;
-
-		case "localization":
 			return null;
 
 		case "list":
@@ -234,6 +237,9 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				return validateConditionStringForActorStatValue(element, field, compiledData, astIndex);
 			}
 			for (let i = 0; i < influenceSourceField.values.length; i++) {
+				if (i >= field.values.length) {
+					return null;
+				}
 				const sourceValue = influenceSourceField.values[i];
 				const influenceValueDesc = influenceKWGroup[sourceValue.text];
 				if (!influenceValueDesc) {
@@ -387,7 +393,7 @@ function createMissingGroupMemberDiagnostic(value: string, expectedType: TypeDef
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Unrecognized value "${value}". Expected value of type: ${typeToVerbose(expectedType)}`,
+		message: `Unrecognized value "${value}".\nExpected value of type:\n${typeToVerbose(expectedType)}`,
 	};
 }
 
@@ -395,7 +401,7 @@ function createExpectedTypeDiagnostic(expectedType: TypeDefinition, range: Range
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Expected type: ${typeToVerbose(expectedType)}`
+		message: `Expected type:\n${typeToVerbose(expectedType)}`
 	};
 }
 
@@ -410,7 +416,7 @@ function createExpectedEndOfInputDiagnostic(values: ASTValue[]): Diagnostic | nu
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: range,
-		message: `Expected end of input`
+		message: `Expected end of input.`
 	};
 }
 
@@ -422,7 +428,7 @@ function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[
 	return {
 		severity: DiagnosticSeverity.Error,
 		range: field.range,
-		message: `Field misses more values: ${missingValues.join(", ")}.`
+		message: `Field requires more values:\n${missingValues.join(", ")}.`
 	};
 }
 
@@ -492,17 +498,15 @@ function typeToVerbose(t: TypeDefinition): string {
 		case "int":
 			return "Integer";
 		case "kw":
-			return "keyword";
+			return `${t.group} Keyword`;
 		case "list":
-			return "List";
-		case "localization":
-			return "Localization";
+			return `List of ${t.element}`;
 		case "nothing":
 			return "None";
 		case "range":
 			return "Range";
 		case "sequence":
-			return "Sequence";
+			return `Sequence ${(t.elements.map(typeToVerbose))}`;
 		case "tagEmitter":
 			return "Tag";
 		case "tagReceiver":

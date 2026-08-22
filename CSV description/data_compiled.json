@@ -4,42 +4,37 @@
       "name": "Achievement",
       "fields": {
         "m_allTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
         "m_anyTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
         "m_avoidTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
         "m_destinationTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
         "m_eachTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
@@ -51,10 +46,9 @@
           "comment": ""
         },
         "m_sourceTags": {
-          "inputString": "Dep(m_type)",
+          "inputString": "any",
           "input": {
-            "type": "dependent",
-            "field": "m_type"
+            "type": "any"
           },
           "comment": ""
         },
@@ -385,12 +379,21 @@
           "comment": "If the actor referenced by this field dies, this actor dies too"
         },
         "m_DeathChainLootIds": {
-          "inputString": "List(LootTable ID)",
+          "inputString": "List(Or(none KW,LootTable ID))",
           "input": {
             "type": "list",
             "element": {
-              "type": "id",
-              "group": "LootTable"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "kw",
+                  "group": "none"
+                },
+                {
+                  "type": "id",
+                  "group": "LootTable"
+                }
+              ]
             }
           },
           "comment": ""
@@ -5008,10 +5011,10 @@
           "comment": "Replace this actor with another."
         },
         "m_ChangeModeId": {
-          "inputString": "Mode ID",
+          "inputString": "ActorDataMode ID",
           "input": {
             "type": "id",
-            "group": "Mode"
+            "group": "ActorDataMode"
           },
           "comment": ""
         },
@@ -5284,27 +5287,9 @@
           "comment": "Get loot from tables."
         },
         "m_LootReasonId": {
-          "inputString": "Or(Item ID,ActOut ID,QuestStep ID,LootTable ID)",
+          "inputString": "any",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "id",
-                "group": "Item"
-              },
-              {
-                "type": "id",
-                "group": "ActOut"
-              },
-              {
-                "type": "id",
-                "group": "QuestStep"
-              },
-              {
-                "type": "id",
-                "group": "LootTable"
-              }
-            ]
+            "type": "any"
           },
           "comment": ""
         },
@@ -7572,9 +7557,10 @@
           "comment": ""
         },
         "m_maxOccurrences": {
-          "inputString": "int",
+          "inputString": "Dep(m_occurrenceTypes)",
           "input": {
-            "type": "int"
+            "type": "dependent",
+            "field": "m_occurrenceTypes"
           },
           "comment": ""
         },
@@ -7586,10 +7572,13 @@
           "comment": ""
         },
         "m_occurrenceTypes": {
-          "inputString": "NarrationOccurrenceType KW",
+          "inputString": "List(NarrationOccurrenceType KW)",
           "input": {
-            "type": "kw",
-            "group": "NarrationOccurrenceType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "NarrationOccurrenceType"
+            }
           },
           "comment": ""
         },
@@ -7614,17 +7603,21 @@
           "comment": ""
         },
         "m_disabledGameTypes": {
-          "inputString": "GameType KW",
+          "inputString": "List(GameType KW)",
           "input": {
-            "type": "kw",
-            "group": "GameType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "GameType"
+            }
           },
           "comment": ""
         },
         "m_maxOccurrences": {
-          "inputString": "int",
+          "inputString": "Dep*(m_occurrenceTypes)",
           "input": {
-            "type": "int"
+            "type": "dependentRequired",
+            "field": "m_occurrenceTypes"
           },
           "comment": ""
         },
@@ -8188,10 +8181,13 @@
           "comment": ""
         },
         "m_SkillAttributes": {
-          "inputString": "SkillAttributeType KW",
+          "inputString": "List(SkillAttributeType KW)",
           "input": {
-            "type": "kw",
-            "group": "SkillAttributeType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "SkillAttributeType"
+            }
           },
           "comment": ""
         },
@@ -10697,10 +10693,19 @@
           "comment": ""
         },
         "m_TokenGlossaryHeroTag": {
-          "inputString": "ActorDataClass Tag-",
+          "inputString": "Or(ActorDataClass Tag-,ActorDataClass ID)",
           "input": {
-            "type": "tagReceiver",
-            "group": "ActorDataClass"
+            "type": "union",
+            "elements": [
+              {
+                "type": "tagReceiver",
+                "group": "ActorDataClass"
+              },
+              {
+                "type": "id",
+                "group": "ActorDataClass"
+              }
+            ]
           },
           "comment": ""
         },
@@ -44084,2704 +44089,58 @@
   },
   "keywords": {
     "AchievementType": {
-      "party_relationship_pair": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "kingdom_campaign_use_items": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Item Tag-)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "tagReceiver",
-                "group": "Item"
-              }
-            }
-          }
-        }
-      },
-      "inventory_item_add": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Or(ALL_INVENTORY_TAGS KW,ActorDataClass Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "kingdom_victory_uninfected_heroes": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "Or(Gang ID,KingdomDifficulty ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Gang"
-                },
-                {
-                  "type": "id",
-                  "group": "KingdomDifficulty"
-                }
-              ]
-            }
-          }
-        }
-      },
-      "profile_unlock": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "Or(Unlock ID,ActorDataClass ID)",
-            "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "id",
-                  "group": "Unlock"
-                },
-                {
-                  "type": "id",
-                  "group": "ActorDataClass"
-                }
-              ]
-            }
-          }
-        }
-      },
-      "biome_complete": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "BiomeType KW",
-            "input": {
-              "type": "kw",
-              "group": "BiomeType"
-            }
-          }
-        }
-      },
-      "inn_treasure_campaign_sum": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          }
-        }
-      },
-      "skill_mastery": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          }
-        }
-      },
-      "inn_visit_all": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          }
-        }
-      },
-      "inventory_full": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(ALL_INVENTORY_TAGS KW)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "kw",
-                "group": "ALL_INVENTORY_TAGS"
-              }
-            }
-          }
-        }
-      },
-      "actor_death_inventory_full": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Or(ActorDataClass Tag-,ALL_INVENTORY_TAGS KW))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "kw",
-                    "group": "ALL_INVENTORY_TAGS"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "node_deliverable_campaign_sum": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "NodeDeliverable Tag-",
-            "input": {
-              "type": "tagReceiver",
-              "group": "NodeDeliverable"
-            }
-          }
-        }
-      },
-      "confession_victory_consecutive": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Boss ID)",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "id",
-                "group": "Boss"
-              }
-            }
-          }
-        }
-      },
-      "actor_death_skill_use_active_tokens": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Or(ActorDataClass ID,ActorDataSkill Tag-,Token ID))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "id",
-                    "group": "ActorDataClass"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "ActorDataSkill"
-                  },
-                  {
-                    "type": "id",
-                    "group": "Token"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "kingdom_inn_capstones": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          }
-        }
-      },
-      "kingdom_kill_contracts": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "nothing",
-            "input": {
-              "type": "nothing"
-            }
-          }
-        }
-      },
-      "party_relationships": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "List(Or(AffinityRelationship Tag-,Biome Tag-))",
-            "input": {
-              "type": "list",
-              "element": {
-                "type": "union",
-                "elements": [
-                  {
-                    "type": "tagReceiver",
-                    "group": "AffinityRelationship"
-                  },
-                  {
-                    "type": "tagReceiver",
-                    "group": "Biome"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "roster_confirm": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "profile_unlock_group": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "skill_use_processed_tokens": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "actor_death_count_from_source": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "affinity_overstress": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "actor_death_combat_sum": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "inventory_item_purchase": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "actor_death_with_source": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "combat_party_has_quirk": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "roster_relationships_unique": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "affinity_overstress_chain": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "quest_complete": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "skill_health_damage": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "hospital_full_service": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "driving_distance": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "skill_use": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "release_anniversary": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "quest_step_story_choices": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "confession_victory": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "combat_skill_hits": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "game_mode_transition": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "tokens_removed_campaign_sum": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "run_end": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "item_triggered_effects": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "kingdom_victory": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "altar_of_hope_total_progress": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "actor_death": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "party_wipe": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "replacement_hero_add": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "actor_death_run_sum": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "combat_victory": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "biome_complete_group": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "party_classes": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "hire_mercenary": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      },
-      "collected_trophies": {
-        "influences": {
-          "Achievement m_allTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_anyTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_avoidTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_destinationTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_eachTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          },
-          "Achievement m_sourceTags": {
-            "inputString": "any",
-            "input": {
-              "type": "any"
-            }
-          }
-        }
-      }
+      "party_relationship_pair": {},
+      "kingdom_campaign_use_items": {},
+      "inventory_item_add": {},
+      "kingdom_victory_uninfected_heroes": {},
+      "profile_unlock": {},
+      "biome_complete": {},
+      "inn_treasure_campaign_sum": {},
+      "skill_mastery": {},
+      "inn_visit_all": {},
+      "inventory_full": {},
+      "actor_death_inventory_full": {},
+      "node_deliverable_campaign_sum": {},
+      "confession_victory_consecutive": {},
+      "actor_death_skill_use_active_tokens": {},
+      "kingdom_inn_capstones": {},
+      "kingdom_kill_contracts": {},
+      "party_relationships": {},
+      "roster_confirm": {},
+      "profile_unlock_group": {},
+      "skill_use_processed_tokens": {},
+      "actor_death_count_from_source": {},
+      "affinity_overstress": {},
+      "actor_death_combat_sum": {},
+      "inventory_item_purchase": {},
+      "actor_death_with_source": {},
+      "combat_party_has_quirk": {},
+      "roster_relationships_unique": {},
+      "affinity_overstress_chain": {},
+      "quest_complete": {},
+      "skill_health_damage": {},
+      "hospital_full_service": {},
+      "driving_distance": {},
+      "skill_use": {},
+      "release_anniversary": {},
+      "quest_step_story_choices": {},
+      "confession_victory": {},
+      "combat_skill_hits": {},
+      "game_mode_transition": {},
+      "tokens_removed_campaign_sum": {},
+      "run_end": {},
+      "item_triggered_effects": {},
+      "kingdom_victory": {},
+      "altar_of_hope_total_progress": {},
+      "actor_death": {},
+      "party_wipe": {},
+      "replacement_hero_add": {},
+      "actor_death_run_sum": {},
+      "combat_victory": {},
+      "biome_complete_group": {},
+      "party_classes": {},
+      "hire_mercenary": {},
+      "collected_trophies": {}
     },
     "ActOutActorType": {
       "OTHER": {},
@@ -46867,7 +44226,9 @@
       "kill": {},
       "QUIRK_ADD": {},
       "TOKEN_ADD": {},
-      "BUFF_ADD": {}
+      "BUFF_ADD": {},
+      "MOVE": {},
+      "CAPTURE": {}
     },
     "RosterStatusType": {
       "idle": {},
@@ -47740,14 +45101,10 @@
       "resistance": {
         "influences": {
           "Substat": {
-            "inputString": "Or(null KW,Resist ID)",
+            "inputString": "Or(Resist ID)",
             "input": {
               "type": "union",
               "elements": [
-                {
-                  "type": "kw",
-                  "group": "null"
-                },
                 {
                   "type": "id",
                   "group": "Resist"
@@ -47760,14 +45117,10 @@
       "resistance_ignore": {
         "influences": {
           "Substat": {
-            "inputString": "Or(null KW,Resist ID)",
+            "inputString": "Or(Resist ID)",
             "input": {
               "type": "union",
               "elements": [
-                {
-                  "type": "kw",
-                  "group": "null"
-                },
                 {
                   "type": "id",
                   "group": "Resist"
@@ -49079,10 +46432,23 @@
       "item_max_qty": {
         "influences": {
           "Substat": {
-            "inputString": "Item Tag-",
+            "inputString": "Or(Item Tag-,Item ID,ItemType KW)",
             "input": {
-              "type": "tagReceiver",
-              "group": "Item"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "tagReceiver",
+                  "group": "Item"
+                },
+                {
+                  "type": "id",
+                  "group": "Item"
+                },
+                {
+                  "type": "kw",
+                  "group": "ItemType"
+                }
+              ]
             }
           }
         }
@@ -49165,10 +46531,10 @@
       "resistance": {
         "influences": {
           "Substat": {
-            "inputString": "Dot Tag-",
+            "inputString": "Resist ID",
             "input": {
-              "type": "tagReceiver",
-              "group": "Dot"
+              "type": "id",
+              "group": "Resist"
             }
           }
         }
@@ -49404,7 +46770,8 @@
       "on_relationship": {},
       "kingdom": {},
       "kingdom_contagion": {},
-      "kingdom_cleanse": {}
+      "kingdom_cleanse": {},
+      "On_Crit_As_Performer_To_Performer": {}
     },
     "AffinityTickTriggerRoleType": {
       "PARTICIPATING": {},
@@ -51020,10 +48387,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51065,10 +48441,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51110,10 +48495,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51155,10 +48549,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51200,10 +48603,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51245,10 +48657,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51290,10 +48711,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51335,10 +48765,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51380,10 +48819,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51425,10 +48873,19 @@
             }
           },
           "LootTable m_conditions": {
-            "inputString": "Condition ID",
+            "inputString": "Or(Condition ID,Unlock ID)",
             "input": {
-              "type": "id",
-              "group": "Condition"
+              "type": "union",
+              "elements": [
+                {
+                  "type": "id",
+                  "group": "Condition"
+                },
+                {
+                  "type": "id",
+                  "group": "Unlock"
+                }
+              ]
             }
           },
           "LootTable m_qtys": {
@@ -51461,6 +48918,9 @@
     "null": {
       "null": {}
     },
+    "none": {
+      "none": {}
+    },
     "nothing": {
       "nothing": {}
     },
@@ -51474,13 +48934,134 @@
       "none": {}
     },
     "NarrationOccurrenceType": {
-      "inn": {},
-      "biome": {},
-      "node": {},
-      "run": {},
-      "combat": {},
-      "profile": {},
-      "kingdom": {}
+      "inn": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "biome": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "node": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "run": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "combat": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "profile": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "kingdom": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "altar_of_hope": {
+        "influences": {
+          "NarrationType m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          },
+          "NarrationEntry m_maxOccurrences": {
+            "inputString": "int",
+            "input": {
+              "type": "int"
+            }
+          }
+        }
+      }
     },
     "NodeType": {
       "Cache": {},
