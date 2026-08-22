@@ -4,3 +4,4 @@ client/server
 .vscode-test
 *.tsbuildinfo
 *.~lock.*.ods#
+*.kra~
