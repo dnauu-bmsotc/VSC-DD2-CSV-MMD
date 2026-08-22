@@ -7,7 +7,6 @@ import { FieldsDescription, parseType, readFieldsDescription, TypeDefinition } f
 import { Index, indexElements, newIndex } from './indexer';
 import { parseIntoAST } from './parser';
 import { dataCompiledOutputFilePath, fieldsDescriptionPath, streamingAssetsPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths';
-import { logPerformanceTime } from '../../../shared/utils';
 import { defaultConfiguration } from '../../../shared/settings';
 
 export interface CompiledData {
@@ -35,15 +34,15 @@ export interface ElementDescription {
 
 type ElementsDescription = Record<string, ElementDescription>;
 
-export async function getCompiledData(rebuild=false, log=false) {
+export async function getCompiledData(rebuild=false) {
 	if (!rebuild) {
 		const json = await readJson<CompiledData>(dataCompiledOutputFilePath);
 		if (json) return json;
 	}
-	return await compileData(log);
+	return await compileData();
 }
 
-export async function compileData(log=false): Promise<CompiledData> {
+export async function compileData(): Promise<CompiledData> {
 	const t0 = performance.now();
 	const schema = readFieldsDescription(fieldsDescriptionPath);
 	const keywords = readValuesDescription(valuesDescriptionPath);
@@ -66,10 +65,7 @@ export async function compileData(log=false): Promise<CompiledData> {
 
 	const jsonString = JSON.stringify(result, null, 2);
 	await fs.writeFile(dataCompiledOutputFilePath, jsonString, 'utf-8');
-
-	if (log) {
-		logPerformanceTime("Compiling data", t0);
-	}
+	console.info(`Compiling data: ${(performance.now() - t0).toFixed(1)} ms.`);
 	return result;
 }
 

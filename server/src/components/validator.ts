@@ -3,7 +3,6 @@ import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
 import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
-import { logPerformanceTime } from '../../../shared/utils';
 import { FileState } from './project';
 import { Index, IndexGroups } from './indexer';
 
@@ -19,7 +18,6 @@ export function validateAstBySchema(
 	) {
 		return [];
 	}
-	const t0 = performance.now();
 	const diagnostics: Diagnostic[] = [];
 	for (const element of ast) {
 		if (element.elementType === "KingdomMap") {
@@ -68,8 +66,6 @@ export function validateAstBySchema(
 			}
 		}
 	}
-	
-	logPerformanceTime("Validation", t0);
 	return diagnostics;
 }
 
@@ -545,9 +541,9 @@ function typeToVerbose(t: TypeDefinition): string {
 		case "sequence":
 			return `Sequence ${(t.elements.map(typeToVerbose))}`;
 		case "tagEmitter":
-			return "Tag";
+			return "${t.group} tag definition";
 		case "tagReceiver":
-			return `Tag of ${t.group}`;
+			return `${t.group} tag reference`;
 		case "union":
 			return t.elements.map(typeToVerbose).join(" or ");
 		case "sub":

@@ -9,8 +9,6 @@ import {
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
 	InitializeResult,
-	DocumentDiagnosticReportKind,
-	type DocumentDiagnosticReport,
 	DidChangeWatchedFilesNotification,
 	FileChangeType
 } from 'vscode-languageserver/node';
@@ -18,6 +16,8 @@ import {
 import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
+
+import * as fs from 'node:fs/promises'; 
 
 import { validateAstBySchema } from './components/validator';
 import { ProjectManager } from './components/project';
@@ -55,10 +55,10 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 		capabilities.textDocument.publishDiagnostics.relatedInformation
 	);
 	hasWatchedFilesCapability = !!(
-        capabilities.workspace && 
-        capabilities.workspace.didChangeWatchedFiles && 
-        capabilities.workspace.didChangeWatchedFiles.dynamicRegistration
-    );
+		capabilities.workspace && 
+		capabilities.workspace.didChangeWatchedFiles && 
+		capabilities.workspace.didChangeWatchedFiles.dynamicRegistration
+	);
 
 	const result: InitializeResult = {
 		capabilities: {
@@ -66,10 +66,6 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 			// Tell the client that this server supports code completion.
 			completionProvider: {
 				resolveProvider: true
-			},
-			diagnosticProvider: {
-				interFileDependencies: false,
-				workspaceDiagnostics: false
 			},
 		}
 	};
@@ -116,20 +112,23 @@ connection.onInitialized(async () => {
 			watchers: [{ globPattern: "**/*.Group.csv" }],
 		});
 	}
+	await publishDiagnostics(null, "Initialization");
 });
 
 connection.onDidChangeConfiguration(async () => {
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 	project.setConfiguration(configuration);
-	connection.languages.diagnostics.refresh();
+	await publishDiagnostics(null, "Configuration change");
 });
 
 connection.onDidChangeWatchedFiles(async event => {
+	console.log(event.changes)
 	for (const change of event.changes) {
 		switch (change.type) {
 			case FileChangeType.Created:
 				console.log(`A .Group.csv file was created: ${change.uri}`);
 				await project.updateFromDisk(change.uri);
+				await publishDiagnostics(null, "File creation");
 				break;
 			case FileChangeType.Changed:
 				await project.updateFromDisk(change.uri);
@@ -137,6 +136,7 @@ connection.onDidChangeWatchedFiles(async event => {
 			case FileChangeType.Deleted:
 				console.log(`A .Group.csv file was deleted: ${change.uri}`);
 				project.remove(change.uri);
+				await publishDiagnostics(null, "File deletion");
 				break;
 		}
 	}
@@ -153,34 +153,29 @@ documents.onDidClose(e => {
 
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
-documents.onDidChangeContent(e => {
+documents.onDidChangeContent(async (e) => {
 	project.updateFileState(e.document.uri, e.document.getText());
-	if (project.configuration.validateProjectFiles) {
-		connection.languages.diagnostics.refresh();
-	}
+	await publishDiagnostics(e.document.uri, "Content change");
 });
 
+async function publishDiagnostics(uri: string | null, reason: string) {
+	const t0 = performance.now();
+	const validateAll = project.configuration.validateProjectFiles || !uri;
+	const files = validateAll ? [...project.files.keys()] : [uri];
+	await Promise.all(files.map(async (uri) => {
+		const text = project.get(uri)?.text;
+		if (!text) {
+			return;
+		}
+		const diagnostics = await validateTextDocument(uri, text);
+		connection.sendDiagnostics({ uri, diagnostics, });
+	}));
+	console.info(`Validation of ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
+}
 
-connection.languages.diagnostics.on(async (params) => {
-	const document = documents.get(params.textDocument.uri);
-	if (document !== undefined) {
-		return {
-			kind: DocumentDiagnosticReportKind.Full,
-			items: await validateTextDocument(document)
-		} satisfies DocumentDiagnosticReport;
-	} else {
-		// We don't know the document. We can either try to read it from disk
-		// or we don't report problems for it.
-		return {
-			kind: DocumentDiagnosticReportKind.Full,
-			items: []
-		} satisfies DocumentDiagnosticReport;
-	}
-});
-
-async function validateTextDocument(textDocument: TextDocument) {
+async function validateTextDocument(uri: string, text: string) {
 	try {
-		const fileState = project.updateFileState(textDocument.uri, textDocument.getText());
+		const fileState = project.updateFileState(uri, text);
 		if (!fileState) {
 			return [];
 		}

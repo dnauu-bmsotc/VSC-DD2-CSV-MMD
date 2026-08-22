@@ -25,7 +25,7 @@ CSV data can be separated into multiple files, but it is not necessary. They sho
 - Conditions can be combined using `+`. For example, `is_confessions+has_0_stagecoach_wheels`. But `+` can also be used in IDs, for example, `quirk_dare_devil_dmg_+10pct` Buff. `+` as an operator is used in `KingdomMap`, `Condition`, `LootTable`, `BattleConfigurationTable`, `InnTable` elements.
 - `m_ConditionString` fields can use `+` too. For example, `m_ConditionString,resistance+bleed,`. The first value needs to be an actor stat, the second needs to be a substat.
 - Some CSV parts are case-sensitive. IDs, tags, and field names are case-sensitive. Keywords like `resistance` in `sub_stat,resistance,stun,0.1,` or `TOKEN_ADD` in `m_IgnoredSkillAttributeTypes` are not case-sensitive.
-- `m_ConditionString` field allows `null` keyword as input. `m_DeathChainLootIds` field allows `none` keyword as input.
+- `m_ConditionString` field uses `null` keyword as input. `m_DeathChainLootIds` field uses `none` keyword as input.
 - Some fields that depend on other fields can have empty strings as valid values. For example:
 	```csv
 	element_start,swine_mashes_resist_kingdoms,BattleConfigurationTable

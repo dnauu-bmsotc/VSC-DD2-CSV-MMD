@@ -1,6 +1,5 @@
 import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
-import { logPerformanceTime } from '../../../shared/utils';
 
 export type TypeDefinition =
 	| TypeDefinitionInt
@@ -158,7 +157,7 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 		}
 		result[sheetName] = element;
 	}
-	logPerformanceTime("Read schema", t0);
+	console.info(`Reading schema: ${(performance.now() - t0).toFixed(1)} ms.`);
 	return result;
 }
 

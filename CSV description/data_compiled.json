@@ -4530,10 +4530,19 @@
           "comment": ""
         },
         "m_ConditionString": {
-          "inputString": "Dep(m_ConditionType)",
+          "inputString": "Or(null KW,Dep(m_ConditionType))",
           "input": {
-            "type": "dependent",
-            "field": "m_ConditionType"
+            "type": "union",
+            "elements": [
+              {
+                "type": "kw",
+                "group": "null"
+              },
+              {
+                "type": "dependent",
+                "field": "m_ConditionType"
+              }
+            ]
           },
           "comment": ""
         },
@@ -47628,10 +47637,10 @@
       "biome_history_count": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "Biome KW",
+            "inputString": "BiomeType KW",
             "input": {
               "type": "kw",
-              "group": "Biome"
+              "group": "BiomeType"
             }
           }
         }
@@ -47913,10 +47922,10 @@
       "profile_calculated_group_progress": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "progressGroup ID",
+            "inputString": "m_ProgressGroupId KW",
             "input": {
-              "type": "id",
-              "group": "progressGroup"
+              "type": "kw",
+              "group": "m_ProgressGroupId"
             }
           }
         }

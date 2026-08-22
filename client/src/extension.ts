@@ -48,7 +48,6 @@ export function activate(context: ExtensionContext) {
 	const initializationOptions: DD2CSVMMDInitializationSettings = {
 		devMode: config.get("devMode", false),
 		DD2ExcelDirs: config.get("DD2ExcelDirs", []),
-		modDirs: config.get("modDirs", []),
 	}
 
 	// Options to control the language client
@@ -58,7 +57,6 @@ export function activate(context: ExtensionContext) {
 		synchronize: {
 			fileEvents: [
 				workspace.createFileSystemWatcher('**/*.Group.csv'),
-				workspace.createFileSystemWatcher('**/.clientrc')
 			]
 		},
 		initializationOptions: initializationOptions,

@@ -1,1 +1,0 @@
-export const logPerformanceTime = (processName: string, t0: number) => console.log(`${processName}: ${(performance.now() - t0).toFixed(1)} ms`);

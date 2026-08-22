@@ -13,6 +13,7 @@ export interface FileState {
 	uri: string;
 	ast: AST;
 	index: Index;
+	text: string;
 	parseDiagnostics: Diagnostic[];
 }
 
@@ -33,7 +34,7 @@ export class ProjectManager {
 
 	public static async create(workspaceRoot: URI, initializationOptions: DD2CSVMMDInitializationSettings): Promise<ProjectManager> {
 		const devMode = initializationOptions.devMode
-		const compiledData = await getCompiledData(devMode, true);
+		const compiledData = await getCompiledData(devMode);
 		return new ProjectManager(workspaceRoot, compiledData, initializationOptions);
 	}
 
@@ -60,11 +61,12 @@ export class ProjectManager {
 		const parseResult = parseIntoAST(text, this.configuration);
 		const index = newIndex();
 		indexElements(index, this.compiledData.schema, parseResult.AST, this.compiledData.keywords);
-		const fileState = {
+		const fileState: FileState = {
 			uri: uri,
 			ast: parseResult.AST,
 			index: index,
 			parseDiagnostics: parseResult.diagnostics,
+			text: text,
 		};
 		this.files.set(uri, fileState);
 		return fileState;

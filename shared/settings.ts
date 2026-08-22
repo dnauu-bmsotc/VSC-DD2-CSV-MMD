@@ -12,7 +12,6 @@ export interface DD2CSVMMDSettings {
 export interface DD2CSVMMDInitializationSettings {
 	devMode: boolean;
 	DD2ExcelDirs: string[];
-	modDirs: string[];
 }
 
 export const defaultConfiguration: DD2CSVMMDSettings = Object.freeze({
