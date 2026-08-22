@@ -14,29 +14,15 @@ import {
 	TransportKind
 } from 'vscode-languageclient/node';
 
-import { checkAndSwitchLanguage } from './components/checkAndSwitchLanguage';
 import { updateTokenColors } from './components/updateTokenColors';
 import { DD2CSVMMDInitializationSettings } from '../../shared/settings';
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-    vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
 	updateTokenColors(context);
-
-    context.subscriptions.push(
-        vscode.workspace.onDidOpenTextDocument(checkAndSwitchLanguage)
-    );
-    context.subscriptions.push(
-        vscode.workspace.onDidChangeTextDocument((event) => {
-			checkAndSwitchLanguage(event.document);
-        })
-    );
 	context.subscriptions.push(
         vscode.workspace.onDidChangeConfiguration((event) => {
-            if (event.affectsConfiguration('DD2CSVMMD.languageDetectionMethod')) {
-                vscode.workspace.textDocuments.forEach(checkAndSwitchLanguage);
-            }
 			if (event.affectsConfiguration('DD2CSVMMD.tokenColors')) {
                 updateTokenColors(context);
             }
@@ -78,8 +64,8 @@ export function activate(context: ExtensionContext) {
 
 	// Create the language client and start the client.
 	client = new LanguageClient(
-		'languageServerExample',
-		'Language Server Example',
+		'DD2CSVMMDLS',
+		'DD2 CSV Language Server MMD',
 		serverOptions,
 		clientOptions
 	);

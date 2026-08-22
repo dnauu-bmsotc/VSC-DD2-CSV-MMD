@@ -8,6 +8,7 @@ import { Index, indexElements, newIndex } from './indexer';
 import { parseIntoAST } from './parser';
 import { dataCompiledOutputFilePath, fieldsDescriptionPath, streamingAssetsPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths';
 import { logPerformanceTime } from '../../../shared/utils';
+import { defaultConfiguration } from '../../../shared/settings';
 
 export interface CompiledData {
 	schema: FieldsDescription;
@@ -52,7 +53,7 @@ export async function compileData(log=false): Promise<CompiledData> {
 	const csvFiles = await findCsvFiles(streamingAssetsPath);
 	for (const file of csvFiles) {
 		const data = await fs.readFile(path.resolve(file), 'utf-8');
-		const parseResult = parseIntoAST(data);
+		const parseResult = parseIntoAST(data, defaultConfiguration);
 		indexElements(index, schema, parseResult.AST, keywords);
 	}
 

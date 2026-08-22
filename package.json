@@ -16,13 +16,15 @@
 		"vscode": "^1.100.0"
 	},
 	"activationEvents": [
-		"onLanguage:csv"
+		"onLanguage:DD2MMD"
 	],
 	"main": "./client/out/client/src/extension",
 	"contributes": {
 		"languages": [
 			{
-				"id": "DD2MMD"
+				"id": "DD2MMD",
+				"aliases": ["DD2 CSV"],
+				"filenamePatterns": ["*.Group.csv"]
 			}
 		],
 		"grammars": [
@@ -36,23 +38,6 @@
 			"type": "object",
 			"title": "DD2 CSV MMD configuration",
 			"properties": {
-				"DD2CSVMMD.languageDetectionMethod": {
-					"type": "string",
-					"default": "firstLine",
-					"description": "Which files the extension will process",
-					"enum": [
-						"firstLine",
-						"allCsv"
-					],
-					"enumItemLabels": [
-						"CSV files with element_start in the first line",
-						"All CSV files"
-					],
-					"markdownEnumDescriptions": [
-						"Only enable extension for CSV files that have element_start in the first line.",
-						"Enable extension for all CSV files."
-					]
-				},
 				"DD2CSVMMD.tokenColors": {
 					"type": "string",
 					"default": "mmd",
@@ -81,12 +66,12 @@
 				"DD2CSVMMD.validateElementTypes": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show unrecognized element types."
+					"description": "Warn about unrecognized element types."
 				},
 				"DD2CSVMMD.validateFieldNames": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show unrecognized field names."
+					"description": "Warn about unrecognized field names."
 				},
 				"DD2CSVMMD.validateFieldInput": {
 					"type": "boolean",
@@ -96,7 +81,7 @@
 				"DD2CSVMMD.showEmptyFields": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show empty element lines."
+					"description": "Warn about empty element lines."
 				},
 				"DD2CSVMMD.allowComments": {
 					"type": "boolean",
@@ -105,7 +90,6 @@
 				},
 				"DD2CSVMMD.DD2ExcelDirs": {
 					"type": "array",
-					"scope": "resource",
 					"description": "Directories containing DD2 CSV vanilla data.",
 					"items": {
 						"type": "string"
@@ -118,7 +102,6 @@
 				},
 				"DD2CSVMMD.modDirs": {
 					"type": "array",
-					"scope": "resource",
 					"description": "List of directories with custom CSV data.",
 					"items": {
 						"type": "string"

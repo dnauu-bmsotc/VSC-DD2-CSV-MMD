@@ -12,6 +12,8 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 Darkest Dungeon 2's CSV data has a lot of nuances. At the surface level it is stored in .csv files and is parsed as such. There are no embedded commas, all of them act as separators.
 
+CSV data can be separated into multiple files, but it is not necessary. They should be placed on the top level of the mod folder or in the Overrides folder. CSV files in custom folders are not parsed by the game. Filenames should end with `.Group.csv` otherwise the game will skip them.
+
 - Element IDs are not unique. Sometimes it is unclear what an element ID refers to. For example, all `Buff` elements share their IDs with their `ActorDataStatsElements`.
 - Neither unique are combinations of element types with element IDs. For example, `LootTables` and `ActorDataEffects` elements are additive, there can be multiple `LootTable` elements with the same ID. There are some other additive elements.
 - Fields in elements can repeat. For example, `sub_stat`.

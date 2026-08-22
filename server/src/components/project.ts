@@ -5,25 +5,15 @@ import * as fs from "node:fs"
 import { Index, indexElements, newIndex } from './indexer';
 import { AST, parseIntoAST } from './parser';
 import { CompiledData, getCompiledData } from './compiler';
-import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings } from '../../../shared/settings';
+import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
 import { assembleReadme } from './readme';
-import { Diagnostic, DidChangeConfigurationParams } from 'vscode-languageserver';
+import { Diagnostic } from 'vscode-languageserver';
 
 interface FileState {
 	uri: string;
 	ast: AST;
 	index: Index;
 	parseDiagnostics: Diagnostic[];
-}
-
-const defaultConfiguration: DD2CSVMMDSettings = {
-	validateElementBoundaries: true,
-	validateElementTypes: true,
-	validateFieldNames: true,
-	validateFieldInput: true,
-	showEmptyFields: true,
-	processProjectFolder: true,
-	allowComments: false,
 }
 
 export class ProjectManager {
