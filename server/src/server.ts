@@ -155,6 +155,9 @@ documents.onDidClose(e => {
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(e => {
 	project.updateFileState(e.document.uri, e.document.getText());
+	if (project.configuration.validateProjectFiles) {
+		connection.languages.diagnostics.refresh();
+	}
 });
 
 
@@ -181,7 +184,9 @@ async function validateTextDocument(textDocument: TextDocument) {
 		if (!fileState) {
 			return [];
 		}
-		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, [...project.files.values()], project.configuration);
+		
+		const fileStates = project.configuration.indexProjectFiles ? [...project.files.values()] : [fileState];
+		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileStates, project.configuration);
 
 		return [...fileState.parseDiagnostics, ...validationResult];
 	}

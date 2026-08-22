@@ -86,7 +86,7 @@
 				"DD2CSVMMD.allowComments": {
 					"type": "boolean",
 					"default": false,
-					"description": "Does not mark lines that start with // or # as errors"
+					"description": "Do not mark lines that start with // or # as errors"
 				},
 				"DD2CSVMMD.DD2ExcelDirs": {
 					"type": "array",
@@ -112,10 +112,15 @@
 						"~/Library/Application Support/Steam/steamapps/common/Darkest Dungeon® II/Contents/Resources/Data/StreamingAssets/Mods/"
 					]
 				},
-				"DD2CSVMMD.processProjectFolder": {
+				"DD2CSVMMD.indexProjectFiles": {
 					"type": "boolean",
-					"default": false,
-					"description": "Process CSV files in the opened VS project."
+					"default": true,
+					"description": "Use indexes from all .Group.CSV files in the project (collect IDs and tags from other files in the project)."
+				},
+				"DD2CSVMMD.validateProjectFiles": {
+					"type": "boolean",
+					"default": true,
+					"description": "Validate all .Group.CSV files in the project (show errors in closed files)."
 				},
 				"DD2CSVMMD.devMode": {
 					"type": "boolean",
