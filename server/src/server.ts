@@ -17,8 +17,6 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
-import * as fs from 'node:fs/promises'; 
-
 import { validateAstBySchema } from './components/validator';
 import { ProjectManager } from './components/project';
 import { URI } from 'vscode-uri';
@@ -37,6 +35,8 @@ let hasDiagnosticRelatedInformationCapability = false;
 let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
+
+let debounceTimer: NodeJS.Timeout | null = null;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const capabilities = params.capabilities;
@@ -112,13 +112,13 @@ connection.onInitialized(async () => {
 			watchers: [{ globPattern: "**/*.Group.csv" }],
 		});
 	}
-	await publishDiagnostics(null, "Initialization");
+	await publishDiagnosticsDebounced(null, "Initialization");
 });
 
 connection.onDidChangeConfiguration(async () => {
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 	project.setConfiguration(configuration);
-	await publishDiagnostics(null, "Configuration change");
+	await publishDiagnosticsDebounced(null, "Configuration change");
 });
 
 connection.onDidChangeWatchedFiles(async event => {
@@ -126,6 +126,7 @@ connection.onDidChangeWatchedFiles(async event => {
 	for (const change of event.changes) {
 		switch (change.type) {
 			case FileChangeType.Created:
+				await project.updateFromDisk(change.uri);
 				revalidateReason = "File/directory creation";
 				break;
 			case FileChangeType.Changed:
@@ -138,7 +139,7 @@ connection.onDidChangeWatchedFiles(async event => {
 		}
 	}
 	if (revalidateReason) {
-		await publishDiagnostics(null, revalidateReason);
+		await publishDiagnosticsDebounced(null, revalidateReason);
 	}
 });
 
@@ -155,8 +156,20 @@ documents.onDidClose(e => {
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(async (e) => {
 	project.updateFileState(e.document.uri, e.document.getText());
-	await publishDiagnostics(e.document.uri, "Content change");
+	await publishDiagnosticsDebounced(e.document.uri, "Content change");
 });
+
+async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
+	if (debounceTimer) {
+		console.info('Validation call debounced.');
+	}
+	else {
+		debounceTimer = setTimeout(() => {
+			publishDiagnostics(uri, reason);
+			debounceTimer = null;
+		}, project.configuration.debounceTime);
+	}
+}
 
 async function publishDiagnostics(uri: string | null, reason: string) {
 	const t0 = performance.now();
@@ -170,7 +183,7 @@ async function publishDiagnostics(uri: string | null, reason: string) {
 		const diagnostics = await validateTextDocument(uri, text);
 		connection.sendDiagnostics({ uri, diagnostics, });
 	}));
-	console.info(`Validation of ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
+	console.info(`Validated ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
 }
 
 async function validateTextDocument(uri: string, text: string) {

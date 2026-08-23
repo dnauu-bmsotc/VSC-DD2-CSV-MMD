@@ -80,17 +80,17 @@
 				},
 				"DD2CSVMMD.showEmptyFields": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Warn about empty element lines."
 				},
 				"DD2CSVMMD.allowComments": {
 					"type": "boolean",
 					"default": false,
-					"description": "Do not mark lines that start with // or # as errors"
+					"description": "Do not mark lines that start with // or # as errors."
 				},
 				"DD2CSVMMD.DD2ExcelDirs": {
 					"type": "array",
-					"description": "Directories containing DD2 CSV vanilla data.",
+					"description": "Directories containing DD2 CSV vanilla data (used in dev mode).",
 					"items": {
 						"type": "string"
 					},
@@ -114,6 +114,13 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Rebuild data and readme on extension start."
+				},
+				"DD2CSVMMD.debounceTime": {
+					"type": "integer",
+					"default": 100,
+					"minimum": 0,
+					"maximum": 10000,
+					"description": "Debounce time for validation in milliseconds."
 				}
 			}
 		}

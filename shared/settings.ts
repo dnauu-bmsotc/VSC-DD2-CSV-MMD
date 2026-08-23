@@ -7,6 +7,7 @@ export interface DD2CSVMMDSettings {
 	indexProjectFiles: boolean;
 	validateFieldInput: boolean;
 	allowComments: boolean;
+	debounceTime: number;
 }
 
 export interface DD2CSVMMDInitializationSettings {
@@ -19,9 +20,10 @@ export const defaultConfiguration: DD2CSVMMDSettings = Object.freeze({
 	validateElementTypes: true,
 	validateFieldNames: true,
 	validateFieldInput: true,
-	showEmptyFields: true,
+	showEmptyFields: false,
 	validateProjectFiles: true,
 	indexProjectFiles: true,
 	allowComments: false,
 	dd2CsvDetectionMethod: "firstLine",
+	debounceTime: 100,
 });
