@@ -45,7 +45,7 @@ export class ProjectManager {
 		const rootPath = this.workspaceRoot.fsPath;
 		const csvFiles = await this.findCsvFiles(rootPath);
 		for (const filePath of csvFiles) {
-			await this.loadFromDisk(filePath);
+			await this.loadFileFromDisk(filePath);
 		}
 	}
 
@@ -89,29 +89,46 @@ export class ProjectManager {
 		return result;
 	}
 
-	public async loadFromDisk(filePath: string) {
-		const uri = URI.file(filePath).toString();
-		const text = await fs.promises.readFile(filePath, "utf8");
-		this.updateFileState(uri, text);
-	}
-
 	public async updateFromDisk(uri: string) {
 		if (this.openDocuments.has(uri)) {
 			return;
 		}
-		return this.loadFromDisk(URI.parse(uri).fsPath);
+		const fsPath = URI.parse(uri).fsPath;
+		const stats = await fs.promises.stat(fsPath);
+		if (stats.isDirectory()) {
+			for (const filePath of await this.findCsvFiles(fsPath)) {
+				this.loadFileFromDisk(filePath);
+			}
+		}
+		else {
+			this.loadFileFromDisk(fsPath);
+		}
 	}
 
 	public remove(uri: string) {
 		this.files.delete(uri);
 		this.openDocuments.delete(uri);
+
+		const directoryPrefix = uri.endsWith('/') ? uri : `${uri}/`;
+        for (const cachedUri of this.files.keys()) {
+            if (cachedUri.startsWith(directoryPrefix)) {
+                this.files.delete(cachedUri);
+            }
+        }
 	}
 
-	public get(uri: string): FileState | undefined {
-		return this.files.get(uri);
+	public get(fileUri: string): FileState | undefined {
+		return this.files.get(fileUri);
 	}
 
 	public getAll(): FileState[] {
 		return [...this.files.values()];
 	}
+
+	async loadFileFromDisk(filePath: string) {
+		const uri = URI.file(filePath).toString();
+		const text = await fs.promises.readFile(filePath, "utf8");
+		this.updateFileState(uri, text);
+	}
+
 }

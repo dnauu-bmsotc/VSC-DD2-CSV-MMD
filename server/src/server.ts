@@ -122,24 +122,24 @@ connection.onDidChangeConfiguration(async () => {
 });
 
 connection.onDidChangeWatchedFiles(async event => {
-	let revalidateReason = "";
+	let needToRevalidate = false;
 	for (const change of event.changes) {
 		switch (change.type) {
 			case FileChangeType.Created:
 				await project.updateFromDisk(change.uri);
-				revalidateReason = "File/directory creation";
+				needToRevalidate = true;
 				break;
 			case FileChangeType.Changed:
 				await project.updateFromDisk(change.uri);
 				break;
 			case FileChangeType.Deleted:
 				project.remove(change.uri);
-				revalidateReason = "File/directory deletion";
+				needToRevalidate = true;
 				break;
 		}
 	}
-	if (revalidateReason) {
-		await publishDiagnosticsDebounced(null, revalidateReason);
+	if (needToRevalidate) {
+		await publishDiagnosticsDebounced(null, "File/directory change");
 	}
 });
 
