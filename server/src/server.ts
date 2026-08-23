@@ -122,23 +122,23 @@ connection.onDidChangeConfiguration(async () => {
 });
 
 connection.onDidChangeWatchedFiles(async event => {
-	console.log(event.changes)
+	let revalidateReason = "";
 	for (const change of event.changes) {
 		switch (change.type) {
 			case FileChangeType.Created:
-				console.log(`A .Group.csv file was created: ${change.uri}`);
-				await project.updateFromDisk(change.uri);
-				await publishDiagnostics(null, "File creation");
+				revalidateReason = "File/directory creation";
 				break;
 			case FileChangeType.Changed:
 				await project.updateFromDisk(change.uri);
 				break;
 			case FileChangeType.Deleted:
-				console.log(`A .Group.csv file was deleted: ${change.uri}`);
 				project.remove(change.uri);
-				await publishDiagnostics(null, "File deletion");
+				revalidateReason = "File/directory deletion";
 				break;
 		}
+	}
+	if (revalidateReason) {
+		await publishDiagnostics(null, revalidateReason);
 	}
 });
 

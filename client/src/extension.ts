@@ -57,6 +57,7 @@ export function activate(context: ExtensionContext) {
 		synchronize: {
 			fileEvents: [
 				workspace.createFileSystemWatcher('**/*.Group.csv'),
+        		workspace.createFileSystemWatcher('**/'), // watch directories
 			]
 		},
 		initializationOptions: initializationOptions,
