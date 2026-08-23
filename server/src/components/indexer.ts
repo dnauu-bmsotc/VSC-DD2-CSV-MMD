@@ -1,4 +1,4 @@
-import { FieldsDescription, TypeDefinition } from './schema';
+import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired } from './schema';
 import { ASTElement, ASTField, ASTValue } from './parser';
 import { ValuesDescription } from './compiler';
 
@@ -88,32 +88,59 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 			break;
 		case "dependentRequired":
 		case "dependent":
-			try {
-				const influenceSourceField = element.fields.find(f => f.name === definition.field);
-				if (influenceSourceField) {
-					const influenceSourceSchema = schema[element.elementType].fields[influenceSourceField.name].input;
-					const influenceSourceSchemaContent = influenceSourceSchema.type === "list" ? influenceSourceSchema.element : influenceSourceSchema;
-					if (influenceSourceSchemaContent.type === "kw") {
-						const influenceKWGroup = keywords[influenceSourceSchemaContent.group];
-						for (let i = 0; i < influenceSourceField.values.length; i++) {
-							const sourceValue = influenceSourceField.values[i];
-							const influenceValueDesc = influenceKWGroup[sourceValue.text];
-							if (influenceValueDesc?.influences) {
-								const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
-								if (influenceType) {
-									const influencedValues = influenceSourceSchema.type === "list" ? field.values.slice(i, i + 1) : field.values;
-									extractEmittedTags(index, element, field, influencedValues, influenceType.input, schema, keywords);
-								}
-							}
-						}
-					}
-				}
+			const influencedTypes = getDependencyInfluencedTypeSilent(element, field, definition, schema, keywords);
+			if (!influencedTypes) {
+				break;
 			}
-			catch(error) {
-				console.error(error);
+			for (let i = 0; i < influencedTypes.types.length; i++) {
+				const influencedType = influencedTypes.types[i];
+				if (!influencedType) {
+					continue;
+				}
+				const influencedValues = influencedTypes.isDependentOnList ? field.values.slice(i, i + 1) : field.values;
+				extractEmittedTags(index, element, field, influencedValues, influencedType, schema, keywords);
 			}
 			break;
 		default:
 			break;
 	}
 }
+
+
+export function getDependencyInfluencedTypeSilent(
+	element: ASTElement,
+	field: ASTField,
+	definition: TypeDefinitionDependent | TypeDefinitionDependentRequired,
+	schema: FieldsDescription,
+	keywords: ValuesDescription,
+): {
+	types: (TypeDefinition | null)[],
+	isDependentOnList: boolean;
+} | null {
+	const influenceSourceField = element.fields.find(f => f.name === definition.field);
+	if (!influenceSourceField) {
+		return null;
+	}
+	const influenceSourceSchema = schema[element.elementType].fields[influenceSourceField.name].input;
+	const influenceSourceSchemaContent = influenceSourceSchema.type === "list" ? influenceSourceSchema.element : influenceSourceSchema;
+	if (influenceSourceSchemaContent.type !== "kw") {
+		return null;
+	}
+	const influenceKWGroup = keywords[influenceSourceSchemaContent.group];
+	const influencedTypes = influenceSourceField.values.map(v => {
+		const influenceValueDesc = influenceKWGroup[v.text];
+		if (influenceValueDesc?.influences) {
+			const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
+			if (influenceType) {
+				return influenceType.input;
+			}
+		}
+		return null;
+	});
+
+	return {
+		types: influencedTypes,
+		isDependentOnList: influenceSourceSchema.type === "list",
+	};
+}
+
