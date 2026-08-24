@@ -5,8 +5,16 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 ## Extension Features
 
 - Syntax highlighting for DD2 CSV files.
-- Validation of values.
-- Validation data can be modified in the extension installation folder.
+- Validation of elements, fields, and values.
+- Validation data is collected across all CSV files in VS project.
+- Hints on hover for fields and values.
+- Autocomplete.
+
+![Image: missing id](./images/screenshot_missing_id.png)
+*Example: ID with no definition*
+
+![Image: table hint](./images/screenshot_table.png)
+*Example: hint on hover*
 
 ## DD2 CSV Data Overview
 

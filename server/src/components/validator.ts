@@ -178,7 +178,7 @@ function validateInput(values: ASTValue[], definition: TypeDefinition, c: Valida
 					}
 				}
 				if (!matchedTypes.length) {
-					return createExpectedTypeDiagnostic(definition, values[0].range);
+					return createMissingGroupMemberDiagnostic(values[0], definition);
 				}
 				for (const v of values) {
 					v.computedType = { type: "union", elements: matchedTypes };
