@@ -160,8 +160,9 @@ export class HoverManager {
 			.filter(field => connectedFields.find(f => f.name === field.name))
 			.map(field => [field.name, field.values.map(v => v.text)])
 		);
+		const idx = c.field.values.indexOf(c.value);
 		addition += `\n\n`;
-		addition += dictToMarkdownTable(tableObj);
+		addition += dictToMarkdownTable(tableObj, idx);
 		return addition;
 	}
 }
@@ -177,7 +178,7 @@ interface HoverContextField   { element: ASTElement; field: ASTField; value?: ne
 interface HoverContextElement { element: ASTElement; field?: never;   value?: never; }
 interface HoverContextNone    { element?: never;     field?: never;   value?: never; }
 
-function dictToMarkdownTable(data: Record<string, string[]>): string {
+function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: number): string {
 	const headers = Object.keys(data);
 	if (headers.length === 0) {
 		return "";
@@ -189,7 +190,10 @@ function dictToMarkdownTable(data: Record<string, string[]>): string {
 	for (let i = 0; i < maxRows; i++) {
 		const row = headers.map(header => {
 			const cellValue = data[header][i];
-			return cellValue ? cellValue : "";
+			if (!cellValue) {
+				return "";
+			}
+			return (i === highlightRow ? `**${cellValue}**` : cellValue);
 		});
 		bodyRows.push(`| ${row.join(" | ")} |`);
 	}
