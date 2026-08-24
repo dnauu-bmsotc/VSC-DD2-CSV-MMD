@@ -184,8 +184,8 @@ function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: numbe
 		return "";
 	}
 	const maxRows = Math.max(...Object.values(data).map(arr => arr.length));
-	const headerRow = `| ${headers.join(" | ")} |`;
-	const separatorRow = `| ${headers.map(() => "---").join(" | ")} |`;
+	const headerRow = `| № | ${headers.join(" | ")} |`;
+	const separatorRow = `| --- | ${headers.map(() => "---").join(" | ")} |`;
 	const bodyRows: string[] = [];
 	for (let i = 0; i < maxRows; i++) {
 		const row = headers.map(header => {
@@ -195,7 +195,7 @@ function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: numbe
 			}
 			return (i === highlightRow ? `**${cellValue}**` : cellValue);
 		});
-		bodyRows.push(`| ${row.join(" | ")} |`);
+		bodyRows.push(`| **${i + 1}** | ${row.join(" | ")} |`);
 	}
 	return [headerRow, separatorRow, ...bodyRows].join("\n");
 }
