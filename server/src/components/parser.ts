@@ -1,5 +1,6 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
+import { TypeDefinition } from './schema';
 
 export type AST = ASTElement[];
 
@@ -19,6 +20,7 @@ export interface ASTField {
 export interface ASTValue {
 	text: string;
 	range: Range;
+	computedType?: TypeDefinition, // value's type after validation
 }
 
 export interface ASTParseResult {

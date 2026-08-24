@@ -47920,7 +47920,7 @@
       "profile_has_defeated_boss": {
         "influences": {
           "Condition m_ConditionString": {
-            "inputString": "Or(Boss ID,BossExtended ID)",
+            "inputString": "Or(Boss ID,ExtendedBoss ID)",
             "input": {
               "type": "union",
               "elements": [
@@ -47930,7 +47930,7 @@
                 },
                 {
                   "type": "id",
-                  "group": "BossExtended"
+                  "group": "ExtendedBoss"
                 }
               ]
             }

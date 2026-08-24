@@ -179,3 +179,39 @@ function splitTopLevel(content?: string): string[] {
 	if (current) parts.push(current.trim());
 	return parts;
 }
+
+export function typeToVerbose(t: TypeDefinition): string {
+	switch (t.type) {
+		case "any":
+			return "Any";
+		case "bool":
+			return "Boolean";
+		case "dependent":
+		case "dependentRequired":
+			return `Dependent on ${t.field} field`;
+		case "float":
+			return "Float";
+		case "id":
+			return `${t.group} ID`;
+		case "int":
+			return "Integer";
+		case "kw":
+			return `${t.group} Keyword`;
+		case "list":
+			return `List of ${t.element}`;
+		case "nothing":
+			return "None";
+		case "range":
+			return "Range";
+		case "sequence":
+			return `Sequence ${(t.elements.map(etype => typeToVerbose(etype)))}`;
+		case "tagEmitter":
+			return `${t.group} tag definition`;
+		case "tagReceiver":
+			return `${t.group} tag reference`;
+		case "union":
+			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
+		case "sub":
+			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
+	}
+}

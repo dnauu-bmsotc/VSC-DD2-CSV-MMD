@@ -1,7 +1,7 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
 import { ProjectManager } from './project';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
-import { Element, Field, TypeDefinition } from './schema';
+import { Element, Field, TypeDefinition, typeToVerbose } from './schema';
 
 export class HoverManager {
 	constructor(
@@ -9,41 +9,47 @@ export class HoverManager {
 	) {}
 
 	onHover(hoverParams: HoverParams): Hover | null {
-		const uri = hoverParams.textDocument.uri;
-		const position = hoverParams.position;
-		const file = this.project.get(uri);
-		if (!file) {
-			return null;
-		}
-		const context = this.findWhatIsAtPosition(file.ast, position);
-		if (context.element) {
-			const elementDefinition = this.project.compiledData.schema[context.element.elementType];
-			if (context.field) {
+		try {
+			const uri = hoverParams.textDocument.uri;
+			const position = hoverParams.position;
+			const file = this.project.get(uri);
+			if (!file) {
+				return null;
+			}
+			const context = this.findWhatIsAtPosition(file.ast, position);
+			if (context.element) {
+				const elementDefinition = this.project.compiledData.schema[context.element.elementType];
 				if (!elementDefinition) {
 					return null;
 				}
-				const fieldDefinition = elementDefinition.fields[context.field.name];
-				if (context.value) {
+				if (context.field) {
+					const fieldDefinition = elementDefinition.fields[context.field.name];
 					if (!fieldDefinition) {
 						return null;
 					}
-					const valueDefinition = fieldDefinition.input;
-					if (!valueDefinition) {
-						return null;
+					if (context.value) {
+						const valueDefinition = fieldDefinition.input;
+						if (!valueDefinition) {
+							return null;
+						}
+						else {
+							return this.hoverValue(context, valueDefinition);
+						}
 					}
 					else {
-						return this.hoverValue(context, valueDefinition);
+						return this.hoverField(context, fieldDefinition);
 					}
 				}
 				else {
-					return this.hoverField(context, fieldDefinition);
+					return this.hoverElement(context, elementDefinition);
 				}
 			}
 			else {
-				return this.hoverElement(context, elementDefinition);
+				return null;
 			}
 		}
-		else {
+		catch (e) {
+			console.error(e);
 			return null;
 		}
 	}
@@ -53,7 +59,9 @@ export class HoverManager {
 			if ((element.range.start.line === position.line)) {
 				return { element: element };
 			}
-			if ((element.fields[0].range.start.line <= position.line) && (position.line <= element.fields[element.fields.length - 1].range.start.line)) {
+			if ((element.fields.length > 0)
+				&& (element.fields[0].range.start.line <= position.line)
+				&& (position.line <= element.fields[element.fields.length - 1].range.start.line)) {
 				for (const field of element.fields) {
 					if (field.range.start.line === position.line) {
 						if (position.character <= field.range.end.character) {
@@ -72,32 +80,36 @@ export class HoverManager {
 	}
 
 	private hoverValue(c: HoverContextValue, definition: TypeDefinition): Hover | null {
-		return this.createHover([
-			`Value "${c.value.text}"`,
-		], c.value.range);
+		let message = `Value "${c.value.text}"`
+		if (c.value.computedType) {
+			message += `\n\nComputed type: **${typeToVerbose(c.value.computedType)}**`;
+		}
+		return this.createHover(message, c.value.range);
 	}
 
 	private hoverField(c: HoverContextField, definition: Field): Hover | null {
-		return this.createHover([
-			`Field ${c.field.name}`,
-			`Expected input: **${definition.inputString}**`,
-			`Comment: ${definition.comment ? definition.comment : "none"}`,
-		], c.field.range);
+		let message = `Field ${c.field.name}`;
+		message += `\n\nExpected input: **${definition.inputString}**`;
+		if (definition.comment) {
+			message += `\n\nComment: ${definition.comment}`;
+		}
+		return this.createHover(message, c.field.range);
 	}
 
 	private hoverElement(c: HoverContextElement, definition: Element): Hover | null {
-		const comment = this.project.compiledData.elementsDescription[c.element.name];
-		return this.createHover([
-			`Element **${c.element.name}** of type *${definition.name}*`,
-			`Comment: ${comment ? comment : "none"}`,
-		], c.element.range);
+		const comment = this.project.compiledData.elementsDescription[c.element.elementType].comment;
+		let message = `Element **${c.element.name}** of type *${definition.name}*`;
+		if (comment) {
+			message += `\n\nComment: ${comment}`;
+		}
+		return this.createHover(message, c.element.range);
 	}
 
-	private createHover(messages: string[], range: Range): Hover {
+	private createHover(message: string, range: Range): Hover {
 		return {
 			contents: {
 				kind: MarkupKind.Markdown,
-				value: messages.join("\n\n"),
+				value: message,
 			},
 			range: range,
 		}

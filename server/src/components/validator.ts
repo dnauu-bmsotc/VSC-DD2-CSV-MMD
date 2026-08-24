@@ -1,7 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
-import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver } from './schema';
+import { TypeDefinition, TypeDefinitionBool, TypeDefinitionFloat, TypeDefinitionID, TypeDefinitionInt, TypeDefinitionKW, TypeDefinitionRange, TypeDefinitionSequence, TypeDefinitionTagReceiver, typeToVerbose } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { FileState } from './project';
 import { Index, IndexGroups } from './indexer';
@@ -85,6 +85,9 @@ export function validateAstBySchema(c: ValidationFileContext): Diagnostic[] {
  * @returns One diagnostic object for the first error encountered.
  */
 function validateInput(values: ASTValue[], definition: TypeDefinition, c: ValidationContext): Diagnostic | null {
+	for (const v of values) {
+		v.computedType = undefined;
+	}
 	switch (definition.type) {
 		case "any":
 			return null;
@@ -167,16 +170,18 @@ function validateInput(values: ASTValue[], definition: TypeDefinition, c: Valida
 				return createExpectedTypeDiagnostic(definition, c.field.range);
 			}
 			else {
-				let matchesAnyOption = false;
+				const matchedTypes = [];
 				for (const optionType of definition.elements) {
 					const diagnostic = validateInput(values, optionType, c);
 					if (!diagnostic) {
-						matchesAnyOption = true;
-						break;
+						matchedTypes.push(optionType);
 					}
 				}
-				if (!matchesAnyOption) {
+				if (!matchedTypes.length) {
 					return createExpectedTypeDiagnostic(definition, values[0].range);
+				}
+				for (const v of values) {
+					v.computedType = { type: "union", elements: matchedTypes };
 				}
 				return null;
 			}
@@ -185,6 +190,9 @@ function validateInput(values: ASTValue[], definition: TypeDefinition, c: Valida
 			return validateID(values, definition, c);
 
 		case "tagEmitter":
+			for (const v of values) {
+				v.computedType = definition;
+			}
 			return null;
 
 		case "tagReceiver":
@@ -315,7 +323,8 @@ const isNumericString = (str: string) => !isNaN(Number(str));
 const isRangeStringRegex = /^\[\d+-\d+\]$/;
 const isRangeString = (str: string) =>isRangeStringRegex.test(str);
 
-function singleValueCheck(values: ASTValue[], type: TypeDefinition, checker: (v: string) => boolean): Diagnostic | null {
+type singleValueCheckTypes = TypeDefinitionInt | TypeDefinitionFloat | TypeDefinitionRange | TypeDefinitionBool;
+function singleValueCheck(values: ASTValue[], type: singleValueCheckTypes, checker: (v: string) => boolean): Diagnostic | null {
 	if (values.length === 0) {
 		return null;
 	}
@@ -327,6 +336,7 @@ function singleValueCheck(values: ASTValue[], type: TypeDefinition, checker: (v:
 		if (values.length > 1) {
 			return createExpectedEndOfInputDiagnostic(values.slice(1));
 		}
+		values[0].computedType = type;
 		return null;
 	}
 }
@@ -349,6 +359,7 @@ function validateID(values: ASTValue[], definition: TypeDefinitionID, c: Validat
 	if (values.length > 1) {
 		return createExpectedEndOfInputDiagnostic(values.slice(1));
 	}
+	values[0].computedType = definition;
 	return null;
 }
 
@@ -362,6 +373,7 @@ function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagRe
 	if (values.length > 1) {
 		return createExpectedEndOfInputDiagnostic(values.slice(1));
 	}
+	values[0].computedType = definition;
 	return null;
 }
 
@@ -380,6 +392,7 @@ function validateKeyword(values: ASTValue[], definition: TypeDefinitionKW, c: Va
 	if (values.length > 1) {
 		return createExpectedEndOfInputDiagnostic(values.slice(1));
 	}
+	values[0].computedType = definition;
 	return null;
 }
 
@@ -517,40 +530,4 @@ function validateConditionStringForActorStatValue(c: ValidationContext): Diagnos
 function getSubstatDefinition(stat: string, statValue: string, substat: string, compiledData: CompiledData): TypeDefinition | null {
 	const result = compiledData.keywords[stat]?.[statValue]?.influences?.[substat]?.input;
 	return result ? result : null;
-}
-
-function typeToVerbose(t: TypeDefinition): string {
-	switch (t.type) {
-		case "any":
-			return "Any";
-		case "bool":
-			return "Boolean";
-		case "dependent":
-		case "dependentRequired":
-			return `Dependent on ${t.field} field`;
-		case "float":
-			return "Float";
-		case "id":
-			return `${t.group} ID`;
-		case "int":
-			return "Integer";
-		case "kw":
-			return `${t.group} Keyword`;
-		case "list":
-			return `List of ${t.element}`;
-		case "nothing":
-			return "None";
-		case "range":
-			return "Range";
-		case "sequence":
-			return `Sequence ${(t.elements.map(etype => typeToVerbose(etype)))}`;
-		case "tagEmitter":
-			return "${t.group} tag definition";
-		case "tagReceiver":
-			return `${t.group} tag reference`;
-		case "union":
-			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
-		case "sub":
-			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
-	}
 }
