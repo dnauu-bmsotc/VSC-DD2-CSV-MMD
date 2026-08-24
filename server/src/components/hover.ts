@@ -2,6 +2,7 @@ import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-language
 import { ProjectManager } from './project';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { Element, Field, TypeDefinition, typeToVerbose } from './schema';
+import { getDependencyInfluencedTypeSilent } from './indexer';
 
 export class HoverManager {
 	constructor(
@@ -82,17 +83,18 @@ export class HoverManager {
 	private hoverValue(c: HoverContextValue, definition: TypeDefinition): Hover | null {
 		let message = `Value "${c.value.text}"`
 		if (c.value.computedType) {
-			message += `\n\nComputed type: **${typeToVerbose(c.value.computedType)}**`;
+			message += `\n\nEvaluated type: **${typeToVerbose(c.value.computedType)}**`;
 		}
 		return this.createHover(message, c.value.range);
 	}
 
 	private hoverField(c: HoverContextField, definition: Field): Hover | null {
 		let message = `Field ${c.field.name}`;
-		message += `\n\nExpected input: **${definition.inputString}**`;
+		message += `\n\nExpected input: **${typeToVerbose(definition.input)}**`;
 		if (definition.comment) {
 			message += `\n\nComment: ${definition.comment}`;
 		}
+		message += this.hoverFieldAdditionForDependentFields(c, definition);
 		return this.createHover(message, c.field.range);
 	}
 
@@ -113,6 +115,26 @@ export class HoverManager {
 			},
 			range: range,
 		}
+	}
+
+	private hoverFieldAdditionForDependentFields(c: HoverContextField, definition: Field): string {
+		if ((definition.input.type !== "dependent") && (definition.input.type !== "dependentRequired")) {
+			return "";
+		}
+		let addition = ""
+		const cd = this.project.compiledData;
+		const influencedTypes = getDependencyInfluencedTypeSilent(c.element, c.field, definition.input, cd.schema, cd.keywords);
+		if (influencedTypes?.types) {
+			const fieldInfluencer = influencedTypes.influenceSourceField;
+			addition += `\n\nExpected for each value of *${fieldInfluencer.name}* field:`;
+			const influenceDict = Object.fromEntries(fieldInfluencer.values.map((k, i) => [k.text, influencedTypes.types[i]]));
+			for (const k of Object.keys(influenceDict)) {
+				if (influenceDict[k]) {
+					addition += `\n- *${k}* -> **${typeToVerbose(influenceDict[k])}**`;
+				}
+			}
+		}
+		return addition;
 	}
 }
 

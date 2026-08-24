@@ -120,6 +120,7 @@ export function getDependencyInfluencedTypeSilent(
 ): {
 	types: (TypeDefinition | null)[],
 	isDependentOnList: boolean;
+	influenceSourceField: ASTField,
 } | null {
 	const influenceSourceField = element.fields.find(f => f.name === definition.field);
 	if (!influenceSourceField) {
@@ -145,6 +146,7 @@ export function getDependencyInfluencedTypeSilent(
 	return {
 		types: influencedTypes,
 		isDependentOnList: influenceSourceSchema.type === "list",
+		influenceSourceField: influenceSourceField,
 	};
 }
 

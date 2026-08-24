@@ -198,7 +198,7 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case "kw":
 			return `${t.group} Keyword`;
 		case "list":
-			return `List of ${t.element}`;
+			return `List of ${typeToVerbose(t.element)}`;
 		case "nothing":
 			return "None";
 		case "range":
