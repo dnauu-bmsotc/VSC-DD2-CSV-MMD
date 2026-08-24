@@ -1,7 +1,7 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
 import { ProjectManager } from './project';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
-import { Element, Field, TypeDefinition, typeToVerbose } from './schema';
+import { Element, Field, TypeDefinition, typeHasDependent, typeToVerbose } from './schema';
 import { getDependencyInfluencedTypeSilent } from './indexer';
 
 export class HoverManager {
@@ -34,11 +34,11 @@ export class HoverManager {
 							return null;
 						}
 						else {
-							return this.hoverValue(context, valueDefinition);
+							return this.hoverValue(context, elementDefinition, fieldDefinition, valueDefinition);
 						}
 					}
 					else {
-						return this.hoverField(context, fieldDefinition);
+						return this.hoverField(context, elementDefinition, fieldDefinition);
 					}
 				}
 				else {
@@ -80,27 +80,29 @@ export class HoverManager {
 		return { };
 	}
 
-	private hoverValue(c: HoverContextValue, definition: TypeDefinition): Hover | null {
-		let message = `Value "${c.value.text}"`
+	private hoverValue(c: HoverContextValue, elementDefinition: Element, fieldDefinition: Field, fieldInputDefinition: TypeDefinition): Hover | null {
+		let message = `(Value) "${c.value.text}"`
 		if (c.value.computedType) {
 			message += `\n\nEvaluated type: **${typeToVerbose(c.value.computedType)}**`;
 		}
+		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
 		return this.createHover(message, c.value.range);
 	}
 
-	private hoverField(c: HoverContextField, definition: Field): Hover | null {
-		let message = `Field ${c.field.name}`;
-		message += `\n\nExpected input: **${typeToVerbose(definition.input)}**`;
-		if (definition.comment) {
-			message += `\n\nComment: ${definition.comment}`;
+	private hoverField(c: HoverContextField, elementDefinition: Element, fieldDefinition: Field): Hover | null {
+		let message = `(Field) ${c.field.name}`;
+		message += `\n\nExpected input: **${typeToVerbose(fieldDefinition.input)}**`;
+		if (fieldDefinition.comment) {
+			message += `\n\nComment: ${fieldDefinition.comment}`;
 		}
-		message += this.hoverFieldAdditionForDependentFields(c, definition);
+		message += this.hoverFieldAdditionForDependentFields(c, fieldDefinition);
 		return this.createHover(message, c.field.range);
 	}
 
 	private hoverElement(c: HoverContextElement, definition: Element): Hover | null {
 		const comment = this.project.compiledData.elementsDescription[c.element.elementType].comment;
-		let message = `Element **${c.element.name}** of type *${definition.name}*`;
+		let message = `(Element) ${c.element.name}`;
+		message += `\n\nType: *${definition.name}*`;
 		if (comment) {
 			message += `\n\nComment: ${comment}`;
 		}
@@ -121,7 +123,7 @@ export class HoverManager {
 		if ((definition.input.type !== "dependent") && (definition.input.type !== "dependentRequired")) {
 			return "";
 		}
-		let addition = ""
+		let addition = "";
 		const cd = this.project.compiledData;
 		const influencedTypes = getDependencyInfluencedTypeSilent(c.element, c.field, definition.input, cd.schema, cd.keywords);
 		if (influencedTypes?.types) {
@@ -136,6 +138,32 @@ export class HoverManager {
 		}
 		return addition;
 	}
+
+	private hoverValueAddiionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
+		let addition = "";
+		const groupIfThisFieldIsDependent = typeHasDependent(fieldInputDefinition);
+		const fieldInfluencer = groupIfThisFieldIsDependent ? groupIfThisFieldIsDependent : c.field.name;
+		if (elementDefinition.fields[fieldInfluencer]?.input.type !== "list") {
+			return "";
+		}
+		const connectedFields = c.element.fields
+			.filter(field => {
+				const group = typeHasDependent(elementDefinition.fields[field.name].input);
+				if ((fieldInfluencer === group) || (fieldInfluencer === field.name)) {
+					return true;
+				}
+			});
+		if (connectedFields.length < 2) {
+			return "";
+		}
+		const tableObj = Object.fromEntries(c.element.fields
+			.filter(field => connectedFields.find(f => f.name === field.name))
+			.map(field => [field.name, field.values.map(v => v.text)])
+		);
+		addition += `\n\n`;
+		addition += dictToMarkdownTable(tableObj);
+		return addition;
+	}
 }
 
 type HoverContext =
@@ -148,3 +176,22 @@ interface HoverContextValue   { element: ASTElement; field: ASTField; value: AST
 interface HoverContextField   { element: ASTElement; field: ASTField; value?: never; }
 interface HoverContextElement { element: ASTElement; field?: never;   value?: never; }
 interface HoverContextNone    { element?: never;     field?: never;   value?: never; }
+
+function dictToMarkdownTable(data: Record<string, string[]>): string {
+	const headers = Object.keys(data);
+	if (headers.length === 0) {
+		return "";
+	}
+	const maxRows = Math.max(...Object.values(data).map(arr => arr.length));
+	const headerRow = `| ${headers.join(" | ")} |`;
+	const separatorRow = `| ${headers.map(() => "---").join(" | ")} |`;
+	const bodyRows: string[] = [];
+	for (let i = 0; i < maxRows; i++) {
+		const row = headers.map(header => {
+			const cellValue = data[header][i];
+			return cellValue ? cellValue : "";
+		});
+		bodyRows.push(`| ${row.join(" | ")} |`);
+	}
+	return [headerRow, separatorRow, ...bodyRows].join("\n");
+}

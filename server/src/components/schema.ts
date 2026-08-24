@@ -180,6 +180,41 @@ function splitTopLevel(content?: string): string[] {
 	return parts;
 }
 
+/**
+ * Searches for Dep or Dep* types in given definition.
+ * @returns name of the field-influencer or null.
+ */
+export function typeHasDependent(t: TypeDefinition): string | null {
+	switch (t.type) {
+		case "any":
+		case "bool":
+		case "float":
+		case "id":
+		case "int":
+		case "kw":
+		case "nothing":
+		case "range":
+		case "tagEmitter":
+		case "tagReceiver":
+		case "sub":
+			return null;
+		case "dependent":
+		case "dependentRequired":
+			return t.field;
+		case "list":
+			return typeHasDependent(t.element);
+		case "union":
+		case "sequence":
+			for (const subtype of t.elements) {
+				const group = typeHasDependent(subtype);
+				if (group) {
+					return group;
+				}
+			}
+			return null;
+	}
+}
+
 export function typeToVerbose(t: TypeDefinition): string {
 	switch (t.type) {
 		case "any":
@@ -187,8 +222,9 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case "bool":
 			return "Boolean";
 		case "dependent":
-		case "dependentRequired":
 			return `Dependent on ${t.field} field`;
+		case "dependentRequired":
+			return `Dependent on ${t.field} field (requires values)`;
 		case "float":
 			return "Float";
 		case "id":
