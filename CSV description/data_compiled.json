@@ -4530,19 +4530,10 @@
           "comment": ""
         },
         "m_ConditionString": {
-          "inputString": "Or(null KW,Dep(m_ConditionType))",
+          "inputString": "Dep(m_ConditionType)",
           "input": {
-            "type": "union",
-            "elements": [
-              {
-                "type": "kw",
-                "group": "null"
-              },
-              {
-                "type": "dependent",
-                "field": "m_ConditionType"
-              }
-            ]
+            "type": "dependent",
+            "field": "m_ConditionType"
           },
           "comment": ""
         },
@@ -8745,10 +8736,13 @@
           "comment": ""
         },
         "m_RespawnStageCoachRefillRunValueTypes": {
-          "inputString": "RunValueType KW",
+          "inputString": "List(RunValueType KW)",
           "input": {
-            "type": "kw",
-            "group": "RunValueType"
+            "type": "list",
+            "element": {
+              "type": "kw",
+              "group": "RunValueType"
+            }
           },
           "comment": ""
         },
@@ -9505,10 +9499,13 @@
           "comment": ""
         },
         "siege_run_data_stats": {
-          "inputString": "RunDataStats ID",
+          "inputString": "List(RunDataStats ID)",
           "input": {
-            "type": "id",
-            "group": "RunDataStats"
+            "type": "list",
+            "element": {
+              "type": "id",
+              "group": "RunDataStats"
+            }
           },
           "comment": ""
         },
@@ -46606,19 +46603,9 @@
       "store_cost_buy_multiplier": {
         "influences": {
           "Substat": {
-            "inputString": "Or(ItemType KW,InnFeatureType KW)",
+            "inputString": "any",
             "input": {
-              "type": "union",
-              "elements": [
-                {
-                  "type": "kw",
-                  "group": "ItemType"
-                },
-                {
-                  "type": "kw",
-                  "group": "InnFeatureType"
-                }
-              ]
+              "type": "any"
             }
           }
         }
@@ -49321,7 +49308,8 @@
       "base": {},
       "dlc": {},
       "dlc_item": {},
-      "dlc_altar": {}
+      "dlc_altar": {},
+      "base_altar": {}
     },
     "ResultType": {
       "NONE": {},

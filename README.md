@@ -767,7 +767,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_ConditionMetTarget|boolean|Default True||
 |m_ConditionNumber|float|||
 |m_ConditionNumberType|keyword||keyword: BOOL, EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, MULTIPLE, PARAMETER<br>|
-|m_ConditionString|Or(keyword, Dep(m_ConditionType))||keyword: null<br>|
+|m_ConditionString|Dep(m_ConditionType)|||
 |m_ConditionType|keyword||keyword: <details><summary>expand</summary>actor_count_value, actor_stat_value, always, arena_modifier, battle_configuration_tag_count, biome, biome_count, biome_end_node, biome_history_count, biome_modifier, biome_modifier_tag, biome_modifier_tag_count, biome_siege_strength, biome_status, biome_status_tag_amount, biome_sub_type, biome_typical_count, boss, buff_tag_amount, class, combat_item_equipped, combat_item_equipped_tag, combat_source, day, doom_reset_count, dot_tag_amount, first_initiative, game_type, gang, health_percent, health_percent_wound_included, in_relationship, in_relationship_tag, incomplete_hero_story_choices_amount, inn_days_since_last_siege_attack, inn_days_since_last_siege_resolve, inn_destroy_count, inn_respawn_visit, inn_siege_resolve_visit, inn_tag, inn_upgrade, item, item_amount, item_equipped_tag, item_tag, item_tag_amount, item_total_percent, killed_class_amount, kingdom_class, last_initiative, map_cell_type, mode, node, options_value_bool, overstress, overstress_tag, party_class, path, path_tag_amount, profile_calculated_group_progress, profile_has_defeated_boss, profile_run_end_streak_failure, profile_run_end_streak_victory, profile_unlock, profile_value, quest_complete, quest_step_complete, quest_step_current, quirk, quirk_tag_amount, rank, relationship, relationship_tag, resist, resist_tag, roster_status, roster_status_amount, round, run_value, run_value_percent, siege_count, size, skill, skill_equipped, skill_equipped_tag, skill_received_history_amount, skill_received_history_last, skill_tag, skill_use_history_amount, skill_use_history_last, stage_coach_upgrade_equipped, stage_coach_upgrade_equipped_general_amount, stage_coach_upgrade_equipped_pet_amount, stage_coach_upgrade_equipped_tag, stage_coach_upgrade_equipped_trophy_amount, status, stress, stress_percent, tag, token_amount, token_tag_amount, trinket_equipped, trinket_equipped_tag, turn, wound_percent</details><br>|
 |m_IsInverse|boolean|||
 |m_IsSkillConditionInputValid|boolean|||
@@ -1540,7 +1540,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_PointsMin|integer|||
 |m_PointsProfileValueType|keyword||keyword: candles<br>|
 |m_RemoveQuirkByTagCosts|List(Seq(Quirk&nbsp;Tag-, integer))|||
-|m_RespawnStageCoachRefillRunValueTypes|keyword||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
+|m_RespawnStageCoachRefillRunValueTypes|List(keyword)||keyword: doom, escalation, hero_upgrade_points, stage_coach_armor, stage_coach_wheels, torch<br>|
 |m_RunDataStatsId|RunDataStats&nbsp;ID|||
 |m_SellExecutingNodeTypes|List(keyword)||keyword: AltarOfHope, BeastmenAlpha, BossSelect, Bridge, BridgeGang, Cache, CacheGang, Cathedral, CovenAssist, CreatureDen, Dummy, Dungeon, GameResults, Gate, GauntChirurgeon, Guardian, HeroSelect, Hospital, Inn, KingdomBoss, KingdomCamp, KingdomInn, KingdomInnSieged, Landmark, LandmarkInkfireField, LandmarkTreesDense, LandmarkTreesSparse, Mountain, Oasis, Store, StoryAssist, StoryAssistGang, StoryCosmic, StoryCultist, StoryCultistMountain01, StoryCultistMountain02, StoryHero, StoryHeroReplacement, StoryResist, Unknown, Warlord, WatchTower, null<br>|
 |m_SiegeCounterStartMax|integer|||
@@ -1633,7 +1633,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |score_multiplier|Seq(keyword, float)||keyword: academics_honorarium, biome_bosses_cleared, faced_end_boss, fights_won, first_end_boss_victory, hero_stories_cleared, heroes_hired, heroes_survived, inn_bonus, inventory_items, items_discarded, leagues_passed, optional_biomes_cleared, run_goals_class, run_goals_path, start_biomes_cleared, typical_biomes_cleared, victory<br>|
 |score_replacement|Seq(keyword, List(integer))||keyword: academics_honorarium, biome_bosses_cleared, faced_end_boss, fights_won, first_end_boss_victory, hero_stories_cleared, heroes_hired, heroes_survived, inn_bonus, inventory_items, items_discarded, leagues_passed, optional_biomes_cleared, run_goals_class, run_goals_path, start_biomes_cleared, typical_biomes_cleared, victory<br>|
 |siege_loss_hero_effects|List(Effect&nbsp;ID)|||
-|siege_run_data_stats|RunDataStats&nbsp;ID|||
+|siege_run_data_stats|List(RunDataStats&nbsp;ID)|||
 |stall_effects|List(Effect&nbsp;ID)|||
 |stress_affinity_tick_trigger_chance_modifier|Seq(float, float, boolean, float)|Input is a sequence of values: m_MinValue, m_MaxValue, m_IsPositiveChange, m_ChanceModifier||
 |trinket_slot_unlocks|List(Unlock&nbsp;ID)|||
@@ -1788,7 +1788,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 |m_PlayerStoryChoicePreviewIds||||
 |m_PlayerStoryChoicePreviewShowNumbers|List(boolean)|||
 |m_PlayerStoryChoicePreviewValues|List(integer)|||
-|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_altar, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
 |m_ResultActorClassId|ActorDataClass&nbsp;ID|||
 |m_ResultAudioOverrideId||||
 |m_ResultBattleConfigurationId|BattleConfiguration&nbsp;ID|||
@@ -1967,7 +1967,7 @@ Unused Element
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |cost|Seq(Cost&nbsp;ID, float, float)|Sets cost depending on unlock progress. Numbers are the decimal proportion of progress. Between these bounds the cost is set to the specified Cost.||
-|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_altar, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
 |m_chances|Dep*(m_types)|||
 |m_ids|Dep*(m_types)|||
 |m_types|List(keyword)||keyword: unlock<br>|
@@ -1978,7 +1978,7 @@ Unused Element
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_ProgressGroupId|keyword||keyword: base, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
+|m_ProgressGroupId|keyword||keyword: base, base_altar, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
 |unlocks|List(Unlock&nbsp;ID)|||
 </details>
 

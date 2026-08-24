@@ -4,7 +4,7 @@ import { CompiledData } from './compiler';
 import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { FileState } from './project';
-import { getDependencyInfluencedTypeSilent, Index, IndexGroups } from './indexer';
+import { Index, IndexGroups } from './indexer';
 
 interface ValidationFileContext {
 	ast: AST;
