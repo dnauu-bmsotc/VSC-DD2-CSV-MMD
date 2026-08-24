@@ -36,7 +36,7 @@ export function validateAstBySchema(c: ValidationFileContext): Diagnostic[] {
 			if (c.configuration.validateElementTypes) {
 				diagnostics.push({
 					severity: DiagnosticSeverity.Error,
-					range: element.elementTypeRange,
+					range: element.range,
 					message: `Unrecognized element type "${element.elementType}"`
 				});
 			}

@@ -17,10 +17,12 @@ import {
 	TextDocument
 } from 'vscode-languageserver-textdocument';
 
+import { URI } from 'vscode-uri';
+
+import { DD2CSVMMDSettings } from '../../shared/settings';
 import { validateAstBySchema } from './components/validator';
 import { ProjectManager } from './components/project';
-import { URI } from 'vscode-uri';
-import { DD2CSVMMDSettings } from '../../shared/settings';
+import { HoverManager } from './components/hover';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -35,7 +37,7 @@ let hasDiagnosticRelatedInformationCapability = false;
 let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
-
+let hover: HoverManager;
 let debounceTimer: NodeJS.Timeout | null = null;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
@@ -63,9 +65,9 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	const result: InitializeResult = {
 		capabilities: {
 			textDocumentSync: TextDocumentSyncKind.Incremental,
-			// Tell the client that this server supports code completion.
+			hoverProvider: true,
 			completionProvider: {
-				resolveProvider: true
+				resolveProvider: true,
 			},
 		}
 	};
@@ -93,6 +95,8 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 		connection.window.showErrorMessage(message);
 		throw Error;
 	}
+
+	hover = new HoverManager(project);
 	
 	return result;
 });
@@ -208,6 +212,8 @@ async function validateTextDocument(uri: string, text: string) {
 		return [];
 	}
 }
+
+connection.onHover(params => hover.onHover(params));
 
 // This handler provides the initial list of the completion items.
 connection.onCompletion(
