@@ -179,14 +179,14 @@ interface HoverContextElement { element: ASTElement; field?: never;   value?: ne
 interface HoverContextNone    { element?: never;     field?: never;   value?: never; }
 
 function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: number): string {
+	const m_chancesReplaced = replaceChancesWithWeightedValues(data);
 	const headers = Object.keys(data);
 	if (headers.length === 0) {
 		return "";
 	}
 	const maxRows = Math.max(...Object.values(data).map(arr => arr.length));
-	const headerRow = `| № | ${headers.join(" | ")} |`;
-	const separatorRow = `| --- | ${headers.map(() => "---").join(" | ")} |`;
-	const bodyRows: string[] = [];
+	let result = `| № | ${headers.join(" | ")} |`;
+	result += `\n| --- | ${headers.map(() => "---").join(" | ")} |`;
 	for (let i = 0; i < maxRows; i++) {
 		const row = headers.map(header => {
 			const cellValue = data[header][i];
@@ -195,7 +195,22 @@ function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: numbe
 			}
 			return (i === highlightRow ? `**${cellValue}**` : cellValue);
 		});
-		bodyRows.push(`| **${i + 1}** | ${row.join(" | ")} |`);
+		result += `\n| **${i + 1}** | ${row.join(" | ")} |`;
 	}
-	return [headerRow, separatorRow, ...bodyRows].join("\n");
+	if (m_chancesReplaced) {
+		result += `\n\nChances are calculated with no condition input.`
+	}
+	return result;
+}
+
+function replaceChancesWithWeightedValues(tableObj: Record<string, string[]>): boolean {
+	const m_chances = tableObj["m_chances"]?.map(cell => parseFloat(cell));
+	if (m_chances?.every(n => typeof n === 'number')) {
+		const total = m_chances.reduce((sum, val) => sum + val, 0);
+		const formatNumber = (num: number) => parseFloat(num.toFixed(2));
+		const weightedValues = m_chances.map(val => `${formatNumber(val)} (${formatNumber(val / total * 100).toFixed(2)}%)`);
+		tableObj["m_chances"] = weightedValues;
+		return true;
+	}
+	return false;
 }
