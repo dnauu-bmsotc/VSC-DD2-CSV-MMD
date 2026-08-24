@@ -107,6 +107,10 @@ function extractEmittedTags(index: Index, element: ASTElement, field: ASTField, 
 }
 
 
+/**
+ * Tries to get a list of types that dependent field can/needs to provide.
+ * If the field-influencer has multiple values, this tries to get a list of types of the same length.
+ */
 export function getDependencyInfluencedTypeSilent(
 	element: ASTElement,
 	field: ASTField,

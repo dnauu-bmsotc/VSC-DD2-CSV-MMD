@@ -194,7 +194,12 @@ async function validateTextDocument(uri: string, text: string) {
 		}
 		
 		const fileStates = project.configuration.indexProjectFiles ? [...project.files.values()] : [fileState];
-		const validationResult = validateAstBySchema(fileState.ast, project.compiledData, fileStates, project.configuration);
+		const validationResult = validateAstBySchema({
+			ast: fileState.ast,
+			compiledData: project.compiledData,
+			files: fileStates,
+			configuration: project.configuration
+		});
 
 		return [...fileState.parseDiagnostics, ...validationResult];
 	}

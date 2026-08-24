@@ -1,30 +1,39 @@
 import { Diagnostic, DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { CompiledData } from './compiler';
-import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver } from './schema';
+import { TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { FileState } from './project';
-import { Index, IndexGroups } from './indexer';
+import { getDependencyInfluencedTypeSilent, Index, IndexGroups } from './indexer';
 
-export function validateAstBySchema(
-	ast: AST,
-	compiledData: CompiledData,
-	files: FileState[],
-	configuration: DD2CSVMMDSettings
-): Diagnostic[] {
-	if (!configuration.validateElementTypes &&
-		!configuration.validateFieldNames &&
-		!configuration.validateFieldInput
+interface ValidationFileContext {
+	ast: AST;
+	compiledData: CompiledData;
+	files: FileState[];
+	configuration: DD2CSVMMDSettings;
+}
+
+interface ValidationValueContext {
+	element: ASTElement;
+	field: ASTField;
+}
+
+type ValidationContext = ValidationFileContext & ValidationValueContext;
+
+export function validateAstBySchema(c: ValidationFileContext): Diagnostic[] {
+	if (!c.configuration.validateElementTypes &&
+		!c.configuration.validateFieldNames &&
+		!c.configuration.validateFieldInput
 	) {
 		return [];
 	}
 	const diagnostics: Diagnostic[] = [];
-	for (const element of ast) {
+	for (const element of c.ast) {
 		if (element.elementType === "KingdomMap") {
 			continue;
 		}
-		if (!compiledData.elementsDescription[element.elementType]) {
-			if (configuration.validateElementTypes) {
+		if (!c.compiledData.elementsDescription[element.elementType]) {
+			if (c.configuration.validateElementTypes) {
 				diagnostics.push({
 					severity: DiagnosticSeverity.Error,
 					range: element.elementTypeRange,
@@ -33,14 +42,14 @@ export function validateAstBySchema(
 			}
 			continue;
 		}
-		const elementDefinition = compiledData.schema[element.elementType];
+		const elementDefinition = c.compiledData.schema[element.elementType];
 		for (const field of element.fields) {
 			if (!field.name) {
 				continue;
 			}
 			const fieldDefinition = elementDefinition.fields[field.name];
 			if (!fieldDefinition) {
-				if (configuration.validateFieldNames) {
+				if (c.configuration.validateFieldNames) {
 					diagnostics.push({
 						severity: DiagnosticSeverity.Error,
 						range: field.range,
@@ -49,9 +58,9 @@ export function validateAstBySchema(
 				}
 				continue;
 			}
-			if (configuration.validateFieldInput) {
+			if (c.configuration.validateFieldInput) {
 				if (field.values.length === 0) {
-					if (configuration.showEmptyFields) {
+					if (c.configuration.showEmptyFields) {
 						diagnostics.push({
 							severity: DiagnosticSeverity.Warning,
 							range: field.range,
@@ -60,7 +69,8 @@ export function validateAstBySchema(
 					}
 				}
 				else {
-					const diagnostic = validateInput(element, field, field.values, fieldDefinition.input, compiledData, files);
+					const context: ValidationContext = { ...c, element: element, field: field, };
+					const diagnostic = validateInput(field.values, fieldDefinition.input, context);
 					diagnostic && diagnostics.push(diagnostic);
 				}
 			}
@@ -71,12 +81,10 @@ export function validateAstBySchema(
 
 /**
  * Validates values against the provided type definition.
- * @param values List of values to validate. These values might differ from field.values because this function is called recursively for groups of values.
- * @param astIndex Index of values encountered in non-vanilla data.
+ * @values List of values to validate. These values might differ from c.field.values.
  * @returns One diagnostic object for the first error encountered.
  */
-function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
-	definition: TypeDefinition, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
+function validateInput(values: ASTValue[], definition: TypeDefinition, c: ValidationContext): Diagnostic | null {
 	switch (definition.type) {
 		case "any":
 			return null;
@@ -106,10 +114,10 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				const listElementNumberOfValues = definition.element.elements.length;
 				for (let i = 0; i < values.length; i += listElementNumberOfValues) {
 					if (i + listElementNumberOfValues > values.length) {
-						createMissingSequenceValueDiagnostic(field, values.slice(i), definition.element);
+						createMissingSequenceValueDiagnostic(values.slice(i), definition.element, c);
 					}
 					const valuesSlice = values.slice(i, i + listElementNumberOfValues);
-					const diagnostic = validateInput(element, field, valuesSlice, definition.element, compiledData, files);
+					const diagnostic = validateInput(valuesSlice, definition.element, c);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -120,7 +128,7 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 					if (!v.text.trim()) {
 						continue;
 					}
-					const diagnostic = validateInput(element, field, [v], definition.element, compiledData, files);
+					const diagnostic = validateInput([v], definition.element, c);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -132,18 +140,18 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			let listInSequence = false;
 			for (let i = 0; i < definition.elements.length; i++) {
 				if (i >= values.length) {
-					return createMissingSequenceValueDiagnostic(field, values, definition);
+					return createMissingSequenceValueDiagnostic(values, definition, c);
 				}
 				if (definition.elements[i].type === "list") {
 					listInSequence = true;
-					const diagnostic = validateInput(element, field, values.slice(i), definition.elements[i], compiledData, files);
+					const diagnostic = validateInput(values.slice(i), definition.elements[i], c);
 					if (diagnostic) {
 						return diagnostic;
 					}
 					break;
 				}
 				else {
-					const diagnostic = validateInput(element, field, [values[i]], definition.elements[i], compiledData, files);
+					const diagnostic = validateInput([values[i]], definition.elements[i], c);
 					if (diagnostic) {
 						return diagnostic;
 					}
@@ -156,12 +164,12 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 
 		case "union":
 			if (values.length === 0) {
-				return createExpectedTypeDiagnostic(definition, field.range);
+				return createExpectedTypeDiagnostic(definition, c.field.range);
 			}
 			else {
 				let matchesAnyOption = false;
 				for (const optionType of definition.elements) {
-					const diagnostic = validateInput(element, field, values, optionType, compiledData, files);
+					const diagnostic = validateInput(values, optionType, c);
 					if (!diagnostic) {
 						matchesAnyOption = true;
 						break;
@@ -174,83 +182,83 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			}
 
 		case "id":
-			return validateID(values, definition, files, compiledData);
+			return validateID(values, definition, c);
 
 		case "tagEmitter":
 			return null;
 
 		case "tagReceiver":
-			return validateTagReceived(values, definition, files, compiledData);
+			return validateTagReceived(values, definition, c);
 
 		case "kw":
-			const keywords = compiledData.keywords[definition.group];
+			const keywords = c.compiledData.keywords[definition.group];
 			if (!keywords) {
 				console.error(`Unrecognized KW group ${definition.group}`);
 				return null;
 			}
-			return validateKeyword(values, definition, files, compiledData);
+			return validateKeyword(values, definition, c);
 
 		case "dependentRequired":
 		case "dependent":
 			const influencedFieldDefinition = definition;
-			const influenceSourceField = element.fields.find(f => f.name === influencedFieldDefinition.field);
+			const influenceSourceField = c.element.fields.find(f => f.name === influencedFieldDefinition.field);
 			if (!influenceSourceField) {
 				return {
 					severity: DiagnosticSeverity.Error,
-					range: field.range,
+					range: c.field.range,
 					message: `Missing required field ${influencedFieldDefinition.field}.`,
 				};
 			}
-			const influenceSourceSchema = compiledData.schema[element.elementType].fields[influenceSourceField.name].input;
+			const influenceSourceSchema = c.compiledData.schema[c.element.elementType].fields[influenceSourceField.name].input;
 			const influenceSourceSchemaContent = influenceSourceSchema.type === "list" ? influenceSourceSchema.element : influenceSourceSchema;
 			if (influenceSourceSchemaContent.type !== "kw") {
-				console.error(`Influence field ${field.name} in element ${element.name} is not a KW or List(KW) field.`);
+				console.error(`Influence field ${c.field.name} in element ${c.element.name} is not a KW or List(KW) field.`);
 				return null;
 			}
-			if ((field.values.length) && (influenceSourceField.values.length === 0)) {
+			if ((c.field.values.length) && (influenceSourceField.values.length === 0)) {
 				return {
 					severity: DiagnosticSeverity.Error,
-					range: field.range,
+					range: c.field.range,
 					message: `Field-influencer ${influenceSourceField.name} is empty.`,
 				};
 			}
 			if ((influenceSourceSchema.type === "list")) {
-				if ((definition.type === "dependentRequired") && (influenceSourceField.values.length != field.values.length)
-					|| (definition.type === "dependent") && (influenceSourceField.values.length < field.values.length))
+				if ((definition.type === "dependentRequired") && (influenceSourceField.values.length != c.field.values.length)
+					|| (definition.type === "dependent") && (influenceSourceField.values.length < c.field.values.length))
 				return {
 					severity: DiagnosticSeverity.Error,
-					range: field.range,
-					message: `Field-influencer ${influenceSourceField.name} has a different number of values (${influenceSourceField.values.length}) than this field (${field.values.length}).`,
+					range: c.field.range,
+					message: `Field-influencer ${influenceSourceField.name} has a different number of values (${influenceSourceField.values.length}) than this field (${c.field.values.length}).`,
 				};
 			}
-			const influenceKWGroup = compiledData.keywords[influenceSourceSchemaContent.group];
+			const influenceKWGroup = c.compiledData.keywords[influenceSourceSchemaContent.group];
 			if (!influenceKWGroup) {
 				console.error(`Unrecognized dependency group ${influenceSourceSchemaContent.group}`);
 				return null;
 			}
 			if (influenceSourceField.values[0].text === "actor_stat_value") {
-				return validateConditionStringForActorStatValue(element, field, compiledData, files);
+				return validateConditionStringForActorStatValue(c);
 			}
 			for (let i = 0; i < influenceSourceField.values.length; i++) {
-				if (i >= field.values.length) {
+				if (i >= c.field.values.length) {
 					return null;
 				}
 				const sourceValue = influenceSourceField.values[i];
 				const influenceValueDesc = influenceKWGroup[sourceValue.text];
 				if (!influenceValueDesc) {
-					console.error(`Dependency of field ${field.name} by value ${sourceValue.text} is not found.`);
+					console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is not found.`);
 					return null;
 				}
-				const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
+				const influenceType = influenceValueDesc.influences?.[c.element.elementType + " " + c.field.name];
 				if (!influenceType) {
-					console.error(`Dependency of field ${field.name} by value ${sourceValue.text} is empty.`);
+					console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is empty.`);
 					return null;
 				}
-				const valuesToValidate = influenceSourceSchema.type === "list" ? field.values.slice(i, i + 1) : field.values;
+				const valuesToValidate = influenceSourceSchema.type === "list" ? c.field.values.slice(i, i + 1) : c.field.values;
 				if ((definition.type === "dependentRequired") && (valuesToValidate.some(v => !v.text.trim()))) {
-					return createExpectedTypeDiagnostic(influenceType.input, field.values[i].range);
+					return createExpectedTypeDiagnostic(influenceType.input, c.field.values[i].range);
 				}
-				const validationResult = validateInput(element, field, valuesToValidate, influenceType.input, compiledData, files);
+				const validationResult = validateInput(valuesToValidate, influenceType.input, c);
 				if (validationResult) {
 					return validationResult;
 				}
@@ -261,15 +269,15 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 			if (values.length !== 3) {
 				return {
 					severity: DiagnosticSeverity.Error,
-					range: field.range,
+					range: c.field.range,
 					message: `Three values are required`,
 				};
 			}
-			const groupValidateResult = validateInput(element, field, [values[0]], { type: "kw", group: definition.group }, compiledData, files);
+			const groupValidateResult = validateInput([values[0]], { type: "kw", group: definition.group }, c);
 			if (groupValidateResult) {
 				return groupValidateResult;
 			}
-			const KWGroup = compiledData.keywords[definition.group];
+			const KWGroup = c.compiledData.keywords[definition.group];
 			if (!KWGroup) {
 				console.error(`Unrecognized subtype group ${definition.group}`);
 				return null;
@@ -284,11 +292,11 @@ function validateInput(element: ASTElement, field: ASTField, values: ASTValue[],
 				console.error(`Subtype ${definition.subtypeString} has empty fields.`);
 				return null;
 			}
-			const subtypeValidateResult = validateInput(element, field, [values[1]], derivedType.input, compiledData, files);
+			const subtypeValidateResult = validateInput([values[1]], derivedType.input, c);
 			if (subtypeValidateResult) {
 				return subtypeValidateResult;
 			}
-			return validateInput(element, field, [values[2]], definition.subtypeValueType, compiledData, files);
+			return validateInput([values[2]], definition.subtypeValueType, c);
 
 		default:
 			console.error(`Unknown input type: ${definition}`);
@@ -323,19 +331,19 @@ function singleValueCheck(values: ASTValue[], type: TypeDefinition, checker: (v:
 	}
 }
 
-function validateID(values: ASTValue[], definition: TypeDefinitionID, files: FileState[], compiledData: CompiledData) {
+function validateID(values: ASTValue[], definition: TypeDefinitionID, c: ValidationContext) {
 	if (values.length === 0) {
 		return null;
 	}
 	if (isCondition(definition)) {
-		const validationResult = validateConditionID(values[0], definition, compiledData, files);
+		const validationResult = validateConditionID(values[0], definition, c);
 		if (validationResult) {
 			return validationResult;
 		}
 	}
 	else {
-		if (!isValueInGroupEntries(values[0].text, definition.group, compiledData, files, getIdGroupsFromIndex)) {
-			return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+		if (!isValueInGroupEntries(values[0].text, definition.group, c, getIdGroupsFromIndex)) {
+			return createMissingGroupMemberDiagnostic(values[0], definition);
 		}
 	}
 	if (values.length > 1) {
@@ -344,12 +352,12 @@ function validateID(values: ASTValue[], definition: TypeDefinitionID, files: Fil
 	return null;
 }
 
-function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagReceiver, files: FileState[], compiledData: CompiledData) {
+function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagReceiver, c: ValidationContext) {
 	if (values.length === 0) {
 		return null;
 	}
-	if (!isValueInGroupEntries(values[0].text, definition.group, compiledData, files, getTagGroupsFromIndex)) {
-		return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+	if (!isValueInGroupEntries(values[0].text, definition.group, c, getTagGroupsFromIndex)) {
+		return createMissingGroupMemberDiagnostic(values[0], definition);
 	}
 	if (values.length > 1) {
 		return createExpectedEndOfInputDiagnostic(values.slice(1));
@@ -357,17 +365,17 @@ function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagRe
 	return null;
 }
 
-function validateKeyword(values: ASTValue[], definition: TypeDefinitionKW, files: FileState[], compiledData: CompiledData): Diagnostic | null {
+function validateKeyword(values: ASTValue[], definition: TypeDefinitionKW, c: ValidationContext): Diagnostic | null {
 	if (values.length === 0) {
 		return null;
 	}
-	const kwgroup = compiledData.keywords[definition.group];
+	const kwgroup = c.compiledData.keywords[definition.group];
 	if (!kwgroup) {
 		console.error(`Keyword group ${definition.group} is not found.`);
 		return null;
 	}
 	if (!Object.hasOwn(kwgroup, values[0].text)) {
-		return createMissingGroupMemberDiagnostic(values[0].text, definition, values[0].range);
+		return createMissingGroupMemberDiagnostic(values[0], definition);
 	}
 	if (values.length > 1) {
 		return createExpectedEndOfInputDiagnostic(values.slice(1));
@@ -380,14 +388,14 @@ type CallbackIsValueInGroupEntries = (index: Index) => IndexGroups;
 const getIdGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.idGroups;
 const getTagGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.tagGroups;
 
-function isValueInGroupEntries(value: string, groupName: string, compiledData: CompiledData, files: FileState[], getGroups: CallbackIsValueInGroupEntries): boolean {
-	for (const fileState of files) {
+function isValueInGroupEntries(value: string, groupName: string, c: ValidationContext, getGroups: CallbackIsValueInGroupEntries): boolean {
+	for (const fileState of c.files) {
 		const groups = getGroups(fileState.index)[groupName];
 		if (groups?.includes(value)) {
 			return true;
 		}
 	}
-	const groups = getGroups(compiledData.index)[groupName];
+	const groups = getGroups(c.compiledData.index)[groupName];
 	if (!groups) {
 		console.error(`Group ${groupName} is not found.`);
 		return false;
@@ -398,20 +406,20 @@ function isValueInGroupEntries(value: string, groupName: string, compiledData: C
 	return false;
 }
 
-function validateConditionID(value: ASTValue, definition: TypeDefinitionID, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
+function validateConditionID(value: ASTValue, definition: TypeDefinitionID, c: ValidationContext): Diagnostic | null {
 	let idx = 0;
 	for (const id of value.text.split("+")) {
 		if (id === "") {
 			continue;
 		}
-		if (!isValueInGroupEntries(id, definition.group, compiledData, files, getIdGroupsFromIndex)) {
+		if (!isValueInGroupEntries(id, definition.group, c, getIdGroupsFromIndex)) {
 			const line = value.range.start.line;
 			const charStart = value.range.start.character;
 			const range: Range = {
 				start: { line, character: charStart + idx },
 				end: { line, character: charStart + idx + id.length },
 			};
-			return createMissingGroupMemberDiagnostic(id, definition, range);
+			return createMissingGroupMemberDiagnostic({ text: id, range }, definition);
 		}
 		idx += id.length + 1;
 	}
@@ -422,11 +430,11 @@ function isCondition(referenceType: TypeDefinition) {
 	return ((referenceType.type === "id") && (referenceType.group === "Condition"))
 }
 
-function createMissingGroupMemberDiagnostic(value: string, expectedType: TypeDefinition, range: Range) {
+function createMissingGroupMemberDiagnostic(value: ASTValue, expectedType: TypeDefinition) {
 	return {
 		severity: DiagnosticSeverity.Error,
-		range: range,
-		message: `Unrecognized value "${value}".\nExpected value of type:\n${typeToVerbose(expectedType)}`,
+		range: value.range,
+		message: `Unrecognized value "${value.text}".\nExpected value of type:\n${typeToVerbose(expectedType)}`,
 	};
 }
 
@@ -453,47 +461,44 @@ function createExpectedEndOfInputDiagnostic(values: ASTValue[]): Diagnostic | nu
 	};
 }
 
-function createMissingSequenceValueDiagnostic(field: ASTField, values: ASTValue[], schema: TypeDefinition): Diagnostic | null {
-	if (schema.type !== "sequence") {
-		return null;
-	}
-	const missingValues = schema.elements.slice(values.length).map(typeToVerbose);
+function createMissingSequenceValueDiagnostic(values: ASTValue[], definition: TypeDefinitionSequence, c: ValidationContext): Diagnostic | null {
+	const missingValues = definition.elements.slice(values.length).map(etype => typeToVerbose(etype, ));
 	return {
 		severity: DiagnosticSeverity.Error,
-		range: field.range,
+		range: c.field.range,
 		message: `Field requires more values:\n${missingValues.join(", ")}.`
 	};
 }
 
-function validateConditionStringForActorStatValue(element: ASTElement, field: ASTField, compiledData: CompiledData, files: FileState[]): Diagnostic | null {
-	const valuesToValidate = [...field.values[0].text.matchAll(/[^+]+/g)].map<ASTValue>(match => ({
+function validateConditionStringForActorStatValue(c: ValidationContext): Diagnostic | null {
+	const valuesToValidate = [...c.field.values[0].text.matchAll(/[^+]+/g)].map<ASTValue>(match => ({
 		text: match[0],
 		range: {
-			start: { line: field.range.start.line, character: field.values[0].range.start.character + match.index },
-			end: { line: field.range.start.line, character: field.values[0].range.start.character + match.index + match[0].length },
+			start: { line: c.field.range.start.line, character: c.field.values[0].range.start.character + match.index },
+			end: { line: c.field.range.start.line, character: c.field.values[0].range.start.character + match.index + match[0].length },
 		}
 	}));
 	if (valuesToValidate.length === 0) {
 		return null;
 	}
 	if (valuesToValidate.length === 1) {
-		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatType" }, compiledData, files);
+		const statValidationResult = validateInput([valuesToValidate[0]], { type: "kw", group: "ActorStatType" }, c);
 		if (statValidationResult) {
 			return statValidationResult;
 		}
 		return null;
 	}
 	if (valuesToValidate.length === 2) {
-		const statValidationResult = validateInput(element, field, [valuesToValidate[0]], { type: "kw", group: "ActorStatSubType" }, compiledData, files);
+		const statValidationResult = validateInput([valuesToValidate[0]], { type: "kw", group: "ActorStatSubType" }, c);
 		if (statValidationResult) {
 			return statValidationResult;
 		}
-		const substatDefinition = getSubstatDefinition("ActorStatSubType", valuesToValidate[0].text, 'Substat', compiledData);
+		const substatDefinition = getSubstatDefinition("ActorStatSubType", valuesToValidate[0].text, 'Substat', c.compiledData);
 		if (!substatDefinition) {
 			console.error(`ActorStatSubType does not have substat for value ${valuesToValidate[0].text}`);
 			return null;
 		}
-		const substatValidationResult = validateInput(element, field, [valuesToValidate[1]], substatDefinition, compiledData, files);
+		const substatValidationResult = validateInput([valuesToValidate[1]], substatDefinition, c);
 		if (substatValidationResult) {
 			return substatValidationResult;
 		}
@@ -502,7 +507,7 @@ function validateConditionStringForActorStatValue(element: ASTElement, field: AS
 	if (valuesToValidate.length > 2) {
 		return {
 			severity: DiagnosticSeverity.Error,
-			range: field.values[0].range,
+			range: c.field.values[0].range,
 			message: `Can't have multiple "+" symbols.`,
 		};
 	}
@@ -521,9 +526,8 @@ function typeToVerbose(t: TypeDefinition): string {
 		case "bool":
 			return "Boolean";
 		case "dependent":
-			return `Dependent on ${t.field} field`;
 		case "dependentRequired":
-			return `Dependent on ${t.field} field (with required values)`;
+			return `Dependent on ${t.field} field`;
 		case "float":
 			return "Float";
 		case "id":
@@ -539,13 +543,13 @@ function typeToVerbose(t: TypeDefinition): string {
 		case "range":
 			return "Range";
 		case "sequence":
-			return `Sequence ${(t.elements.map(typeToVerbose))}`;
+			return `Sequence ${(t.elements.map(etype => typeToVerbose(etype)))}`;
 		case "tagEmitter":
 			return "${t.group} tag definition";
 		case "tagReceiver":
 			return `${t.group} tag reference`;
 		case "union":
-			return t.elements.map(typeToVerbose).join(" or ");
+			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
 		case "sub":
 			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
 	}
