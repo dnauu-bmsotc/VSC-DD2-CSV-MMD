@@ -1,5 +1,10 @@
 {
     "MMD": {
+        "semanticRules": {
+            "id": "#fcd1cc",
+            "tag": "#e6d487",
+            "keyword": "#bbc1fc"
+        },
         "textMateRules": [
             {
                 "scope": "comment.line.dd2mmd",
@@ -16,19 +21,19 @@
             {
                 "scope": "keyword.control.start.dd2mmd",
                 "settings": {
-                    "foreground": "#85e02f"
+                    "foreground": "#a6eb65"
                 }
             },
             {
                 "scope": "keyword.control.end.dd2mmd",
                 "settings": {
-                    "foreground": "#fc7a4e"
+                    "foreground": "#a6eb65"
                 }
             },
             {
                 "scope": "entity.name.element-id.dd2mmd",
                 "settings": {
-                    "foreground": "#cd86fc"
+                    "foreground": "#fc845b"
                 }
             },
             {
@@ -70,6 +75,11 @@
         ]
     },
     "PHombie": {
+        "semanticRules": {
+            "id": "#fcd1cc",
+            "tag": "#e6d487",
+            "keyword": "#bbc1fc"
+        },
         "textMateRules": [
             {
                 "scope": "comment.line.dd2mmd",

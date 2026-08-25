@@ -10,7 +10,9 @@ import {
 	TextDocumentSyncKind,
 	InitializeResult,
 	DidChangeWatchedFilesNotification,
-	FileChangeType
+	FileChangeType,
+	SemanticTokensParams,
+	SemanticTokensRefreshRequest
 } from 'vscode-languageserver/node';
 
 import {
@@ -23,6 +25,7 @@ import { DD2CSVMMDSettings } from '../../shared/settings';
 import { validateAstBySchema } from './components/validator';
 import { ProjectManager } from './components/project';
 import { HoverManager } from './components/hover';
+import { semanticTokensLegend, SemanticTokensProvider } from './components/semantic';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -38,13 +41,12 @@ let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
 let hover: HoverManager;
+let semanticTokensProvider: SemanticTokensProvider;
 let debounceTimer: NodeJS.Timeout | null = null;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const capabilities = params.capabilities;
 
-	// Does the client support the `workspace/configuration` request?
-	// If not, we fall back using global settings.
 	hasConfigurationCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.configuration
 	);
@@ -68,6 +70,11 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 			hoverProvider: true,
 			completionProvider: {
 				resolveProvider: true,
+			},
+			semanticTokensProvider: {
+				legend: semanticTokensLegend,
+				full: true,
+				range: false,
 			},
 		}
 	};
@@ -97,6 +104,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	}
 
 	hover = new HoverManager(project);
+	semanticTokensProvider = new SemanticTokensProvider(project);
 	
 	return result;
 });
@@ -146,7 +154,6 @@ documents.onDidOpen(e => {
 	project.updateFileState(e.document.uri, e.document.getText());
 });
 
-// Only keep settings for open documents
 documents.onDidClose(e => {
 	
 });
@@ -155,7 +162,7 @@ documents.onDidClose(e => {
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(async (e) => {
 	project.updateFileState(e.document.uri, e.document.getText());
-	await publishDiagnosticsDebounced(e.document.uri, "Content change");
+	await publishDiagnosticsDebounced(e.document.uri, "Content change / file opened");
 });
 
 async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
@@ -163,8 +170,9 @@ async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
 		console.info('Validation call debounced.');
 	}
 	else {
-		debounceTimer = setTimeout(() => {
+		debounceTimer = setTimeout(async () => {
 			publishDiagnostics(uri, reason);
+			await connection.sendRequest(SemanticTokensRefreshRequest.type);
 			debounceTimer = null;
 		}, project.configuration.debounceTime);
 	}
@@ -209,6 +217,12 @@ async function validateTextDocument(uri: string, text: string) {
 }
 
 connection.onHover(params => hover.onHover(params));
+
+connection.languages.semanticTokens.on(
+	async function onSemanticTokens(params: SemanticTokensParams) {
+		return semanticTokensProvider.provide(params.textDocument.uri);
+	}
+);
 
 // This handler provides the initial list of the completion items.
 connection.onCompletion(

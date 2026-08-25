@@ -25,12 +25,22 @@ export async function updateTokenColors(context: vscode.ExtensionContext) {
 				selectedColors, 
 				vscode.ConfigurationTarget.Global
 			);
+			await config.update(
+				'editor.semanticTokenColorCustomizations',
+				{ "rules": selectedColors.semanticRules },
+				vscode.ConfigurationTarget.Global
+			);
 			break;
 		case "none":
 		default:
 			await config.update(
             	'editor.tokenColorCustomizations', 
 				undefined, 
+				vscode.ConfigurationTarget.Global
+			);
+			await config.update(
+				'editor.semanticTokenColorCustomizations',
+				{ "rules": undefined },
 				vscode.ConfigurationTarget.Global
 			);
 			break;

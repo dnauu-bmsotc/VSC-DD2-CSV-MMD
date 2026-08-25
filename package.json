@@ -115,6 +115,11 @@
 					"default": false,
 					"description": "Rebuild data and readme on extension start."
 				},
+				"DD2CSVMMD.useSemanticHighlighting": {
+					"type": "boolean",
+					"default": true,
+					"description": "Highlight id/tag references and keywords in field inputs."
+				},
 				"DD2CSVMMD.debounceTime": {
 					"type": "integer",
 					"default": 100,

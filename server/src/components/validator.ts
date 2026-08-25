@@ -181,7 +181,12 @@ function validateInput(values: ASTValue[], definition: TypeDefinition, c: Valida
 					return createMissingGroupMemberDiagnostic(values[0], definition);
 				}
 				for (const v of values) {
-					v.computedType = { type: "union", elements: matchedTypes };
+					if (matchedTypes.length === 1) {
+						v.computedType = matchedTypes[0];
+					}
+					else {
+						v.computedType = { type: "union", elements: matchedTypes };
+					}
 				}
 				return null;
 			}
