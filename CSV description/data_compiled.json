@@ -49450,111 +49450,318 @@
     }
   },
   "elementsDescription": {
-    "Achievement": {},
-    "ActOut": {},
-    "ActorDataActOut": {},
-    "ActorDataClass": {},
-    "ActorDataEffects": {},
-    "ActorDataExternalBuffs": {},
-    "ActorDataMode": {},
-    "ActorDataPath": {},
-    "ActorDataRunGoals": {},
-    "ActorDataSkill": {},
-    "ActorDataSkillReplacement": {},
-    "ActorDataStats": {},
-    "ActorEffectTrigger": {},
-    "ActorStatus": {},
-    "AffinityLeaningLevel": {},
-    "AffinityRelationship": {},
-    "AffinityTickTrigger": {},
-    "ArenaModifier": {},
-    "BarkTrigger": {},
-    "BattleConfiguration": {},
-    "BattleConfigurationTable": {},
-    "BattleModifier": {},
-    "Biome": {},
-    "BiomeGoal": {},
-    "BiomeKillContract": {},
-    "BiomeModifier": {},
-    "BiomeStatus": {},
-    "BiomeUpgrade": {},
-    "Boss": {},
-    "BossModifier": {},
-    "Buff": {},
-    "CinematicSubtitles": {},
-    "Condition": {},
-    "Cost": {},
-    "DataAffinityTickTriggers": {},
-    "DataExternalBuffs": {},
-    "DataNodeReplacements": {},
-    "DataStoryChoiceReplacements": {},
-    "DoomLevel": {},
-    "Dot": {},
-    "Effect": {},
-    "ExtendedBoss": {},
-    "Gang": {},
-    "Haptics": {},
-    "HapticsDeviceIntensity": {},
-    "HapticsDisabledAudio": {},
-    "HapticsDuration": {},
-    "HapticsIntensity": {},
-    "Inn": {},
-    "InnBonus": {},
-    "InnDataStats": {},
-    "InnTable": {},
-    "InnUpgrade": {},
-    "Item": {},
-    "ItemBlock": {},
-    "ItemSubtype": {},
-    "KingdomDifficulty": {},
-    "KingdomEvent": {},
-    "KingdomMap": {},
-    "KingdomSiegeAttack": {},
-    "KingdomSiegeDefense": {},
-    "KingdomTreasure": {},
-    "LootTable": {},
-    "NarrationEntry": {},
-    "NarrationType": {},
-    "NodeDeliverable": {},
-    "NodeReplacement": {},
-    "Overstress": {},
-    "Quest": {},
-    "QuestStep": {},
-    "Quirk": {},
-    "QuirkContainer": {},
-    "Resist": {},
-    "RoadEvent": {},
-    "Route": {},
-    "Rules": {},
-    "RunDataStats": {},
-    "RunGoal": {},
-    "RunGoalCategory": {},
-    "RunLevel": {},
-    "RunValueLevel": {},
-    "RunValueTransaction": {},
-    "SkillBlock": {},
-    "SkillModifier": {},
-    "SkillReplacement": {},
-    "SkillSet": {},
-    "StageCoachSkin": {},
-    "StoryAlignment": {},
-    "StoryChoice": {},
-    "StoryChoiceReplacement": {},
-    "StoryDataEffects": {},
-    "StressTrigger": {},
-    "SummonControllerConfiguration": {},
-    "SummonSequenceElement": {},
-    "Token": {},
-    "TokenIgnore": {},
-    "TorchLevel": {},
-    "TorchLevelGroup": {},
-    "TorchTrigger": {},
+    "Achievement": {
+      "addable": false
+    },
+    "ActOut": {
+      "addable": false
+    },
+    "ActorDataActOut": {
+      "addable": true
+    },
+    "ActorDataClass": {
+      "addable": false
+    },
+    "ActorDataEffects": {
+      "addable": true
+    },
+    "ActorDataExternalBuffs": {
+      "addable": false
+    },
+    "ActorDataMode": {
+      "addable": false
+    },
+    "ActorDataPath": {
+      "addable": false
+    },
+    "ActorDataRunGoals": {
+      "addable": true
+    },
+    "ActorDataSkill": {
+      "addable": false
+    },
+    "ActorDataSkillReplacement": {
+      "addable": true
+    },
+    "ActorDataStats": {
+      "addable": false
+    },
+    "ActorEffectTrigger": {
+      "addable": false
+    },
+    "ActorStatus": {
+      "addable": false
+    },
+    "AffinityLeaningLevel": {
+      "addable": false
+    },
+    "AffinityRelationship": {
+      "addable": false
+    },
+    "AffinityTickTrigger": {
+      "addable": false
+    },
+    "ArenaModifier": {
+      "addable": false
+    },
+    "BarkTrigger": {
+      "addable": false
+    },
+    "BattleConfiguration": {
+      "addable": false
+    },
+    "BattleConfigurationTable": {
+      "addable": true
+    },
+    "BattleModifier": {
+      "addable": false
+    },
+    "Biome": {
+      "addable": false
+    },
+    "BiomeGoal": {
+      "addable": false
+    },
+    "BiomeKillContract": {
+      "addable": false
+    },
+    "BiomeModifier": {
+      "addable": false
+    },
+    "BiomeStatus": {
+      "addable": false
+    },
+    "BiomeUpgrade": {
+      "addable": false
+    },
+    "Boss": {
+      "addable": false
+    },
+    "BossModifier": {
+      "addable": false
+    },
+    "Buff": {
+      "addable": false
+    },
+    "CinematicSubtitles": {
+      "addable": false
+    },
+    "Condition": {
+      "addable": false
+    },
+    "Cost": {
+      "addable": false
+    },
+    "DataAffinityTickTriggers": {
+      "addable": true
+    },
+    "DataExternalBuffs": {
+      "addable": true
+    },
+    "DataNodeReplacements": {
+      "addable": true
+    },
+    "DataStoryChoiceReplacements": {
+      "addable": true
+    },
+    "DoomLevel": {
+      "addable": false
+    },
+    "Dot": {
+      "addable": false
+    },
+    "Effect": {
+      "addable": false
+    },
+    "ExtendedBoss": {
+      "addable": false
+    },
+    "Gang": {
+      "addable": false
+    },
+    "Haptics": {
+      "addable": false
+    },
+    "HapticsDeviceIntensity": {
+      "addable": false
+    },
+    "HapticsDisabledAudio": {
+      "addable": false
+    },
+    "HapticsDuration": {
+      "addable": false
+    },
+    "HapticsIntensity": {
+      "addable": false
+    },
+    "Inn": {
+      "addable": false
+    },
+    "InnBonus": {
+      "addable": false
+    },
+    "InnDataStats": {
+      "addable": true
+    },
+    "InnTable": {
+      "addable": true
+    },
+    "InnUpgrade": {
+      "addable": false
+    },
+    "Item": {
+      "addable": false
+    },
+    "ItemBlock": {
+      "addable": false
+    },
+    "ItemSubtype": {
+      "addable": false
+    },
+    "KingdomDifficulty": {
+      "addable": false
+    },
+    "KingdomEvent": {
+      "addable": false
+    },
+    "KingdomMap": {
+      "addable": false
+    },
+    "KingdomSiegeAttack": {
+      "addable": false
+    },
+    "KingdomSiegeDefense": {
+      "addable": false
+    },
+    "KingdomTreasure": {
+      "addable": false
+    },
+    "LootTable": {
+      "addable": true
+    },
+    "NarrationEntry": {
+      "addable": false
+    },
+    "NarrationType": {
+      "addable": false
+    },
+    "NodeDeliverable": {
+      "addable": false
+    },
+    "NodeReplacement": {
+      "addable": false
+    },
+    "Overstress": {
+      "addable": false
+    },
+    "Quest": {
+      "addable": false
+    },
+    "QuestStep": {
+      "addable": false
+    },
+    "Quirk": {
+      "addable": false
+    },
+    "QuirkContainer": {
+      "addable": false
+    },
+    "Resist": {
+      "addable": false
+    },
+    "RoadEvent": {
+      "addable": false
+    },
+    "Route": {
+      "addable": false
+    },
+    "Rules": {
+      "addable": false
+    },
+    "RunDataStats": {
+      "addable": true
+    },
+    "RunGoal": {
+      "addable": false
+    },
+    "RunGoalCategory": {
+      "addable": false
+    },
+    "RunLevel": {
+      "addable": false
+    },
+    "RunValueLevel": {
+      "addable": false
+    },
+    "RunValueTransaction": {
+      "addable": false
+    },
+    "SkillBlock": {
+      "addable": false
+    },
+    "SkillModifier": {
+      "addable": false
+    },
+    "SkillReplacement": {
+      "addable": false
+    },
+    "SkillSet": {
+      "addable": false
+    },
+    "StageCoachSkin": {
+      "addable": false
+    },
+    "StoryAlignment": {
+      "addable": false
+    },
+    "StoryChoice": {
+      "addable": false
+    },
+    "StoryChoiceReplacement": {
+      "addable": false
+    },
+    "StoryDataEffects": {
+      "addable": true
+    },
+    "StressTrigger": {
+      "addable": false
+    },
+    "SummonControllerConfiguration": {
+      "addable": false
+    },
+    "SummonSequenceElement": {
+      "addable": false
+    },
+    "Token": {
+      "addable": false
+    },
+    "TokenIgnore": {
+      "addable": false
+    },
+    "TorchLevel": {
+      "addable": false
+    },
+    "TorchLevelGroup": {
+      "addable": false
+    },
+    "TorchTrigger": {
+      "addable": false
+    },
     "TrinketSet": {
+      "addable": false,
       "comment": "Unused Element"
     },
-    "Unlock": {},
-    "UnlockTable": {},
-    "UnlockTrack": {},
-    "WoundTrigger": {}
+    "Unlock": {
+      "addable": false
+    },
+    "UnlockTable": {
+      "addable": true
+    },
+    "UnlockTrack": {
+      "addable": false
+    },
+    "WoundTrigger": {
+      "addable": false
+    }
   }
 }

@@ -100,11 +100,11 @@ export class HoverManager {
 	}
 
 	private hoverElement(c: HoverContextElement, definition: Element): Hover | null {
-		const comment = this.project.compiledData.elementsDescription[c.element.elementType].comment;
+		const elementDescription = this.project.compiledData.elementsDescription[c.element.elementType];
 		let message = `(Element) ${c.element.name}`;
 		message += `\n\nType: *${definition.name}*`;
-		if (comment) {
-			message += `\n\nComment: ${comment}`;
+		if (elementDescription.comment) {
+			message += `\n\nComment: ${elementDescription.comment}`;
 		}
 		return this.createHover(message, c.element.range);
 	}

@@ -128,7 +128,7 @@ function readElementsDescription(filePath: string): ElementsDescription {
 		const sheet = workbook.Sheets[sheetName];
 		const data: any[] = XLSX.utils.sheet_to_json(sheet);
 		for (const line of data) {
-			result[line["Element Type"]] = {}
+			result[line["Element Type"]] = {};
 			const v = result[line["Element Type"]];
 			for (const field in line) {
 				if (field === "Element Type") {

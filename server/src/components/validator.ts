@@ -21,12 +21,6 @@ interface ValidationValueContext {
 type ValidationContext = ValidationFileContext & ValidationValueContext;
 
 export function validateAstBySchema(c: ValidationFileContext): Diagnostic[] {
-	if (!c.configuration.validateElementTypes &&
-		!c.configuration.validateFieldNames &&
-		!c.configuration.validateFieldInput
-	) {
-		return [];
-	}
 	const diagnostics: Diagnostic[] = [];
 	for (const element of c.ast) {
 		if (element.elementType === "KingdomMap") {
