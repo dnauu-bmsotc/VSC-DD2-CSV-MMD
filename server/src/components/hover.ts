@@ -160,6 +160,9 @@ export class HoverManager {
 			.filter(field => connectedFields.find(f => f.name === field.name))
 			.map(field => [field.name, field.values.map(v => v.text)])
 		);
+		if (Object.keys(tableObj).length < 2) {
+			return "";
+		}
 		const idx = c.field.values.indexOf(c.value);
 		addition += `\n\n`;
 		addition += dictToMarkdownTable(tableObj, idx);

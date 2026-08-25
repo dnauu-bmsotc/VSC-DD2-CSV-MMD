@@ -1,5 +1,6 @@
 import { Range, SemanticTokens, SemanticTokensBuilder, SemanticTokensLegend, SemanticTokensParams } from 'vscode-languageserver';
 import { ProjectManager } from './project';
+import { TypeDefinition } from './schema';
 
 const semanticTokenDict = { 'id': 0, 'tag': 1, 'keyword': 2 };
 const semanticTokenTypes = [...Object.keys(semanticTokenDict)];
@@ -31,20 +32,7 @@ export class SemanticTokensProvider {
 					for (const value of field.values) {
 						const computedType = value.computedType;
 						if (computedType) {
-							switch (computedType.type) {
-								case "id":
-									this.addToken(builder, value.range, semanticTokenDict.id);
-									break;
-								case "tagEmitter":
-									this.addToken(builder, value.range, semanticTokenDict.tag);
-									break;
-								case "tagReceiver":
-									this.addToken(builder, value.range, semanticTokenDict.tag);
-									break;
-								case "kw":
-									this.addToken(builder, value.range, semanticTokenDict.keyword);
-									break;
-							}
+							this.addTokenByType(builder, value.range, computedType);
 						}
 					}
 				}
@@ -57,7 +45,26 @@ export class SemanticTokensProvider {
 		catch (error) {
 			return { data: [] };
 		}
+	}
 
+	addTokenByType(builder: SemanticTokensBuilder, range: Range, definition: TypeDefinition) {
+		switch (definition.type) {
+			case "id":
+				this.addToken(builder, range, semanticTokenDict.id);
+				break;
+			case "tagEmitter":
+				this.addToken(builder, range, semanticTokenDict.tag);
+				break;
+			case "tagReceiver":
+				this.addToken(builder, range, semanticTokenDict.tag);
+				break;
+			case "kw":
+				this.addToken(builder, range, semanticTokenDict.keyword);
+				break;
+			case "union":
+				this.addTokenByType(builder, range, definition.elements[0]);
+				break;
+		}
 	}
 
 	addToken(builder: SemanticTokensBuilder, range: Range, tokenType: number) {

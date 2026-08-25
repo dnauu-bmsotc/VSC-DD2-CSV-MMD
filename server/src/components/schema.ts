@@ -234,13 +234,13 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case "kw":
 			return `${t.group} Keyword`;
 		case "list":
-			return `List of ${typeToVerbose(t.element)}`;
+			return `List of (${typeToVerbose(t.element)})`;
 		case "nothing":
 			return "None";
 		case "range":
 			return "Range";
 		case "sequence":
-			return `Sequence ${(t.elements.map(etype => typeToVerbose(etype)))}`;
+			return `Sequence (${(t.elements.map(etype => typeToVerbose(etype)))})`;
 		case "tagEmitter":
 			return `${t.group} tag definition`;
 		case "tagReceiver":
