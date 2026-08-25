@@ -4,13 +4,14 @@ import { CompiledData } from './compiler';
 import { TypeDefinition, TypeDefinitionBool, TypeDefinitionFloat, TypeDefinitionID, TypeDefinitionInt, TypeDefinitionKW, TypeDefinitionRange, TypeDefinitionSequence, TypeDefinitionTagReceiver, typeToVerbose } from './schema';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { FileState } from './project';
-import { Index, IndexGroups } from './indexer';
+import { Index } from '.';
 
 interface ValidationFileContext {
 	ast: AST;
 	compiledData: CompiledData;
 	files: FileState[];
 	configuration: DD2CSVMMDSettings;
+	index: Index;
 }
 
 interface ValidationValueContext {
@@ -351,7 +352,7 @@ function validateID(values: ASTValue[], definition: TypeDefinitionID, c: Validat
 		}
 	}
 	else {
-		if (!isValueInGroupEntries(values[0].text, definition.group, c, getIdGroupsFromIndex)) {
+		if (c.index.findEmitters({ type: "id", group: definition.group, name: values[0].text }).length === 0) {
 			return createMissingGroupMemberDiagnostic(values[0], definition);
 		}
 	}
@@ -366,7 +367,7 @@ function validateTagReceived(values: ASTValue[], definition: TypeDefinitionTagRe
 	if (values.length === 0) {
 		return null;
 	}
-	if (!isValueInGroupEntries(values[0].text, definition.group, c, getTagGroupsFromIndex)) {
+	if (c.index.findEmitters({ type: "tag", group: definition.group, name: values[0].text }).length === 0) {
 		return createMissingGroupMemberDiagnostic(values[0], definition);
 	}
 	if (values.length > 1) {
@@ -395,36 +396,13 @@ function validateKeyword(values: ASTValue[], definition: TypeDefinitionKW, c: Va
 	return null;
 }
 
-type CallbackIsValueInGroupEntries = (index: Index) => IndexGroups;
-
-const getIdGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.idGroups;
-const getTagGroupsFromIndex: CallbackIsValueInGroupEntries = (index: Index) => index.tagGroups;
-
-function isValueInGroupEntries(value: string, groupName: string, c: ValidationContext, getGroups: CallbackIsValueInGroupEntries): boolean {
-	for (const fileState of c.files) {
-		const groups = getGroups(fileState.index)[groupName];
-		if (groups?.includes(value)) {
-			return true;
-		}
-	}
-	const groups = getGroups(c.compiledData.index)[groupName];
-	if (!groups) {
-		console.error(`Group ${groupName} is not found.`);
-		return false;
-	}
-	if (groups.includes(value)) {
-		return true;
-	}
-	return false;
-}
-
 function validateConditionID(value: ASTValue, definition: TypeDefinitionID, c: ValidationContext): Diagnostic | null {
 	let idx = 0;
 	for (const id of value.text.split("+")) {
 		if (id === "") {
 			continue;
 		}
-		if (!isValueInGroupEntries(id, definition.group, c, getIdGroupsFromIndex)) {
+		if (c.index.findEmitters({ type: "id", group: definition.group, name: id }).length === 0) {
 			const line = value.range.start.line;
 			const charStart = value.range.start.character;
 			const range: Range = {

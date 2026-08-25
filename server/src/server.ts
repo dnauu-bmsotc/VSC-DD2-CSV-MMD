@@ -205,7 +205,8 @@ async function validateTextDocument(uri: string, text: string) {
 			ast: fileState.ast,
 			compiledData: project.compiledData,
 			files: fileStates,
-			configuration: project.configuration
+			configuration: project.configuration,
+			index: project.index,
 		});
 
 		return [...fileState.parseDiagnostics, ...validationResult];

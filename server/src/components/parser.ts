@@ -36,7 +36,7 @@ export function parseIntoAST(text: string, configuration: DD2CSVMMDSettings): AS
 
 	function pushDiagnostic(message: string, start: Position, end: Position, severity?: DiagnosticSeverity) {
 		diagnostics.push({
-			severity: severity ? severity : DiagnosticSeverity.Error,
+			severity: severity ?? DiagnosticSeverity.Error,
 			range: { start: start, end: end},
 			message: message,
 		});

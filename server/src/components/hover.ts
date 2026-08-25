@@ -2,7 +2,7 @@ import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-language
 import { ProjectManager } from './project';
 import { AST, ASTElement, ASTField, ASTValue } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, typeToVerbose } from './schema';
-import { getDependencyInfluencedTypeSilent } from './indexer';
+import { getDependencyInfluencedTypeSilent } from '.';
 
 export class HoverManager {
 	constructor(
@@ -142,7 +142,7 @@ export class HoverManager {
 	private hoverValueAddiionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
 		let addition = "";
 		const groupIfThisFieldIsDependent = typeHasDependent(fieldInputDefinition);
-		const fieldInfluencer = groupIfThisFieldIsDependent ? groupIfThisFieldIsDependent : c.field.name;
+		const fieldInfluencer = groupIfThisFieldIsDependent ?? c.field.name;
 		if (elementDefinition.fields[fieldInfluencer]?.input.type !== "list") {
 			return "";
 		}

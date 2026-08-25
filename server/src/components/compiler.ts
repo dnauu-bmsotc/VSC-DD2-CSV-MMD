@@ -4,14 +4,13 @@ import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
 
 import { FieldsDescription, parseType, readFieldsDescription, TypeDefinition } from './schema';
-import { Index, indexElements, newIndex } from './indexer';
 import { parseIntoAST } from './parser';
 import { dataCompiledOutputFilePath, fieldsDescriptionPath, streamingAssetsPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths';
 import { defaultConfiguration } from '../../../shared/settings';
+import { Index } from '.';
 
 export interface CompiledData {
 	schema: FieldsDescription;
-	index: Index;
 	keywords: ValuesDescription;
 	elementsDescription: ElementsDescription;
 }
@@ -34,7 +33,7 @@ export interface ElementDescription {
 
 type ElementsDescription = Record<string, ElementDescription>;
 
-export async function getCompiledData(rebuild=false) {
+export async function getCompiledData(rebuild=false): Promise<CompiledData> {
 	if (!rebuild) {
 		const json = await readJson<CompiledData>(dataCompiledOutputFilePath);
 		if (json) return json;
@@ -48,17 +47,8 @@ export async function compileData(): Promise<CompiledData> {
 	const keywords = readValuesDescription(valuesDescriptionPath);
 	const elementsDescription = readElementsDescription(elementsDescriptionPath);
 
-	const index = newIndex();
-	const csvFiles = await findCsvFiles(streamingAssetsPath);
-	for (const file of csvFiles) {
-		const data = await fs.readFile(path.resolve(file), 'utf-8');
-		const parseResult = parseIntoAST(data, defaultConfiguration);
-		indexElements(index, schema, parseResult.AST, keywords);
-	}
-
 	const result: CompiledData = {
 		schema,
-		index,
 		keywords,
 		elementsDescription,
 	}

@@ -2,7 +2,7 @@ import { URI } from 'vscode-uri'
 import * as path from 'node:path';
 import * as fs from "node:fs"
 
-import { Index, indexElements, newIndex } from './indexer';
+import { Index } from '.';
 import { AST, parseIntoAST } from './parser';
 import { CompiledData, getCompiledData } from './compiler';
 import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
@@ -12,7 +12,6 @@ import { Diagnostic } from 'vscode-languageserver';
 export interface FileState {
 	uri: string;
 	ast: AST;
-	index: Index;
 	text: string;
 	parseDiagnostics: Diagnostic[];
 }
@@ -20,9 +19,10 @@ export interface FileState {
 export class ProjectManager {
 	readonly files = new Map<string, FileState>();
 	readonly openDocuments = new Set<string>();
-	compiledData: CompiledData;
-	initializationOptions: DD2CSVMMDInitializationSettings;
-	workspaceRoot: URI;
+	readonly compiledData: CompiledData;
+	readonly initializationOptions: DD2CSVMMDInitializationSettings;
+	readonly workspaceRoot: URI;
+	readonly index: Index;
 	configuration: DD2CSVMMDSettings;
 
 	private constructor(workspaceRoot: URI, compiledData: CompiledData, initializationOptions: DD2CSVMMDInitializationSettings) {
@@ -30,6 +30,7 @@ export class ProjectManager {
 		this.workspaceRoot = workspaceRoot;
 		this.initializationOptions = initializationOptions;
 		this.configuration = defaultConfiguration;
+		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
 	}
 
 	public static async create(workspaceRoot: URI, initializationOptions: DD2CSVMMDInitializationSettings): Promise<ProjectManager> {
@@ -59,12 +60,10 @@ export class ProjectManager {
 		}
 		this.openDocuments.add(uri);
 		const parseResult = parseIntoAST(text, this.configuration);
-		const index = newIndex();
-		indexElements(index, this.compiledData.schema, parseResult.AST, this.compiledData.keywords);
+		this.index.updateFileIndex(uri, parseResult.AST);
 		const fileState: FileState = {
 			uri: uri,
 			ast: parseResult.AST,
-			index: index,
 			parseDiagnostics: parseResult.diagnostics,
 			text: text,
 		};
