@@ -1,8 +1,7 @@
 import { ASTElement, ASTField, ASTValue, ElementNumberID, getDependencyInfluencedType, parsePSV } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, UriString } from '../../../shared/utils';
-import { FieldsDescription, TypeDefinition, TypeID } from './schema';
-import { ElementsDescription, ValuesDescription } from './compiler';
+import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
 
 export enum ERType { id, tag };
 
@@ -50,7 +49,6 @@ export class Index {
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
-		private readonly elementsDescription: ElementsDescription,
 	) {}
 
 	public removeElement(id: ElementNumberID) {
@@ -141,8 +139,7 @@ export class Index {
 		const emitters: Emitter[] = [];
 		const receivers: Receiver[] = [];
 		const elementDefinition = this.schema[element.elementType];
-		const elementDescription = this.elementsDescription[element.elementType];
-		if (elementDefinition && elementDescription && elementDescription.process) {
+		if (elementDefinition && elementDefinition.process) {
 			// index element's id
 			emitters.push(makeEmitter({
 				type: ERType.id,
@@ -172,6 +169,9 @@ export class Index {
 		return { emitters, receivers, };
 	}
 
+	/**
+	 * Pushes extracted emitters and receivers into the c.emitters and c.receivers lists.
+	 */
 	private extractEmittersAndReceivers(values: ASTValue[], definition: TypeDefinition, c: ExtractionContext): true {
 		if (!values.length) {
 			return true;
@@ -240,7 +240,12 @@ export class Index {
 						// if sequence is incomplete
 						break;
 					}
-					this.extractEmittersAndReceivers([values[i]], definition.elements[i], c);
+					if (definition.elements[i].type === TypeID.list) {
+						this.extractEmittersAndReceivers(values.slice(i), definition.elements[i], c);
+					}
+					else {
+						this.extractEmittersAndReceivers([values[i]], definition.elements[i], c);
+					}
 				}
 				return true;
 
@@ -295,11 +300,11 @@ export class Index {
 }
 
 interface ExtractionContext {
-	schema: FieldsDescription,
-	keywords: ValuesDescription,
-	element: ASTElement;
-	field: ASTField;
-	emitters: Emitter[];
-	receivers: Receiver[];
-	uri: UriString,
+	readonly schema: FieldsDescription,
+	readonly keywords: ValuesDescription,
+	readonly element: ASTElement;
+	readonly field: ASTField;
+	readonly emitters: Emitter[];
+	readonly receivers: Receiver[];
+	readonly uri: UriString,
 }

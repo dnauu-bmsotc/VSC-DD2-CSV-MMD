@@ -1,6 +1,5 @@
 import * as fs from 'node:fs/promises';
-import { CompiledData } from './compiler';
-import { Element, Field, TypeDefinition, TypeID } from './schema';
+import { CompiledData, Element, Field, TypeDefinition, TypeID } from './schema';
 import { readmeBaseFilePath, readmeOutputFilePath } from '../../../shared/projectPaths';
 
 export async function assembleReadme(compiledData: CompiledData) {
@@ -17,11 +16,10 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 	let result = "";
 	for (const elementType of Object.keys(compiledData.schema)) {
 		const element = compiledData.schema[elementType];
-		const elementDesc = compiledData.elementsDescription[elementType].comment;
 		result += `
 <details>
 <summary><b>${element.name}</b></summary>
-${elementDesc ? elementDesc + "\n" : ""}
+${element.comment ? element.comment + "\n" : ""}
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |`
 for (const fieldName of Object.keys(element.fields)) {

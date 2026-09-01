@@ -1,7 +1,6 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
-import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeDefinitionPSV, TypeID } from './schema';
-import { ValuesDescription } from './compiler';
+import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, ValuesDescription } from './schema';
 
 export type AST = ASTElement[];
 
@@ -14,7 +13,21 @@ export interface ASTElement {
 	fields: ASTField[];
 	range: Range;
 	fullRange: Range;
-	diagnostics?: Diagnostic[],
+	diagnostics?: MmdDiagnostic[];
+}
+
+export interface MmdDiagnostic {
+	diagnostic: Diagnostic;
+	flags: DiagnosticType;
+}
+
+export enum DiagnosticType {
+	Comment			= 0,
+	ElementBoundary	= 1 << 0,
+	ElementType		= 1 << 1,
+	FieldName		= 1 << 2,
+	FieldValue		= 1 << 3,
+	EmptyField		= 1 << 4,
 }
 
 export interface ASTField {
@@ -26,12 +39,12 @@ export interface ASTField {
 export interface ASTValue {
 	text: string;
 	range: Range;
-	evaluatedType?: TypeDefinition;
+	// evaluatedType?: TypeDefinition;
 }
 
 export interface ASTParseResult {
 	AST: AST;
-	diagnostics: Diagnostic[];
+	diagnostics: MmdDiagnostic[];
 }
 
 export class Parser {
@@ -41,13 +54,16 @@ export class Parser {
 		const lines = text.split(/\r?\n/);
 		const elements: ASTElement[] = [];
 		let current: Omit<ASTElement, "fullRange"> | null = null;
-		const diagnostics: Diagnostic[] = [];
+		const diagnostics: MmdDiagnostic[] = [];
 
-		function pushDiagnostic(message: string, start: Position, end: Position, severity?: DiagnosticSeverity) {
+		function pushDiagnostic(message: string, start: Position, end: Position, flags: DiagnosticType, severity: DiagnosticSeverity=DiagnosticSeverity.Error) {
 			diagnostics.push({
-				severity: severity ?? DiagnosticSeverity.Error,
-				range: { start: start, end: end},
-				message: message,
+				diagnostic: {
+					severity: severity,
+					range: { start: start, end: end},
+					message: message,
+				},
+				flags: flags,
 			});
 		}
 
@@ -59,7 +75,7 @@ export class Parser {
 			if (line.startsWith('element_start')) {
 				if (current) {
 					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
+						pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 					}
 				}
 				const parts = line.replace(/,+$/, "").split(',');
@@ -75,7 +91,7 @@ export class Parser {
 				}
 				else {
 					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Incomplete element definition.", lineStartPos, lineEndPos);
+						pushDiagnostic("Incomplete element definition.", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 					}
 				}
 			}
@@ -91,13 +107,13 @@ export class Parser {
 					current = null;
 					if (line.replaceAll(',', '') !== 'element_end') {
 						if (configuration.validateElementBoundaries) {
-							pushDiagnostic("Expected element_end", lineStartPos, lineEndPos);
+							pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 						}
 					}
 				}
 				else {
 					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+						pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 					}
 				}
 			}
@@ -133,13 +149,13 @@ export class Parser {
 				}
 				else if (line.startsWith('//') || line.startsWith('#')) {
 					if (!configuration.allowComments) {
-						pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticSeverity.Warning);
+						pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
 					}
 				}
 				else {
 					if (line.trim()) {
 						if (configuration.validateElementBoundaries) {
-							pushDiagnostic("Missing element_start", lineStartPos, lineEndPos);
+							pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 						}
 					}
 				}

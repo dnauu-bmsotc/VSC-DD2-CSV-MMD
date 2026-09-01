@@ -6,3 +6,24 @@ export type UriString = Brand<string, "uri">;
 export function makeUriString(id: string): UriString {
   return id as UriString;
 }
+
+export class UriStringPool {
+	private static cache = new Map<UriString, UriStringRef>();
+	public static get(uri: UriString): UriStringRef {
+		let ref = this.cache.get(uri);
+		if (!ref) {
+			ref = new UriStringRef(uri);
+			this.cache.set(uri, ref);
+		}
+		return ref;
+	}
+	public static getCacheSize() {
+		return this.cache.size;
+	}
+}
+
+export class UriStringRef {
+	constructor(
+		public readonly value: UriString
+	) {}
+}

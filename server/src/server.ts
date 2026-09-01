@@ -12,7 +12,7 @@ import {
 	DidChangeWatchedFilesNotification,
 	FileChangeType,
 	SemanticTokensParams,
-	SemanticTokensRefreshRequest
+	Diagnostic,
 } from 'vscode-languageserver/node';
 
 import {
@@ -24,9 +24,9 @@ import { URI } from 'vscode-uri';
 import { DD2CSVMMDSettings } from '../../shared/settings';
 import { ProjectManager } from './components/project';
 import { semanticTokensLegend, SemanticTokensProvider } from './components/highlight';
-import { compileData } from './components/compiler';
 import { makeUriString, UriString } from '../../shared/utils';
 import { assembleReadme } from './components/readme';
+import { compileData } from './components/schema';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -160,59 +160,29 @@ documents.onDidClose(e => {
 
 documents.onDidChangeContent(async (e) => {
 	const affected = project.updateDocument(makeUriString(e.document.uri), e.document.getText());
+	publishDiagnostics();
 });
 
-// async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
-// 	if (debounceTimer) {
-// 		console.info('Validation call debounced.');
-// 	}
-// 	else {
-// 		debounceTimer = setTimeout(async () => {
-// 			publishDiagnostics(uri, reason);
-// 			await connection.sendRequest(SemanticTokensRefreshRequest.type);
-// 			debounceTimer = null;
-// 		}, project.configuration.debounceTime);
-// 	}
-// }
-
-// async function publishDiagnostics(uri: string | null, reason: string) {
-// 	const t0 = performance.now();
-// 	const validateAll = project.configuration.validateProjectFiles || !uri;
-// 	const files = validateAll ? [...project.files.keys()] : [uri];
-// 	await Promise.all(files.map(async (uri) => {
-// 		const text = project.get(uri)?.text;
-// 		if (!text) {
-// 			return;
-// 		}
-// 		const diagnostics = await validateTextDocument(uri, text);
-// 		connection.sendDiagnostics({ uri, diagnostics, });
-// 	}));
-// 	console.info(`Validated ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
-// }
-
-// async function validateTextDocument(uri: string, text: string) {
-// 	try {
-// 		const fileState = project.updateFileState(uri, text);
-// 		if (!fileState) {
-// 			return [];
-// 		}
-		
-// 		const fileStates = project.configuration.indexProjectFiles ? [...project.files.values()] : [fileState];
-// 		const validationResult = validateAstBySchema({
-// 			ast: fileState.ast,
-// 			compiledData: project.compiledData,
-// 			files: fileStates,
-// 			configuration: project.configuration,
-// 			index: project.index,
-// 		});
-
-// 		return [...fileState.parseDiagnostics, ...validationResult];
-// 	}
-// 	catch (error) {
-// 		console.error(error);
-// 		return [];
-// 	}
-// }
+function publishDiagnostics() {
+	const t0 = performance.now();
+	for (const fileState of project.getAllFileStates()) {
+		const diagnostics: Diagnostic[] = [];
+		for (const d of fileState.parseDiagnostics) {
+			diagnostics.push(d.diagnostic);
+		}
+		for (const e of fileState.ast) {
+			for (const d of e.diagnostics ?? []) {
+				diagnostics.push(d.diagnostic);
+			}
+		}
+		connection.sendDiagnostics({
+			uri: fileState.uri,
+			diagnostics: diagnostics,
+		});
+	}
+	const duration = (performance.now() - t0).toFixed(1);
+	console.info(`Publishing diagnostics [${duration} ms].`);
+}
 
 connection.onHover(params => {
 	// hover.onHover(params)

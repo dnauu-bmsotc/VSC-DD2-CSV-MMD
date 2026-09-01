@@ -31,10 +31,10 @@ export class SemanticTokensProvider {
 			for (const element of fileState.ast) {
 				for (const field of element.fields) {
 					for (const value of field.values) {
-						const computedType = value.evaluatedType;
-						if (computedType) {
-							this.addTokenByType(builder, value.range, computedType);
-						}
+						// const computedType = value.evaluatedType;
+						// if (computedType) {
+						// 	this.addTokenByType(builder, value.range, computedType);
+						// }
 					}
 				}
 			}

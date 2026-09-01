@@ -1,239 +1,423 @@
-import { Diagnostic, Range } from 'vscode-languageserver';
-import { ValuesDescription } from './compiler';
-import { ASTElement, ASTField, ASTValue } from './parser';
-import { FieldsDescription, TypeDefinition, TypeID, TypeDefinitionDependent, TypeDefinitionDependentRequired } from './schema';
-import { Index } from '.';
+import { DiagnosticSeverity, Range } from 'vscode-languageserver';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV } from './parser';
+import { FieldsDescription, TypeDefinition, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { ERType, Index } from '.';
+
+interface ValidationContext {
+	element: ASTElement;
+	field: ASTField;
+}
 
 export class Semantic {
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
+		private readonly index: Index,
 	) {}
 
+	/**
+	 * Pushes found diagnostics to element.diagnostics and tries to evaluate ASTValue.evaluatedType.
+	 */
 	public solveElement(element: ASTElement) {
-		const diagnostics: Diagnostic[] = [];
+		// reset diagnostics and evaluated types.
+		element.diagnostics = [];
+		for (const f of element.fields) {
+			for (const v of f.values) {
+				// v.evaluatedType = undefined;
+			}
+		}
+		// find element in csv description
 		const elementDefinition = this.schema[element.elementType];
 		if (!elementDefinition) {
-			return { diagnostics };
+			element.diagnostics.push({
+				diagnostic: {
+					severity: DiagnosticSeverity.Error,
+					range: element.range,
+					message: `Unrecognized element type "${element.elementType}"`,
+				},
+				flags: DiagnosticType.ElementType,
+			});
+			return;
+		}
+		// KingdomMap elements are not processed.
+		if (!elementDefinition.process) {
+			return;
+		}
+		// Process each field in the element.
+		for (const field of element.fields) {
+			if (!field.name) {
+				continue;
+			}
+			const fieldDefinition = elementDefinition.fields[field.name];
+			if (!fieldDefinition) {
+				element.diagnostics.push({
+					diagnostic: {
+						severity: DiagnosticSeverity.Error,
+						range: field.range,
+						message: `Unrecognized field name "${field.name}"`,
+					},
+					flags: DiagnosticType.FieldName,
+				});
+				continue;
+			}
+			if (field.values.length === 0) {
+				element.diagnostics.push({
+					diagnostic: {
+						severity: DiagnosticSeverity.Warning,
+						range: field.range,
+						message: `Empty field`
+					},
+					flags: DiagnosticType.EmptyField,
+				});
+				continue;
+			}
+			const context = { element, field };
+			const fieldValidationResult = this.validateValues(field.values, fieldDefinition.input, context);
+			if (fieldValidationResult) {
+				element.diagnostics.push(fieldValidationResult);
+			}
 		}
 	}
-}
 
+	// /**
+	//  * Validates values against the provided definition.
+	//  * @values List of values to validate. These values might differ from c.field.values.
+	//  * @returns One diagnostic object for the first error encountered.
+	//  */
+	private validateValues(values: ASTValue[], definition: TypeDefinition, c: ValidationContext): MmdDiagnostic | null {
+		switch (definition.type) {
+			case TypeID.any:
+				return null;
 
+			case TypeID.bool:
+				return this.singleValueCheck(values, definition, this.isBoolString);
 
+			case TypeID.int:
+				return this.singleValueCheck(values, definition, this.isIntegerString);
 
+			case TypeID.range:
+				return this.singleValueCheck(values, definition, this.isRangeString);
 
+			case TypeID.float:
+				return this.singleValueCheck(values, definition, this.isNumericString);
 
+			case TypeID.nothing:
+				if (values.some(v => !!v.text)) {
+					return this.createExpectedEndOfInputDiagnostic(values);
+				}
+				return null;
 
+			case TypeID.id:
+				const idEmitters = this.index.findEmitters({
+					type: ERType.id,
+					group: definition.group,
+					name: values[0].text,
+				});
+				if (idEmitters.length === 0) {
+					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+				}
+				if (values.length > 1) {
+					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
 
-
-
-
-
-
-// interface SolveFileContext {
-// 	schema: FieldsDescription;
-// 	index: Index | null;
-// }
-
-// interface SolveValueContext {
-// 	element: ASTElement;
-// 	field: ASTField;
-// }
-
-// type SolveContext = SolveFileContext & SolveValueContext;
-
-// export function solveAst(ast: ASTElement[], c: SolveFileContext): ASTElementSolved[] {
-// 	const result: ASTElementSolved[] = [];
-// 	for (const element of ast) {
-// 		const fields: ASTFieldSolved[] = [];
-// 		for (const field of element.fields) {
-// 			const inputDefinition = c.schema[element.elementType]?.fields[field.name]?.input;
-// 			const context: SolveContext = { ...c, element, field };
-// 			if (inputDefinition) {
-// 				const values = solveValues(field.values, inputDefinition, context);
-// 				fields.push({ ...field, values });
-// 			}
-// 		}
-// 		result.push({ ...element, fields, });
-// 	}
-// 	return result;
-// }
-
-// function solveValues(values: ASTValue[], definition: TypeDefinition, c: SolveContext): { solved: boolean; values: ASTValueSolved[] } {
-// 	switch (definition.type) {
-// 		case TypeID.any:
-// 			return {
-// 				solved: true,
-// 				values: values.map(v => ({ ...v, solvedType: { type: TypeID.any } })),
-// 			};
-
-// 		case TypeID.nothing:
-// 		case TypeID.bool:
-// 		case TypeID.int:
-// 		case TypeID.float:
-// 		case TypeID.range:
-// 			if (values.length === 0) {
-// 				return {
-// 					solved: false,
-// 					values: [{
-// 						text: "",
-// 						range: lineRangeEnd(c.field.range),
-// 						solvedType: definition,
-// 					}],
-// 				};
-// 			}
-// 			const firstValue: ASTValueSolved = { ...values[0], solvedType: definition };
-// 			const restValues: ASTValueSolved[] = values.slice(1).map(v => ({ ...v, solvedType: { type: TypeID.nothing } }));
-// 			return [firstValue, ...restValues];
-
-// 		case TypeID.id:
-// 		case TypeID.kw:
-// 		case TypeID.tagEmitter:
-// 		case TypeID.tagReceiver:
-
-// 		case TypeID.union:
-// 			if (!c.index) {
-// 				return values.map(v => ({ ...v, solvedType: { type: TypeID.any } }));
-// 			}
-// 			for (const typeOption of definition.elements) {
+			case TypeID.tagReceiver:
+				const tagEmitters = this.index.findEmitters({
+					type: ERType.tag,
+					group: definition.group,
+					name: values[0].text,
+				});
+				if (tagEmitters.length === 0) {
+					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+				}
+				if (values.length > 1) {
+					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
 				
-// 			}
+			case TypeID.tagEmitter:
+				if (values.length > 1) {
+					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
+
+			case TypeID.kw:
+				const keywords = this.keywords[definition.group];
+				if (!keywords) {
+					console.error(`Unrecognized KW group ${definition.group}`);
+					return null;
+				}
+				const kwgroup = this.keywords[definition.group];
+				if (!kwgroup) {
+					console.error(`Keyword group ${definition.group} is not found.`);
+					return null;
+				}
+				if (!Object.hasOwn(kwgroup, values[0].text)) {
+					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+				}
+				if (values.length > 1) {
+					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
+				}
+				return null;
+
+			case TypeID.sequence:
+				for (let i = 0; i < definition.elements.length; i++) {
+					if (i >= values.length) {
+						return this.createMissingSequenceValueDiagnostic(values, definition, c);
+					}
+					if (definition.elements[i].type === TypeID.list) {
+						return this.validateValues(values.slice(i), definition.elements[i], c);
+					}
+					else {
+						const diagnostic = this.validateValues([values[i]], definition.elements[i], c);
+						if (diagnostic) {
+							return diagnostic;
+						}
+					}
+				}
+				if (values.length > definition.elements.length) {
+					return this.createExpectedEndOfInputDiagnostic(values.slice(definition.elements.length));
+				}
+				return null;
+			
+			case TypeID.list:
+				if (definition.element.type === TypeID.sequence) {
+					const listElementNumberOfValues = definition.element.elements.length;
+					for (let i = 0; i < values.length; i += listElementNumberOfValues) {
+						if (i + listElementNumberOfValues > values.length) {
+							this.createMissingSequenceValueDiagnostic(values.slice(i), definition.element, c);
+						}
+						const valuesSlice = values.slice(i, i + listElementNumberOfValues);
+						const diagnostic = this.validateValues(valuesSlice, definition.element, c);
+						if (diagnostic) {
+							return diagnostic;
+						}
+					}
+				}
+				else {
+					for (const v of values) {
+						if (!v.text.trim()) {
+							continue;
+						}
+						const diagnostic = this.validateValues([v], definition.element, c);
+						if (diagnostic) {
+							return diagnostic;
+						}
+					}
+				}
+				return null;
+
+			case TypeID.union:
+				const matchedTypes = [];
+				for (const optionType of definition.elements) {
+					const diagnostic = this.validateValues(values, optionType, c);
+					if (!diagnostic) {
+						matchedTypes.push(optionType);
+					}
+				}
+				if (!matchedTypes.length) {
+					return this.createUnresolvedUnionDiagnostic(values[0], definition);
+				}
+				return null;
 
 
+			case TypeID.dependent:
+			case TypeID.dependentRequired:
+				const influencedFieldDefinition = definition;
+				const influenceSourceField = c.element.fields.find(f => f.name === influencedFieldDefinition.field);
+				if (!influenceSourceField) {
+					return {
+						diagnostic: {
+							severity: DiagnosticSeverity.Error,
+							range: c.field.range,
+							message: `Missing required field ${influencedFieldDefinition.field}.`,
+						},
+						flags: DiagnosticType.FieldValue,
+					};
+				}
+				const influenceSourceSchema = this.schema[c.element.elementType].fields[influenceSourceField.name].input;
+				const influenceSourceSchemaContent = influenceSourceSchema.type === TypeID.list ? influenceSourceSchema.element : influenceSourceSchema;
+				if (influenceSourceSchemaContent.type !== TypeID.kw) {
+					console.error(`Influence field ${c.field.name} in element ${c.element.name} is not a KW or List(KW) field.`);
+					return null;
+				}
+				if ((c.field.values.length) && (influenceSourceField.values.length === 0)) {
+					return {
+						diagnostic: {
+							severity: DiagnosticSeverity.Error,
+							range: c.field.range,
+							message: `Field-influencer ${influenceSourceField.name} is empty.`,
+						},
+						flags: DiagnosticType.FieldValue,
+					};
+				}
+				if ((influenceSourceSchema.type === TypeID.list)) {
+					if ((definition.type === TypeID.dependentRequired) && (influenceSourceField.values.length != c.field.values.length)
+						|| (definition.type === TypeID.dependent) && (influenceSourceField.values.length < c.field.values.length))
+					return {
+						diagnostic: {
+							severity: DiagnosticSeverity.Error,
+							range: c.field.range,
+							message: `Field-influencer ${influenceSourceField.name} has a different number of values (${influenceSourceField.values.length}) than this field (${c.field.values.length}).`,
+						},
+					flags: DiagnosticType.FieldValue,
+					};
+				}
+				const influenceKWGroup = this.keywords[influenceSourceSchemaContent.group];
+				if (!influenceKWGroup) {
+					console.error(`Unrecognized dependency group ${influenceSourceSchemaContent.group}`);
+					return null;
+				}
+				for (let i = 0; i < influenceSourceField.values.length; i++) {
+					if (i >= c.field.values.length) {
+						return null;
+					}
+					const sourceValue = influenceSourceField.values[i];
+					const influenceValueDesc = influenceKWGroup[sourceValue.text];
+					if (!influenceValueDesc) {
+						console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is not found.`);
+						return null;
+					}
+					const influenceType = influenceValueDesc.influences?.[c.element.elementType + " " + c.field.name];
+					if (!influenceType) {
+						console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is empty.`);
+						return null;
+					}
+					const valuesToValidate = influenceSourceSchema.type === TypeID.list ? c.field.values.slice(i, i + 1) : c.field.values;
+					if ((definition.type === TypeID.dependentRequired) && (valuesToValidate.some(v => !v.text.trim()))) {
+						return this.createExpectedTypeDiagnostic(influenceType.input, c.field.values[i].range);
+					}
+					const validationResult = this.validateValues(valuesToValidate, influenceType.input, c);
+					if (validationResult) {
+						return validationResult;
+					}
+				}
+				return null;
 
-// 				const matchedTypes = [];
-// 				for (const optionType of definition.elements) {
-// 					const diagnostic = validateInput(values, optionType, c);
-// 					if (!diagnostic) {
-// 						matchedTypes.push(optionType);
-// 					}
-// 				}
-// 				if (!matchedTypes.length) {
-// 					return createMissingGroupMemberDiagnostic(values[0], definition);
-// 				}
-// 				// for (const v of values) {
-// 				// 	if (matchedTypes.length === 1) {
-// 				// 		v.computedType = matchedTypes[0];
-// 				// 	}
-// 				// 	else {
-// 				// 		v.computedType = { type: "union", elements: matchedTypes };
-// 				// 	}
-// 				// }
-// 				return null;
-// 			break;
+			case TypeID.sub:
+				if (values.length !== 3) {
+					return {
+						diagnostic: {
+							severity: DiagnosticSeverity.Error,
+							range: c.field.range,
+							message: `Three values are required`,
+						},
+					flags: DiagnosticType.FieldValue,
+					};
+				}
+				const groupValidateResult = this.validateValues([values[0]], { type: TypeID.kw, group: definition.group }, c);
+				if (groupValidateResult) {
+					return groupValidateResult;
+				}
+				const KWGroup = this.keywords[definition.group];
+				if (!KWGroup) {
+					console.error(`Unrecognized subtype group ${definition.group}`);
+					return null;
+				}
+				const valueDesc = KWGroup[values[0].text];
+				if (!valueDesc) {
+					console.error(`Subtype group ${definition.group} has no ${values[0].text}.`);
+					return null;
+				}
+				const derivedType = valueDesc.influences?.[definition.subtypeString];
+				if (!derivedType) {
+					console.error(`Subtype ${definition.subtypeString} has empty fields.`);
+					return null;
+				}
+				const subtypeValidateResult = this.validateValues([values[1]], derivedType.input, c);
+				if (subtypeValidateResult) {
+					return subtypeValidateResult;
+				}
+				return this.validateValues([values[2]], definition.subtypeValueType, c);
 
-// 		case TypeID.list:
-// 			if (definition.element.type === TypeID.sequence) {
-// 				const sequenceLength = definition.element.elements.length;
-// 				for (let i = 0; i < values.length; i += sequenceLength) {
-// 					solveValues(values.slice(i, i + sequenceLength), definition.element, c);
-// 				}
-// 			}
-// 			else {
-// 				for (const v of values) {
-// 					solveValues([v], definition.element, c);
-// 				}
-// 			}
-// 			break;
-// 		case TypeID.sequence:
-// 			for (let i = 0; i < definition.elements.length; i++) {
-// 				solveValues(values.slice(i, i + 1), definition.elements[i], c);
-// 			}
-// 			break;
+			case TypeID.psv:
+				const psValues = parsePSV(values[0]);
+				return this.validateValues(psValues, definition.element, c);
+		
+			default:
+				console.error(`Unknown input type: ${definition}`);
+				return null;
+		}
+	}
 
-// 		case TypeID.dependent:
-// 		case TypeID.dependentRequired:
-// 			const influencedTypes = getDependencyInfluencedTypeSilent(definition, c);
-// 			if (!influencedTypes) {
-// 				break;
-// 			}
-// 			for (let i = 0; i < influencedTypes.types.length; i++) {
-// 				const influencedType = influencedTypes.types[i];
-// 				if (!influencedType) {
-// 					continue;
-// 				}
-// 				const influencedValues = influencedTypes.isDependentOnList ? c.field.values.slice(i, i + 1) : c.field.values;
-// 				solveValues(influencedValues, influencedType, c);
-// 			}
-// 			break;
+	private singleValueCheck(values: ASTValue[], definition: TypeDefinition, checker: (v: string) => boolean): MmdDiagnostic | null {
+		// values.length > 0 is asserted in this.solveElement function.
+		if (!checker(values[0].text)) {
+			return this.createExpectedTypeDiagnostic(definition, values[0].range);
+		}
+		if (values.length > 1) {
+			return this.createExpectedEndOfInputDiagnostic(values.slice(1));
+		}
+		return null;
+	}
 
-// 		case TypeID.sub:
-// 			break;
+	private isBoolString = (str: string) => (str === "True") || (str === "False");
 
-// 		case TypeID.psv:
-// 			let idx = 0;
-// 			const newVals: ASTValue[] = [];
-// 			for (const v of values[0].text.split("+")) {
-// 				if (v === "") {
-// 					continue;
-// 				}
-// 				const line = values[0].range.start.line;
-// 				const charStart = values[0].range.start.character;
-// 				const range: Range = {
-// 					start: { line, character: charStart + idx },
-// 					end: { line, character: charStart + idx + v.length },
-// 				};
-// 				newVals.push({
-// 					text: v,
-// 					range: range,
-// 				});
-// 				idx += v.length + 1;
-// 			}
-// 			const idxToReplace = c.field.values.indexOf(values[0]);
-// 			c.field.values.splice(idxToReplace, 1, ...newVals);
-// 			solveValues(c.field.values.slice(idxToReplace, newVals.length), definition.element, c);
-// 			break;
-// 	}
-// }
+	private isNumericString = (str: string) => !isNaN(Number(str));
 
-// function lineRangeEnd(range: Range): Range {
-// 	return {
-// 		start: { line: range.start.line, character: range.end.character - 1 },
-// 		end: { line: range.start.line, character: range.end.character },
-// 	}
-// }
+	private isIntegerStringRegex = /^-?\d+$/;
+	private isIntegerString = (str: string) => this.isIntegerStringRegex.test(str);
 
+	private isRangeStringRegex = /^\[\d+-\d+\]$/;
+	private isRangeString = (str: string) => this.isRangeStringRegex.test(str);
 
-// /**
-//  * Tries to get a list of types that dependent field can/needs to provide.
-//  * If the field-influencer has multiple values, tries to get a list of types of the same length.
-//  */
-// export function getDependencyInfluencedTypeSilent(
-// 	element: ASTElement,
-// 	field: ASTField,
-// 	definition: TypeDefinitionDependent | TypeDefinitionDependentRequired,
-// 	schema: FieldsDescription,
-// 	keywords: ValuesDescription,
-// ): {
-// 	types: (TypeDefinition | null)[],
-// 	isDependentOnList: boolean;
-// 	influenceSourceField: ASTField,
-// } | null {
-// 	const influenceSourceField = element.fields.find(f => f.name === definition.field);
-// 	if (!influenceSourceField) {
-// 		return null;
-// 	}
-// 	const influenceSourceSchema = schema[element.elementType].fields[influenceSourceField.name].input;
-// 	const influenceSourceSchemaContent = influenceSourceSchema.type === "list" ? influenceSourceSchema.element : influenceSourceSchema;
-// 	if (influenceSourceSchemaContent.type !== "kw") {
-// 		return null;
-// 	}
-// 	const influenceKWGroup = keywords[influenceSourceSchemaContent.group];
-// 	const influencedTypes = influenceSourceField.values.map(v => {
-// 		const influenceValueDesc = influenceKWGroup[v.text];
-// 		if (influenceValueDesc?.influences) {
-// 			const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
-// 			if (influenceType) {
-// 				return influenceType.input;
-// 			}
-// 		}
-// 		return null;
-// 	});
+	private createExpectedTypeDiagnostic(expectedType: TypeDefinition, range: Range): MmdDiagnostic {
+		return {
+			diagnostic: {
+				severity: DiagnosticSeverity.Error,
+				range: range,
+				message: `Expected type:\n${typeToVerbose(expectedType)}`,
+			},
+			flags: DiagnosticType.FieldValue,
+		};
+	}
 
-// 	return {
-// 		types: influencedTypes,
-// 		isDependentOnList: influenceSourceSchema.type === "list",
-// 		influenceSourceField: influenceSourceField,
-// 	};
-// }
+	private createExpectedEndOfInputDiagnostic(values: ASTValue[]): MmdDiagnostic {
+		const range = Range.create(
+			{ line: values[0].range.start.line, character: values[0].range.start.character },
+			{ line: values[values.length - 1].range.end.line, character: values[values.length - 1].range.end.character },
+		);
+		return {
+			diagnostic: {
+				severity: DiagnosticSeverity.Error,
+				range: range,
+				message: `Expected end of input.`,
+			},
+			flags: DiagnosticType.FieldValue,
+		};
+	}
+
+	private createUnresolvedReferenceDiagnostic(value: ASTValue, expectedType: TypeDefinition): MmdDiagnostic {
+		return {
+			diagnostic: {
+				severity: DiagnosticSeverity.Error,
+				range: value.range,
+				message: `Unresolved reference "${value.text}".\nExpected value of type:\n${typeToVerbose(expectedType)}`,
+			},
+			flags: DiagnosticType.FieldValue,
+		};
+	}
+
+	private createUnresolvedUnionDiagnostic(value: ASTValue, expectedType: TypeDefinition): MmdDiagnostic {
+		return {
+			diagnostic: {
+				severity: DiagnosticSeverity.Error,
+				range: value.range,
+				message: `Unresolved value "${value.text}".\nExpected value of type:\n${typeToVerbose(expectedType)}`,
+			},
+			flags: DiagnosticType.FieldValue,
+		};
+	}
+
+	private createMissingSequenceValueDiagnostic(values: ASTValue[], definition: TypeDefinitionSequence, c: ValidationContext): MmdDiagnostic {
+		const missingValues = definition.elements.slice(values.length).map(etype => typeToVerbose(etype, ));
+		return {
+			diagnostic: {
+				severity: DiagnosticSeverity.Error,
+				range: c.field.range,
+				message: `Field requires more values:\n${missingValues.join(", ")}.`,
+			},
+			flags: DiagnosticType.FieldValue
+		};
+	}
+}

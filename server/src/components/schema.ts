@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
+import { fieldsDescriptionPath, elementsDescriptionPath, valuesDescriptionPath } from '../../../shared/projectPaths';
 
 export type TypeDefinition =
 	| TypeDefinitionInt
@@ -45,18 +46,62 @@ export type TypeDefinitionNothing			= { type: TypeID.nothing; };
 export type TypeDefinitionSubtype			= { type: TypeID.sub; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
 export type TypeDefinitionPSV				= { type: TypeID.psv, element: TypeDefinition };
 
+export type Element = {
+	name: string;
+	fields: Record<string, Field>;
+	comment: string;
+	process: boolean; // false to ignore this element
+};
+
 export type Field = {
 	inputString: string;
 	input: TypeDefinition;
 	comment: string;
 }
 
-export type Element = {
-	name: string;
-	fields: Record<string, Field>;
+export interface Value {
+	influences?: Record<string, {
+		inputString: string;
+		input: TypeDefinition;
+	}>;
+	comment?: string;
 };
 
+export interface CompiledData {
+	schema: FieldsDescription;
+	keywords: ValuesDescription;
+}
+
+/**
+ * Record <Element Type, Element schema>
+ */
 export type FieldsDescription = Record<string, Element>;
+
+/**
+ * Record <Value Group, Value Group Data>
+ * Value Group example: ConditionType.
+ */
+export type ValuesDescription = Record<string, KWGroup>;
+
+/**
+ * Record <Value String, Value Data>
+ * Value String example: path_tag_amount.
+ */
+export type KWGroup = Record<string, Value>;
+
+
+export async function compileData(): Promise<CompiledData> {
+	const t0 = performance.now();
+	const schema = readFieldsDescription(fieldsDescriptionPath, elementsDescriptionPath);
+	const keywords = readValuesDescription(valuesDescriptionPath);
+	const result: CompiledData = {
+		schema,
+		keywords,
+	}
+	console.info(`Compiled data [${(performance.now() - t0).toFixed(1)} ms].`);
+	return result;
+}
+
 
 export function parseType(input: string): TypeDefinition {
 	try {
@@ -169,20 +214,29 @@ function parseTypeRecursive(input: string, isAmbiguous: boolean): TypeDefinition
 	return defaultReturnValue;
 }
 
-export function readFieldsDescription(filePath: string): FieldsDescription {
-	if (!existsSync(filePath)) {
-		throw new Error(`File not found ${filePath}`);
+export function readFieldsDescription(filePathFields: string, filePathElements: string): FieldsDescription {
+	if (!existsSync(filePathFields)) {
+		throw new Error(`File not found ${filePathFields}`);
 	}
-	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
+	if (!existsSync(filePathElements)) {
+		throw new Error(`File not found ${filePathElements}`);
+	}
+	const workbookFields: XLSX.WorkBook = XLSX.readFile(filePathFields);
+	const workbookElements: XLSX.WorkBook = XLSX.readFile(filePathElements);
+	const elementsData: any[] = XLSX.utils.sheet_to_json(workbookElements.Sheets[workbookElements.SheetNames[0]]);
+
 	const result: FieldsDescription = {};
-	for (const sheetName of workbook.SheetNames) {
-		const sheet = workbook.Sheets[sheetName];
-		const data: any[] = XLSX.utils.sheet_to_json(sheet);
+	for (const elementType of workbookFields.SheetNames) {
+		const sheet = workbookFields.Sheets[elementType];
+		const fieldsData: any[] = XLSX.utils.sheet_to_json(sheet);
+		const elementData = elementsData.find(line => line["Element Type"] === elementType);
 		const element: Element = {
-			name: sheetName,
+			name: elementType,
 			fields: {},
+			comment: elementData["Comment"],
+			process: elementData["Process"] === "Yes",
 		};
-		for (const field of data) {
+		for (const field of fieldsData) {
 			const inputString = field["Input Type"] ?? "";
 			const comment = field["Comment"] ?? "";
 			element.fields[field["Field Name"]] = {
@@ -191,8 +245,49 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 				comment: comment,
 			};
 		}
-		result[sheetName] = element;
+		result[elementType] = element;
 	}
+	return result;
+}
+
+
+function readValuesDescription(filePath: string): ValuesDescription {
+	if (!existsSync(filePath)) {
+		throw new Error(`File not found ${filePath}`);
+	}
+	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
+	const result: ValuesDescription = {};
+
+	for (const sheetName of workbook.SheetNames) {
+		const sheet = workbook.Sheets[sheetName];
+		const data: any[] = XLSX.utils.sheet_to_json(sheet);
+		result[sheetName] = {}
+		const kwGroup = result[sheetName];
+
+		for (const line of data) {
+			kwGroup[line["Value"]] = {}
+			for (const field of Object.keys(line)) {
+				if (field === "Value") {
+				}
+				else if (field === "Comment") {
+					kwGroup[line["Value"]].comment = line[field];
+				}
+				else {
+					if (!kwGroup[line["Value"]].influences) {
+						kwGroup[line["Value"]].influences = {};
+					}
+					const influences = kwGroup[line["Value"]].influences;
+					if (influences) {
+							influences[field] = {
+							inputString: line[field],
+							input: parseType(line[field]),
+						}
+					}
+				}
+			}
+		}
+	}
+
 	return result;
 }
 

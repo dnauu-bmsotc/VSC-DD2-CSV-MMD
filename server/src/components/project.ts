@@ -4,17 +4,17 @@ import * as fs from "node:fs"
 import { Diagnostic, Range } from 'vscode-languageserver';
 
 import { Index } from '.';
-import { AST, ASTElement, ElementNumberID, Parser } from './parser';
-import { CompiledData } from './compiler';
+import { AST, ASTElement, ElementNumberID, MmdDiagnostic, Parser } from './parser';
 import { DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
+import { CompiledData } from './schema';
 
 export interface FileState {
 	uri: UriString;
 	ast: AST;
 	open: boolean;
-	parseDiagnostics: Diagnostic[];
+	parseDiagnostics: MmdDiagnostic[];
 	text: string;
 }
 
@@ -31,8 +31,8 @@ export class ProjectManager {
 		this.configuration = defaultConfiguration;
 		this.files = new Map<UriString, FileState>();
 		this.parser = new Parser();
-		this.index = new Index(this.compiledData.schema, this.compiledData.keywords, this.compiledData.elementsDescription);
-		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords);
+		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
+		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords, this.index);
 	}
 
 	public async initialize(workspaceRoot: URI) {
@@ -70,6 +70,10 @@ export class ProjectManager {
 
 	public getFileState(uri: UriString) {
 		return this.files.get(uri);
+	}
+
+	public getAllFileStates() {
+		return this.files.values();
 	}
 
 	public openDocument(uri: UriString): void {
@@ -140,10 +144,11 @@ export class ProjectManager {
 		this.reanalyzeIds(affectedIds);
 
 		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Document update (${uri.replace(/^.*[\\/]/, '')}) [${duration} ms].`,
-			`Removed ${[...removedIds].length} elements.`,
-			`Added ${replacementElements.length} elements.`,
-			`Affected ${[...affectedIds].length} elements.`,
+		const memoryUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(1);
+		console.log(`Document update (${uri.replace(/^.*[\\/]/, '')}) [${duration} ms] [${memoryUsed} MB].`,
+			`Removed ${[...removedIds].length} element(s).`,
+			`Added ${replacementElements.length} element(s).`,
+			`Affected ${[...affectedIds].length} element(s).`,
 		);
 
 		return affectedIds;
