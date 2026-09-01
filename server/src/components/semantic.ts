@@ -1,7 +1,7 @@
 import { Diagnostic, Range } from 'vscode-languageserver';
 import { ValuesDescription } from './compiler';
 import { ASTElement, ASTField, ASTValue } from './parser';
-import { FieldsDescription, TypeDefinition, TypeID, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeDefinitionSolved } from './schema';
+import { FieldsDescription, TypeDefinition, TypeID, TypeDefinitionDependent, TypeDefinitionDependentRequired } from './schema';
 import { Index } from '.';
 
 export class Semantic {
@@ -192,45 +192,6 @@ export class Semantic {
 // 		start: { line: range.start.line, character: range.end.character - 1 },
 // 		end: { line: range.start.line, character: range.end.character },
 // 	}
-// }
-
-
-
-// /**
-//  * Tries to get a list of types that dependent field can/needs to provide.
-//  * If the field-influencer has multiple values, tries to get a list of types of the same length.
-//  */
-// function getDependencyInfluencedTypeSilent(definition: TypeDefinitionDependent | TypeDefinitionDependentRequired, c: SolveContext): {
-// 	types: (TypeDefinition | null)[],
-// 	isDependentOnList: boolean;
-// 	influenceSourceField: ASTField,
-// } | null {
-// 	const influenceSourceField = c.element.fields.find(f => f.name === definition.field);
-// 	if (!influenceSourceField) {
-// 		return null;
-// 	}
-// 	const influenceSourceSchema = c.schema[c.element.elementType].fields[influenceSourceField.name].input;
-// 	const influenceSourceSchemaContent = influenceSourceSchema.type === TypeID.list ? influenceSourceSchema.element : influenceSourceSchema;
-// 	if (influenceSourceSchemaContent.type !== TypeID.kw) {
-// 		return null;
-// 	}
-// 	const influenceKWGroup = c.keywords[influenceSourceSchemaContent.group];
-// 	const influencedTypes = influenceSourceField.values.map(v => {
-// 		const influenceValueDesc = influenceKWGroup[v.text];
-// 		if (influenceValueDesc?.influences) {
-// 			const influenceType = influenceValueDesc.influences?.[c.element.elementType + " " + c.field.name];
-// 			if (influenceType) {
-// 				return influenceType.input;
-// 			}
-// 		}
-// 		return null;
-// 	});
-
-// 	return {
-// 		types: influencedTypes,
-// 		isDependentOnList: influenceSourceSchema.type === TypeID.list,
-// 		influenceSourceField: influenceSourceField,
-// 	};
 // }
 
 

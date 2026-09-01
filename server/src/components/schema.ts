@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
 
-export type TypeDefinitionSolved = 
+export type TypeDefinition =
 	| TypeDefinitionInt
 	| TypeDefinitionRange
 	| TypeDefinitionFloat
@@ -12,10 +12,6 @@ export type TypeDefinitionSolved =
 	| TypeDefinitionTagReceiver
 	| TypeDefinitionAny
 	| TypeDefinitionNothing
-	| TypeDefinitionUnionSolved;
-
-export type TypeDefinition =
-	| TypeDefinitionSolved
 	| TypeDefinitionList
 	| TypeDefinitionSequence
 	| TypeDefinitionDependent
@@ -27,8 +23,7 @@ export type TypeDefinition =
 export enum TypeID {
 	int, range, float, bool, id, kw,
 	tagEmitter, tagReceiver, list, sequence,
-	union, unionSolved,
-	dependent, dependentRequired,
+	union, dependent, dependentRequired,
 	any, nothing, sub, psv,
 }
 
@@ -43,7 +38,6 @@ export type TypeDefinitionTagReceiver		= { type: TypeID.tagReceiver; group: stri
 export type TypeDefinitionList				= { type: TypeID.list; element: TypeDefinition; };
 export type TypeDefinitionSequence			= { type: TypeID.sequence; elements: TypeDefinition[]; };
 export type TypeDefinitionUnion				= { type: TypeID.union; elements: TypeDefinition[]; };
-export type TypeDefinitionUnionSolved		= { type: TypeID.unionSolved; elements: TypeDefinitionSolved[]; };
 export type TypeDefinitionDependent			= { type: TypeID.dependent; field: string; };
 export type TypeDefinitionDependentRequired	= { type: TypeID.dependentRequired; field: string; };
 export type TypeDefinitionAny				= { type: TypeID.any; };
@@ -245,7 +239,6 @@ export function typeHasDependent(t: TypeDefinition): string | null {
 		case TypeID.list:
 			return typeHasDependent(t.element);
 		case TypeID.union:
-		case TypeID.unionSolved:
 		case TypeID.sequence:
 			for (const subtype of t.elements) {
 				const group = typeHasDependent(subtype);
@@ -290,7 +283,6 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case TypeID.tagReceiver:
 			return `${t.group} tag reference`;
 		case TypeID.union:
-		case TypeID.unionSolved:
 			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
 		case TypeID.sub:
 			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;

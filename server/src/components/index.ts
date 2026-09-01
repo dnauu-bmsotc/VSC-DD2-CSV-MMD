@@ -1,14 +1,13 @@
-import { ASTElement, ElementNumberID } from './parser';
+import { ASTElement, ASTField, ASTValue, ElementNumberID, getDependencyInfluencedType, parsePSV } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, UriString } from '../../../shared/utils';
-import { FieldsDescription } from './schema';
-import { ValuesDescription } from './compiler';
+import { FieldsDescription, TypeDefinition, TypeID } from './schema';
+import { ElementsDescription, ValuesDescription } from './compiler';
 
-export type EmitterType = "id" | "tag";
-export type ReceiverType = EmitterType;
+export enum ERType { id, tag };
 
 export interface EmitterOrReceiverBase {
-	type: EmitterType;
+	type: ERType;
 	group: string;
 	name: string;
 	uri: UriString;
@@ -24,12 +23,12 @@ export type EmitterOrReceiver = Emitter | Receiver;
 
 export type KeyInfo = Pick<EmitterOrReceiver, "type" | "group" | "name">
 
-export function makeEmitter({ type, group, name, uri, range }: EmitterOrReceiverBase): Emitter {
-	return { type, group, name, uri, range } as Emitter;
+export function makeEmitter(base: EmitterOrReceiverBase): Emitter {
+	return base as Emitter;
 }
 
-export function makeReceiver({ type, group, name, uri, range }: EmitterOrReceiverBase): Receiver {
-	return { type, group, name, uri, range } as Receiver;
+export function makeReceiver(base: EmitterOrReceiverBase): Receiver {
+	return base as Receiver;
 }
 
 function getKey(info: KeyInfo) {
@@ -51,6 +50,7 @@ export class Index {
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
+		private readonly elementsDescription: ElementsDescription,
 	) {}
 
 	public removeElement(id: ElementNumberID) {
@@ -137,18 +137,169 @@ export class Index {
 		}
 	}
 
-	public indexElement(element: ASTElement): ElementIndexData {
+	public indexElement(uri: UriString, element: ASTElement): ElementIndexData {
 		const emitters: Emitter[] = [];
 		const receivers: Receiver[] = [];
 		const elementDefinition = this.schema[element.elementType];
-		if (elementDefinition) {
+		const elementDescription = this.elementsDescription[element.elementType];
+		if (elementDefinition && elementDescription && elementDescription.process) {
+			// index element's id
+			emitters.push(makeEmitter({
+				type: ERType.id,
+				group: element.elementType,
+				name: element.name,
+				uri: uri,
+				range: element.range,
+				ownerId: element.id,
+			}));
+			// index content of fields
 			for (const field of element.fields) {
+				const context: ExtractionContext = {
+					schema: this.schema,
+					keywords: this.keywords,
+					element,
+					field,
+					emitters,
+					receivers,
+					uri,
+				};
 				const fieldDefinition = elementDefinition.fields[field.name];
 				if (fieldDefinition) {
-
+					this.extractEmittersAndReceivers(field.values, fieldDefinition.input, context);
 				}
 			}
 		}
 		return { emitters, receivers, };
 	}
+
+	private extractEmittersAndReceivers(values: ASTValue[], definition: TypeDefinition, c: ExtractionContext): true {
+		if (!values.length) {
+			return true;
+		}
+		switch (definition.type) {
+			case TypeID.any:
+			case TypeID.bool:
+			case TypeID.float:
+			case TypeID.int:
+			case TypeID.range:
+			case TypeID.kw:
+			case TypeID.nothing:
+				return true;
+		
+			case TypeID.id:
+				c.receivers.push(makeReceiver({
+					type: ERType.id,
+					group: definition.group,
+					name: values[0].text,
+					uri: c.uri,
+					range: values[0].range,
+					ownerId: c.element.id,
+				}));
+				return true;
+
+			case TypeID.tagEmitter:
+				c.emitters.push(makeEmitter({
+					type: ERType.tag,
+					group: definition.group,
+					name: values[0].text,
+					uri: c.uri,
+					range: values[0].range,
+					ownerId: c.element.id,
+				}));
+				return true;
+
+			case TypeID.tagReceiver:
+				c.receivers.push(makeReceiver({
+					type: ERType.tag,
+					group: definition.group,
+					name: values[0].text,
+					uri: c.uri,
+					range: values[0].range,
+					ownerId: c.element.id,
+				}));
+				return true;
+
+			case TypeID.list:
+				if (definition.element.type === TypeID.sequence) {
+					const sequenceLength = definition.element.elements.length;
+					for (let i = 0; i < values.length; i += sequenceLength) {
+						const subValues = values.slice(i, i + sequenceLength);
+						this.extractEmittersAndReceivers(subValues, definition.element, c);
+					}
+				}
+				else {
+					for (const value of values) {
+						this.extractEmittersAndReceivers([value], definition.element, c);
+					}
+				}
+				return true;
+
+			case TypeID.sequence:
+				for (let i = 0; i < definition.elements.length; i++) {
+					if (i >= values.length) {
+						// if sequence is incomplete
+						break;
+					}
+					this.extractEmittersAndReceivers([values[i]], definition.elements[i], c);
+				}
+				return true;
+
+			case TypeID.union:
+				// It isn't possible to know what, for example, m_TokenGlossaryHeroTag refers to, without knowing all declared IDs and tags in prior.
+				// Despite its name, this field accepts references to both tags and IDs of heroes.
+				// Since reference indexing only affects what elements will be revalidated, this function tries to gather as many references as it can.
+				// It is supposed that emitters (these directly affect the results of validation) are not declared in ambiguous environment.
+				for (const type of definition.elements) {
+					this.extractEmittersAndReceivers(values, type, c);
+				}
+				return true;
+
+			case TypeID.dependentRequired:
+			case TypeID.dependent:
+				const influencedTypes = getDependencyInfluencedType(c.element, c.field, definition, c.schema, c.keywords);
+				if (!influencedTypes) {
+					return true;
+				}
+				for (let i = 0; i < influencedTypes.types.length; i++) {
+					const influencedType = influencedTypes.types[i];
+					if (!influencedType) {
+						continue;
+					}
+					const influencedValues = influencedTypes.isDependentOnList ? c.field.values.slice(i, i + 1) : c.field.values;
+					this.extractEmittersAndReceivers(influencedValues, influencedType, c);
+				}
+				return true;
+
+			case TypeID.sub:
+				// I don't know how substats work so this currently does nothing.
+				try {
+					const KWGroup = c.keywords[definition.group];
+					const valueDesc = KWGroup[values[0].text];
+					const derivedType = valueDesc.influences?.[definition.subtypeString];
+					const substatName = values[1];
+					const substatValue = values[2];
+				}
+				finally {
+					return true;
+				}
+
+			case TypeID.psv:
+				const psValues = parsePSV(values[0]);
+				this.extractEmittersAndReceivers(psValues, definition.element, c);
+				return true;
+
+			default:
+				return true;
+		}
+	}
+}
+
+interface ExtractionContext {
+	schema: FieldsDescription,
+	keywords: ValuesDescription,
+	element: ASTElement;
+	field: ASTField;
+	emitters: Emitter[];
+	receivers: Receiver[];
+	uri: UriString,
 }

@@ -31,7 +31,7 @@ export class ProjectManager {
 		this.configuration = defaultConfiguration;
 		this.files = new Map<UriString, FileState>();
 		this.parser = new Parser();
-		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
+		this.index = new Index(this.compiledData.schema, this.compiledData.keywords, this.compiledData.elementsDescription);
 		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords);
 	}
 
@@ -54,7 +54,7 @@ export class ProjectManager {
 		// get emitters from all files
 		for (const fileState of this.files.values()) {
 			for (const element of fileState.ast) {
-				const solveResult = this.index.indexElement(element);
+				const solveResult = this.index.indexElement(fileState.uri, element);
 				this.index.addElement(element.id, solveResult.emitters, solveResult.receivers);
 			}
 		}
@@ -129,7 +129,7 @@ export class ProjectManager {
 
 		// find elements affected by addition
 		for (const element of replacementElements) {
-			const elementIndex = this.index.indexElement(element);
+			const elementIndex = this.index.indexElement(uri, element);
 			const affected = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affected) {
 				affectedIds.add(id);
@@ -139,7 +139,7 @@ export class ProjectManager {
 
 		this.reanalyzeIds(affectedIds);
 
-		const duration = (performance.now() - t0).toFixed(2);
+		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Document update (${uri.replace(/^.*[\\/]/, '')}) [${duration} ms].`,
 			`Removed ${[...removedIds].length} elements.`,
 			`Added ${replacementElements.length} elements.`,
@@ -241,7 +241,7 @@ export class ProjectManager {
 		});
 		const affected = new Set<ElementNumberID>();
 		for (const element of parseResult.AST) {
-			const elementIndex = this.index.indexElement(element);
+			const elementIndex = this.index.indexElement(uri, element);
 			const affectedByElement = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affectedByElement) {
 				affected.add(id);

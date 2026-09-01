@@ -25,7 +25,7 @@ import { DD2CSVMMDSettings } from '../../shared/settings';
 import { ProjectManager } from './components/project';
 import { semanticTokensLegend, SemanticTokensProvider } from './components/highlight';
 import { compileData } from './components/compiler';
-import { makeUriString } from '../../shared/utils';
+import { makeUriString, UriString } from '../../shared/utils';
 import { assembleReadme } from './components/readme';
 
 // Create a connection for the server, using Node's IPC as a transport.
@@ -127,17 +127,25 @@ connection.onDidChangeConfiguration(async () => {
 });
 
 connection.onDidChangeWatchedFiles(async event => {
+	const urisToUpdate = new Set<UriString>();
+	const urisToRemove = new Set<UriString>();
 	for (const change of event.changes) {
 		const uri = makeUriString(change.uri);
 		switch (change.type) {
 			case FileChangeType.Created:
 			case FileChangeType.Changed:
-				await project.updateFromDisk(uri);
+				urisToUpdate.add(uri);
 				break;
 			case FileChangeType.Deleted:
-				await project.remove(uri);
+				urisToRemove.add(uri);
 				break;
 		}
+	}
+	for (const uri of urisToUpdate) {
+		await project.updateFromDisk(uri);
+	}
+	for (const uri of urisToRemove) {
+		await project.remove(uri);
 	}
 	// await publishDiagnosticsDebounced(null, "File/directory change");
 });

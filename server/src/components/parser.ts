@@ -1,6 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
-import { TypeDefinition } from './schema';
+import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeDefinitionPSV, TypeID } from './schema';
+import { ValuesDescription } from './compiler';
 
 export type AST = ASTElement[];
 
@@ -149,4 +150,70 @@ export class Parser {
 			diagnostics: diagnostics,
 		};
 	}
+}
+
+
+/**
+ * Tries to get a list of types that dependent field can/needs to provide.
+ * If the field-influencer has multiple values, this tries to get a list of types of the same length.
+ */
+export function getDependencyInfluencedType(
+	element: ASTElement,
+	field: ASTField,
+	definition: TypeDefinitionDependent | TypeDefinitionDependentRequired,
+	schema: FieldsDescription,
+	keywords: ValuesDescription,
+): {
+	types: (TypeDefinition | null)[],
+	isDependentOnList: boolean;
+	influenceSourceField: ASTField,
+} | null {
+	const influenceSourceField = element.fields.find(f => f.name === definition.field);
+	if (!influenceSourceField) {
+		return null;
+	}
+	const influenceSourceSchema = schema[element.elementType].fields[influenceSourceField.name].input;
+	const influenceSourceSchemaContent = influenceSourceSchema.type === TypeID.list ? influenceSourceSchema.element : influenceSourceSchema;
+	if (influenceSourceSchemaContent.type !== TypeID.kw) {
+		return null;
+	}
+	const influenceKWGroup = keywords[influenceSourceSchemaContent.group];
+	const influencedTypes = influenceSourceField.values.map(v => {
+		const influenceValueDesc = influenceKWGroup[v.text];
+		if (influenceValueDesc?.influences) {
+			const influenceType = influenceValueDesc.influences?.[element.elementType + " " + field.name];
+			if (influenceType) {
+				return influenceType.input;
+			}
+		}
+		return null;
+	});
+
+	return {
+		types: influencedTypes,
+		isDependentOnList: influenceSourceSchema.type === TypeID.list,
+		influenceSourceField: influenceSourceField,
+	};
+}
+
+/**
+ * Parses plus-separated value into AST values.
+ */
+export function parsePSV(x: ASTValue): ASTValue[] {
+	const result: ASTValue[] = [];
+	let idx = 0;
+	const line = x.range.start.line;
+	const charStart = x.range.start.character;
+	for (const value of x.text.split("+")) {
+		const range: Range = {
+			start: { line, character: charStart + idx },
+			end: { line, character: charStart + idx + value.length },
+		};
+		result.push({
+			text: value,
+			range: range,
+		});
+		idx += value.length + 1;
+	}
+	return result;
 }
