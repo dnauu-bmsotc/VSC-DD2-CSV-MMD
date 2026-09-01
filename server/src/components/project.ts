@@ -1,77 +1,267 @@
 import { URI } from 'vscode-uri'
 import * as path from 'node:path';
 import * as fs from "node:fs"
+import { Diagnostic, Range } from 'vscode-languageserver';
 
 import { Index } from '.';
-import { AST, parseIntoAST } from './parser';
-import { CompiledData, getCompiledData } from './compiler';
-import { DD2CSVMMDInitializationSettings, DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
-import { assembleReadme } from './readme';
-import { Diagnostic } from 'vscode-languageserver';
+import { AST, ASTElement, ElementNumberID, Parser } from './parser';
+import { CompiledData } from './compiler';
+import { DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
+import { makeUriString, UriString } from '../../../shared/utils';
+import { Semantic } from './semantic';
 
 export interface FileState {
-	uri: string;
+	uri: UriString;
 	ast: AST;
-	text: string;
+	open: boolean;
 	parseDiagnostics: Diagnostic[];
+	text: string;
 }
 
 export class ProjectManager {
-	readonly files = new Map<string, FileState>();
-	readonly openDocuments = new Set<string>();
 	readonly compiledData: CompiledData;
-	readonly initializationOptions: DD2CSVMMDInitializationSettings;
-	readonly workspaceRoot: URI;
-	readonly index: Index;
-	configuration: DD2CSVMMDSettings;
+	readonly configuration: DD2CSVMMDSettings;
+	private readonly files: Map<UriString, FileState>;
+	private readonly parser: Parser;
+	private readonly index: Index;
+	private readonly analyzer: Semantic;
 
-	private constructor(workspaceRoot: URI, compiledData: CompiledData, initializationOptions: DD2CSVMMDInitializationSettings) {
+	constructor(compiledData: CompiledData) {
 		this.compiledData = compiledData;
-		this.workspaceRoot = workspaceRoot;
-		this.initializationOptions = initializationOptions;
 		this.configuration = defaultConfiguration;
+		this.files = new Map<UriString, FileState>();
+		this.parser = new Parser();
 		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
+		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords);
 	}
 
-	public static async create(workspaceRoot: URI, initializationOptions: DD2CSVMMDInitializationSettings): Promise<ProjectManager> {
-		const devMode = initializationOptions.devMode
-		const compiledData = await getCompiledData(devMode);
-		return new ProjectManager(workspaceRoot, compiledData, initializationOptions);
-	}
-
-	public async initialize() {
-		if (this.initializationOptions.devMode) {
-			assembleReadme(this.compiledData);
+	public async initialize(workspaceRoot: URI) {
+		const t0 = performance.now();
+		const filepaths = (await this.findCsvFiles(workspaceRoot.fsPath));
+		// parse all files
+		for (const filepath of filepaths) {
+			const uri = makeUriString(URI.file(filepath).toString());
+			const text = await fs.promises.readFile(filepath, "utf8");
+			const parseResult = this.parser.parseIntoAST(text, this.configuration);
+			this.files.set(uri, {
+				uri: uri,
+				ast: parseResult.AST,
+				parseDiagnostics: parseResult.diagnostics,
+				open: false,
+				text: text,
+			});
 		}
-		const rootPath = this.workspaceRoot.fsPath;
-		const csvFiles = await this.findCsvFiles(rootPath);
-		for (const filePath of csvFiles) {
-			await this.loadFileFromDisk(filePath);
+		// get emitters from all files
+		for (const fileState of this.files.values()) {
+			for (const element of fileState.ast) {
+				const solveResult = this.index.indexElement(element);
+				this.index.addElement(element.id, solveResult.emitters, solveResult.receivers);
+			}
+		}
+		// semantic analysis for all files
+		for (const fileState of this.files.values()) {
+			for (const element of fileState.ast) {
+				this.analyzer.solveElement(element);
+			}
+		}
+		const duration = (performance.now() - t0).toFixed(1);
+		console.log(`Initialized project with ${filepaths.length} files [${duration} ms].`);
+	}
+
+	public getFileState(uri: UriString) {
+		return this.files.get(uri);
+	}
+
+	public openDocument(uri: UriString): void {
+		const fileState = this.files.get(uri);
+		if (fileState) {
+			fileState.open = true;
 		}
 	}
 
-	public async setConfiguration(conf: DD2CSVMMDSettings) {
-		this.configuration = conf;
+	public closeDocument(uri: UriString): void {
+		const fileState = this.files.get(uri);
+		if (fileState) {
+			fileState.open = false;
+		}
 	}
 
-	public updateFileState(uri: string, text: string) {
-		if (!uri.endsWith(".Group.csv")) {
-			return;
+	/**
+	 * Returns a Set of numeric IDs of elements affected by change.
+	 */
+	public updateDocument(uri: UriString, newText: string): Set<ElementNumberID> {
+		const fileState = this.files.get(uri);
+		if (!fileState) {
+			return this.replaceWholeFile(uri, newText, true);
 		}
-		this.openDocuments.add(uri);
-		const parseResult = parseIntoAST(text, this.configuration);
-		this.index.updateFileIndex(uri, parseResult.AST);
-		const fileState: FileState = {
+
+		const t0 = performance.now();
+		const affectedIds = new Set<ElementNumberID>();
+
+		// find elements affected by removal
+		const changeRegion = this.getChangeRegion(fileState.text, newText);
+		const removedIds = new Set<ElementNumberID>();
+		for (const element of fileState.ast) {
+			if (this.rangesOverlap(element.fullRange, changeRegion.oldRange)) {
+				removedIds.add(element.id);
+				const affected = this.index.removeElement(element.id);
+				for (const id of affected) {
+					affectedIds.add(id);
+				}
+			}
+		}
+
+		// get edited elements
+		const newAstResult = this.parser.parseIntoAST(newText, this.configuration);
+		const replacementElements = newAstResult.AST.filter(element => this.rangesOverlap(changeRegion.newRange, element.fullRange));
+
+		// compose edited ast
+		const unaffectedElements = fileState.ast.filter(element => !removedIds.has(element.id));
+		const editedAstUnordered = [...unaffectedElements, ...replacementElements];
+		const editedAst = editedAstUnordered.sort((a, b) => a.range.start.line - b.range.start.line);
+		this.files.set(uri, {
+			uri: uri,
+			ast: editedAst,
+			open: true,
+			parseDiagnostics: newAstResult.diagnostics,
+			text: newText,
+		});
+
+		// find elements affected by addition
+		for (const element of replacementElements) {
+			const elementIndex = this.index.indexElement(element);
+			const affected = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
+			for (const id of affected) {
+				affectedIds.add(id);
+			}
+			affectedIds.add(element.id);
+		}
+
+		this.reanalyzeIds(affectedIds);
+
+		const duration = (performance.now() - t0).toFixed(2);
+		console.log(`Document update (${uri.replace(/^.*[\\/]/, '')}) [${duration} ms].`,
+			`Removed ${[...removedIds].length} elements.`,
+			`Added ${replacementElements.length} elements.`,
+			`Affected ${[...affectedIds].length} elements.`,
+		);
+
+		return affectedIds;
+	}
+
+	/**
+	 * Returns a Set of numeric IDs of elements affected by file removal.
+	 */
+	public async remove(uri: UriString): Promise<Set<ElementNumberID>> {
+		const t0 = performance.now();
+		const uriAsDirectory = uri.endsWith('/') ? uri : `${uri}/`;
+		const urisInDirectory = [...this.files.keys()].filter(uri => uri.startsWith(uriAsDirectory));
+		const urisToRemove = [uri, ...urisInDirectory].filter(uri => !!this.files.get(uri));
+		const affected: Set<ElementNumberID> = new Set();
+		for (const uriToRemove of urisToRemove) {
+			const fileState = this.files.get(uriToRemove);
+			if (!fileState) {
+				continue;
+			}
+			for (const element of fileState.ast) {
+				const affectedByElementRemoval = this.index.removeElement(element.id);
+				for (const id of affectedByElementRemoval) {
+					affected.add(id);
+				}
+			}
+			this.files.delete(uriToRemove);
+		}
+		const duration = (performance.now() - t0).toFixed(1);
+		console.log(`Removed ${urisToRemove.length} file(s) from project [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files remain.`);
+		this.reanalyzeIds(affected);
+		return affected;
+	}
+
+	/**
+	 * Returns a Set of numeric IDs of elements affected by update.
+	 */
+	public async updateFromDisk(uri: UriString): Promise<Set<ElementNumberID>> {
+		const t0 = performance.now();
+		const fsPath = URI.parse(uri).fsPath;
+		const stats = await fs.promises.stat(fsPath);
+
+		const affected = new Set<ElementNumberID>();
+		const filePathsToUpdate = stats.isDirectory() ? (await this.findCsvFiles(fsPath)) : [fsPath];
+		for (const filePath of filePathsToUpdate) {
+			const affectedByFile = await this.updateFileFromDisk(filePath);
+			affectedByFile.forEach(id => affected.add(id));
+		}
+		const duration = (performance.now() - t0).toFixed(1);
+		console.log(`Added/updated ${filePathsToUpdate.length} file(s) [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files in project.`);
+		return affected;
+	}
+
+	/**
+	 * Returns a Set of numeric IDs of elements affected by update.
+	 */
+	private async updateFileFromDisk(filePath: string): Promise<Set<ElementNumberID>> {
+		const uri = makeUriString(URI.file(filePath).toString());
+		const fileState = this.files.get(uri);
+		if (fileState?.open) {
+			return new Set();
+		}
+		const text = await fs.promises.readFile(filePath, "utf8");
+		return this.replaceWholeFile(uri, text, false);
+	}
+
+	/**
+	 * Returns a Set of numeric IDs of elements affected by update.
+	 */
+	private replaceWholeFile(uri: UriString, text: string, open: boolean): Set<ElementNumberID> {
+		const oldFileState = this.files.get(uri);
+		const affected = new Set<ElementNumberID>();
+		if (oldFileState) {
+			for (const element of oldFileState.ast) {
+				const affectedByElementRemoval = this.index.removeElement(element.id);
+				for (const id of affectedByElementRemoval) {
+					affected.add(id);
+				}
+			}
+		}
+		this.addFile(uri, text, open);
+		return affected;
+	}
+
+	/**
+	 * Returns a Set of numeric IDs of elements affected by addition.
+	 */
+	private addFile(uri: UriString, text: string, open: boolean): Set<ElementNumberID> {
+		const parseResult = this.parser.parseIntoAST(text, this.configuration);
+		this.files.set(uri, {
 			uri: uri,
 			ast: parseResult.AST,
 			parseDiagnostics: parseResult.diagnostics,
+			open: open,
 			text: text,
-		};
-		this.files.set(uri, fileState);
-		return fileState;
+		});
+		const affected = new Set<ElementNumberID>();
+		for (const element of parseResult.AST) {
+			const elementIndex = this.index.indexElement(element);
+			const affectedByElement = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
+			for (const id of affectedByElement) {
+				affected.add(id);
+			}
+			affected.add(element.id);
+		}
+		this.reanalyzeIds(affected);
+		return affected;
 	}
 
-	public async findCsvFiles(dir: string): Promise<string[]> {
+	private reanalyzeIds(ids: Set<ElementNumberID>) {
+		for (const id of ids) {
+			const element = this.findElement(id);
+			if (element) {
+				this.analyzer.solveElement(element);
+			}
+		}
+	}
+
+	private async findCsvFiles(dir: string): Promise<string[]> {
 		const result: string[] = [];
 		const entries = await fs.promises.readdir(dir, {
 			withFileTypes: true,
@@ -81,53 +271,60 @@ export class ProjectManager {
 			if (entry.isDirectory()) {
 				result.push(...await this.findCsvFiles(filePath));
 			}
-			if (entry.isFile() && entry.name.toLowerCase().endsWith(".csv")) {
+			if (entry.isFile() && this.isDd2Csv(entry.name)) {
 				result.push(filePath);
 			}
 		}
 		return result;
 	}
 
-	public async updateFromDisk(uri: string) {
-		if (this.openDocuments.has(uri)) {
-			return;
-		}
-		const fsPath = URI.parse(uri).fsPath;
-		const stats = await fs.promises.stat(fsPath);
-		if (stats.isDirectory()) {
-			for (const filePath of await this.findCsvFiles(fsPath)) {
-				this.loadFileFromDisk(filePath);
+	private isDd2Csv(filename: string) {
+		return filename.toLowerCase().endsWith(".group.csv");
+	}
+
+	private findElement(id: ElementNumberID): ASTElement | undefined {
+		for (const file of this.files.values()) {
+			const element = file.ast.find(e => e.id === id);
+			if (element) {
+				return element;
 			}
 		}
-		else {
-			this.loadFileFromDisk(fsPath);
+		return undefined;
+	}
+
+	private getChangeRegion(oldText: string, newText: string): ChangeRegion {
+		const oldLines = oldText.split('\n');
+		const newLines = newText.split('\n');
+		let oldStart = 0;
+		let oldEnd = oldLines.length - 1;
+		let newStart = 0;
+		let newEnd = newLines.length - 1;
+		while ((oldStart < oldEnd) && (newStart < newEnd) && (oldLines[oldStart] === newLines[newStart])) {
+			oldStart += 1;
+			newStart += 1;
+		}
+		while ((oldEnd > oldStart) && (newEnd > newStart) && (oldLines[oldEnd] === newLines[newEnd])) {
+			oldEnd -= 1;
+			newEnd -= 1;
+		}
+		return {
+			oldRange: {
+				start: { line: oldStart, character: 0 },
+				end: { line: oldEnd, character: oldLines[oldEnd].length },
+			},
+			newRange: {
+				start: { line: newStart, character: 0 },
+				end: { line: newEnd, character: newLines[newEnd].length },
+			},
 		}
 	}
 
-	public remove(uri: string) {
-		this.files.delete(uri);
-		this.openDocuments.delete(uri);
-
-		const directoryPrefix = uri.endsWith('/') ? uri : `${uri}/`;
-        for (const cachedUri of this.files.keys()) {
-            if (cachedUri.startsWith(directoryPrefix)) {
-                this.files.delete(cachedUri);
-            }
-        }
+	private rangesOverlap(a: Range, b: Range): boolean {
+		return ((a.start.line <= b.end.line) && (b.start.line <= a.end.line));
 	}
+}
 
-	public get(fileUri: string): FileState | undefined {
-		return this.files.get(fileUri);
-	}
-
-	public getAll(): FileState[] {
-		return [...this.files.values()];
-	}
-
-	async loadFileFromDisk(filePath: string) {
-		const uri = URI.file(filePath).toString();
-		const text = await fs.promises.readFile(filePath, "utf8");
-		this.updateFileState(uri, text);
-	}
-
+interface ChangeRegion {
+	oldRange: Range;
+	newRange: Range;
 }

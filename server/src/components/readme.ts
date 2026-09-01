@@ -1,12 +1,12 @@
 import * as fs from 'node:fs/promises';
 import { CompiledData } from './compiler';
-import { Element, Field, TypeDefinition } from './schema';
+import { Element, Field, TypeDefinition, TypeID } from './schema';
 import { readmeBaseFilePath, readmeOutputFilePath } from '../../../shared/projectPaths';
 
 export async function assembleReadme(compiledData: CompiledData) {
 	let readme = await fs.readFile(readmeBaseFilePath, 'utf-8');
 	
-	readme += "\n\n# CSV data description\n\n";
+	readme += "\n\n## CSV data description\n\n";
 
 	readme += generateFieldsDescription(compiledData);
 	
@@ -96,14 +96,14 @@ function getInputKeywords(field: Field, compiledData: CompiledData): InputKeywor
 
 function getInputKeywordsRecursive(content: TypeDefinition): string[] {
 	switch (content.type) {
-		case "kw":
+		case TypeID.kw:
 			return [ content.group ];
-		case "list":
+		case TypeID.list:
 			return getInputKeywordsRecursive(content.element);
-		case "sequence":
-		case "union":
+		case TypeID.sequence:
+		case TypeID.union:
 			return content.elements.map(x => getInputKeywordsRecursive(x)).flat();
-		case "sub":
+		case TypeID.sub:
 			return [ content.group ];
 		default:
 			return [];

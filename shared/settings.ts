@@ -7,12 +7,7 @@ export interface DD2CSVMMDSettings {
 	indexProjectFiles: boolean;
 	validateFieldInput: boolean;
 	allowComments: boolean;
-	debounceTime: number;
 	useSemanticHighlighting: boolean;
-}
-
-export interface DD2CSVMMDInitializationSettings {
-	devMode: boolean;
 	DD2ExcelDirs: string[];
 }
 
@@ -27,5 +22,5 @@ export const defaultConfiguration: DD2CSVMMDSettings = Object.freeze({
 	allowComments: false,
 	useSemanticHighlighting: true,
 	dd2CsvDetectionMethod: "firstLine",
-	debounceTime: 100,
+	DD2ExcelDirs: [],
 });

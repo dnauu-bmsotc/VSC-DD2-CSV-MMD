@@ -22,10 +22,11 @@ import {
 import { URI } from 'vscode-uri';
 
 import { DD2CSVMMDSettings } from '../../shared/settings';
-import { validateAstBySchema } from './components/validator';
 import { ProjectManager } from './components/project';
-import { HoverManager } from './components/hover';
-import { semanticTokensLegend, SemanticTokensProvider } from './components/semantic';
+import { semanticTokensLegend, SemanticTokensProvider } from './components/highlight';
+import { compileData } from './components/compiler';
+import { makeUriString } from '../../shared/utils';
+import { assembleReadme } from './components/readme';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -40,9 +41,8 @@ let hasDiagnosticRelatedInformationCapability = false;
 let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
-let hover: HoverManager;
+// let hover: HoverManager;
 let semanticTokensProvider: SemanticTokensProvider;
-let debounceTimer: NodeJS.Timeout | null = null;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const capabilities = params.capabilities;
@@ -92,18 +92,11 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	}
 	const workspace = URI.parse(workspaceUri);
 	
-	try {
-		project = await ProjectManager.create(workspace, params.initializationOptions);
-		await project.initialize();
-	}
-	catch(error) {
-		const message = error instanceof Error ? error.message : String(error);
-		connection.console.error(message);
-		connection.window.showErrorMessage(message);
-		throw Error;
-	}
-
-	hover = new HoverManager(project);
+	const compiledData = await compileData();
+	assembleReadme(compiledData);
+	project = new ProjectManager(compiledData);
+	project.initialize(workspace);
+	// hover = new HoverManager(project);
 	semanticTokensProvider = new SemanticTokensProvider(project);
 	
 	return result;
@@ -124,104 +117,102 @@ connection.onInitialized(async () => {
 			watchers: [{ globPattern: "**/*.Group.csv" }],
 		});
 	}
-	await publishDiagnosticsDebounced(null, "Initialization");
+	// await publishDiagnosticsDebounced(null, "Initialization");
 });
 
 connection.onDidChangeConfiguration(async () => {
-	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
-	project.setConfiguration(configuration);
-	await publishDiagnosticsDebounced(null, "Configuration change");
+	// const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
+	// project.setConfiguration(configuration);
+	// await publishDiagnosticsDebounced(null, "Configuration change");
 });
 
 connection.onDidChangeWatchedFiles(async event => {
 	for (const change of event.changes) {
+		const uri = makeUriString(change.uri);
 		switch (change.type) {
 			case FileChangeType.Created:
-				await project.updateFromDisk(change.uri);
-				break;
 			case FileChangeType.Changed:
-				await project.updateFromDisk(change.uri);
+				await project.updateFromDisk(uri);
 				break;
 			case FileChangeType.Deleted:
-				project.remove(change.uri);
+				await project.remove(uri);
 				break;
 		}
 	}
-	await publishDiagnosticsDebounced(null, "File/directory change");
+	// await publishDiagnosticsDebounced(null, "File/directory change");
 });
 
 documents.onDidOpen(e => {
-	project.updateFileState(e.document.uri, e.document.getText());
+	project.openDocument(makeUriString(e.document.uri));
 });
 
 documents.onDidClose(e => {
-	
+	project.closeDocument(makeUriString(e.document.uri));
 });
 
-// The content of a text document has changed. This event is emitted
-// when the text document first opened or when its content has changed.
 documents.onDidChangeContent(async (e) => {
-	project.updateFileState(e.document.uri, e.document.getText());
-	await publishDiagnosticsDebounced(e.document.uri, "Content change / file opened");
+	const affected = project.updateDocument(makeUriString(e.document.uri), e.document.getText());
 });
 
-async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
-	if (debounceTimer) {
-		console.info('Validation call debounced.');
-	}
-	else {
-		debounceTimer = setTimeout(async () => {
-			publishDiagnostics(uri, reason);
-			await connection.sendRequest(SemanticTokensRefreshRequest.type);
-			debounceTimer = null;
-		}, project.configuration.debounceTime);
-	}
-}
+// async function publishDiagnosticsDebounced(uri: string | null, reason: string) {
+// 	if (debounceTimer) {
+// 		console.info('Validation call debounced.');
+// 	}
+// 	else {
+// 		debounceTimer = setTimeout(async () => {
+// 			publishDiagnostics(uri, reason);
+// 			await connection.sendRequest(SemanticTokensRefreshRequest.type);
+// 			debounceTimer = null;
+// 		}, project.configuration.debounceTime);
+// 	}
+// }
 
-async function publishDiagnostics(uri: string | null, reason: string) {
-	const t0 = performance.now();
-	const validateAll = project.configuration.validateProjectFiles || !uri;
-	const files = validateAll ? [...project.files.keys()] : [uri];
-	await Promise.all(files.map(async (uri) => {
-		const text = project.get(uri)?.text;
-		if (!text) {
-			return;
-		}
-		const diagnostics = await validateTextDocument(uri, text);
-		connection.sendDiagnostics({ uri, diagnostics, });
-	}));
-	console.info(`Validated ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
-}
+// async function publishDiagnostics(uri: string | null, reason: string) {
+// 	const t0 = performance.now();
+// 	const validateAll = project.configuration.validateProjectFiles || !uri;
+// 	const files = validateAll ? [...project.files.keys()] : [uri];
+// 	await Promise.all(files.map(async (uri) => {
+// 		const text = project.get(uri)?.text;
+// 		if (!text) {
+// 			return;
+// 		}
+// 		const diagnostics = await validateTextDocument(uri, text);
+// 		connection.sendDiagnostics({ uri, diagnostics, });
+// 	}));
+// 	console.info(`Validated ${files.length} files: ${(performance.now() - t0).toFixed(1)} ms. Reason: ${reason}.`);
+// }
 
-async function validateTextDocument(uri: string, text: string) {
-	try {
-		const fileState = project.updateFileState(uri, text);
-		if (!fileState) {
-			return [];
-		}
+// async function validateTextDocument(uri: string, text: string) {
+// 	try {
+// 		const fileState = project.updateFileState(uri, text);
+// 		if (!fileState) {
+// 			return [];
+// 		}
 		
-		const fileStates = project.configuration.indexProjectFiles ? [...project.files.values()] : [fileState];
-		const validationResult = validateAstBySchema({
-			ast: fileState.ast,
-			compiledData: project.compiledData,
-			files: fileStates,
-			configuration: project.configuration,
-			index: project.index,
-		});
+// 		const fileStates = project.configuration.indexProjectFiles ? [...project.files.values()] : [fileState];
+// 		const validationResult = validateAstBySchema({
+// 			ast: fileState.ast,
+// 			compiledData: project.compiledData,
+// 			files: fileStates,
+// 			configuration: project.configuration,
+// 			index: project.index,
+// 		});
 
-		return [...fileState.parseDiagnostics, ...validationResult];
-	}
-	catch (error) {
-		console.error(error);
-		return [];
-	}
-}
+// 		return [...fileState.parseDiagnostics, ...validationResult];
+// 	}
+// 	catch (error) {
+// 		console.error(error);
+// 		return [];
+// 	}
+// }
 
-connection.onHover(params => hover.onHover(params));
+connection.onHover(params => {
+	// hover.onHover(params)
+});
 
 connection.languages.semanticTokens.on(
 	async function onSemanticTokens(params: SemanticTokensParams) {
-		return semanticTokensProvider.provide(params.textDocument.uri);
+		return semanticTokensProvider.provide(makeUriString(params.textDocument.uri));
 	}
 );
 

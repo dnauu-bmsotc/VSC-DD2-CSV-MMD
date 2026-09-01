@@ -119,13 +119,6 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Highlight id/tag references and keywords in field inputs."
-				},
-				"DD2CSVMMD.debounceTime": {
-					"type": "integer",
-					"default": 100,
-					"minimum": 0,
-					"maximum": 10000,
-					"description": "Debounce time for validation in milliseconds."
 				}
 			}
 		}

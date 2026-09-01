@@ -1,13 +1,7 @@
-import * as path from 'path';
-import * as fs from 'node:fs/promises'; 
 import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
-
 import { FieldsDescription, parseType, readFieldsDescription, TypeDefinition } from './schema';
-import { parseIntoAST } from './parser';
-import { dataCompiledOutputFilePath, fieldsDescriptionPath, streamingAssetsPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths';
-import { defaultConfiguration } from '../../../shared/settings';
-import { Index } from '.';
+import { fieldsDescriptionPath, valuesDescriptionPath, elementsDescriptionPath } from '../../../shared/projectPaths'
 
 export interface CompiledData {
 	schema: FieldsDescription;
@@ -33,38 +27,18 @@ export interface ElementDescription {
 
 type ElementsDescription = Record<string, ElementDescription>;
 
-export async function getCompiledData(rebuild=false): Promise<CompiledData> {
-	if (!rebuild) {
-		const json = await readJson<CompiledData>(dataCompiledOutputFilePath);
-		if (json) return json;
-	}
-	return await compileData();
-}
-
 export async function compileData(): Promise<CompiledData> {
 	const t0 = performance.now();
 	const schema = readFieldsDescription(fieldsDescriptionPath);
 	const keywords = readValuesDescription(valuesDescriptionPath);
 	const elementsDescription = readElementsDescription(elementsDescriptionPath);
-
 	const result: CompiledData = {
 		schema,
 		keywords,
 		elementsDescription,
 	}
-
-	const jsonString = JSON.stringify(result, null, 2);
-	await fs.writeFile(dataCompiledOutputFilePath, jsonString, 'utf-8');
-	console.info(`Compiling data: ${(performance.now() - t0).toFixed(1)} ms.`);
+	console.info(`Compiled data [${(performance.now() - t0).toFixed(1)} ms].`);
 	return result;
-}
-
-async function findCsvFiles(folderPath: string) {
-	const entries = await fs.readdir(folderPath, { recursive: true });
-	const csvFiles = entries
-		.filter((file) => path.extname(file).toLowerCase() === '.csv')
-		.map((file) => path.join(folderPath, file));
-	return csvFiles;
 }
 
 function readValuesDescription(filePath: string): ValuesDescription {
@@ -131,14 +105,4 @@ function readElementsDescription(filePath: string): ElementsDescription {
 	}
 
 	return result;
-}
-
-async function readJson<T>(filePath: string): Promise<T | null> {
-	try {
-		const rawData = await fs.readFile(filePath, 'utf-8');
-		return JSON.parse(rawData) as T;
-	}
-	catch (error: any) {
-		throw Error(`File not found: ${filePath}`);
-	}
 }

@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
 
-export type TypeDefinition =
+export type TypeDefinitionSolved = 
 	| TypeDefinitionInt
 	| TypeDefinitionRange
 	| TypeDefinitionFloat
@@ -10,31 +10,46 @@ export type TypeDefinition =
 	| TypeDefinitionKW
 	| TypeDefinitionTagEmitter
 	| TypeDefinitionTagReceiver
-	| TypeDefinitionList
-	| TypeDefinitionSequence
-	| TypeDefinitionUnion
-	| TypeDefinitionDependent
-	| TypeDefinitionDependentRequired
 	| TypeDefinitionAny
 	| TypeDefinitionNothing
-	| TypeDefinitionSubtype;
+	| TypeDefinitionUnionSolved;
 
-export type TypeDefinitionInt = { type: "int"; };
-export type TypeDefinitionRange = { type: "range"; };
-export type TypeDefinitionFloat = { type: "float"; };
-export type TypeDefinitionBool = { type: "bool"; };
-export type TypeDefinitionID = { type: "id"; group: string; };
-export type TypeDefinitionKW = { type: "kw"; group: string; };
-export type TypeDefinitionTagEmitter = { type: "tagEmitter"; group: string; };
-export type TypeDefinitionTagReceiver = { type: "tagReceiver"; group: string; };
-export type TypeDefinitionList = { type: "list"; element: TypeDefinition; };
-export type TypeDefinitionSequence = { type: "sequence"; elements: TypeDefinition[]; };
-export type TypeDefinitionUnion = { type: "union"; elements: TypeDefinition[]; };
-export type TypeDefinitionDependent = { type: "dependent"; field: string; };
-export type TypeDefinitionDependentRequired = Omit<TypeDefinitionDependent, "type"> & { type: "dependentRequired" };
-export type TypeDefinitionAny = { type: "any"; };
-export type TypeDefinitionNothing = { type: "nothing"; };
-export type TypeDefinitionSubtype = { type: "sub"; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
+export type TypeDefinition =
+	| TypeDefinitionSolved
+	| TypeDefinitionList
+	| TypeDefinitionSequence
+	| TypeDefinitionDependent
+	| TypeDefinitionDependentRequired
+	| TypeDefinitionSubtype
+	| TypeDefinitionPSV
+	| TypeDefinitionUnion;
+
+export enum TypeID {
+	int, range, float, bool, id, kw,
+	tagEmitter, tagReceiver, list, sequence,
+	union, unionSolved,
+	dependent, dependentRequired,
+	any, nothing, sub, psv,
+}
+
+export type TypeDefinitionInt				= { type: TypeID.int; };
+export type TypeDefinitionRange				= { type: TypeID.range; };
+export type TypeDefinitionFloat				= { type: TypeID.float; };
+export type TypeDefinitionBool				= { type: TypeID.bool; };
+export type TypeDefinitionID				= { type: TypeID.id; group: string; };
+export type TypeDefinitionKW				= { type: TypeID.kw; group: string; };
+export type TypeDefinitionTagEmitter 		= { type: TypeID.tagEmitter; group: string; };
+export type TypeDefinitionTagReceiver		= { type: TypeID.tagReceiver; group: string; };
+export type TypeDefinitionList				= { type: TypeID.list; element: TypeDefinition; };
+export type TypeDefinitionSequence			= { type: TypeID.sequence; elements: TypeDefinition[]; };
+export type TypeDefinitionUnion				= { type: TypeID.union; elements: TypeDefinition[]; };
+export type TypeDefinitionUnionSolved		= { type: TypeID.unionSolved; elements: TypeDefinitionSolved[]; };
+export type TypeDefinitionDependent			= { type: TypeID.dependent; field: string; };
+export type TypeDefinitionDependentRequired	= { type: TypeID.dependentRequired; field: string; };
+export type TypeDefinitionAny				= { type: TypeID.any; };
+export type TypeDefinitionNothing			= { type: TypeID.nothing; };
+export type TypeDefinitionSubtype			= { type: TypeID.sub; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
+export type TypeDefinitionPSV				= { type: TypeID.psv, element: TypeDefinition };
 
 export type Field = {
 	inputString: string;
@@ -50,83 +65,111 @@ export type Element = {
 export type FieldsDescription = Record<string, Element>;
 
 export function parseType(input: string): TypeDefinition {
-	const defaultReturnValue = Object.freeze({ type: "any" });
+	try {
+		return parseTypeRecursive(input, false);
+	}
+	catch (error) {
+		console.error(`Error while parsing ${input}`);
+		console.error(error);
+		return { type: TypeID.any };
+	}
+}
+
+function parseTypeRecursive(input: string, isAmbiguous: boolean): TypeDefinition {
+	const defaultReturnValue: TypeDefinitionAny = { type: TypeID.any };
 	input = input.trim();
-	const funcRegEx = (funcName: string) =>
-		new RegExp(`^${funcName}\\(((?:[^()]+|\\([^()]*\\))*)\\)$`);
+	function inputMatchFunc(funcName: string): string | null {
+		if (input.startsWith(`${funcName}(`) && input.endsWith(")")) {
+			return input.slice(`${funcName}(`.length, input.length - 1);
+		}
+		return null;
+	}
 	if (input.match(/^range$/)) {
-		return { type: "range" };
+		return { type: TypeID.range };
 	}
 	if (input.match(/^int$/)) {
-		return { type: "int" };
+		return { type: TypeID.int };
 	}
 	if (input.match(/^float$/)) {
-		return { type: "float" };
+		return { type: TypeID.float };
 	}
 	if (input.match(/^bool$/)) {
-		return { type: "bool" };
+		return { type: TypeID.bool };
 	}
 	if (input.match(/^.* ID$/)) {
 		const group = input.match(/(.*) ID$/)?.[1];
-		return { type: "id", group: group ? group : "" };
+		return { type: TypeID.id, group: group ? group : "" };
 	}
 	if (input.match(/^.* KW$/)) {
 		const group = input.match(/(.*) KW$/)?.[1];
-		return { type: "kw", group: group ? group : "" };
+		return { type: TypeID.kw, group: group ? group : "" };
 	}
 	if (input.match(/^.* Tag\+$/)) {
+		if (isAmbiguous) {
+			console.error(`Tag emitters cannot be used in ambiguous expressions.`);
+			return defaultReturnValue;
+		}
 		const group = input.match(/(.*) Tag\+$/)?.[1];
-		return { type: "tagEmitter", group: group ? group : "" };
+		return { type: TypeID.tagEmitter, group: group ? group : "" };
 	}
 	if (input.match(/^.* Tag-$/)) {
 		const group = input.match(/(.*) Tag-$/)?.[1];
-		return { type: "tagReceiver", group: group ? group : "" };
+		return { type: TypeID.tagReceiver, group: group ? group : "" };
 	}
-	if (input.match(funcRegEx("List"))) {
-		const content = input.match(funcRegEx("List"))?.[1];
-		const element = parseType(content? content.trim() : "");
-		return { type: "list", element: element ? element : { type: "nothing" } };
+	const inputMatchFuncList = inputMatchFunc("List");
+	if (inputMatchFuncList) {
+		const element = parseTypeRecursive(inputMatchFuncList?? "", isAmbiguous);
+		return { type: TypeID.list, element: element ? element : { type: TypeID.nothing } };
 	}
-	if (input.match(funcRegEx("Dep\\*"))) {
-		const field = input.match(funcRegEx("Dep\\*"))?.[1];
-		return { type: "dependentRequired", field: field ? field : "" };
+	const inputMatchFuncPSV = inputMatchFunc("PSV");
+	if (inputMatchFuncPSV) {
+		const element = parseTypeRecursive(inputMatchFuncPSV?? "", isAmbiguous);
+		return { type: TypeID.psv, element: element ? element : { type: TypeID.nothing } };
 	}
-	if (input.match(funcRegEx("Dep"))) {
-		const field = input.match(funcRegEx("Dep"))?.[1];
-		return { type: "dependent", field: field ? field : "" };
+	const inputMatchFuncDepReq = inputMatchFunc("Dep*");
+	if (inputMatchFuncDepReq) {
+		return { type: TypeID.dependentRequired, field: inputMatchFuncDepReq ?? "" };
 	}
-	if (input.match(funcRegEx("Seq"))) {
-		const content = input.match(funcRegEx("Seq"))?.[1];
-		const elements = splitTopLevel(content).map(p => parseType(p.trim()));
-		return { type: "sequence", elements };
+	const inputMatchFuncDep = inputMatchFunc("Dep");
+	if (inputMatchFuncDep) {
+		return { type: TypeID.dependent, field: inputMatchFuncDep ?? "" };
 	}
-	if (input.match(funcRegEx("Or"))) {
-		const content = input.match(funcRegEx("Or"))?.[1];
-		const elements = splitTopLevel(content).map(p => parseType(p.trim()));
-		return { type: "union", elements: elements };
+	const inputMatchFuncSeq = inputMatchFunc("Seq");
+	if (inputMatchFuncSeq) {
+		const elements = splitTopLevel(inputMatchFuncSeq).map(p => parseTypeRecursive(p.trim(), isAmbiguous));
+		return { type: TypeID.sequence, elements };
 	}
-	if (input.match(funcRegEx("Sub"))) {
-		const content = input.match(funcRegEx("Sub"))?.[1];
-		if (!content) {
-			return defaultReturnValue;
-		}
+	const inputMatchFuncOr = inputMatchFunc("Or");
+	if (inputMatchFuncOr) {
+		const content = inputMatchFuncOr;
+		const elements = splitTopLevel(content).map(p => parseTypeRecursive(p.trim(), true));
+		return { type: TypeID.union, elements: elements };
+	}
+	const inputMatchFuncSub = inputMatchFunc("Sub");
+	if (inputMatchFuncSub) {
+		const content = inputMatchFuncSub;
 		const elements = content.split(",");
 		if (!elements || elements.length !== 3) {
 			console.error(`Subtype ${input} needs to have 3 elements.`);
 			return defaultReturnValue;
 		}
-		const firstElementDefinition = parseType(elements[0]);
-		if (firstElementDefinition.type !== "kw") {
+		const firstElementDefinition = parseTypeRecursive(elements[0], isAmbiguous);
+		if (firstElementDefinition.type !== TypeID.kw) {
 			console.error(`Subtype ${input} needs a keyword group as the first type`);
 			return defaultReturnValue;
 		}
-		return { type: "sub", group: firstElementDefinition.group, subtypeString: elements[1], subtypeValueType: parseType(elements[2]) };
+		return {
+			type: TypeID.sub,
+			group: firstElementDefinition.group,
+			subtypeString: elements[1],
+			subtypeValueType: parseTypeRecursive(elements[2], isAmbiguous)
+		};
 	}
 	if (input.match(/^any$/)) {
-		return { type: "any" };
+		return { type: TypeID.any };
 	}
 	if (input.match(/^nothing$/)) {
-		return { type: "nothing" };
+		return { type: TypeID.nothing };
 	}
 	console.error(`Unhandled input type: ${input}`);
 	return defaultReturnValue;
@@ -136,7 +179,6 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 	if (!existsSync(filePath)) {
 		throw new Error(`File not found ${filePath}`);
 	}
-	const t0 = performance.now();
 	const workbook: XLSX.WorkBook = XLSX.readFile(filePath);
 	const result: FieldsDescription = {};
 	for (const sheetName of workbook.SheetNames) {
@@ -147,8 +189,8 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 			fields: {},
 		};
 		for (const field of data) {
-			const inputString = field["Input Type"] ? field["Input Type"] : "";
-			const comment = field["Comment"] ? field["Comment"] : "";
+			const inputString = field["Input Type"] ?? "";
+			const comment = field["Comment"] ?? "";
 			element.fields[field["Field Name"]] = {
 				inputString: inputString,
 				input: parseType(inputString),
@@ -157,7 +199,6 @@ export function readFieldsDescription(filePath: string): FieldsDescription {
 		}
 		result[sheetName] = element;
 	}
-	console.info(`Reading schema: ${(performance.now() - t0).toFixed(1)} ms.`);
 	return result;
 }
 
@@ -186,25 +227,26 @@ function splitTopLevel(content?: string): string[] {
  */
 export function typeHasDependent(t: TypeDefinition): string | null {
 	switch (t.type) {
-		case "any":
-		case "bool":
-		case "float":
-		case "id":
-		case "int":
-		case "kw":
-		case "nothing":
-		case "range":
-		case "tagEmitter":
-		case "tagReceiver":
-		case "sub":
+		case TypeID.any:
+		case TypeID.bool:
+		case TypeID.float:
+		case TypeID.id:
+		case TypeID.int:
+		case TypeID.kw:
+		case TypeID.nothing:
+		case TypeID.range:
+		case TypeID.tagEmitter:
+		case TypeID.tagReceiver:
+		case TypeID.sub:
 			return null;
-		case "dependent":
-		case "dependentRequired":
+		case TypeID.dependent:
+		case TypeID.dependentRequired:
 			return t.field;
-		case "list":
+		case TypeID.list:
 			return typeHasDependent(t.element);
-		case "union":
-		case "sequence":
+		case TypeID.union:
+		case TypeID.unionSolved:
+		case TypeID.sequence:
 			for (const subtype of t.elements) {
 				const group = typeHasDependent(subtype);
 				if (group) {
@@ -212,42 +254,47 @@ export function typeHasDependent(t: TypeDefinition): string | null {
 				}
 			}
 			return null;
+		case TypeID.psv:
+			return typeHasDependent(t.element);
 	}
 }
 
 export function typeToVerbose(t: TypeDefinition): string {
 	switch (t.type) {
-		case "any":
+		case TypeID.any:
 			return "Any";
-		case "bool":
+		case TypeID.bool:
 			return "Boolean";
-		case "dependent":
+		case TypeID.dependent:
 			return `Dependent on ${t.field} field`;
-		case "dependentRequired":
+		case TypeID.dependentRequired:
 			return `Dependent on ${t.field} field (requires values)`;
-		case "float":
+		case TypeID.float:
 			return "Float";
-		case "id":
+		case TypeID.id:
 			return `${t.group} ID`;
-		case "int":
+		case TypeID.int:
 			return "Integer";
-		case "kw":
+		case TypeID.kw:
 			return `${t.group} Keyword`;
-		case "list":
+		case TypeID.list:
 			return `List of (${typeToVerbose(t.element)})`;
-		case "nothing":
+		case TypeID.nothing:
 			return "None";
-		case "range":
+		case TypeID.range:
 			return "Range";
-		case "sequence":
+		case TypeID.sequence:
 			return `Sequence (${(t.elements.map(etype => typeToVerbose(etype)))})`;
-		case "tagEmitter":
+		case TypeID.tagEmitter:
 			return `${t.group} tag definition`;
-		case "tagReceiver":
+		case TypeID.tagReceiver:
 			return `${t.group} tag reference`;
-		case "union":
+		case TypeID.union:
+		case TypeID.unionSolved:
 			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
-		case "sub":
+		case TypeID.sub:
 			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
+		case TypeID.psv:
+			return `Plus-separated values`;
 	}
 }
