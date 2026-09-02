@@ -15,6 +15,7 @@ import {
 } from 'vscode-languageclient/node';
 
 import { updateTokenColors } from './components/updateTokenColors';
+import { DD2CSVMMDSettings, InitializationSettings } from '../../shared/settings';
 
 let client: LanguageClient;
 
@@ -22,7 +23,7 @@ export function activate(context: ExtensionContext) {
 	updateTokenColors(context);
 	context.subscriptions.push(
         vscode.workspace.onDidChangeConfiguration((event) => {
-			if (event.affectsConfiguration('DD2CSVMMD.tokenColors')) {
+			if (event.affectsConfiguration('DD2CSVMMD.syntaxColors')) {
                 updateTokenColors(context);
             }
         })
@@ -51,8 +52,11 @@ export function activate(context: ExtensionContext) {
 			fileEvents: [
 				workspace.createFileSystemWatcher('**/*.Group.csv'),
         		workspace.createFileSystemWatcher('**/'), // watch directories
-			]
+			],
 		},
+		initializationOptions: {
+			configuration: vscode.workspace.getConfiguration('DD2CSVMMD') as any as DD2CSVMMDSettings,
+		} as InitializationSettings,
 	};
 
 	// Create the language client and start the client.

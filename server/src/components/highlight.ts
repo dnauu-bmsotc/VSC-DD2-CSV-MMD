@@ -18,9 +18,9 @@ export class SemanticTokensProvider {
 	) {}
 
 	provide(uri: UriString): SemanticTokens {
-		if (!this.project.configuration.useSemanticHighlighting) {
-			return { data: [] };
-		}
+		// if (!this.project.configuration.useSemanticHighlighting) {
+		// 	return { data: [] };
+		// }
 		try {
 			const t0 = performance.now();
 			const fileState = this.project.getFileState(uri);

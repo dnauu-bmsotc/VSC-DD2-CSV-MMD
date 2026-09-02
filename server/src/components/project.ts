@@ -1,11 +1,11 @@
 import { URI } from 'vscode-uri'
 import * as path from 'node:path';
 import * as fs from "node:fs"
-import { Diagnostic, Range } from 'vscode-languageserver';
+import { Range } from 'vscode-languageserver';
 
 import { Index } from '.';
 import { AST, ASTElement, ElementNumberID, MmdDiagnostic, Parser } from './parser';
-import { DD2CSVMMDSettings, defaultConfiguration } from '../../../shared/settings';
+import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
 import { CompiledData } from './schema';
@@ -19,16 +19,21 @@ export interface FileState {
 }
 
 export class ProjectManager {
-	readonly compiledData: CompiledData;
-	readonly configuration: DD2CSVMMDSettings;
+	private readonly compiledData: CompiledData;
+	private configuration: DD2CSVMMDSettings;
 	private readonly files: Map<UriString, FileState>;
 	private readonly parser: Parser;
 	private readonly index: Index;
 	private readonly analyzer: Semantic;
+	protected ready = false;
 
-	constructor(compiledData: CompiledData) {
+	get isReady(): boolean {
+		return this.ready;
+	}
+
+	constructor(compiledData: CompiledData, configuration: DD2CSVMMDSettings) {
 		this.compiledData = compiledData;
-		this.configuration = defaultConfiguration;
+		this.configuration = configuration;
 		this.files = new Map<UriString, FileState>();
 		this.parser = new Parser();
 		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
@@ -37,12 +42,14 @@ export class ProjectManager {
 
 	public async initialize(workspaceRoot: URI) {
 		const t0 = performance.now();
-		const filepaths = (await this.findCsvFiles(workspaceRoot.fsPath));
+		const dirs = [workspaceRoot.fsPath, ...this.configuration.externalDirectories];
+		const gettingDirs = dirs.map(async dir => await this.findCsvFiles(dir));
+		const filepaths = (await Promise.all(gettingDirs)).flat(2);
 		// parse all files
 		for (const filepath of filepaths) {
 			const uri = makeUriString(URI.file(filepath).toString());
 			const text = await fs.promises.readFile(filepath, "utf8");
-			const parseResult = this.parser.parseIntoAST(text, this.configuration);
+			const parseResult = this.parser.parseIntoAST(text);
 			this.files.set(uri, {
 				uri: uri,
 				ast: parseResult.AST,
@@ -66,6 +73,25 @@ export class ProjectManager {
 		}
 		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Initialized project with ${filepaths.length} files [${duration} ms].`);
+		this.ready = true;
+	}
+
+	public setConfiguration(configuration: DD2CSVMMDSettings) {
+		const oldConfig = this.configuration;
+		const newConfig = structuredClone(configuration);
+
+		if ((JSON.stringify(oldConfig.externalDirectories) !== JSON.stringify(newConfig.externalDirectories))) {
+			for (const dir of oldConfig.externalDirectories) {
+				const uri = makeUriString(URI.file(dir).toString());
+				this.remove(uri);
+			}
+			for (const dir of newConfig.externalDirectories) {
+				const uri = makeUriString(URI.file(dir).toString());
+				this.updateFromDisk(uri);
+			}
+		}
+		
+		this.configuration = newConfig;
 	}
 
 	public getFileState(uri: UriString) {
@@ -116,7 +142,7 @@ export class ProjectManager {
 		}
 
 		// get edited elements
-		const newAstResult = this.parser.parseIntoAST(newText, this.configuration);
+		const newAstResult = this.parser.parseIntoAST(newText);
 		const replacementElements = newAstResult.AST.filter(element => this.rangesOverlap(changeRegion.newRange, element.fullRange));
 
 		// compose edited ast
@@ -236,7 +262,7 @@ export class ProjectManager {
 	 * Returns a Set of numeric IDs of elements affected by addition.
 	 */
 	private addFile(uri: UriString, text: string, open: boolean): Set<ElementNumberID> {
-		const parseResult = this.parser.parseIntoAST(text, this.configuration);
+		const parseResult = this.parser.parseIntoAST(text);
 		this.files.set(uri, {
 			uri: uri,
 			ast: parseResult.AST,
@@ -268,6 +294,9 @@ export class ProjectManager {
 
 	private async findCsvFiles(dir: string): Promise<string[]> {
 		const result: string[] = [];
+		if (!fs.existsSync(dir)) {
+			return result;
+		}
 		const entries = await fs.promises.readdir(dir, {
 			withFileTypes: true,
 		});

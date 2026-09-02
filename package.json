@@ -38,10 +38,10 @@
 			"type": "object",
 			"title": "DD2 CSV MMD configuration",
 			"properties": {
-				"DD2CSVMMD.tokenColors": {
+				"DD2CSVMMD.syntaxColors": {
 					"type": "string",
 					"default": "mmd",
-					"description": "Syntax highlight colors",
+					"description": "Syntax highlight color overrides",
 					"enum": [
 						"phombie",
 						"mmd",
@@ -58,39 +58,9 @@
 						"Don't use syntax highlight overrides."
 					]
 				},
-				"DD2CSVMMD.validateElementBoundaries": {
-					"type": "boolean",
-					"default": true,
-					"description": "Show mismatched element_start and element_end lines."
-				},
-				"DD2CSVMMD.validateElementTypes": {
-					"type": "boolean",
-					"default": true,
-					"description": "Warn about unrecognized element types."
-				},
-				"DD2CSVMMD.validateFieldNames": {
-					"type": "boolean",
-					"default": true,
-					"description": "Warn about unrecognized field names."
-				},
-				"DD2CSVMMD.validateFieldInput": {
-					"type": "boolean",
-					"default": true,
-					"description": "Validate inputs of fields."
-				},
-				"DD2CSVMMD.showEmptyFields": {
-					"type": "boolean",
-					"default": false,
-					"description": "Warn about empty element lines."
-				},
-				"DD2CSVMMD.allowComments": {
-					"type": "boolean",
-					"default": false,
-					"description": "Do not mark lines that start with // or # as errors."
-				},
-				"DD2CSVMMD.DD2ExcelDirs": {
+				"DD2CSVMMD.externalDirectories": {
 					"type": "array",
-					"description": "Directories containing DD2 CSV vanilla data (used in dev mode).",
+					"description": "External directories containing DD2 CSV files.",
 					"items": {
 						"type": "string"
 					},
@@ -100,25 +70,55 @@
 						"~/Library/Application Support/Steam/steamapps/common/Darkest Dungeon® II/Contents/Resources/Data/StreamingAssets/Excel"
 					]
 				},
-				"DD2CSVMMD.indexProjectFiles": {
-					"type": "boolean",
-					"default": true,
-					"description": "Use indexes from all .Group.CSV files in the project (collect IDs and tags from other files in the project)."
-				},
-				"DD2CSVMMD.validateProjectFiles": {
-					"type": "boolean",
-					"default": true,
-					"description": "Validate all .Group.CSV files in the project (show errors in closed files)."
-				},
-				"DD2CSVMMD.devMode": {
-					"type": "boolean",
-					"default": false,
-					"description": "Rebuild data and readme on extension start."
-				},
-				"DD2CSVMMD.useSemanticHighlighting": {
-					"type": "boolean",
-					"default": true,
-					"description": "Highlight id/tag references and keywords in field inputs."
+				"DD2CSVMMD.features": {
+					"type": "object",
+					"title": "Enabled Features",
+					"description": "Toggle features.",
+					"additionalProperties": false,
+					"default": {
+						"autocomplete": true,
+						"semanticHighlighting": true,
+						"hintsOnHover": true,
+						"validationComments": true,
+						"validationElementBoundary": true,
+						"validationElementType": true,
+						"validationFieldName": true,
+						"validationFieldValues": true
+					},
+					"properties": {
+						"autocomplete": {
+							"type": "boolean",
+							"description": "Enable completion suggestions."
+						},
+						"semanticHighlighting": {
+							"type": "boolean",
+							"description": "Highlight ID/tag references and keyword values."
+						},
+						"hintsOnHover": {
+							"type": "boolean",
+							"description": "Show hints when hovered over fields and values."
+						},
+						"validationComments": {
+							"type": "boolean",
+							"description": "Warn about lines that start with // or #."
+						},
+						"validationElementBoundary": {
+							"type": "boolean",
+							"description": "Show mismatched element_start and element_end lines."
+						},
+						"validationElementType": {
+							"type": "boolean",
+							"description": "Show unrecognized element types."
+						},
+						"validationFieldName": {
+							"type": "boolean",
+							"description": "Show unrecognized field names."
+						},
+						"validationFieldValues": {
+							"type": "boolean",
+							"description": "Validate inputs of fields."
+						}
+					}
 				}
 			}
 		}

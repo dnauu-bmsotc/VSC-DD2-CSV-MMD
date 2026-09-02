@@ -21,12 +21,13 @@ import {
 
 import { URI } from 'vscode-uri';
 
-import { DD2CSVMMDSettings } from '../../shared/settings';
+import { DD2CSVMMDSettings, InitializationSettings } from '../../shared/settings';
 import { ProjectManager } from './components/project';
 import { semanticTokensLegend, SemanticTokensProvider } from './components/highlight';
 import { makeUriString, UriString } from '../../shared/utils';
 import { assembleReadme } from './components/readme';
 import { compileData } from './components/schema';
+import { MmdDiagnostic } from './components/parser';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -94,8 +95,9 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	
 	const compiledData = await compileData();
 	assembleReadme(compiledData);
-	project = new ProjectManager(compiledData);
-	project.initialize(workspace);
+	const initializationSettings: InitializationSettings = params.initializationOptions;
+	project = new ProjectManager(compiledData, initializationSettings.configuration);
+	await project.initialize(workspace);
 	// hover = new HoverManager(project);
 	semanticTokensProvider = new SemanticTokensProvider(project);
 	
@@ -117,12 +119,11 @@ connection.onInitialized(async () => {
 			watchers: [{ globPattern: "**/*.Group.csv" }],
 		});
 	}
-	// await publishDiagnosticsDebounced(null, "Initialization");
 });
 
 connection.onDidChangeConfiguration(async () => {
-	// const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
-	// project.setConfiguration(configuration);
+	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
+	project.setConfiguration(configuration);
 	// await publishDiagnosticsDebounced(null, "Configuration change");
 });
 
@@ -147,7 +148,7 @@ connection.onDidChangeWatchedFiles(async event => {
 	for (const uri of urisToRemove) {
 		await project.remove(uri);
 	}
-	// await publishDiagnosticsDebounced(null, "File/directory change");
+	publishDiagnostics();
 });
 
 documents.onDidOpen(e => {
@@ -166,25 +167,25 @@ documents.onDidChangeContent(async (e) => {
 function publishDiagnostics() {
 	const t0 = performance.now();
 	for (const fileState of project.getAllFileStates()) {
-		const diagnostics: Diagnostic[] = [];
-		for (const d of fileState.parseDiagnostics) {
-			diagnostics.push(d.diagnostic);
-		}
-		for (const e of fileState.ast) {
-			for (const d of e.diagnostics ?? []) {
-				diagnostics.push(d.diagnostic);
-			}
-		}
+		const mmdDiagnostics = [fileState.parseDiagnostics, fileState.ast.map(e => e.diagnostics)];
 		connection.sendDiagnostics({
 			uri: fileState.uri,
-			diagnostics: diagnostics,
+			diagnostics: filterDiagnostics(mmdDiagnostics.flat(2)),
 		});
 	}
 	const duration = (performance.now() - t0).toFixed(1);
 	console.info(`Publishing diagnostics [${duration} ms].`);
 }
 
-connection.onHover(params => {
+function filterDiagnostics(diagnostics: MmdDiagnostic[]): Diagnostic[] {
+	const result: Diagnostic[] = [];
+	for (const d of diagnostics) {
+		result.push(d.diagnostic);
+	}
+	return result;
+}
+
+connection.onHover((params) => {
 	// hover.onHover(params)
 });
 

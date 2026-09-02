@@ -1,26 +1,19 @@
 export interface DD2CSVMMDSettings {
-	validateElementBoundaries: boolean;
-	validateElementTypes: boolean;
-	validateFieldNames: boolean;
-	showEmptyFields: boolean;
-	validateProjectFiles: boolean;
-	indexProjectFiles: boolean;
-	validateFieldInput: boolean;
-	allowComments: boolean;
-	useSemanticHighlighting: boolean;
-	DD2ExcelDirs: string[];
+	// validateProjectFiles: boolean;
+	// indexProjectFiles: boolean;
+	externalDirectories: string[];
+	features: {
+		autocomplete: boolean;
+		semanticHighlighting: boolean;
+		hintsOnHover: boolean;
+		validationComments: boolean;
+		validationElementBoundary: boolean;
+		validationElementType: boolean;
+		validationFieldName: boolean;
+		validationFieldValues: boolean;
+	},
 }
 
-export const defaultConfiguration: DD2CSVMMDSettings = Object.freeze({
-	validateElementBoundaries: true,
-	validateElementTypes: true,
-	validateFieldNames: true,
-	validateFieldInput: true,
-	showEmptyFields: false,
-	validateProjectFiles: true,
-	indexProjectFiles: true,
-	allowComments: false,
-	useSemanticHighlighting: true,
-	dd2CsvDetectionMethod: "firstLine",
-	DD2ExcelDirs: [],
-});
+export interface InitializationSettings {
+	configuration: DD2CSVMMDSettings,
+}

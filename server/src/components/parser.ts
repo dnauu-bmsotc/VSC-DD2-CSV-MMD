@@ -1,6 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, ValuesDescription } from './schema';
+import { UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
 
@@ -13,7 +14,7 @@ export interface ASTElement {
 	fields: ASTField[];
 	range: Range;
 	fullRange: Range;
-	diagnostics?: MmdDiagnostic[];
+	diagnostics: MmdDiagnostic[];
 }
 
 export interface MmdDiagnostic {
@@ -27,7 +28,6 @@ export enum DiagnosticType {
 	ElementType		= 1 << 1,
 	FieldName		= 1 << 2,
 	FieldValue		= 1 << 3,
-	EmptyField		= 1 << 4,
 }
 
 export interface ASTField {
@@ -50,7 +50,7 @@ export interface ASTParseResult {
 export class Parser {
 	private nextId = 0;
 
-	public parseIntoAST(text: string, configuration: DD2CSVMMDSettings): ASTParseResult {
+	public parseIntoAST(text: string): ASTParseResult {
 		const lines = text.split(/\r?\n/);
 		const elements: ASTElement[] = [];
 		let current: Omit<ASTElement, "fullRange"> | null = null;
@@ -74,9 +74,7 @@ export class Parser {
 
 			if (line.startsWith('element_start')) {
 				if (current) {
-					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
-					}
+					pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 				}
 				const parts = line.replace(/,+$/, "").split(',');
 				if (parts.length >= 3) {
@@ -86,13 +84,12 @@ export class Parser {
 						fields: [],
 						range: { start: lineStartPos, end: lineEndPos },
 						id: this.nextId,
+						diagnostics: [],
 					};
 					this.nextId += 1;
 				}
 				else {
-					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Incomplete element definition.", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
-					}
+					pushDiagnostic("Incomplete element definition.", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 				}
 			}
 			else if (line.startsWith('element_end')) {
@@ -106,15 +103,11 @@ export class Parser {
 					});
 					current = null;
 					if (line.replaceAll(',', '') !== 'element_end') {
-						if (configuration.validateElementBoundaries) {
-							pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
-						}
+						pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 					}
 				}
 				else {
-					if (configuration.validateElementBoundaries) {
-						pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
-					}
+					pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 				}
 			}
 			else {
@@ -148,15 +141,11 @@ export class Parser {
 					}
 				}
 				else if (line.startsWith('//') || line.startsWith('#')) {
-					if (!configuration.allowComments) {
-						pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
-					}
+					pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
 				}
 				else {
 					if (line.trim()) {
-						if (configuration.validateElementBoundaries) {
-							pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
-						}
+						pushDiagnostic("Missing element_start", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 					}
 				}
 			}

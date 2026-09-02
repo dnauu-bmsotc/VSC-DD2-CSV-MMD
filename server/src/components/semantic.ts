@@ -1,7 +1,8 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV } from './parser';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, ElementNumberID, MmdDiagnostic, parsePSV } from './parser';
 import { FieldsDescription, TypeDefinition, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { ERType, Index } from '.';
+import { UriString } from '../../../shared/utils';
 
 interface ValidationContext {
 	element: ASTElement;
@@ -18,7 +19,7 @@ export class Semantic {
 	/**
 	 * Pushes found diagnostics to element.diagnostics and tries to evaluate ASTValue.evaluatedType.
 	 */
-	public solveElement(element: ASTElement) {
+	public solveElement(element: ASTElement): void {
 		// reset diagnostics and evaluated types.
 		element.diagnostics = [];
 		for (const f of element.fields) {
@@ -26,6 +27,7 @@ export class Semantic {
 				// v.evaluatedType = undefined;
 			}
 		}
+
 		// find element in csv description
 		const elementDefinition = this.schema[element.elementType];
 		if (!elementDefinition) {
@@ -61,14 +63,6 @@ export class Semantic {
 				continue;
 			}
 			if (field.values.length === 0) {
-				element.diagnostics.push({
-					diagnostic: {
-						severity: DiagnosticSeverity.Warning,
-						range: field.range,
-						message: `Empty field`
-					},
-					flags: DiagnosticType.EmptyField,
-				});
 				continue;
 			}
 			const context = { element, field };

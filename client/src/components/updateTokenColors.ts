@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 export async function updateTokenColors(context: vscode.ExtensionContext) {
     const config = vscode.workspace.getConfiguration();
-    const configColorSetting = config.get<string>('DD2CSVMMD.tokenColors');
+    const configColorSetting = config.get<string>('DD2CSVMMD.syntaxColors');
 
 	switch (configColorSetting) {
 		case "phombie":
