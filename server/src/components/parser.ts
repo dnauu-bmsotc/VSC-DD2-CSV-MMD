@@ -1,6 +1,6 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
-import { FieldsDescription, TypeDefinition, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, ValuesDescription } from './schema';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
@@ -40,8 +40,15 @@ export interface ASTField {
 export interface ASTValue {
 	text: string;
 	range: Range;
-	// evaluatedType?: TypeDefinition;
+	evaluatedType: TypeEvaluated;
 }
+
+export enum EvaluationType { basic, psv, union };
+export type TypeEvaluated =
+	| null
+	| { evaluationType: EvaluationType.basic;	definition: TypeDefinitionBasic }
+	| { evaluationType: EvaluationType.union;	definitions: TypeEvaluated[] }
+	| { evaluationType: EvaluationType.psv;		values: ASTValue[] };
 
 export interface ASTParseResult {
 	AST: AST;
@@ -138,6 +145,7 @@ export class Parser {
 						current.fields[current.fields.length - 1].values.push({
 							text: parts[i].value,
 							range: Range.create(parts[i].start, parts[i].end),
+							evaluatedType: null,
 						});
 					}
 				}
@@ -218,8 +226,27 @@ export function parsePSV(x: ASTValue): ASTValue[] {
 		result.push({
 			text: value,
 			range: range,
+			evaluatedType: null,
 		});
 		idx += value.length + 1;
 	}
 	return result;
+}
+
+export function typeEvaluatedToVerbose(type: TypeEvaluated): string {
+	if (!type) {
+		return "Any";
+	}
+	switch (type.evaluationType) {
+		case EvaluationType.basic:
+			return typeToVerbose(type.definition);
+			
+		case EvaluationType.union:
+			const options = type.definitions.map(definition => typeEvaluatedToVerbose(definition));
+			return options.join(' or ');
+		
+		case EvaluationType.psv:
+			const parts = type.values.map(v => typeEvaluatedToVerbose(v.evaluatedType));
+			return parts.join('+');
+	}
 }

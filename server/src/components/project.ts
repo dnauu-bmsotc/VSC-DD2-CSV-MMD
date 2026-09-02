@@ -19,7 +19,7 @@ export interface FileState {
 }
 
 export class ProjectManager {
-	private readonly compiledData: CompiledData;
+	readonly compiledData: CompiledData;
 	private configuration: DD2CSVMMDSettings;
 	private readonly files: Map<UriString, FileState>;
 	private readonly parser: Parser;

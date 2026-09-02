@@ -12,6 +12,7 @@ import {
 	DidChangeWatchedFilesNotification,
 	FileChangeType,
 	SemanticTokensParams,
+	SemanticTokensRefreshRequest,
 } from 'vscode-languageserver/node';
 
 import {
@@ -27,6 +28,7 @@ import { makeUriString, UriString } from '../../shared/utils';
 import { assembleReadme } from './components/readme';
 import { compileData } from './components/schema';
 import { DiagnosticsPublisher } from './components/diagnostics';
+import { HoverManager } from './components/hover';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -42,7 +44,7 @@ let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
 let diagnosticsPublisher: DiagnosticsPublisher;
-// let hover: HoverManager;
+let hover: HoverManager;
 let semanticTokensProvider: SemanticTokensProvider;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
@@ -98,7 +100,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	const initializationSettings: InitializationSettings = params.initializationOptions;
 	project = new ProjectManager(compiledData, initializationSettings.configuration);
 	await project.initialize(workspace);
-	// hover = new HoverManager(project);
+	hover = new HoverManager(project);
 	diagnosticsPublisher = new DiagnosticsPublisher();
 	semanticTokensProvider = new SemanticTokensProvider(project);
 	
@@ -126,6 +128,7 @@ connection.onDidChangeConfiguration(async () => {
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 	project.setConfiguration(configuration);
 	await publishDiagnostics();
+	await connection.sendRequest(SemanticTokensRefreshRequest.type);
 });
 
 connection.onDidChangeWatchedFiles(async event => {
@@ -170,7 +173,7 @@ async function publishDiagnostics() {
 }
 
 connection.onHover((params) => {
-	// hover.onHover(params)
+	return hover.onHover(params);
 });
 
 connection.languages.semanticTokens.on(

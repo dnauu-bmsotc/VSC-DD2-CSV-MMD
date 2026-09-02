@@ -2,7 +2,7 @@ import * as XLSX from 'xlsx';
 import { existsSync } from 'fs';
 import { fieldsDescriptionPath, elementsDescriptionPath, valuesDescriptionPath } from '../../../shared/projectPaths';
 
-export type TypeDefinition =
+export type TypeDefinitionBasic = 
 	| TypeDefinitionInt
 	| TypeDefinitionRange
 	| TypeDefinitionFloat
@@ -12,7 +12,10 @@ export type TypeDefinition =
 	| TypeDefinitionTagEmitter
 	| TypeDefinitionTagReceiver
 	| TypeDefinitionAny
-	| TypeDefinitionNothing
+	| TypeDefinitionNothing;
+
+export type TypeDefinition =
+	| TypeDefinitionBasic
 	| TypeDefinitionList
 	| TypeDefinitionSequence
 	| TypeDefinitionDependent
@@ -24,7 +27,7 @@ export type TypeDefinition =
 export enum TypeID {
 	int, range, float, bool, id, kw,
 	tagEmitter, tagReceiver, list, sequence,
-	union, dependent, dependentRequired,
+	union, unionBasic, dependent, dependentRequired,
 	any, nothing, sub, psv,
 }
 
@@ -50,7 +53,10 @@ export type Element = {
 	name: string;
 	fields: Record<string, Field>;
 	comment: string;
-	process: boolean; // false to ignore this element
+	/**
+	 * false to ignore this element
+	 */
+	process: boolean;
 };
 
 export type Field = {

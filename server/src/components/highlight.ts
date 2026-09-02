@@ -1,7 +1,8 @@
-import { Range, SemanticTokens, SemanticTokensBuilder, SemanticTokensLegend, SemanticTokensParams } from 'vscode-languageserver';
+import { Range, SemanticTokens, SemanticTokensBuilder, SemanticTokensLegend } from 'vscode-languageserver';
 import { ProjectManager } from './project';
 import { TypeDefinition, TypeID } from './schema';
 import { UriString } from '../../../shared/utils';
+import { ASTValue, EvaluationType, TypeEvaluated } from './parser';
 
 const semanticTokenDict = { 'id': 0, 'tag': 1, 'keyword': 2 };
 const semanticTokenTypes = [...Object.keys(semanticTokenDict)];
@@ -14,13 +15,12 @@ export const semanticTokensLegend: SemanticTokensLegend = {
 export class SemanticTokensProvider {
 	constructor(
 		private readonly project: ProjectManager,
-		private readonly logSemanticTimeUse = false,
 	) {}
 
-	provide(uri: UriString): SemanticTokens {
-		// if (!this.project.configuration.useSemanticHighlighting) {
-		// 	return { data: [] };
-		// }
+	public provide(uri: UriString): SemanticTokens {
+		if (!this.project.getConfiguration().features.semanticHighlighting) {
+			return { data: [] };
+		}
 		try {
 			const t0 = performance.now();
 			const fileState = this.project.getFileState(uri);
@@ -30,17 +30,10 @@ export class SemanticTokensProvider {
 			const builder = new SemanticTokensBuilder();
 			for (const element of fileState.ast) {
 				for (const field of element.fields) {
-					for (const value of field.values) {
-						// const computedType = value.evaluatedType;
-						// if (computedType) {
-						// 	this.addTokenByType(builder, value.range, computedType);
-						// }
-					}
+					this.provideForValues(builder, field.values);
 				}
 			}
-			if (this.logSemanticTimeUse) {
-				console.info(`Semantic colors: ${(performance.now() - t0).toFixed(1)} ms.`);
-			}
+			console.info(`Semantic tokens [${(performance.now() - t0).toFixed(1)} ms].`);
 			return builder.build();
 		}
 		catch (error) {
@@ -48,7 +41,43 @@ export class SemanticTokensProvider {
 		}
 	}
 
-	addTokenByType(builder: SemanticTokensBuilder, range: Range, definition: TypeDefinition) {
+	
+	private provideForValues(builder: SemanticTokensBuilder, values: ASTValue[]): void {
+		for(const value of values) {
+			if (!value.evaluatedType) {
+				continue;
+			}
+			if (value.evaluatedType.evaluationType === EvaluationType.psv) {
+				this.provideForValues(builder, value.evaluatedType.values);
+			}
+			else {
+				const definition = this.getDefinitionFromEvaluated(value.evaluatedType);
+				this.addTokenByType(builder, value.range, definition);
+			}
+		}
+	}
+
+	private getDefinitionFromEvaluated(type: TypeEvaluated): TypeDefinition {
+		if (!type) {
+			return { type: TypeID.any };
+		}
+		switch (type.evaluationType) {
+			case EvaluationType.basic:
+				return type.definition;
+		
+			case EvaluationType.union:
+				if (type.definitions.length === 0) {
+					return { type: TypeID.any };
+				}
+				return this.getDefinitionFromEvaluated(type.definitions[0]);
+
+			// psv values are omitted during provideForValues step.
+			case EvaluationType.psv:
+				return { type: TypeID.any };
+		}
+	}
+
+	private addTokenByType(builder: SemanticTokensBuilder, range: Range, definition: TypeDefinition) {
 		switch (definition.type) {
 			case TypeID.id:
 				this.addToken(builder, range, semanticTokenDict.id);

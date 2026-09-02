@@ -1,6 +1,6 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV } from './parser';
-import { FieldsDescription, TypeDefinition, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType } from './parser';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { ERType, Index } from '.';
 
 interface ValidationContext {
@@ -23,7 +23,7 @@ export class Semantic {
 		element.diagnostics = [];
 		for (const f of element.fields) {
 			for (const v of f.values) {
-				// v.evaluatedType = undefined;
+				v.evaluatedType = null;
 			}
 		}
 
@@ -80,11 +80,11 @@ export class Semantic {
 		}
 	}
 
-	// /**
-	//  * Validates values against the provided definition.
-	//  * @values List of values to validate. These values might differ from c.field.values.
-	//  * @returns One diagnostic object for the first error encountered.
-	//  */
+	/**
+	 * Validates values against the provided definition.
+	 * @values List of values to validate. These values might differ from c.field.values.
+	 * @returns One diagnostic object for the first error encountered.
+	 */
 	private validateValues(values: ASTValue[], definition: TypeDefinition, c: ValidationContext): MmdDiagnostic | null {
 		switch (definition.type) {
 			case TypeID.any:
@@ -117,6 +117,7 @@ export class Semantic {
 				if (idEmitters.length === 0) {
 					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
 				}
+				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
 					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
@@ -131,23 +132,20 @@ export class Semantic {
 				if (tagEmitters.length === 0) {
 					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
 				}
+				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
 					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
 				return null;
 				
 			case TypeID.tagEmitter:
+				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
 					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
 				return null;
 
 			case TypeID.kw:
-				const keywords = this.keywords[definition.group];
-				if (!keywords) {
-					console.error(`Unrecognized KW group ${definition.group}`);
-					return null;
-				}
 				const kwgroup = this.keywords[definition.group];
 				if (!kwgroup) {
 					console.error(`Keyword group ${definition.group} is not found.`);
@@ -156,6 +154,7 @@ export class Semantic {
 				if (!Object.hasOwn(kwgroup, values[0].text)) {
 					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
 				}
+				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
 					return this.createExpectedEndOfInputDiagnostic(values.slice(1));
 				}
@@ -209,15 +208,22 @@ export class Semantic {
 				return null;
 
 			case TypeID.union:
-				const matchedTypes = [];
+				const matchedTypes: TypeEvaluated[][] = [];
 				for (const optionType of definition.elements) {
 					const diagnostic = this.validateValues(values, optionType, c);
 					if (!diagnostic) {
-						matchedTypes.push(optionType);
+						matchedTypes.push(values.map(v => v.evaluatedType));
 					}
 				}
 				if (!matchedTypes.length) {
 					return this.createUnresolvedUnionDiagnostic(values[0], definition);
+				}
+				for (let i = 0; i < values.length; i++) {
+					const typeOptions = matchedTypes.map(x => x[i]);
+					values[i].evaluatedType = {
+						evaluationType: EvaluationType.union,
+						definitions: typeOptions,
+					};
 				}
 				return null;
 
@@ -331,7 +337,12 @@ export class Semantic {
 
 			case TypeID.psv:
 				const psValues = parsePSV(values[0]);
-				return this.validateValues(psValues, definition.element, c);
+				const psvValidation = this.validateValues(psValues, definition.element, c);
+				values[0].evaluatedType = {
+					evaluationType: EvaluationType.psv,
+					values: psValues,
+				};
+				return psvValidation;
 		
 			default:
 				console.error(`Unknown input type: ${definition}`);
@@ -339,11 +350,16 @@ export class Semantic {
 		}
 	}
 
-	private singleValueCheck(values: ASTValue[], definition: TypeDefinition, checker: (v: string) => boolean): MmdDiagnostic | null {
+	/**
+	 * Checks if the list of values has one value only.
+	 * Modifies value's evaluatedType member.
+	 */
+	private singleValueCheck(values: ASTValue[], definition: TypeDefinitionBasic, checker: (v: string) => boolean): MmdDiagnostic | null {
 		// values.length > 0 is asserted in this.solveElement function.
 		if (!checker(values[0].text)) {
 			return this.createExpectedTypeDiagnostic(definition, values[0].range);
 		}
+		values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };;
 		if (values.length > 1) {
 			return this.createExpectedEndOfInputDiagnostic(values.slice(1));
 		}

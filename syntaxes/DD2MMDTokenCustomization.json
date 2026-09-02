@@ -1,9 +1,9 @@
 {
     "MMD": {
         "semanticRules": {
-            "id": "#fcd1cc",
+            "id": "#ffd9d9",
             "tag": "#e6d487",
-            "keyword": "#bbc1fc"
+            "keyword": "#dcbfff"
         },
         "textMateRules": [
             {
@@ -45,7 +45,7 @@
             {
                 "scope": "constant.language.boolean.dd2mmd",
                 "settings": {
-                    "foreground": "#fcad4c"
+                    "foreground": "#bef7d5"
                 }
             },
             {
@@ -57,13 +57,13 @@
             {
                 "scope": "constant.numeric.dd2mmd",
                 "settings": {
-                    "foreground": "#fcad4c"
+                    "foreground": "#bef7d5"
                 }
             },
             {
                 "scope": "constant.numeric.range.dd2mmd",
                 "settings": {
-                    "foreground": "#fcad4c"
+                    "foreground": "#bef7d5"
                 }
             },
             {
@@ -76,9 +76,9 @@
     },
     "PHombie": {
         "semanticRules": {
-            "id": "#fcd1cc",
+            "id": "#ffd9d9",
             "tag": "#e6d487",
-            "keyword": "#bbc1fc"
+            "keyword": "#cacffc"
         },
         "textMateRules": [
             {
