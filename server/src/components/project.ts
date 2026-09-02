@@ -31,6 +31,10 @@ export class ProjectManager {
 		return this.ready;
 	}
 
+	public getConfiguration() {
+		return this.configuration;
+	}
+
 	constructor(compiledData: CompiledData, configuration: DD2CSVMMDSettings) {
 		this.compiledData = compiledData;
 		this.configuration = configuration;
@@ -116,13 +120,11 @@ export class ProjectManager {
 		}
 	}
 
-	/**
-	 * Returns a Set of numeric IDs of elements affected by change.
-	 */
-	public updateDocument(uri: UriString, newText: string): Set<ElementNumberID> {
+	public updateDocument(uri: UriString, newText: string): void {
 		const fileState = this.files.get(uri);
 		if (!fileState) {
-			return this.replaceWholeFile(uri, newText, true);
+			this.replaceWholeFile(uri, newText, true);
+			return;
 		}
 
 		const t0 = performance.now();
@@ -177,13 +179,10 @@ export class ProjectManager {
 			`Affected ${[...affectedIds].length} element(s).`,
 		);
 
-		return affectedIds;
+		return;
 	}
 
-	/**
-	 * Returns a Set of numeric IDs of elements affected by file removal.
-	 */
-	public async remove(uri: UriString): Promise<Set<ElementNumberID>> {
+	public async remove(uri: UriString): Promise<void> {
 		const t0 = performance.now();
 		const uriAsDirectory = uri.endsWith('/') ? uri : `${uri}/`;
 		const urisInDirectory = [...this.files.keys()].filter(uri => uri.startsWith(uriAsDirectory));
@@ -205,13 +204,10 @@ export class ProjectManager {
 		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Removed ${urisToRemove.length} file(s) from project [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files remain.`);
 		this.reanalyzeIds(affected);
-		return affected;
+		return;
 	}
 
-	/**
-	 * Returns a Set of numeric IDs of elements affected by update.
-	 */
-	public async updateFromDisk(uri: UriString): Promise<Set<ElementNumberID>> {
+	public async updateFromDisk(uri: UriString): Promise<void> {
 		const t0 = performance.now();
 		const fsPath = URI.parse(uri).fsPath;
 		const stats = await fs.promises.stat(fsPath);
@@ -224,7 +220,7 @@ export class ProjectManager {
 		}
 		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Added/updated ${filePathsToUpdate.length} file(s) [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files in project.`);
-		return affected;
+		return;
 	}
 
 	/**

@@ -1,8 +1,7 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, ElementNumberID, MmdDiagnostic, parsePSV } from './parser';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV } from './parser';
 import { FieldsDescription, TypeDefinition, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { ERType, Index } from '.';
-import { UriString } from '../../../shared/utils';
 
 interface ValidationContext {
 	element: ASTElement;
@@ -63,6 +62,14 @@ export class Semantic {
 				continue;
 			}
 			if (field.values.length === 0) {
+				element.diagnostics.push({
+					diagnostic: {
+						severity: DiagnosticSeverity.Warning,
+						range: field.range,
+						message: `Empty field`,
+					},
+					flags: DiagnosticType.EmptyField,
+				});
 				continue;
 			}
 			const context = { element, field };
@@ -268,13 +275,11 @@ export class Semantic {
 					}
 					const sourceValue = influenceSourceField.values[i];
 					const influenceValueDesc = influenceKWGroup[sourceValue.text];
-					if (!influenceValueDesc) {
-						console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is not found.`);
-						return null;
-					}
-					const influenceType = influenceValueDesc.influences?.[c.element.elementType + " " + c.field.name];
-					if (!influenceType) {
-						console.error(`Dependency of field ${c.field.name} by value ${sourceValue.text} is empty.`);
+					const influenceType = influenceValueDesc?.influences?.[c.element.elementType + " " + c.field.name];
+					if (!influenceValueDesc || !influenceType) {
+						// field influencer has unrecognized values.
+						// no diagnostic or error is fired because that unrecognized value
+						// is managed by validating the influencing field, not this one.
 						return null;
 					}
 					const valuesToValidate = influenceSourceSchema.type === TypeID.list ? c.field.values.slice(i, i + 1) : c.field.values;

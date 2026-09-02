@@ -28,6 +28,7 @@ export enum DiagnosticType {
 	ElementType		= 1 << 1,
 	FieldName		= 1 << 2,
 	FieldValue		= 1 << 3,
+	EmptyField		= 1 << 4,
 }
 
 export interface ASTField {

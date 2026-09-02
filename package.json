@@ -83,7 +83,8 @@
 						"validationElementBoundary": true,
 						"validationElementType": true,
 						"validationFieldName": true,
-						"validationFieldValues": true
+						"validationFieldValues": true,
+						"validationFieldEmpty": false
 					},
 					"properties": {
 						"autocomplete": {
@@ -117,6 +118,10 @@
 						"validationFieldValues": {
 							"type": "boolean",
 							"description": "Validate inputs of fields."
+						},
+						"validationFieldEmpty": {
+							"type": "boolean",
+							"description": "Show empty fields."
 						}
 					}
 				}

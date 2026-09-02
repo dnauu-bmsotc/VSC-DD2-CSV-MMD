@@ -12,7 +12,6 @@ import {
 	DidChangeWatchedFilesNotification,
 	FileChangeType,
 	SemanticTokensParams,
-	Diagnostic,
 } from 'vscode-languageserver/node';
 
 import {
@@ -27,7 +26,7 @@ import { semanticTokensLegend, SemanticTokensProvider } from './components/highl
 import { makeUriString, UriString } from '../../shared/utils';
 import { assembleReadme } from './components/readme';
 import { compileData } from './components/schema';
-import { MmdDiagnostic } from './components/parser';
+import { DiagnosticsPublisher } from './components/diagnostics';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -42,6 +41,7 @@ let hasDiagnosticRelatedInformationCapability = false;
 let hasWatchedFilesCapability = false;
 
 let project: ProjectManager;
+let diagnosticsPublisher: DiagnosticsPublisher;
 // let hover: HoverManager;
 let semanticTokensProvider: SemanticTokensProvider;
 
@@ -99,6 +99,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	project = new ProjectManager(compiledData, initializationSettings.configuration);
 	await project.initialize(workspace);
 	// hover = new HoverManager(project);
+	diagnosticsPublisher = new DiagnosticsPublisher();
 	semanticTokensProvider = new SemanticTokensProvider(project);
 	
 	return result;
@@ -124,7 +125,7 @@ connection.onInitialized(async () => {
 connection.onDidChangeConfiguration(async () => {
 	const configuration: DD2CSVMMDSettings = await connection.workspace.getConfiguration("DD2CSVMMD");
 	project.setConfiguration(configuration);
-	// await publishDiagnosticsDebounced(null, "Configuration change");
+	await publishDiagnostics();
 });
 
 connection.onDidChangeWatchedFiles(async event => {
@@ -148,7 +149,7 @@ connection.onDidChangeWatchedFiles(async event => {
 	for (const uri of urisToRemove) {
 		await project.remove(uri);
 	}
-	publishDiagnostics();
+	await publishDiagnostics();
 });
 
 documents.onDidOpen(e => {
@@ -160,29 +161,12 @@ documents.onDidClose(e => {
 });
 
 documents.onDidChangeContent(async (e) => {
-	const affected = project.updateDocument(makeUriString(e.document.uri), e.document.getText());
-	publishDiagnostics();
+	project.updateDocument(makeUriString(e.document.uri), e.document.getText());
+	await publishDiagnostics();
 });
 
-function publishDiagnostics() {
-	const t0 = performance.now();
-	for (const fileState of project.getAllFileStates()) {
-		const mmdDiagnostics = [fileState.parseDiagnostics, fileState.ast.map(e => e.diagnostics)];
-		connection.sendDiagnostics({
-			uri: fileState.uri,
-			diagnostics: filterDiagnostics(mmdDiagnostics.flat(2)),
-		});
-	}
-	const duration = (performance.now() - t0).toFixed(1);
-	console.info(`Publishing diagnostics [${duration} ms].`);
-}
-
-function filterDiagnostics(diagnostics: MmdDiagnostic[]): Diagnostic[] {
-	const result: Diagnostic[] = [];
-	for (const d of diagnostics) {
-		result.push(d.diagnostic);
-	}
-	return result;
+async function publishDiagnostics() {
+	await diagnosticsPublisher.publishDiagnostics([...project.getAllFileStates()], connection.sendDiagnostics, project.getConfiguration());
 }
 
 connection.onHover((params) => {

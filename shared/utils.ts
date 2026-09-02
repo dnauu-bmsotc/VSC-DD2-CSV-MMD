@@ -27,3 +27,11 @@ export class UriStringRef {
 		public readonly value: UriString
 	) {}
 }
+
+export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
+	if (map.has(key)) {
+		return map.get(key) as V;
+	}
+	map.set(key, defaultValue);
+	return defaultValue;
+}
