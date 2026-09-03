@@ -6,32 +6,85 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 - Syntax highlighting for DD2 CSV files.
 - Validation of elements, fields, and values.
-- Validation data is collected across all CSV files in VS project.
 - Hints on hover for fields and values.
 - Autocomplete.
 
 ![Image: missing id](./images/screenshot_missing_id.png)
-*Example: ID with no definition*
+*Missing tag definition*
 
 ![Image: table hint](./images/screenshot_table.png)
-*Example: hint on hover*
+*Table view for TableElements*
 
 ## DD2 CSV Data Overview
 
-Darkest Dungeon 2's CSV data has a lot of nuances. At the surface level it is stored in .csv files and is parsed as such. There are no embedded commas, all of them act as separators.
+Darkest Dungeon 2's CSV data is nuanced. At the surface level it is stored in .csv files and they are parsed as such. There are no embedded commas, they all are separators. CSV filenames should end with `.Group.csv` otherwise the game will skip them.
 
-CSV data can be separated into multiple files, but it is not necessary. They should be placed on the top level of the mod folder or in the Overrides folder. CSV files in custom folders are not parsed by the game. Filenames should end with `.Group.csv` otherwise the game will skip them.
+Unless mod data is supposed override original data (I don't know much about overrides), mod's .csv files should be placed on the top level of the mod folder. The choice of dividing data into separate files or putting everything in one file is arbitrary. All files are parsed independently a into one data pool each time a game save file is loaded.
 
-- Element IDs are not unique. Sometimes it is unclear what an element ID refers to. For example, all `Buff` elements share their IDs with their `ActorDataStatsElements`.
-- Neither unique are combinations of element types with element IDs. For example, `LootTables` and `ActorDataEffects` elements are additive, there can be multiple `LootTable` elements with the same ID. There are some other additive elements.
-- Fields in elements can repeat. For example, `sub_stat`.
+A DD2 CSV file's data consists of blocks called elements. Each element has an ID (not necessarily unique), and a type. A typical element looks like this:
+```csv
+element_start,hwm_point_blank_shot,ActorDataEffects
+target_effects,move_knockback_1,prime_combo,
+performer_effects,move_backward_1,
+element_end
+```
+`hwm_point_blank_shot` is its ID, `ActorDataEffects` is its type. `element_start` and `element_end` mark element's boundary. An element can provide some data to the game. The kind of data that can be provided depends on element's type. Element's data consists of fields with values. One field with its values takes one line (with one exception). Field's name is the part of the line before the first comma. Field's values follow after.
+
+`ActorDataEffects` is one of the types of elements that provide gameplay effects for entities. This example element tells the game that some entity can knockback, apply combo, and move the performer backward. The `target_effects` field tells what effects will be applied to target. This field accepts other element IDs as values. `move_knockback_1`, `prime_combo`, and `move_backward_1` are IDs of other elements:
+
+```csv
+element_start,move_knockback_1,Effect
+m_Chance,1,
+m_Move,1,
+element_end
+
+element_start,prime_combo,Effect
+m_Chance,1,
+m_TokenAddId,combo,
+m_TokenAddAmount,1,
+m_ShowValue,False,
+element_end
+
+element_start,move_backward_1,Effect
+m_Chance,1,
+m_IgnoreResist,True,
+m_Move,1,
+element_end
+```
+
+To tell what entity will have these effects, `hwm_point_blank_shot` needs to be connected to that entity. If `Effect` elements are connected to the `hwm_point_blank_shot` element through the `target_effects`, the `hwm_point_blank_shot` element is connected to a `ActorDataSkill` element via a shared ID:
+
+```csv
+lement_start,hwm_point_blank_shot,ActorDataSkill
+m_IsFriendly,False,
+launch_ranks,1,
+target_ranks,1,
+...
+element_end
+
+element_start,hwm_point_blank_shot,ActorDataStats
+key_map,health_damage,health_damage_range,crit_chance,
+add_stats,6,4,0.1,
+element_end
+
+element_start,hwm_point_blank_shot,ActorDataEffects
+...
+element_end
+```
+
+So the example `ActorDataEffects` element defines what effects the Point Blank Shot skill has. This skill also needs to be connected, but the connection between actors and skills (except path skills) is defined outside CSV data, in compiled game files.
+
+More details:
+- Element IDs are not unique, and neither unique are pairs of IDs with types. For example, `LootTables` elements are additive, there can be multiple `LootTable` elements with the same ID. Not all elements have this behavior, but loot table elements are not the only ones.
+- Fields in elements can repeat. For example, `sub_stat` field can be repeated multiple times to add multiple substats.
 - Some fields are position-sensitive. For example, `add_stats` and `multiply_stats` fields can be written right after a `key_map` field only.
-- Some fields accept data of various nature. For example, `sub_stat` field accepts an integer, then a tag string, then repeats.
+- Some fields accept data of various nature. For example, `m_RankTags` field accepts an integer, then a tag string, then repeats.
 - `KingdomMap` is an odd element type that has no named fields.
-- Some fields accept different types of values depending on other fields, for example, `m_ConditionString` can accept a tag or an `Item` ID depending on the `m_ConditionType`.
-- Some fields specify data outside CSV files, for example localization indexes, directories, audio-related information.
-- Conditions can be combined using `+`. For example, `is_confessions+has_0_stagecoach_wheels`. But `+` can also be used in IDs, for example, `quirk_dare_devil_dmg_+10pct` Buff. `+` as an operator is used in `KingdomMap`, `Condition`, `LootTable`, `BattleConfigurationTable`, `InnTable` elements.
-- `m_ConditionString` fields can use `+` too. For example, `m_ConditionString,resistance+bleed,`. The first value needs to be an actor stat, the second needs to be a substat.
+- Some fields accept different types of values depending on other fields, for example, `m_ConditionString` can accept a tag or an `Item` ID depending on the value of the `m_ConditionType` field in the same element.
+- Some fields specify data outside CSV files, like localization indexes, directories, audio-related information.
+- In some places values can be combined using `+` symbol. It looks like this is allowed only in these situations:
+	- Table entries (`LootTable`, `BattleConfigurationTable`, `InnTable`): conditions can be combined using `+` symbol. For example, `is_confessions+has_0_stagecoach_wheels`. Outside table condition entries the `+` symbol is treated as a regular character, for example, in the `quirk_dare_devil_dmg_+10pct` buff.
+	- `m_ConditionString` fields can use `+` too. For example, `m_ConditionString,resistance+bleed`. The first value needs to be an actor stat, the second needs to be a substat.
 - Some CSV parts are case-sensitive. IDs, tags, and field names are case-sensitive. Keywords like `resistance` in `sub_stat,resistance,stun,0.1,` or `TOKEN_ADD` in `m_IgnoredSkillAttributeTypes` are not case-sensitive.
 - `m_ConditionString` field uses `null` keyword as input. `m_DeathChainLootIds` field uses `none` keyword as input.
 - Some fields that depend on other fields can have empty strings as valid values. For example:
@@ -46,11 +99,13 @@ CSV data can be separated into multiple files, but it is not necessary. They sho
 	```
 	Here `m_conditions` sets a condition for the `swine_mashes_hard_kingdoms` subtable to be a valid result. `m_chances` has to have values for each entry.
 - Arbitrary values can be defined in some places, and in some places they are referenced.
-	- Indexes are defined in element's shells, it looks like a field cannot define an ID.
+	- IDs are defined in next to `element_start`. It seems that fields do not define IDs.
 	- Tags are defined in fields.
-	- Substats. I don't know how these work. It looks like they are not arbitrary. For example adding ```sub_stat,resistance,stun2,0.2,``` to a hero's `ActorDataStats` breaks the mod.
+	- Substats. I don't know how these work. It looks like they are not arbitrary. For example, adding ```sub_stat,resistance,stun2,0.2,``` to a hero's `ActorDataStats` breaks the mod.
 
-This extension tries to describe all this data in a formal way. Outer structure of elements is considered fixed, structure of field valuess is described in this way:
+## How this extension works
+
+This extension tries to describe all this data in a formal way. Outer structure of elements (`element_begin`, `ID`, `type`, `element_end`) is considered fixed, structure of field inputs is described in this way:
 - `any` -- external information like localization, directories. Also used for fields of unknown nature. These fields are not validated.
 - `float` -- single decimal value, for example `m_Chance,0.05`.
 - `int` -- single integer value, for example `m_Size,1`.
@@ -68,22 +123,27 @@ This extension tries to describe all this data in a formal way. Outer structure 
 - `Dep*(X)` -- the same as `Dep(X)` but requires all values to be provided. For example, in `LootTable` elements, `m_conditions` field can have empty values, like `m_conditions,,is_kingdoms,,,,`. But `m_chances` in the same element needs to provide a number for each entry.
 - `nothing` is used for unused fields, like `m_profileLevel` field.
 - `Sub(X KW,A,float)` is used for substats. The first value is a stat group. The second value is the substat.
+- `PSV(X)` -- values separated by `+`.
 
-## How this extension works
+Description of CSV data is stored in `./CSV Description` directory in LibreOffice Calc files.
+- `CSV Elements.ods` stores the list of element types and some comments.
+- `CSV Fields.ods` has multiple sheets, each sheet corresponds to one element type. A sheet in this file contains field names, their input description in the format described above, and a comment.
+- `CSV Values.ods` stores keywords and dependency information. It has multiple sheets, one sheet corresponds to one keyword group. The first column contains all possible values, other columns store information about how a specific keyword affects other fields.
+	- For example, `CSV Fields.ods` describes *m_ConditionType*'s input in a *Condition* element as *ConditionType KW*. The extension takes the word before "KW" (that is *ConditionType*) and searches the sheet with the same name in `CSV Values.ods`. If this sheet does not have the provided value, the extension marks this value as an error.
+	- Then, `CSV Fields.ods` describes *m_ConditionString* as `Dep(m_ConditionType)` which means that its input depends on the value of the *m_ConditionType* field in the same element. The extension searches `CSV Values.ods` for the "m_ConditionType" sheet and then searches for the column named [element type + field name], in this example it's "Condition m_ConditionString". This column describes what input should this field have depending on the value of another column.
+	- Similar case are substat fields. For example, *ActorDataStats*' *sub_stat* field. It's input is described as `Sub(ActorStatSubType KW,Substat,float)`. The extension searches the "ActorStatSubType" sheet in `CSV Values.ods` and then searches for the "Substat" column that has the required input description.
 
-1. Description of CSV data is stored in `./CSV Description` directory in LibreOffice Calc files.
-	- `CSV Elements.ods` stores the list of element types and some comments.
-	- `CSV Fields.ods` has multiple sheets, each sheet corresponds to one element type. A sheet in this file contains field names, their input description in the format described above, and a comment.
-	- `CSV Values.ods` stores keywords and dependency information. It has multiple sheets, one sheet corresponds to one keyword group. The first column contains all possible values, other columns store information about how a specific keyword affects other fields.
-		- For example, `CSV Fields.ods` describes *m_ConditionType*'s input in a *Condition* element as *ConditionType KW*. The extension takes the word before "KW" (that is *ConditionType*) and searches the sheet with the same name in `CSV Values.ods`. If this sheet does not have the provided value, the extension marks this value as an error.
-		- Then, `CSV Fields.ods` describes *m_ConditionString* as `Dep(m_ConditionType)` which means that its input depends on the value of the *m_ConditionType* field in the same element. The extension searches `CSV Values.ods` for the "m_ConditionType" sheet and then searches for the column named [element type + field name], in this example it's "Condition m_ConditionString". This column describes what input should this field have depending on the value of another column.
-		- Similar case are substat fields. For example, *ActorDataStats*' *sub_stat* field. It's input is described as `Sub(ActorStatSubType KW,Substat,float)`. The extension searches the "ActorStatSubType" sheet in `CSV Values.ods` and then searches for the "Substat" column that has the required input description.
-2. On start, the extension reads the Excel directory from the Darkest Dungeon II installation folder. Then it also reads contents of the VSCode project.
-3. For each `.Group.csv` file:
-	1. It is parsed into a list of elements, fields, values by commas. The "+" separator is not processed yet.
-	2. The extension indexes all values that are not numbers or booleans and registers what elements have them. At first I tried to index tags and IDs only, but the possibility of nested structures made it very complicated.
-4. When
+On startup:
+1. The extension reads contents of the VSCode project and Excel directories from the Darkest Dungeon II installation folder. Excel directories can be configured in extension's settings.
+2. Each file is parsed into a list of elements, fields, values by commas. The "+" separator is not processed yet. After this step the extension has a list of files and what elements are stored in each file. Exact positions of fields and values in text are also stored.
+3. Then each element is analyzed for IDs and tags. A separate storage is created for tag/id symbols and their references and what elements they belong to. It allows to track connections between elements.
+4. With IDs and tags indexed, validation of elements becomes possible. During this step diagnostics are created and value types are clarified (`Dep`, `List` and other types are converted to more primitive types).
+5. Clarified types allow to add semantic tokens.
 
+On text change:
+1. Old and new texts are compared, all elements in the changed region are reparsed and the old element data is replaced.
+2. Before replacing old elements, the extension tracks what ID and tag definitions they have, and what other elements depend on these definitions so they can be revalidated.
+3. New elements are indexed, and their connections to existing elements are tracked so affected elements can be revalidated.
 
 ## CSV data description
 

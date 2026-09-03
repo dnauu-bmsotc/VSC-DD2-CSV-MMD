@@ -46,7 +46,7 @@ export type TypeDefinitionDependent			= { type: TypeID.dependent; field: string;
 export type TypeDefinitionDependentRequired	= { type: TypeID.dependentRequired; field: string; };
 export type TypeDefinitionAny				= { type: TypeID.any; };
 export type TypeDefinitionNothing			= { type: TypeID.nothing; };
-export type TypeDefinitionSubtype			= { type: TypeID.sub; group: string, subtypeString: string, subtypeValueType: TypeDefinition };
+export type TypeDefinitionSubtype			= { type: TypeID.sub; group: string, subtypeString: string, subtypeValueType: TypeDefinition | null };
 export type TypeDefinitionPSV				= { type: TypeID.psv, element: TypeDefinition };
 
 export type Element = {
@@ -194,8 +194,8 @@ function parseTypeRecursive(input: string, isAmbiguous: boolean): TypeDefinition
 	if (inputMatchFuncSub) {
 		const content = inputMatchFuncSub;
 		const elements = content.split(",");
-		if (!elements || elements.length !== 3) {
-			console.error(`Subtype ${input} needs to have 3 elements.`);
+		if (!elements || (elements.length !== 2) && (elements.length !== 3)) {
+			console.error(`Subtype ${input} needs to have 2 or 3 elements.`);
 			return defaultReturnValue;
 		}
 		const firstElementDefinition = parseTypeRecursive(elements[0], isAmbiguous);
@@ -203,11 +203,14 @@ function parseTypeRecursive(input: string, isAmbiguous: boolean): TypeDefinition
 			console.error(`Subtype ${input} needs a keyword group as the first type`);
 			return defaultReturnValue;
 		}
+		const subtypeValueType = elements.length > 2
+			? parseTypeRecursive(elements[2], isAmbiguous)
+			: null;
 		return {
 			type: TypeID.sub,
 			group: firstElementDefinition.group,
 			subtypeString: elements[1],
-			subtypeValueType: parseTypeRecursive(elements[2], isAmbiguous)
+			subtypeValueType: subtypeValueType
 		};
 	}
 	if (input.match(/^any$/)) {
@@ -386,7 +389,9 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case TypeID.union:
 			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
 		case TypeID.sub:
-			return `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`;
+			return t.subtypeValueType
+				? `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`
+				: `Subtype(${t.group}, ${t.subtypeString})`;
 		case TypeID.psv:
 			return `Plus-separated values`;
 	}

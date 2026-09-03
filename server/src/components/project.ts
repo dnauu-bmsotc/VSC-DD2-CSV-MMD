@@ -172,7 +172,7 @@ export class ProjectManager {
 		this.reanalyzeIds(affectedIds);
 
 		const duration = (performance.now() - t0).toFixed(1);
-		const memoryUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(1);
+		const memoryUsed = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
 		console.log(`Document update (${uri.replace(/^.*[\\/]/, '')}) [${duration} ms] [${memoryUsed} MB].`,
 			`Removed ${[...removedIds].length} element(s).`,
 			`Added ${replacementElements.length} element(s).`,

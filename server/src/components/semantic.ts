@@ -1,6 +1,6 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType } from './parser';
-import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionKW, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { ERType, Index } from '.';
 
 interface ValidationContext {
@@ -218,12 +218,14 @@ export class Semantic {
 				if (!matchedTypes.length) {
 					return this.createUnresolvedUnionDiagnostic(values[0], definition);
 				}
-				for (let i = 0; i < values.length; i++) {
-					const typeOptions = matchedTypes.map(x => x[i]);
-					values[i].evaluatedType = {
-						evaluationType: EvaluationType.union,
-						definitions: typeOptions,
-					};
+				if (matchedTypes.length > 1) {
+					for (let i = 0; i < values.length; i++) {
+						const typeOptions = matchedTypes.map(x => x[i]);
+						values[i].evaluatedType = {
+							evaluationType: EvaluationType.union,
+							definitions: typeOptions,
+						};
+					}
 				}
 				return null;
 
@@ -300,17 +302,11 @@ export class Semantic {
 				return null;
 
 			case TypeID.sub:
-				if (values.length !== 3) {
-					return {
-						diagnostic: {
-							severity: DiagnosticSeverity.Error,
-							range: c.field.range,
-							message: `Three values are required`,
-						},
-					flags: DiagnosticType.FieldValue,
-					};
+				const groupKWType: TypeDefinitionKW = { type: TypeID.kw, group: definition.group };
+				if (values.length < 1) {
+					return this.createExpectedTypeDiagnostic(groupKWType, c.field.range);
 				}
-				const groupValidateResult = this.validateValues([values[0]], { type: TypeID.kw, group: definition.group }, c);
+				const groupValidateResult = this.validateValues([values[0]], groupKWType, c);
 				if (groupValidateResult) {
 					return groupValidateResult;
 				}
@@ -329,11 +325,16 @@ export class Semantic {
 					console.error(`Subtype ${definition.subtypeString} has empty fields.`);
 					return null;
 				}
+				if (values.length < 2) {
+					return this.createExpectedTypeDiagnostic(derivedType.input, values[0].range);
+				}
 				const subtypeValidateResult = this.validateValues([values[1]], derivedType.input, c);
 				if (subtypeValidateResult) {
 					return subtypeValidateResult;
 				}
-				return this.validateValues([values[2]], definition.subtypeValueType, c);
+				return definition.subtypeValueType
+					? this.validateValues([values[2]], definition.subtypeValueType, c)
+					: null;
 
 			case TypeID.psv:
 				const psValues = parsePSV(values[0]);
@@ -343,10 +344,6 @@ export class Semantic {
 					values: psValues,
 				};
 				return psvValidation;
-		
-			default:
-				console.error(`Unknown input type: ${definition}`);
-				return null;
 		}
 	}
 

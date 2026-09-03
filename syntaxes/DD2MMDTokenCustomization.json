@@ -3,7 +3,7 @@
         "semanticRules": {
             "id": "#ffd9d9",
             "tag": "#e6d487",
-            "keyword": "#dcbfff"
+            "keyword": "#d6f7be"
         },
         "textMateRules": [
             {
@@ -21,13 +21,13 @@
             {
                 "scope": "keyword.control.start.dd2mmd",
                 "settings": {
-                    "foreground": "#a6eb65"
+                    "foreground": "#8dd945"
                 }
             },
             {
                 "scope": "keyword.control.end.dd2mmd",
                 "settings": {
-                    "foreground": "#a6eb65"
+                    "foreground": "#8dd945"
                 }
             },
             {
@@ -45,7 +45,7 @@
             {
                 "scope": "constant.language.boolean.dd2mmd",
                 "settings": {
-                    "foreground": "#bef7d5"
+                    "foreground": "#d6f7be"
                 }
             },
             {
@@ -57,13 +57,13 @@
             {
                 "scope": "constant.numeric.dd2mmd",
                 "settings": {
-                    "foreground": "#bef7d5"
+                    "foreground": "#d6f7be"
                 }
             },
             {
                 "scope": "constant.numeric.range.dd2mmd",
                 "settings": {
-                    "foreground": "#bef7d5"
+                    "foreground": "#d6f7be"
                 }
             },
             {
@@ -78,7 +78,7 @@
         "semanticRules": {
             "id": "#ffd9d9",
             "tag": "#e6d487",
-            "keyword": "#cacffc"
+            "keyword": "#ffae00"
         },
         "textMateRules": [
             {
