@@ -390,9 +390,9 @@ export function typeToVerbose(t: TypeDefinition): string {
 			return t.elements.map(etype => typeToVerbose(etype)).join(" or ");
 		case TypeID.sub:
 			return t.subtypeValueType
-				? `Subtype(${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)})`
-				: `Subtype(${t.group}, ${t.subtypeString})`;
+				? `${t.group}, ${t.subtypeString}, ${typeToVerbose(t.subtypeValueType)}`
+				: `${t.group}, ${t.subtypeString}`;
 		case TypeID.psv:
-			return `Plus-separated values`;
+			return `Plus-separated values (${typeToVerbose(t.element)})`;
 	}
 }

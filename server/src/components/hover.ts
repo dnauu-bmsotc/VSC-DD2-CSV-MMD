@@ -137,17 +137,44 @@ export class HoverManager {
 		}
 		let addition = "";
 		const influencedTypes = getDependencyInfluencedType(c.element, c.field, definition.input, this.project.compiledData.schema, this.project.compiledData.keywords);
-		if (influencedTypes?.types) {
-			const fieldInfluencer = influencedTypes.influenceSourceField;
-			addition += `\n\nExpected for each value of *${fieldInfluencer.name}* field:`;
-			const influenceDict = Object.fromEntries(fieldInfluencer.values.map((k, i) => [k.text, influencedTypes.types[i]]));
-			for (const k of Object.keys(influenceDict)) {
-				if (influenceDict[k]) {
-					addition += `\n- \`${k}\` -> \`${typeToVerbose(influenceDict[k])}\``;
+		if (!influencedTypes || (influencedTypes.types.length === 0)) {
+			return addition;
+		}
+		const fieldInfluencer = influencedTypes.influenceSourceField;
+		if (influencedTypes.isDependentOnList) {
+			addition += `\n\nExpected for each value of *${fieldInfluencer.name}* field:`
+			if (this.listHasEqualObjects(influencedTypes.types)) {
+				const type = influencedTypes.types[0];
+				if (type) {
+					addition += `\`${typeToVerbose(type)}\``;
+				}
+			}
+			else {
+				const influenceDict = Object.fromEntries(
+					fieldInfluencer.values.map((k, i) => [k.text, influencedTypes.types[i]])
+				);
+				for (const k of Object.keys(influenceDict)) {
+					if (influenceDict[k]) {
+						addition += `\n- \`${k}\` -> \`${typeToVerbose(influenceDict[k])}\``;
+					}
 				}
 			}
 		}
+		else {
+			const type = influencedTypes.types[0];
+			if (type) {
+				addition += `\n\nExpected input: \`${typeToVerbose(type)}\``;
+			}
+		}
 		return addition;
+	}
+
+	private listHasEqualObjects(l: any[]) {
+		return (l.length === 0) || l.every(x => this.objectsAreEqual(x, l[0]));
+	}
+
+	private objectsAreEqual(a: any, b: any) {
+		return JSON.stringify(a) === JSON.stringify(b);
 	}
 
 	private hoverValueAddiionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
