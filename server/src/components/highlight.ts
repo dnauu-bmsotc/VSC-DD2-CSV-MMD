@@ -22,7 +22,6 @@ export class SemanticTokensProvider {
 			return { data: [] };
 		}
 		try {
-			const t0 = performance.now();
 			const fileState = this.project.getFileState(uri);
 			if (!fileState) {
 				return { data: [] };
@@ -33,7 +32,6 @@ export class SemanticTokensProvider {
 					this.provideForValues(builder, field.values);
 				}
 			}
-			console.info(`Semantic tokens [${(performance.now() - t0).toFixed(1)} ms].`);
 			return builder.build();
 		}
 		catch (error) {

@@ -44,6 +44,18 @@ export class Semantic {
 		if (!elementDefinition.process) {
 			return;
 		}
+		// Addables check
+		const sameSignatureElements = this.index.findEmitters({ type: ERType.id, group: element.elementType, name: element.name });
+		if ((sameSignatureElements.length > 1) && !elementDefinition.addable) {
+			element.diagnostics.push({
+				diagnostic: {
+					severity: DiagnosticSeverity.Error,
+					range: element.range,
+					message: `\`${element.elementType}\` is not addable.`,
+				},
+				flags: DiagnosticType.NotAddable,
+			});
+		}
 		// Process each field in the element.
 		for (const field of element.fields) {
 			if (!field.name) {

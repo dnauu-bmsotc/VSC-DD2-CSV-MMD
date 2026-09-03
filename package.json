@@ -84,7 +84,8 @@
 						"validationElementType": true,
 						"validationFieldName": true,
 						"validationFieldValues": true,
-						"validationFieldEmpty": false
+						"validationFieldEmpty": false,
+						"validationAddables": true
 					},
 					"properties": {
 						"autocomplete": {
@@ -122,6 +123,10 @@
 						"validationFieldEmpty": {
 							"type": "boolean",
 							"description": "Show empty fields."
+						},
+						"validationAddables": {
+							"type": "boolean",
+							"description": "Warn about repeating non-addable elements with the same type and ID."
 						}
 					}
 				}

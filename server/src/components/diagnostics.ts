@@ -50,6 +50,7 @@ export class DiagnosticsPublisher {
 				|| (features.validationElementType		&& (d.flags & DiagnosticType.ElementType))
 				|| (features.validationFieldName		&& (d.flags & DiagnosticType.FieldName))
 				|| (features.validationComments 		&& (d.flags & DiagnosticType.Comment))
+				|| (features.validationAddables			&& (d.flags & DiagnosticType.NotAddable))
 			) {
 				result.push(d.diagnostic);
 			}

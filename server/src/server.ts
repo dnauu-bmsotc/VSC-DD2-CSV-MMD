@@ -22,7 +22,10 @@ On startup:
    It allows to track connections between elements.
 4. With IDs and tags indexed, validation of elements becomes possible.
    During this step diagnostics are created and value types are clarified (`Dep`, `List` and other types are converted to more primitive types).
-5. Clarified types allow to add semantic tokens.
+   Certain types cannot be reduced to primitive values, for example:
+	- Unions: `m_TokenGlossaryHeroTag` field, despite its name, accepts hero tags or hero IDs. If provided value matches to both tag and ID, union cannot be reduced.
+	- Plus-separated values: one value string contains multiple values.
+   These values are stored along with primitive values. Hover hint and semantic token managers resolve them on their own.
 
 On text change:
 1. Old and new texts are compared, all elements in the changed region are reparsed and the old element data is replaced.

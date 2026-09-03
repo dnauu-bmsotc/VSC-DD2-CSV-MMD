@@ -114,10 +114,11 @@ export class HoverManager {
 
 	private hoverOverElement(c: HoverContextElement, definition: Element): Hover | null {
 		let message = `(Element) ${c.element.name}`;
-		message += `\n\nType: *${definition.name}*`;
+		message += `\n\nType: \`${definition.name}\``;
 		if (definition.comment) {
 			message += `\n\nComment: ${definition.comment}`;
 		}
+		message += `\n\nAddable: ${definition.addable ? "Yes" : "No"}`
 		return this.createHover(message, c.element.range);
 	}
 

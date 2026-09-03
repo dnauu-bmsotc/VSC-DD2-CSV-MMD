@@ -4,7 +4,7 @@ import * as fs from "node:fs"
 import { Range } from 'vscode-languageserver';
 
 import { Index } from '.';
-import { AST, ASTElement, ElementNumberID, MmdDiagnostic, Parser } from './parser';
+import { AST, ASTElement, ElementNumberID, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
@@ -66,7 +66,7 @@ export class ProjectManager {
 		for (const fileState of this.files.values()) {
 			for (const element of fileState.ast) {
 				const solveResult = this.index.indexElement(fileState.uri, element);
-				this.index.addElement(element.id, solveResult.emitters, solveResult.receivers);
+				this.index.addElement(element.id, element.elementType, element.name, solveResult.emitters, solveResult.receivers);
 			}
 		}
 		// semantic analysis for all files
@@ -136,7 +136,7 @@ export class ProjectManager {
 		for (const element of fileState.ast) {
 			if (this.rangesOverlap(element.fullRange, changeRegion.oldRange)) {
 				removedIds.add(element.id);
-				const affected = this.index.removeElement(element.id);
+				const affected = this.index.removeElement(element.id, element.elementType, element.name);
 				for (const id of affected) {
 					affectedIds.add(id);
 				}
@@ -147,13 +147,11 @@ export class ProjectManager {
 		const newAstResult = this.parser.parseIntoAST(newText);
 		const replacementElements = newAstResult.AST.filter(element => this.rangesOverlap(changeRegion.newRange, element.fullRange));
 
-		// compose edited ast
-		const unaffectedElements = fileState.ast.filter(element => !removedIds.has(element.id));
-		const editedAstUnordered = [...unaffectedElements, ...replacementElements];
-		const editedAst = editedAstUnordered.sort((a, b) => a.range.start.line - b.range.start.line);
+		// compose edited file
+		this.modifyOldAst(fileState.ast, changeRegion, removedIds, replacementElements);
 		this.files.set(uri, {
 			uri: uri,
-			ast: editedAst,
+			ast: fileState.ast,
 			open: true,
 			parseDiagnostics: newAstResult.diagnostics,
 			text: newText,
@@ -162,7 +160,7 @@ export class ProjectManager {
 		// find elements affected by addition
 		for (const element of replacementElements) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affected = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
+			const affected = this.index.addElement(element.id, element.elementType, element.name, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affected) {
 				affectedIds.add(id);
 			}
@@ -179,6 +177,9 @@ export class ProjectManager {
 			`Affected ${[...affectedIds].length} element(s).`,
 		);
 
+		if (newAstResult.AST.length !== fileState.ast.length) {
+			console.error(`The number of elements in the model AST (${fileState.ast.length}) does not match the number of elements in the actual AST (${newAstResult.AST.length}).`);
+		}
 		return;
 	}
 
@@ -194,7 +195,7 @@ export class ProjectManager {
 				continue;
 			}
 			for (const element of fileState.ast) {
-				const affectedByElementRemoval = this.index.removeElement(element.id);
+				const affectedByElementRemoval = this.index.removeElement(element.id, element.elementType, element.name);
 				for (const id of affectedByElementRemoval) {
 					affected.add(id);
 				}
@@ -244,7 +245,7 @@ export class ProjectManager {
 		const affected = new Set<ElementNumberID>();
 		if (oldFileState) {
 			for (const element of oldFileState.ast) {
-				const affectedByElementRemoval = this.index.removeElement(element.id);
+				const affectedByElementRemoval = this.index.removeElement(element.id, element.elementType, element.name,);
 				for (const id of affectedByElementRemoval) {
 					affected.add(id);
 				}
@@ -269,7 +270,7 @@ export class ProjectManager {
 		const affected = new Set<ElementNumberID>();
 		for (const element of parseResult.AST) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affectedByElement = this.index.addElement(element.id, elementIndex.emitters, elementIndex.receivers);
+			const affectedByElement = this.index.addElement(element.id, element.elementType, element.name, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affectedByElement) {
 				affected.add(id);
 			}
@@ -325,36 +326,55 @@ export class ProjectManager {
 	private getChangeRegion(oldText: string, newText: string): ChangeRegion {
 		const oldLines = oldText.split('\n');
 		const newLines = newText.split('\n');
-		let oldStart = 0;
-		let oldEnd = oldLines.length - 1;
-		let newStart = 0;
-		let newEnd = newLines.length - 1;
-		while ((oldStart < oldEnd) && (newStart < newEnd) && (oldLines[oldStart] === newLines[newStart])) {
-			oldStart += 1;
-			newStart += 1;
+		let startLine = 0;
+		while ((startLine < oldLines.length) && (startLine < newLines.length) && (oldLines[startLine] === newLines[startLine])) {
+			startLine += 1;
 		}
-		while ((oldEnd > oldStart) && (newEnd > newStart) && (oldLines[oldEnd] === newLines[newEnd])) {
-			oldEnd -= 1;
-			newEnd -= 1;
+		let endLineOld = oldLines.length - 1;
+		let endLineNew = newLines.length - 1;
+		while ((endLineOld >= startLine) && (endLineNew >= startLine) && (oldLines[endLineOld] === newLines[endLineNew])) {
+			endLineOld -= 1;
+			endLineNew -= 1;
 		}
+		// start line less than end line by 1 is produced when range tries to describe range between lines.
+		startLine  = startLine > endLineNew ? (startLine + endLineNew) / 2 : startLine;
+		endLineNew = startLine > endLineNew ? (startLine + endLineNew) / 2 : endLineNew;
+		endLineOld = startLine > endLineOld ? (startLine + endLineOld) / 2 : endLineOld;
 		return {
 			oldRange: {
-				start: { line: oldStart, character: 0 },
-				end: { line: oldEnd, character: oldLines[oldEnd].length },
+				start: { line: startLine, character: 0 },
+				end: { line: endLineOld, character: Number.MAX_SAFE_INTEGER },
 			},
 			newRange: {
-				start: { line: newStart, character: 0 },
-				end: { line: newEnd, character: newLines[newEnd].length },
+				start: { line: startLine, character: 0 },
+				end: { line: endLineNew, character: Number.MAX_SAFE_INTEGER },
 			},
+			offset: newLines.length - oldLines.length,
 		}
 	}
 
 	private rangesOverlap(a: Range, b: Range): boolean {
 		return ((a.start.line <= b.end.line) && (b.start.line <= a.end.line));
 	}
+
+	private modifyOldAst(oldAst: AST, changeRegion: ChangeRegion, removedIds: Set<ElementNumberID>, replacementElements: ASTElement[]): void {
+		// find the first element that needs to be replaced
+		let firstIdxToRemove = 0;
+		while ((firstIdxToRemove < oldAst.length) && (oldAst[firstIdxToRemove].fullRange.end.line < changeRegion.oldRange.start.line)) {
+			firstIdxToRemove += 1;
+		}
+		// fix ranges that are saved in elements located after the change region because lines can be added or removed in the middle of text.
+		let i = oldAst.length - 1;
+		while ((i >= 0) && (oldAst[i].fullRange.start.line >= changeRegion.oldRange.end.line)) {
+			offsetElementByLines(oldAst[i], changeRegion.offset);
+			i -= 1;
+		}
+		oldAst.splice(firstIdxToRemove, removedIds.size, ...replacementElements);
+	}
 }
 
 interface ChangeRegion {
 	oldRange: Range;
 	newRange: Range;
+	offset: number;
 }

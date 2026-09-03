@@ -51,8 +51,8 @@ export class Index {
 		private readonly keywords: ValuesDescription,
 	) {}
 
-	public removeElement(id: ElementNumberID) {
-		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(id);
+	public removeElement(id: ElementNumberID, elementType: string, elementName: string) {
+		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(id, elementType, elementName);
 		this.removeElementFromKeyList(id, this.emittersByKey, this.emittersByElement);
 		this.removeElementFromKeyList(id, this.receiversByKey, this.receiversByElement);
 		this.emittersByElement.delete(id);
@@ -60,7 +60,7 @@ export class Index {
 		return affectedElements;
 	}
 
-	public addElement(id: ElementNumberID, emitters: Emitter[], receivers: Receiver[]) {
+	public addElement(id: ElementNumberID, elementType: string, elementName: string, emitters: Emitter[], receivers: Receiver[]) {
 		const affectedElements = new Set<ElementNumberID>();
 		this.emittersByElement.set(id, emitters);
 		this.receiversByElement.set(id, receivers);
@@ -75,6 +75,10 @@ export class Index {
 				}
 			}
 		}
+		// find elements with the same name and type (for validation of addables)
+		for (const sameSignatureElement of this.findSameSignatureElements(elementType, elementName)) {
+			affectedElements.add(sameSignatureElement.ownerId);
+		}
 		return affectedElements;
 	}
 
@@ -86,7 +90,7 @@ export class Index {
 		return [...this.receiversByKey.get(getKey(info)) ?? []];
 	}
 
-	private findElementsDependentOnEmittersOfAnElement(id: ElementNumberID) {
+	private findElementsDependentOnEmittersOfAnElement(id: ElementNumberID, elementType: string, elementName: string) {
 		const affectedElements = new Set<ElementNumberID>();
 		const oldEmitters = this.emittersByElement.get(id) ?? [];
 		for (const emitter of oldEmitters) {
@@ -98,7 +102,15 @@ export class Index {
 				}
 			}
 		}
+		// find elements with the same name and type (for validation of addables)
+		for (const sameSignatureElement of this.findSameSignatureElements(elementType, elementName)) {
+			affectedElements.add(sameSignatureElement.ownerId);
+		}
 		return affectedElements;
+	}
+
+	private findSameSignatureElements(type: string, name: string) {
+		return this.emittersByKey.get(getKey({ type: ERType.id, group: type, name: name })) ?? [];
 	}
 
 	private removeElementFromKeyList<T extends EmitterOrReceiver>(

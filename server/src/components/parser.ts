@@ -29,6 +29,7 @@ export enum DiagnosticType {
 	FieldName		= 1 << 2,
 	FieldValue		= 1 << 3,
 	EmptyField		= 1 << 4,
+	NotAddable		= 1 << 5,
 }
 
 export interface ASTField {
@@ -105,7 +106,7 @@ export class Parser {
 					elements.push({
 						...current,
 						fullRange: {
-							start: current.range.start,
+							start: { ...current.range.start },
 							end: { line: i, character: line.length },
 						},
 					});
@@ -248,5 +249,24 @@ export function typeEvaluatedToVerbose(type: TypeEvaluated): string {
 		case EvaluationType.psv:
 			const parts = type.values.map(v => typeEvaluatedToVerbose(v.evaluatedType));
 			return parts.join('+');
+	}
+}
+
+export function offsetElementByLines(element: ASTElement, offset: number) {
+	element.range.start.line += offset;
+	element.range.end.line += offset;
+	element.fullRange.start.line += offset;
+	element.fullRange.end.line += offset;
+	for (const field of element.fields) {
+		field.range.start.line += offset;
+		field.range.end.line += offset;
+		for (const value of field.values) {
+			value.range.start.line += offset;
+			value.range.end.line += offset;
+		}
+	}
+	for (const diagnostic of element.diagnostics) {
+		diagnostic.diagnostic.range.start.line += offset;
+		diagnostic.diagnostic.range.end.line += offset;
 	}
 }

@@ -53,6 +53,7 @@ export type Element = {
 	name: string;
 	fields: Record<string, Field>;
 	comment: string;
+	addable: boolean;
 	/**
 	 * false to ignore this element
 	 */
@@ -80,6 +81,7 @@ export interface CompiledData {
 
 /**
  * Record <Element Type, Element schema>
+ * Element Type example: ActorDataClass
  */
 export type FieldsDescription = Record<string, Element>;
 
@@ -244,6 +246,7 @@ export function readFieldsDescription(filePathFields: string, filePathElements: 
 			fields: {},
 			comment: elementData["Comment"],
 			process: elementData["Process"] === "Yes",
+			addable: elementData["Addable"] === "Yes",
 		};
 		for (const field of fieldsData) {
 			const inputString = field["Input Type"] ?? "";
