@@ -59,18 +59,16 @@ export class Index {
 
 	public removeElement(element: ASTElement) {
 		this.elements.delete(element.id);
-
 		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(element.id, element.elementType, element.name);
 		this.removeElementFromKeyList(element.id, this.emittersByKey, this.emittersByElement);
 		this.removeElementFromKeyList(element.id, this.receiversByKey, this.receiversByElement);
 		this.emittersByElement.delete(element.id);
 		this.receiversByElement.delete(element.id);
-
-		// update overrides
-		for (const id of this.findSameSignatureElements(element.elementType, element.name)) {
-			for (const gameType of gameTypeList) {
-				element.overriddenBy[gameType] = this.getOverridersOfElement(id, getKeyFromElement(element), gameType);
-			}
+		// find and update overrides
+		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
+		this.updateOverridesInElements(getKeyFromElement(element), sameSignatureElements);
+		for (const sameSignatureElement of sameSignatureElements) {
+			affectedElements.add(sameSignatureElement);
 		}
 		return affectedElements;
 	}
@@ -92,20 +90,11 @@ export class Index {
 				}
 			}
 		}
-		// find elements with the same name and type (for validation of addables)
-		for (const sameSignatureElement of this.findSameSignatureElements(element.elementType, element.name)) {
+		// find and update overrides
+		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
+		this.updateOverridesInElements(getKeyFromElement(element), [element.id, ...sameSignatureElements]);
+		for (const sameSignatureElement of sameSignatureElements) {
 			affectedElements.add(sameSignatureElement);
-		}
-		// update overrides
-		const key = getKeyFromElement(element);
-		for (const id of [element.id, ...this.findSameSignatureElements(element.elementType, element.name)]) {
-			for (const gameType of gameTypeList) {
-				const doppelganger = this.elements.get(id);
-				if (!doppelganger) {
-					continue;
-				}
-				doppelganger.overriddenBy[gameType] = this.getOverridersOfElement(id, key, gameType);
-			}
 		}
 		return affectedElements;
 	}
@@ -117,7 +106,8 @@ export class Index {
 			if (!element) {
 				return false;
 			}
-			if (element.overriddenBy[forGameType].size > 0) {
+			const overriders = element.overriddenBy[forGameType];
+			if (overriders && overriders.size > 0) {
 				return false;
 			}
 			if (!elementIsEligibleForGameType(element, forGameType)) {
@@ -159,6 +149,18 @@ export class Index {
 	
 	public getNumberOfElements() {
 		return this.elements.size;
+	}
+
+	private updateOverridesInElements(key: KeyInfo, ids: ElementNumberID[]) {
+		for (const id of ids) {
+			for (const gameType of gameTypeList) {
+				const doppelganger = this.elements.get(id);
+				if (!doppelganger) {
+					continue;
+				}
+				doppelganger.overriddenBy[gameType] = this.getOverridersOfElement(id, key, gameType);
+			}
+		}
 	}
 
 	private findElementsDependentOnEmittersOfAnElement(id: ElementNumberID, elementType: string, elementName: string) {

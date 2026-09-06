@@ -16,7 +16,7 @@ export interface ASTElement {
 	fullRange: Range;
 	diagnostics: MmdDiagnostic[];
 	scope: ResourceScope;
-	overriddenBy: Record<GameType, Set<ElementNumberID>>;
+	overriddenBy: Partial<Record<GameType, Set<ElementNumberID>>>;
 }
 
 export interface ASTField {
@@ -127,7 +127,7 @@ export class Parser {
 						id: this.nextId,
 						diagnostics: [],
 						scope: scope,
-						overriddenBy: initEmptyRecord(GameType, () => new Set<ElementNumberID>),
+						overriddenBy: {},
 					};
 					this.nextId += 1;
 				}
