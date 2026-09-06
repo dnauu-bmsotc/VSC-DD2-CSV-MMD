@@ -1,8 +1,10 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
-import { AST, ASTElement, ASTField, ASTValue, EvaluationType, getDependencyInfluencedType, getFileScope, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
+import { AST, ASTElement, ASTField, ASTValue, EvaluationType, getDependencyInfluencedType, getFileScope, ResourceScopePriority, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
+import { getKeyFromElement } from '.';
+import * as path from 'node:path';
 
 export class HoverManager {
 	constructor(
@@ -114,14 +116,33 @@ export class HoverManager {
 
 	private hoverOverElement(c: HoverContextElement, definition: Element): Hover | null {
 		let message = `(Element) ${c.element.name}`;
-		message += `\n\nType: \`${definition.name}\``;
+		message += `\n\nType: \`${definition.name}\` (${definition.addable ? "Addable" : "Not Addable"})`;
 		if (definition.comment) {
 			message += `\n\nComment: ${definition.comment}`;
 		}
-		message += `\n\nAddable: ${definition.addable ? "Yes" : "No"}`
-		const scope = getFileScope(c.uri);
-		message += `\n\nScope: ${resourceScopeToVerbose(scope)}`;
+		// add info about all elements with the same id and type
+		message += `\n\nElements with the same ID and type (including this element):`
+		for (const emitter of this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))) {
+			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
+			if (!doppelganger) {
+				continue;
+			}
+			const scopeStatus = 
+				doppelganger.id === c.element.id ? "This element"
+				: ResourceScopePriority[c.element.scope] === ResourceScopePriority[doppelganger.scope] ? "Neighbor of this element"
+				: ResourceScopePriority[c.element.scope] > ResourceScopePriority[doppelganger.scope] ? "Overriden by this element"
+				: "This element is overriden by it";
+			const fileName = path.basename(emitter.uri);
+			message += `\n- (${resourceScopeToVerbose(doppelganger.scope)} scope) [${scopeStatus}]: `;
+			message += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
+			message += `line: ${emitter.range.start.line + 1}`;
+		}
 		return this.createHover(message, c.element.range);
+	}
+
+	private getJumpUri(uri: UriString, range: Range) {
+		const fragment = `L${range.start.line + 1}:${range.start.character + 1}-L${range.end.line + 1}:${range.end.character + 1}`;
+		return `${uri}${fragment ? '#' + fragment : ''}`;
 	}
 
 	private createHover(message: string, range: Range): Hover {

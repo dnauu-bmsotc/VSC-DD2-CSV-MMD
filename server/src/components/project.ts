@@ -21,10 +21,10 @@ export interface FileState {
 export class ProjectManager {
 	readonly compiledData: CompiledData;
 	private configuration: DD2CSVMMDSettings;
-	private readonly files: Map<UriString, FileState>;
-	private readonly parser: Parser;
-	private readonly index: Index;
-	private readonly analyzer: Semantic;
+	readonly files: Map<UriString, FileState>;
+	readonly parser: Parser;
+	readonly index: Index;
+	readonly analyzer: Semantic;
 	protected ready = false;
 
 	get isReady(): boolean {

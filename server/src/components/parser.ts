@@ -1,7 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import * as path from 'node:path';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { countEnum, initEmptyRecord, UriString } from '../../../shared/utils';
+import { UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
 

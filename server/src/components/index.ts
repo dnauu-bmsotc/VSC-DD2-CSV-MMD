@@ -5,7 +5,7 @@ import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './
 
 export enum ERType { id, tag };
 
-export interface EmitterOrReceiverBase {
+interface EmitterOrReceiverBase {
 	type: ERType;
 	group: string;
 	name: string;
@@ -99,8 +99,12 @@ export class Index {
 		return affectedElements;
 	}
 
+	public findEmittersForAllGameTypes(info: KeyInfo): Emitter[] {
+		return [...this.emittersByKey.get(getKey(info)) ?? []];
+	}
+
 	public findEmitters(forGameType: GameType, info: KeyInfo): Emitter[] {
-		const emitters = [...this.emittersByKey.get(getKey(info)) ?? []];
+		const emitters = this.findEmittersForAllGameTypes(info);
 		const filtered = emitters.filter(e => {
 			const element = this.elements.get(e.ownerId);
 			if (!element) {
@@ -402,8 +406,4 @@ export function erTypeToVerbose(t: ERType) {
 		case ERType.tag:
 			return "Tag";
 	}
-}
-
-export function emitterToVerbose(emitter: Emitter) {
-	return `Declaration (${erTypeToVerbose(emitter.type)}): ${emitter.name} [${emitter.group}] [${emitter.uri}]`;
 }

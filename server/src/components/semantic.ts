@@ -1,7 +1,7 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
 import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, gameTypeList } from './parser';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { Emitter, emitterToVerbose, ERType, getKeyFromElement, Index, KeyInfo} from '.';
+import { Emitter, ERType, getKeyFromElement, Index, KeyInfo} from '.';
 
 interface ValidationContext {
 	element: ASTElement;
@@ -51,13 +51,11 @@ export class Semantic {
 			for (const gameType of ResourceScopeEligibleGameTypes[element.scope]) {
 				const emitters = gameTypeAvailability[gameType];
 				if (emitters.length >= 2) {
-					const message = `\`${element.elementType}\` is not addable (${gameTypeToVerbose(gameType)}). ` +
-						`Found IDs:\n${emitters.map(emitterToVerbose).join('\n')}`
 					element.diagnostics.push({
 						diagnostic: {
 							severity: DiagnosticSeverity.Error,
 							range: element.range,
-							message: message,
+							message: `${element.elementType} is not addable (${gameTypeToVerbose(gameType)}).`,
 						},
 						flags: DiagnosticType.NotAddable,
 					});
