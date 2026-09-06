@@ -1,5 +1,5 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
-import { AST, ASTElement, ASTField, ASTValue, EvaluationType, getDependencyInfluencedType, getFileScope, ResourceScopePriority, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
+import { AST, ASTElement, ASTField, ASTValue, EvaluationType, gameTypeList, gameTypeToVerbose, getDependencyInfluencedType, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
@@ -12,6 +12,9 @@ export class HoverManager {
 	) {}
 
 	onHover(hoverParams: HoverParams): Hover | null {
+		if (!this.project.getConfiguration().features.hintsOnHover) {
+			return null;
+		}
 		try {
 			const uri = makeUriString(hoverParams.textDocument.uri);
 			const position = hoverParams.position;
@@ -121,19 +124,25 @@ export class HoverManager {
 			message += `\n\nComment: ${definition.comment}`;
 		}
 		// add info about all elements with the same id and type
-		message += `\n\nElements with the same ID and type (including this element):`
+		message += `\n\nElements with the same ID and type:`
 		for (const emitter of this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))) {
 			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
 			if (!doppelganger) {
 				continue;
 			}
-			const scopeStatus = 
-				doppelganger.id === c.element.id ? "This element"
-				: ResourceScopePriority[c.element.scope] === ResourceScopePriority[doppelganger.scope] ? "Neighbor of this element"
-				: ResourceScopePriority[c.element.scope] > ResourceScopePriority[doppelganger.scope] ? "Overriden by this element"
-				: "This element is overriden by it";
 			const fileName = path.basename(emitter.uri);
-			message += `\n- (${resourceScopeToVerbose(doppelganger.scope)} scope) [${scopeStatus}]: `;
+			message += `\n- (${resourceScopeToVerbose(doppelganger.scope)}) `;
+			if (doppelganger.id === c.element.id) {
+				message += `[Hovered element] `
+			}
+			for (const gameType of gameTypeList) {
+				if (doppelganger.overriddenBy[gameType]?.has(c.element.id)) {
+					message += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
+				}
+				if (c.element.overriddenBy[gameType]?.has(doppelganger.id)) {
+					message += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
+				}
+			}
 			message += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
 			message += `line: ${emitter.range.start.line + 1}`;
 		}
