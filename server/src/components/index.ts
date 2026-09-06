@@ -1,4 +1,4 @@
-import { ASTElement, ASTField, ASTValue, ElementNumberID, getDependencyInfluencedType, parsePSV } from './parser';
+import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID, GameType, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, UriString } from '../../../shared/utils';
 import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
@@ -40,6 +40,8 @@ export interface ElementIndexData {
 }
 
 export class Index {
+	private readonly elements = new Map<ElementNumberID, ASTElement>();
+	
 	private readonly emittersByKey = new Map<string, Emitter[]>();
 	private readonly receiversByKey = new Map<string, Receiver[]>();
 
@@ -51,43 +53,80 @@ export class Index {
 		private readonly keywords: ValuesDescription,
 	) {}
 
-	public removeElement(id: ElementNumberID, elementType: string, elementName: string) {
-		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(id, elementType, elementName);
-		this.removeElementFromKeyList(id, this.emittersByKey, this.emittersByElement);
-		this.removeElementFromKeyList(id, this.receiversByKey, this.receiversByElement);
-		this.emittersByElement.delete(id);
-		this.receiversByElement.delete(id);
+	public removeElement(element: ASTElement) {
+		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(element.id, element.elementType, element.name);
+		this.removeElementFromKeyList(element.id, this.emittersByKey, this.emittersByElement);
+		this.removeElementFromKeyList(element.id, this.receiversByKey, this.receiversByElement);
+		this.emittersByElement.delete(element.id);
+		this.receiversByElement.delete(element.id);
+		this.elements.delete(element.id);
 		return affectedElements;
 	}
 
-	public addElement(id: ElementNumberID, elementType: string, elementName: string, emitters: Emitter[], receivers: Receiver[]) {
+	public addElement(element: ASTElement, emitters: Emitter[], receivers: Receiver[]) {
 		const affectedElements = new Set<ElementNumberID>();
-		this.emittersByElement.set(id, emitters);
-		this.receiversByElement.set(id, receivers);
+		this.emittersByElement.set(element.id, emitters);
+		this.receiversByElement.set(element.id, receivers);
 		this.addElementToKeyList(emitters, this.emittersByKey);
 		this.addElementToKeyList(receivers, this.receiversByKey);
 		// newly added emitter can resolve references
 		for (const emitter of emitters) {
 			const key = getKey(emitter);
 			for (const receiver of this.receiversByKey.get(key) ?? []) {
-				if (receiver.ownerId !== id) {
+				if (receiver.ownerId !== element.id) {
 					affectedElements.add(receiver.ownerId);
 				}
 			}
 		}
 		// find elements with the same name and type (for validation of addables)
-		for (const sameSignatureElement of this.findSameSignatureElements(elementType, elementName)) {
+		for (const sameSignatureElement of this.findSameSignatureElements(element.elementType, element.name)) {
 			affectedElements.add(sameSignatureElement.ownerId);
 		}
+		this.elements.set(element.id, element);
 		return affectedElements;
 	}
 
-	public findEmitters(info: KeyInfo): Emitter[] {
-		return [...this.emittersByKey.get(getKey(info)) ?? []];
+	public findEmitters(forGameType: GameType, info: KeyInfo): Emitter[] {
+		const emitters = [...this.emittersByKey.get(getKey(info)) ?? []];
+		const notOverridden = emitters.filter(e => (this.getOverridersOfElement(e.ownerId, info, forGameType).size === 0));
+		const filteredByGameType = notOverridden.filter(e => {
+			const element = this.elements.get(e.ownerId);
+			return !!element && elementIsEligibleForGameType(element, forGameType);
+		});
+		return filteredByGameType;
 	}
 
-	public findReceivers(info: KeyInfo): Receiver[] {
-		return [...this.receiversByKey.get(getKey(info)) ?? []];
+	public getOverridersOfElement(id: ElementNumberID, info: KeyInfo, gameType: GameType): Set<ElementNumberID> {
+		const overriders = new Set<ElementNumberID>();
+		const element = this.elements.get(id);
+		if (!element) {
+			return overriders;
+		}
+		const emittersWithSameSignature = [...this.emittersByKey.get(getKey(info)) ?? []];
+		for (const idEmitter of emittersWithSameSignature) {
+			if (idEmitter.ownerId === id) {
+				continue;
+			}
+			const candidate = this.elements.get(idEmitter.ownerId);
+			if (!candidate) {
+				continue;
+			}
+			if (!elementIsEligibleForGameType(candidate, gameType)) {
+				continue;
+			}
+			if (ResourceScopePriority[element.scope] < ResourceScopePriority[candidate.scope]) {
+				overriders.add(candidate.id);
+			}
+		}
+		return overriders;
+	}
+
+	public getElementByNumericId(id: ElementNumberID) {
+		return this.elements.get(id);
+	}
+	
+	public getNumberOfElements() {
+		return this.elements.size;
 	}
 
 	private findElementsDependentOnEmittersOfAnElement(id: ElementNumberID, elementType: string, elementName: string) {
@@ -319,4 +358,17 @@ interface ExtractionContext {
 	readonly emitters: Emitter[];
 	readonly receivers: Receiver[];
 	readonly uri: UriString,
+}
+
+export function erTypeToVerbose(t: ERType) {
+	switch (t) {
+		case ERType.id:
+			return "ID";
+		case ERType.tag:
+			return "Tag";
+	}
+}
+
+export function emitterToVerbose(emitter: Emitter) {
+	return `Declaration (${erTypeToVerbose(emitter.type)}): ${emitter.name} [${emitter.group}] [${emitter.uri}]`;
 }

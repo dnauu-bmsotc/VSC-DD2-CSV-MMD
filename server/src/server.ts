@@ -1,39 +1,3 @@
-
-/*
-Description of CSV data is stored in `./CSV Description` directory in LibreOffice Calc files.
-- `CSV Elements.ods` stores the list of element types and some comments.
-- `CSV Fields.ods` has multiple sheets, each sheet corresponds to one element type. A sheet in this file contains field names, their input description in the format described above, and a comment.
-- `CSV Values.ods` stores keywords and dependency information. It has multiple sheets, one sheet corresponds to one keyword group. The first column contains all possible values, other columns store information about how a specific keyword affects other fields.
-	- For example, `CSV Fields.ods` describes *m_ConditionType*'s input in a *Condition* element as *ConditionType KW*. The extension takes the word before "KW" (that is *ConditionType*) and searches the sheet with the same name in `CSV Values.ods`. If this sheet does not have the provided value, the extension marks this value as an error.
-	- Then, `CSV Fields.ods` describes *m_ConditionString* as `Dep(m_ConditionType)` which means that its input depends on the value of the *m_ConditionType* field in the same element. The extension searches `CSV Values.ods` for the "m_ConditionType" sheet and then searches for the column named [element type + field name], in this example it's "Condition m_ConditionString". This column describes what input should this field have depending on the value of another column.
-	- Similar case are substat fields. For example, *ActorDataStats*' *sub_stat* field. It's input is described as `Sub(ActorStatSubType KW,Substat,float)`. The extension searches the "ActorStatSubType" sheet in `CSV Values.ods` and then searches for the "Substat" column that has the required input description.
-
-*/
-
-/*
-On startup:
-1. The extension reads contents of the VSCode project and Excel directories from the Darkest Dungeon II installation folder.
-   Excel directories can be configured in extension's settings.
-2. Each file is parsed into a list of elements, fields, values by commas. The "+" separator is not processed yet.
-   After this step the extension has a list of files and what elements are stored in each file.
-   Exact positions of fields and values in text are also stored.
-3. Then each element is analyzed for IDs and tags.
-   A separate storage is created for tag/id symbols and their references and what elements they belong to.
-   It allows to track connections between elements.
-4. With IDs and tags indexed, validation of elements becomes possible.
-   During this step diagnostics are created and value types are clarified (`Dep`, `List` and other types are converted to more primitive types).
-   Certain types cannot be reduced to primitive values, for example:
-	- Unions: `m_TokenGlossaryHeroTag` field, despite its name, accepts hero tags or hero IDs. If provided value matches to both tag and ID, union cannot be reduced.
-	- Plus-separated values: one value string contains multiple values.
-   These values are stored along with primitive values. Hover hint and semantic token managers resolve them on their own.
-
-On text change:
-1. Old and new texts are compared, all elements in the changed region are reparsed and the old element data is replaced.
-2. Before replacing old elements, the extension tracks what ID and tag definitions they have, and what other elements depend on these definitions so they can be revalidated.
-3. New elements are indexed, and their connections to existing elements are tracked so affected elements can be revalidated.
-*/
-
-
 import {
 	createConnection,
 	TextDocuments,

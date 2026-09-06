@@ -1,7 +1,7 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
-import { AST, ASTElement, ASTField, ASTValue, EvaluationType, getDependencyInfluencedType, typeEvaluatedToVerbose } from './parser';
+import { AST, ASTElement, ASTField, ASTValue, EvaluationType, getDependencyInfluencedType, getFileScope, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
-import { makeUriString } from '../../../shared/utils';
+import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
 
 export class HoverManager {
@@ -17,7 +17,7 @@ export class HoverManager {
 			if (!ast) {
 				return null;
 			}
-			const context = this.findWhatIsAtPosition(ast, position);
+			const context = this.findWhatIsAtPosition(uri, ast, position);
 			if (context.element) {
 				const elementDefinition = this.project.compiledData.schema[context.element.elementType];
 				if (!elementDefinition) {
@@ -55,10 +55,10 @@ export class HoverManager {
 		}
 	}
 
-	private findWhatIsAtPosition(ast: AST, position: Position): HoverContext {
+	private findWhatIsAtPosition(uri: UriString, ast: AST, position: Position): HoverContext {
 		for (const element of ast) {
 			if ((element.range.start.line === position.line)) {
-				return { position, element };
+				return { uri, position, element };
 			}
 			if ((element.fields.length > 0)
 				&& (element.fields[0].range.start.line <= position.line)
@@ -66,17 +66,17 @@ export class HoverManager {
 				for (const field of element.fields) {
 					if (field.range.start.line === position.line) {
 						if (position.character <= field.range.end.character) {
-							return { position, element, field };
+							return { uri, position, element, field };
 						}
 						const value = this.findWhatValueIsAtPosition(field.values, position);
 						if (value) {
-							return { position, element, field, value };
+							return { uri, position, element, field, value };
 						}
 					}
 				}
 			}
 		}
-		return { position };
+		return { uri, position };
 	}
 
 	private findWhatValueIsAtPosition(values: ASTValue[], position: Position): ASTValue | null {
@@ -119,6 +119,8 @@ export class HoverManager {
 			message += `\n\nComment: ${definition.comment}`;
 		}
 		message += `\n\nAddable: ${definition.addable ? "Yes" : "No"}`
+		const scope = getFileScope(c.uri);
+		message += `\n\nScope: ${resourceScopeToVerbose(scope)}`;
 		return this.createHover(message, c.element.range);
 	}
 
@@ -232,10 +234,10 @@ type HoverContext =
 	| HoverContextElement
 	| HoverContextNone
 
-interface HoverContextValue   { position: Position; element: ASTElement; field: ASTField; value: ASTValue; }
-interface HoverContextField   { position: Position; element: ASTElement; field: ASTField; value?: never; }
-interface HoverContextElement { position: Position; element: ASTElement; field?: never;   value?: never; }
-interface HoverContextNone    { position: Position; element?: never;     field?: never;   value?: never; }
+interface HoverContextValue   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value: ASTValue; }
+interface HoverContextField   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value?: never; }
+interface HoverContextElement { uri: UriString, position: Position; element: ASTElement; field?: never;   value?: never; }
+interface HoverContextNone    { uri: UriString, position: Position; element?: never;     field?: never;   value?: never; }
 
 function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: number): string {
 	const m_chancesReplaced = replaceChancesWithWeightedValues(data);

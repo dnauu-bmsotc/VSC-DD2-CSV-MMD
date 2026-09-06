@@ -35,3 +35,7 @@ export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
 	map.set(key, defaultValue);
 	return defaultValue;
 }
+
+export function countEnum(enumObj: any): number {
+	return Object.keys(enumObj).filter(key => isNaN(Number(key))).length;	
+}

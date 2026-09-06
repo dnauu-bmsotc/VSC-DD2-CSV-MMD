@@ -5,9 +5,7 @@ import { readmeBaseFilePath, readmeOutputFilePath } from '../../../shared/projec
 export async function assembleReadme(compiledData: CompiledData) {
 	let readme = await fs.readFile(readmeBaseFilePath, 'utf-8');
 	
-	readme += "\n\n## CSV data description\n\n";
-
-	readme += generateFieldsDescription(compiledData);
+	readme = readme.replace("_DD2CSVMMDDescription", generateFieldsDescription(compiledData));
 	
 	await fs.writeFile(readmeOutputFilePath, readme, 'utf-8');
 }
@@ -19,6 +17,7 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 		result += `
 <details>
 <summary><b>${element.name}</b></summary>
+Addable: ${element.addable ? "Yes" : "No"}.
 ${element.comment ? element.comment + "\n" : ""}
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |`

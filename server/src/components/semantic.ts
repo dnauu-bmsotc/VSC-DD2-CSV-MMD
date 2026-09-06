@@ -1,7 +1,7 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType } from './parser';
-import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionKW, TypeDefinitionSequence, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { ERType, Index } from '.';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, nGameTypes } from './parser';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { Emitter, emitterToVerbose, ERType, Index, KeyInfo} from '.';
 
 interface ValidationContext {
 	element: ASTElement;
@@ -45,16 +45,24 @@ export class Semantic {
 			return;
 		}
 		// Addables check
-		const sameSignatureElements = this.index.findEmitters({ type: ERType.id, group: element.elementType, name: element.name });
-		if ((sameSignatureElements.length > 1) && !elementDefinition.addable) {
-			element.diagnostics.push({
-				diagnostic: {
-					severity: DiagnosticSeverity.Error,
-					range: element.range,
-					message: `\`${element.elementType}\` is not addable.`,
-				},
-				flags: DiagnosticType.NotAddable,
-			});
+		if (!elementDefinition.addable) {
+			const key: KeyInfo = { type: ERType.id, group: element.elementType, name: element.name };
+			const gameTypeAvailability = this.emitterGameTypeAvailability(element.scope, key);
+			for (const gameType of ResourceScopeEligibleGameTypes[element.scope]) {
+				const emitters = gameTypeAvailability[gameType];
+				if (emitters.length >= 2) {
+					const message = `\`${element.elementType}\` is not addable (${gameTypeToVerbose(gameType)}). ` +
+						`Found IDs:\n${emitters.map(emitterToVerbose).join('\n')}`
+					element.diagnostics.push({
+						diagnostic: {
+							severity: DiagnosticSeverity.Error,
+							range: element.range,
+							message: message,
+						},
+						flags: DiagnosticType.NotAddable,
+					});
+				}
+			}
 		}
 		// Process each field in the element.
 		for (const field of element.fields) {
@@ -121,13 +129,10 @@ export class Semantic {
 				return null;
 
 			case TypeID.id:
-				const idEmitters = this.index.findEmitters({
-					type: ERType.id,
-					group: definition.group,
-					name: values[0].text,
-				});
-				if (idEmitters.length === 0) {
-					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+				const idKey: KeyInfo = { type: ERType.id, group: definition.group, name: values[0].text };
+				const idGameTypeAvailabilityDiagnostic = this.validateEmitterGameTypeAvailability(values, definition, idKey, c);
+				if (idGameTypeAvailabilityDiagnostic) {
+					return idGameTypeAvailabilityDiagnostic;
 				}
 				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
@@ -136,13 +141,10 @@ export class Semantic {
 				return null;
 
 			case TypeID.tagReceiver:
-				const tagEmitters = this.index.findEmitters({
-					type: ERType.tag,
-					group: definition.group,
-					name: values[0].text,
-				});
-				if (tagEmitters.length === 0) {
-					return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+				const tagKey: KeyInfo = { type: ERType.tag, group: definition.group, name: values[0].text };
+				const tagGameTypeAvailabilityDiagnostic = this.validateEmitterGameTypeAvailability(values, definition, tagKey, c);
+				if (tagGameTypeAvailabilityDiagnostic) {
+					return tagGameTypeAvailabilityDiagnostic;
 				}
 				values[0].evaluatedType = { evaluationType: EvaluationType.basic, definition: definition };
 				if (values.length > 1) {
@@ -375,6 +377,41 @@ export class Semantic {
 		return null;
 	}
 
+	private validateEmitterGameTypeAvailability(values: ASTValue[], definition: TypeDefinitionID | TypeDefinitionTagReceiver,
+		key: KeyInfo, c: ValidationContext): MmdDiagnostic | null {
+		const availability = this.emitterGameTypeAvailability(c.element.scope, key);
+		const unavailability: GameType[] = [];
+		for (const gameType of ResourceScopeEligibleGameTypes[c.element.scope]) {
+			if (availability[gameType].length === 0) {
+				unavailability.push(gameType);
+			}
+		}
+		if (unavailability.length === nGameTypes) {
+			return this.createUnresolvedReferenceDiagnostic(values[0], definition);
+		}
+		else if (unavailability.length > 0) {
+			return {
+				diagnostic: {
+					severity: DiagnosticSeverity.Error,
+					range: values[0].range,
+					message: `Value not found for game types: ${unavailability.map(gameTypeToVerbose).join(', ')}.`,
+				},
+				flags: DiagnosticType.NotAddable,
+			};
+		}
+		return null;
+	}
+
+	private emitterGameTypeAvailability(scope: ResourceScope, key: KeyInfo) {
+		const result = {} as Record<GameType, Emitter[]>;
+		const currentGameTypes = ResourceScopeEligibleGameTypes[scope];
+		for (const gameType of currentGameTypes) {
+			const availableEmitters = this.index.findEmitters(gameType, key);
+			result[gameType] = availableEmitters;
+		}
+		return result;
+	}
+
 	private isBoolString = (str: string) => (str === "True") || (str === "False");
 
 	private isNumericString = (str: string) => !isNaN(Number(str));
@@ -384,7 +421,7 @@ export class Semantic {
 
 	private isRangeStringRegex = /^\[\d+-\d+\]$/;
 	private isRangeString = (str: string) => this.isRangeStringRegex.test(str);
-
+	
 	private createExpectedTypeDiagnostic(expectedType: TypeDefinition, range: Range): MmdDiagnostic {
 		return {
 			diagnostic: {

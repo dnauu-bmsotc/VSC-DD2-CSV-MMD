@@ -53,7 +53,7 @@ export class ProjectManager {
 		for (const filepath of filepaths) {
 			const uri = makeUriString(URI.file(filepath).toString());
 			const text = await fs.promises.readFile(filepath, "utf8");
-			const parseResult = this.parser.parseIntoAST(text);
+			const parseResult = this.parser.parseIntoAST(uri, text);
 			this.files.set(uri, {
 				uri: uri,
 				ast: parseResult.AST,
@@ -66,7 +66,7 @@ export class ProjectManager {
 		for (const fileState of this.files.values()) {
 			for (const element of fileState.ast) {
 				const solveResult = this.index.indexElement(fileState.uri, element);
-				this.index.addElement(element.id, element.elementType, element.name, solveResult.emitters, solveResult.receivers);
+				this.index.addElement(element, solveResult.emitters, solveResult.receivers);
 			}
 		}
 		// semantic analysis for all files
@@ -78,6 +78,8 @@ export class ProjectManager {
 		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Initialized project with ${filepaths.length} files [${duration} ms].`);
 		this.ready = true;
+
+		console.log(Object.keys(this.compiledData.schema).length)
 	}
 
 	public setConfiguration(configuration: DD2CSVMMDSettings) {
@@ -136,7 +138,7 @@ export class ProjectManager {
 		for (const element of fileState.ast) {
 			if (this.rangesOverlap(element.fullRange, changeRegion.oldRange)) {
 				removedIds.add(element.id);
-				const affected = this.index.removeElement(element.id, element.elementType, element.name);
+				const affected = this.index.removeElement(element);
 				for (const id of affected) {
 					affectedIds.add(id);
 				}
@@ -144,7 +146,7 @@ export class ProjectManager {
 		}
 
 		// get edited elements
-		const newAstResult = this.parser.parseIntoAST(newText);
+		const newAstResult = this.parser.parseIntoAST(uri, newText);
 		const replacementElements = newAstResult.AST.filter(element => this.rangesOverlap(changeRegion.newRange, element.fullRange));
 
 		// compose edited file
@@ -160,7 +162,7 @@ export class ProjectManager {
 		// find elements affected by addition
 		for (const element of replacementElements) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affected = this.index.addElement(element.id, element.elementType, element.name, elementIndex.emitters, elementIndex.receivers);
+			const affected = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affected) {
 				affectedIds.add(id);
 			}
@@ -195,7 +197,7 @@ export class ProjectManager {
 				continue;
 			}
 			for (const element of fileState.ast) {
-				const affectedByElementRemoval = this.index.removeElement(element.id, element.elementType, element.name);
+				const affectedByElementRemoval = this.index.removeElement(element);
 				for (const id of affectedByElementRemoval) {
 					affected.add(id);
 				}
@@ -245,7 +247,7 @@ export class ProjectManager {
 		const affected = new Set<ElementNumberID>();
 		if (oldFileState) {
 			for (const element of oldFileState.ast) {
-				const affectedByElementRemoval = this.index.removeElement(element.id, element.elementType, element.name,);
+				const affectedByElementRemoval = this.index.removeElement(element);
 				for (const id of affectedByElementRemoval) {
 					affected.add(id);
 				}
@@ -259,7 +261,7 @@ export class ProjectManager {
 	 * Returns a Set of numeric IDs of elements affected by addition.
 	 */
 	private addFile(uri: UriString, text: string, open: boolean): Set<ElementNumberID> {
-		const parseResult = this.parser.parseIntoAST(text);
+		const parseResult = this.parser.parseIntoAST(uri, text);
 		this.files.set(uri, {
 			uri: uri,
 			ast: parseResult.AST,
@@ -270,7 +272,7 @@ export class ProjectManager {
 		const affected = new Set<ElementNumberID>();
 		for (const element of parseResult.AST) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affectedByElement = this.index.addElement(element.id, element.elementType, element.name, elementIndex.emitters, elementIndex.receivers);
+			const affectedByElement = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers);
 			for (const id of affectedByElement) {
 				affected.add(id);
 			}
@@ -282,7 +284,7 @@ export class ProjectManager {
 
 	private reanalyzeIds(ids: Set<ElementNumberID>) {
 		for (const id of ids) {
-			const element = this.findElement(id);
+			const element = this.index.getElementByNumericId(id);
 			if (element) {
 				this.analyzer.solveElement(element);
 			}
@@ -311,16 +313,6 @@ export class ProjectManager {
 
 	private isDd2Csv(filename: string) {
 		return filename.toLowerCase().endsWith(".group.csv");
-	}
-
-	private findElement(id: ElementNumberID): ASTElement | undefined {
-		for (const file of this.files.values()) {
-			const element = file.ast.find(e => e.id === id);
-			if (element) {
-				return element;
-			}
-		}
-		return undefined;
 	}
 
 	private getChangeRegion(oldText: string, newText: string): ChangeRegion {

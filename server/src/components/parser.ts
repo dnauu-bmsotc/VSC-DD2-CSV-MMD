@@ -1,7 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
-import { DD2CSVMMDSettings } from '../../../shared/settings';
+import * as path from 'node:path';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { UriString } from '../../../shared/utils';
+import { countEnum, UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
 
@@ -15,21 +15,7 @@ export interface ASTElement {
 	range: Range;
 	fullRange: Range;
 	diagnostics: MmdDiagnostic[];
-}
-
-export interface MmdDiagnostic {
-	diagnostic: Diagnostic;
-	flags: DiagnosticType;
-}
-
-export enum DiagnosticType {
-	Comment			= 0,
-	ElementBoundary	= 1 << 0,
-	ElementType		= 1 << 1,
-	FieldName		= 1 << 2,
-	FieldValue		= 1 << 3,
-	EmptyField		= 1 << 4,
-	NotAddable		= 1 << 5,
+	scope: ResourceScope;
 }
 
 export interface ASTField {
@@ -56,10 +42,55 @@ export interface ASTParseResult {
 	diagnostics: MmdDiagnostic[];
 }
 
+export interface MmdDiagnostic {
+	diagnostic: Diagnostic;
+	flags: DiagnosticType;
+}
+
+export const enum DiagnosticType {
+	Comment			= 1 << 0,
+	ElementBoundary	= 1 << 1,
+	ElementType		= 1 << 2,
+	FieldName		= 1 << 3,
+	FieldValue		= 1 << 4,
+	EmptyField		= 1 << 5,
+	NotAddable		= 1 << 6,
+}
+
+export enum GameType {
+	Expedition, Kingdom,
+}
+
+export const nGameTypes = countEnum(GameType);
+
+export enum ResourceScope {
+	General, Expedition, Kingdom,
+	GeneralOverride, ExpeditionOverride, KingdomOverride,
+}
+
+export const ResourceScopePriority: Record<ResourceScope, number> = {
+	[ResourceScope.General]: 0,
+	[ResourceScope.Expedition]: 1,
+	[ResourceScope.Kingdom]: 1,
+	[ResourceScope.GeneralOverride]: 2,
+	[ResourceScope.ExpeditionOverride]: 2,
+	[ResourceScope.KingdomOverride]: 2,
+}
+
+export const ResourceScopeEligibleGameTypes: Record<ResourceScope, GameType[]> = {
+	[ResourceScope.General]: [GameType.Expedition, GameType.Kingdom],
+	[ResourceScope.GeneralOverride]: [GameType.Expedition, GameType.Kingdom],
+	[ResourceScope.Expedition]: [GameType.Expedition],
+	[ResourceScope.ExpeditionOverride]: [GameType.Expedition],
+	[ResourceScope.Kingdom]: [GameType.Kingdom],
+	[ResourceScope.KingdomOverride]: [GameType.Kingdom],
+}
+
 export class Parser {
 	private nextId = 0;
 
-	public parseIntoAST(text: string): ASTParseResult {
+	public parseIntoAST(uri: UriString, text: string): ASTParseResult {
+		const scope = getFileScope(uri);
 		const lines = text.split(/\r?\n/);
 		const elements: ASTElement[] = [];
 		let current: Omit<ASTElement, "fullRange"> | null = null;
@@ -94,6 +125,7 @@ export class Parser {
 						range: { start: lineStartPos, end: lineEndPos },
 						id: this.nextId,
 						diagnostics: [],
+						scope: scope,
 					};
 					this.nextId += 1;
 				}
@@ -266,7 +298,75 @@ export function offsetElementByLines(element: ASTElement, offset: number) {
 		}
 	}
 	for (const diagnostic of element.diagnostics) {
+		diagnostic.diagnostic.range = structuredClone(diagnostic.diagnostic.range);
 		diagnostic.diagnostic.range.start.line += offset;
 		diagnostic.diagnostic.range.end.line += offset;
 	}
+}
+
+export function getFileScope(fpath: string | UriString) {
+	const parentDir = path.dirname(path.resolve(fpath));
+	const parentDirName = path.basename(parentDir);
+	const grandParentDirName = path.basename(path.dirname(parentDir));
+
+	let scope = ResourceScope.General;
+
+	switch (parentDirName) {
+		case "expedition":
+			scope = ResourceScope.Expedition;
+			break;
+		case "kingdom":
+			scope = ResourceScope.Kingdom;
+			break;
+		default:
+			scope = ResourceScope.General;
+			break;
+	}
+
+	const overrider = grandParentDirName === "Overrides";
+	if (overrider) {
+		switch (scope) {
+			case ResourceScope.Expedition:
+				scope = ResourceScope.ExpeditionOverride;
+				break;
+		case ResourceScope.Kingdom:
+				scope = ResourceScope.KingdomOverride;
+				break;
+			case ResourceScope.General:
+				scope = ResourceScope.GeneralOverride;
+				break;
+		}
+	}
+
+	return scope;
+}
+
+export function gameTypeToVerbose(gameType: GameType): string {
+	switch (gameType) {
+		case GameType.Expedition:
+			return "Expeditions";
+		case GameType.Kingdom:
+			return "Kingdoms";
+	}
+}
+
+export function resourceScopeToVerbose(scope: ResourceScope): string {
+	switch (scope) {
+		case ResourceScope.General:
+			return "General";
+		case ResourceScope.Expedition:
+			return "Expeditions";
+		case ResourceScope.Kingdom:
+			return "Kingdoms";
+		case ResourceScope.GeneralOverride:
+			return "General (Overrides)";
+		case ResourceScope.ExpeditionOverride:
+			return "Expeditions (Overrides)";
+		case ResourceScope.KingdomOverride:
+			return "Kingdoms (Overrides)";
+	}
+}
+
+export function elementIsEligibleForGameType(element: ASTElement, gameType: GameType): boolean {
+	return !!element && ResourceScopeEligibleGameTypes[element.scope].includes(gameType);
 }

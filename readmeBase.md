@@ -2,12 +2,24 @@
 
 Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [Extension Features](#extension-features)
+- [DD2 CSV Data Overview](#dd2-csv-data-overview)
+- [CSV data description](#csv-data-description)
+- [Documentation](#documentation)
+    - [Data description](#data-description)
+    - [Main process](#main-process)
+    - [File scopes](#file-scopes)
+
+<!-- /TOC -->
+
 ## Extension Features
 
+This extension has these features (can be toggled off in settings):
 - Syntax highlighting for DD2 CSV files.
 - Validation of elements, fields, and values.
 - Hints on hover for fields and values.
-- Autocomplete.
 
 ![Image: missing id](./images/screenshot_missing_id.png)
 *Missing tag definition*
@@ -19,7 +31,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 Darkest Dungeon 2's CSV data is nuanced. At the surface level it is stored in .csv files and they are parsed as such. There are no embedded commas, they all are separators. CSV filenames should end with `.Group.csv` otherwise the game will skip them.
 
-Unless mod data is supposed override original data (I don't know much about overrides), mod's .csv files should be placed on the top level of the mod folder. The choice of dividing data into separate files or putting everything in one file is arbitrary. All files are parsed independently a into one data pool each time a game save file is loaded.
+Unless mod data is supposed override original data, mod's .csv files should be placed on the top level of the mod folder. The choice of dividing data into separate files or putting everything in one file is arbitrary. All files are parsed independently a into one data pool each time a game save file is loaded.
 
 A DD2 CSV file's data consists of blocks called elements. Each element has an ID (not necessarily unique), and a type. A typical element looks like this:
 ```csv
@@ -74,6 +86,49 @@ element_end
 
 So the example `ActorDataEffects` element defines what effects the Point Blank Shot skill has. This skill also needs to be connected, but the connection between actors and skills (except path skills) is defined outside CSV data, in compiled game files.
 
+The game's folder with vanilla data has this structure:
+```
+Excel
+├───dlc_catacombs
+├───dlc_dul_cru
+├───dlc_origin_skins
+├───dlc_supporter
+├───expedition
+└───kingdom
+```
+
+Mod folders look more or less like this:
+
+```
+Mod folder
+├───Assets
+├───dlc_catacombs
+├───dlc_dul_cru
+├───dlc_origin_skins
+├───dlc_supporter
+├───expedition
+├───kingdom
+├───Localization
+└───Overrides
+    ├───dlc_catacombs
+    ├───dlc_dul_cru
+    ├───dlc_origin_skins
+    └───dlc_supporter
+```
+
+When a save file is being loaded the game loads CSV files in this order (probably):
+1. Base game CSV files from the top level of the Excel folder.
+2. DLC files (IB, TBB, HOP, ISP).
+3. Then the game checks if this is a Kingdoms or an Expedition save. If this is an Expedition save, files from the `expedition` folder are loaded, and the `kingdom` folder is ignored. If this is a Kingdoms save, its the other way around. Data from these two folders can override previously gathered data. 
+4. Then mods are loaded. For each mod folder:
+	1. Data from the top folder of the mod is gathered, this data does not override previously gathered data.
+	2. Data from DLC-related folders. This data does not override previously gathered data.
+	3. Depending on the game type, files either from `expedition` or `kingdom` folder are gathered. Data from this folder does not override previously gathered data.
+	4. The `Overrides` folder is checked:
+		1. Files on the top level of this folder are gathered, they override previously gathered data.
+		2. Game type folder is gathered. Overrides previously gathered data.
+		3. Data from DLC-related folders, overrides previously gathered data.
+
 More details:
 - Element IDs are not unique, and neither unique are pairs of IDs with types. For example, `LootTables` elements are additive, there can be multiple `LootTable` elements with the same ID. Not all elements have this behavior, but loot table elements are not the only ones.
 - Fields in elements can repeat. For example, `sub_stat` field can be repeated multiple times to add multiple substats.
@@ -122,3 +177,68 @@ This extension tries to describe all this data in a formal way. Outer structure 
 - `nothing` is used for unused fields, like `m_profileLevel` field.
 - `Sub(X KW,A,float)` is used for substats. The first value is a stat group. The second value is the substat.
 - `PSV(X)` -- values separated by `+`.
+
+## CSV data description
+
+_DD2CSVMMDDescription
+
+## Documentation
+
+### Data description
+
+Description of CSV data is stored in `./CSV Description` directory in LibreOffice Calc files.
+- `CSV Elements.ods` stores the list of element types and some comments.
+- `CSV Fields.ods` has multiple sheets, each sheet corresponds to one element type. A sheet in this file contains field names, their input description in the format described above, and a comment.
+- `CSV Values.ods` stores keywords and dependency information. It has multiple sheets, one sheet corresponds to one keyword group. The first column contains all possible values, other columns store information about how a specific keyword affects other fields.
+	- For example, `CSV Fields.ods` describes *m_ConditionType*'s input in a *Condition* element as *ConditionType KW*. The extension takes the word before "KW" (that is *ConditionType*) and searches the sheet with the same name in `CSV Values.ods`. If this sheet does not have the provided value, the extension marks this value as an error.
+	- Then, `CSV Fields.ods` describes *m_ConditionString* as `Dep(m_ConditionType)` which means that its input depends on the value of the *m_ConditionType* field in the same element. The extension searches `CSV Values.ods` for the "m_ConditionType" sheet and then searches for the column named [element type + field name], in this example it's "Condition m_ConditionString". This column describes what input should this field have depending on the value of another column.
+	- Similar case are substat fields. For example, *ActorDataStats*' *sub_stat* field. It's input is described as `Sub(ActorStatSubType KW,Substat,float)`. The extension searches the "ActorStatSubType" sheet in `CSV Values.ods` and then searches for the "Substat" column that has the required input description.
+
+### Main process
+
+On startup:
+1. The extension reads contents of the VSCode project and Excel directories from the Darkest Dungeon II installation folder.
+   Excel directories can be configured in extension's settings.
+2. Each file is parsed into a list of elements, fields, values by commas. The "+" separator is not processed yet.
+   After this step the extension has a list of files and what elements are stored in each file.
+   Exact positions of fields and values in text are also stored.
+3. Then each element is analyzed for IDs and tags.
+   A separate storage is created for tag/id symbols and their references and what elements they belong to.
+   It allows to track connections between elements.
+4. With IDs and tags indexed, validation of elements becomes possible.
+   During this step diagnostics are created and value types are clarified (`Dep`, `List` and other types are converted to more primitive types).
+   Certain types cannot be reduced to primitive values, for example:
+	- Unions: `m_TokenGlossaryHeroTag` field, despite its name, accepts hero tags or hero IDs. If provided value matches to both tag and ID, union cannot be reduced.
+	- Plus-separated values: one value string contains multiple values.
+   These values are stored along with primitive values. Hover hint and semantic token managers resolve them on their own.
+
+On text change:
+1. Old and new texts are compared, all elements in the changed region are reparsed and the old element data is replaced.
+2. Before replacing old elements, the extension tracks what ID and tag definitions they have, and what other elements depend on these definitions so they can be revalidated.
+3. New elements are indexed, and their connections to existing elements are tracked so affected elements can be revalidated.
+
+### File scopes
+
+This extension tries to process Overrides by defining file scopes. Each file has one of these scopes assigned:
+- General: e.g. files in the top folder of the mod.
+- Expedition: `expedition` folder.
+- Kingdom: `kingdom` folder.
+- GeneralOverride: top level of the `Overrides` folder.
+- ExpeditionOverride: `Overrides/expedition` folder.
+- KingdomOverride: `Overrides/kingdom` folder.
+
+Each scope has applicable Game Modes:
+- General/GeneralOverride: both Expeditions and Kingdoms Game Modes.
+- Expedition/ExpeditionOverride: only Expeditions Game Mode.
+- Kingdom/KingdomOverride: only Kingdoms Game Mode.
+
+When the extension finds multiple elements with the same type, ID, and Game Mode, and they are not addable, it looks at the scopes of their respective files where they are defined.
+
+If all these elements have the same file scope, the extension shows a warning about them not being addable.
+
+If these elements have different scopes, then the extension filters out overridden elements:
+- If elements are applicable for Expedition: General scope is overridden by Expedition scope which is overridden by a pair of (GeneralOverride and ExpeditionOverride).
+- Similar process if elements are applicable for Kingdoms.
+
+"Expedition scope which is overridden by a pair" means that both GeneralOverride and ExpeditionOverride can override the Expedition scope, but they can not override each other. So a mod cannot override its own elements. I made it this way because it looks like the game processes mod files in a different order than the official files: for the official files, the game gathers Game Mode-specific files last, so they override everything previously gathered; and for the mod files, the game gathers Game Mode-specific files second to last, the actual last mod files to gather are files in DLC-related folders. I didn't know what to do with this.
+
