@@ -1,7 +1,7 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, nGameTypes } from './parser';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, gameTypeList } from './parser';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { Emitter, emitterToVerbose, ERType, Index, KeyInfo} from '.';
+import { Emitter, emitterToVerbose, ERType, getKeyFromElement, Index, KeyInfo} from '.';
 
 interface ValidationContext {
 	element: ASTElement;
@@ -46,7 +46,7 @@ export class Semantic {
 		}
 		// Addables check
 		if (!elementDefinition.addable) {
-			const key: KeyInfo = { type: ERType.id, group: element.elementType, name: element.name };
+			const key = getKeyFromElement(element);
 			const gameTypeAvailability = this.emitterGameTypeAvailability(element.scope, key);
 			for (const gameType of ResourceScopeEligibleGameTypes[element.scope]) {
 				const emitters = gameTypeAvailability[gameType];
@@ -386,7 +386,7 @@ export class Semantic {
 				unavailability.push(gameType);
 			}
 		}
-		if (unavailability.length === nGameTypes) {
+		if (unavailability.length === gameTypeList.length) {
 			return this.createUnresolvedReferenceDiagnostic(values[0], definition);
 		}
 		else if (unavailability.length > 0) {

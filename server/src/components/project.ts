@@ -78,8 +78,6 @@ export class ProjectManager {
 		const duration = (performance.now() - t0).toFixed(1);
 		console.log(`Initialized project with ${filepaths.length} files [${duration} ms].`);
 		this.ready = true;
-
-		console.log(Object.keys(this.compiledData.schema).length)
 	}
 
 	public setConfiguration(configuration: DD2CSVMMDSettings) {

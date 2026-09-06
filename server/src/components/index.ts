@@ -1,4 +1,4 @@
-import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID, GameType, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
+import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID, GameType, gameTypeList, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, UriString } from '../../../shared/utils';
 import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
@@ -34,6 +34,10 @@ function getKey(info: KeyInfo) {
 	return `${info.type}:${info.group}:${info.name}`;
 }
 
+export function getKeyFromElement(element: ASTElement): KeyInfo {
+	return { type: ERType.id, group: element.elementType, name: element.name };
+}
+
 export interface ElementIndexData {
 	emitters: Emitter[],
 	receivers: Receiver[],
@@ -54,16 +58,26 @@ export class Index {
 	) {}
 
 	public removeElement(element: ASTElement) {
+		this.elements.delete(element.id);
+
 		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(element.id, element.elementType, element.name);
 		this.removeElementFromKeyList(element.id, this.emittersByKey, this.emittersByElement);
 		this.removeElementFromKeyList(element.id, this.receiversByKey, this.receiversByElement);
 		this.emittersByElement.delete(element.id);
 		this.receiversByElement.delete(element.id);
-		this.elements.delete(element.id);
+
+		// update overrides
+		for (const id of this.findSameSignatureElements(element.elementType, element.name)) {
+			for (const gameType of gameTypeList) {
+				element.overriddenBy[gameType] = this.getOverridersOfElement(id, getKeyFromElement(element), gameType);
+			}
+		}
 		return affectedElements;
 	}
 
 	public addElement(element: ASTElement, emitters: Emitter[], receivers: Receiver[]) {
+		this.elements.set(element.id, element);
+
 		const affectedElements = new Set<ElementNumberID>();
 		this.emittersByElement.set(element.id, emitters);
 		this.receiversByElement.set(element.id, receivers);
@@ -80,20 +94,38 @@ export class Index {
 		}
 		// find elements with the same name and type (for validation of addables)
 		for (const sameSignatureElement of this.findSameSignatureElements(element.elementType, element.name)) {
-			affectedElements.add(sameSignatureElement.ownerId);
+			affectedElements.add(sameSignatureElement);
 		}
-		this.elements.set(element.id, element);
+		// update overrides
+		const key = getKeyFromElement(element);
+		for (const id of [element.id, ...this.findSameSignatureElements(element.elementType, element.name)]) {
+			for (const gameType of gameTypeList) {
+				const doppelganger = this.elements.get(id);
+				if (!doppelganger) {
+					continue;
+				}
+				doppelganger.overriddenBy[gameType] = this.getOverridersOfElement(id, key, gameType);
+			}
+		}
 		return affectedElements;
 	}
 
 	public findEmitters(forGameType: GameType, info: KeyInfo): Emitter[] {
 		const emitters = [...this.emittersByKey.get(getKey(info)) ?? []];
-		const notOverridden = emitters.filter(e => (this.getOverridersOfElement(e.ownerId, info, forGameType).size === 0));
-		const filteredByGameType = notOverridden.filter(e => {
+		const filtered = emitters.filter(e => {
 			const element = this.elements.get(e.ownerId);
-			return !!element && elementIsEligibleForGameType(element, forGameType);
+			if (!element) {
+				return false;
+			}
+			if (element.overriddenBy[forGameType].size > 0) {
+				return false;
+			}
+			if (!elementIsEligibleForGameType(element, forGameType)) {
+				return false;
+			}
+			return true;
 		});
-		return filteredByGameType;
+		return filtered;
 	}
 
 	public getOverridersOfElement(id: ElementNumberID, info: KeyInfo, gameType: GameType): Set<ElementNumberID> {
@@ -143,13 +175,14 @@ export class Index {
 		}
 		// find elements with the same name and type (for validation of addables)
 		for (const sameSignatureElement of this.findSameSignatureElements(elementType, elementName)) {
-			affectedElements.add(sameSignatureElement.ownerId);
+			affectedElements.add(sameSignatureElement);
 		}
 		return affectedElements;
 	}
 
 	private findSameSignatureElements(type: string, name: string) {
-		return this.emittersByKey.get(getKey({ type: ERType.id, group: type, name: name })) ?? [];
+		const idEmitters = this.emittersByKey.get(getKey({ type: ERType.id, group: type, name: name })) ?? [];
+		return idEmitters.map(e => e.ownerId);
 	}
 
 	private removeElementFromKeyList<T extends EmitterOrReceiver>(

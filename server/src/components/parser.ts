@@ -1,7 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import * as path from 'node:path';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
-import { countEnum, UriString } from '../../../shared/utils';
+import { countEnum, initEmptyRecord, UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
 
@@ -16,6 +16,7 @@ export interface ASTElement {
 	fullRange: Range;
 	diagnostics: MmdDiagnostic[];
 	scope: ResourceScope;
+	overriddenBy: Record<GameType, Set<ElementNumberID>>;
 }
 
 export interface ASTField {
@@ -61,7 +62,7 @@ export enum GameType {
 	Expedition, Kingdom,
 }
 
-export const nGameTypes = countEnum(GameType);
+export const gameTypeList = Object.values(GameType).filter(v => typeof v === "number");
 
 export enum ResourceScope {
 	General, Expedition, Kingdom,
@@ -126,6 +127,7 @@ export class Parser {
 						id: this.nextId,
 						diagnostics: [],
 						scope: scope,
+						overriddenBy: initEmptyRecord(GameType, () => new Set<ElementNumberID>),
 					};
 					this.nextId += 1;
 				}

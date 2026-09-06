@@ -39,3 +39,11 @@ export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
 export function countEnum(enumObj: any): number {
 	return Object.keys(enumObj).filter(key => isNaN(Number(key))).length;	
 }
+
+export function initEmptyRecord<T extends string | number, T2>(enumObj: any, constructor: () => T2): Record<T, T2> {
+	const enumValues = Object.values(enumObj) as T[];
+	return enumValues.reduce((acc, key) => {
+		acc[key] = constructor();
+		return acc;
+	}, {} as Record<T, T2>);
+}
