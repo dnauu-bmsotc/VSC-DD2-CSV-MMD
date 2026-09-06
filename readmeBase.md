@@ -20,6 +20,7 @@ This extension has these features (can be toggled off in settings):
 - Syntax highlighting for DD2 CSV files.
 - Validation of elements, fields, and values.
 - Hints on hover for fields and values.
+- Jump to Definition (acessible through hover).
 
 ![Image: missing id](./images/screenshot_missing_id.png)
 *Missing tag definition*

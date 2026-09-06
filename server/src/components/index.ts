@@ -81,7 +81,7 @@ export class Index {
 		this.receiversByElement.set(element.id, receivers);
 		this.addElementToKeyList(emitters, this.emittersByKey);
 		this.addElementToKeyList(receivers, this.receiversByKey);
-		// newly added emitter can resolve references
+		// newly added emitters can resolve references
 		for (const emitter of emitters) {
 			const key = getKey(emitter);
 			for (const receiver of this.receiversByKey.get(key) ?? []) {

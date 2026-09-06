@@ -1,9 +1,9 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
-import { AST, ASTElement, ASTField, ASTValue, EvaluationType, gameTypeList, gameTypeToVerbose, getDependencyInfluencedType, resourceScopeToVerbose, typeEvaluatedToVerbose } from './parser';
+import { AST, ASTElement, ASTField, ASTValue, EvaluationType, gameTypeList, gameTypeToVerbose, getDependencyInfluencedType, resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
-import { getKeyFromElement } from '.';
+import { ERType, getKeyFromElement, KeyInfo } from '.';
 import * as path from 'node:path';
 
 export class HoverManager {
@@ -104,6 +104,7 @@ export class HoverManager {
 			message += `\n\nEvaluated type: \`${typeEvaluatedToVerbose(c.value.evaluatedType)}\``;
 		}
 		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
+		message += this.hoverValueAddiionForIdReferences(c);
 		return this.createHover(message, c.value.range);
 	}
 
@@ -117,11 +118,11 @@ export class HoverManager {
 		return this.createHover(message, c.field.range);
 	}
 
-	private hoverOverElement(c: HoverContextElement, definition: Element): Hover | null {
+	private hoverOverElement(c: HoverContextElement, elementDefinition: Element): Hover | null {
 		let message = `(Element) ${c.element.name}`;
-		message += `\n\nType: \`${definition.name}\` (${definition.addable ? "Addable" : "Not Addable"})`;
-		if (definition.comment) {
-			message += `\n\nComment: ${definition.comment}`;
+		message += `\n\nType: \`${elementDefinition.name}\` (${elementDefinition.addable ? "Addable" : "Not Addable"})`;
+		if (elementDefinition.comment) {
+			message += `\n\nComment: ${elementDefinition.comment}`;
 		}
 		// add info about all elements with the same id and type
 		message += `\n\nElements with the same ID and type:`
@@ -238,6 +239,65 @@ export class HoverManager {
 		addition += `\n\n`;
 		addition += dictToMarkdownTable(tableObj, idx);
 		return addition;
+	}
+
+	private hoverValueAddiionForIdReferences(c: HoverContextValue): string {
+		let result = "";
+		const keys = this.findReferenceKeys(c, c.value.evaluatedType);
+		if (keys.length === 0) {
+			return result;
+		}
+		result += `\n\nDefinitions:`;
+		for (const key of keys) {
+			const emitters = this.project.index.findEmittersForAllGameTypes(key);
+			for (const emitter of emitters) {
+				const element = this.project.index.getElementByNumericId(emitter.ownerId);
+				if (!element) {
+					continue;
+				}
+				const fileName = path.basename(emitter.uri);
+				result += `\n- (${resourceScopeToVerbose(element.scope)}) `;
+				for (const gameType of gameTypeList) {
+					if (element.overriddenBy[gameType]?.has(c.element.id)) {
+						result += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
+					}
+					if (c.element.overriddenBy[gameType]?.has(element.id)) {
+						result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
+					}
+				}
+				result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
+				result += `line: ${emitter.range.start.line + 1}`;
+			}
+		}
+		return result;
+	}
+
+	private findReferenceKeys(c: HoverContextValue, value: TypeEvaluated): KeyInfo[] {
+		const result: KeyInfo[] = [];
+		switch (value?.evaluationType) {
+			case EvaluationType.basic:
+				const definition = value.definition;
+				const isIdReference = definition.type === TypeID.id;
+				const isTagReference = definition.type === TypeID.tagReceiver;
+				if (isIdReference || isTagReference) {
+					result.push({
+						type: isIdReference ? ERType.id : ERType.tag,
+						group: definition.group,
+						name: c.value.text,
+					});
+				}
+				return result;
+
+			case EvaluationType.union:
+				for (const valueOption of value.definitions) {
+					result.push(...this.findReferenceKeys(c, valueOption));
+				}
+				return result;
+		
+			default:
+				// psv is handled by the this.findWhatValueIsAtPosition function
+				return result;
+		}
 	}
 
 	/**
