@@ -6,7 +6,7 @@ import { AST, ASTElement, ASTField, ASTValue, EvaluationType, GameType, gameType
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
-import { ERType, getKeyFromElement, KeyInfo } from '.';
+import { ERType, getKeyFromElement, KeyInfo, Receiver } from '.';
 import * as path from 'node:path';
 
 export class HoverManager {
@@ -128,29 +128,8 @@ export class HoverManager {
 		if (elementDefinition.comment) {
 			message += `\n\nComment: ${elementDefinition.comment}`;
 		}
-		// add info about all elements with the same id and type
-		message += `\n\nElements with the same ID and type:`
-		for (const emitter of this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))) {
-			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
-			if (!doppelganger) {
-				continue;
-			}
-			const fileName = path.basename(emitter.uri);
-			message += `\n- (${resourceScopeToVerbose(doppelganger.scope)}) `;
-			if (doppelganger.id === c.element.id) {
-				message += `[Hovered element] `
-			}
-			for (const gameType of gameTypeList) {
-				if (doppelganger.overriddenBy[gameType]?.has(c.element.id)) {
-					message += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
-				}
-				if (c.element.overriddenBy[gameType]?.has(doppelganger.id)) {
-					message += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
-				}
-			}
-			message += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
-			message += `line: ${emitter.range.start.line + 1}`;
-		}
+		message += this.hoverElementAdditionForSameSignatures(c);
+		message += this.hoverElementAdditionReferences(c);
 		return this.createHover(message, c.element.range);
 	}
 
@@ -304,36 +283,72 @@ export class HoverManager {
 		}
 	}
 
+	private hoverElementAdditionForSameSignatures(c: HoverContextElement): string {
+		let result = `\n\nElements with the same ID and type:`
+		for (const emitter of this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))) {
+			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
+			if (!doppelganger) {
+				continue;
+			}
+			const fileName = path.basename(emitter.uri);
+			result += `\n- (${resourceScopeToVerbose(doppelganger.scope)}) `;
+			if (doppelganger.id === c.element.id) {
+				result += `[Hovered element] `
+			}
+			for (const gameType of gameTypeList) {
+				if (doppelganger.overriddenBy[gameType]?.has(c.element.id)) {
+					result += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
+				}
+				if (c.element.overriddenBy[gameType]?.has(doppelganger.id)) {
+					result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
+				}
+			}
+			result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
+			result += `line: ${emitter.range.start.line + 1}`;
+		}
+		return result;
+	}
+
+	private hoverElementAdditionReferences(c: HoverContextElement): string {
+		const allReceivers = this.project.index.findReceiversForAllGameTypes({ type: ERType.id, group: c.element.elementType, name: c.element.name });
+		return this.hoverAdditionReferences(c, allReceivers);
+	}
+
 	private hoverValueAddiionForDefinitions(c: HoverContextValue): string {
-		let result = "";
 		if (c.value.evaluatedType?.evaluationType !== EvaluationType.basic) {
-			return result;
+			return "";
 		}
 		const definition = c.value.evaluatedType.definition;
 		if (definition.type === TypeID.tagEmitter) {
-			// find all references to this definition
-			const receivers = this.project.index.findReceiversForAllGameTypes({ type: ERType.tag, group: definition.group, name: c.value.text });
-			result += receivers.length ? `\n\nReferences:` : `\n\nNo references found.`;
-			for (const receiver of receivers) {
-				const receiverOwner = this.project.index.getElementByNumericId(receiver.ownerId);
-				if (!receiverOwner) {
-					continue;
-				}
-				// check if this reference relies on the given definition or if this definition is overridden
-				const definitionIsReferredToInGameTypes: Set<GameType> = new Set();
-				for (const gameType of ResourceScopeEligibleGameTypes[receiverOwner.scope]) {
-					for (const emitter of this.project.index.findEmitters(gameType, receiver)) {
-						if (emitter.ownerId === c.element.id) {
-							definitionIsReferredToInGameTypes.add(gameType);
-							break;
-						}
+			const allReceivers = this.project.index.findReceiversForAllGameTypes({ type: ERType.tag, group: definition.group, name: c.value.text });
+			return this.hoverAdditionReferences(c, allReceivers);
+		}
+		else {
+			return "";
+		}
+	}
+
+	private hoverAdditionReferences(c: HoverContextElement | HoverContextValue, receivers: Receiver[]): string {
+		let result = receivers.length ? `\n\nReferences:` : `\n\nNo references found in CSV files.`;
+		for (const receiver of receivers) {
+			const receiverOwner = this.project.index.getElementByNumericId(receiver.ownerId);
+			if (!receiverOwner) {
+				continue;
+			}
+			// check if this reference relies on the given definition or if this definition is overridden
+			const definitionIsReferredToInGameTypes: Set<GameType> = new Set();
+			for (const gameType of ResourceScopeEligibleGameTypes[receiverOwner.scope]) {
+				for (const emitter of this.project.index.findEmitters(gameType, receiver)) {
+					if (emitter.ownerId === c.element.id) {
+						definitionIsReferredToInGameTypes.add(gameType);
+						break;
 					}
 				}
-				const fileName = path.basename(receiver.uri);
-				result += `\n- [${[...definitionIsReferredToInGameTypes].map(gameTypeToVerbose).join(', ')}] `;
-				result += `[${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) `;
-				result += `line: ${receiver.range.start.line + 1}`;
 			}
+			const fileName = path.basename(receiver.uri);
+			result += `\n- [${[...definitionIsReferredToInGameTypes].map(gameTypeToVerbose).join(', ')}] `;
+			result += `${receiverOwner.elementType} ${receiverOwner.name} `;
+			result += `([${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) line: ${receiver.range.start.line + 1})`;
 		}
 		return result;
 	}
