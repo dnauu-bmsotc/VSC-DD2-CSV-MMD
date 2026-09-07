@@ -1,5 +1,8 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
-import { AST, ASTElement, ASTField, ASTValue, EvaluationType, gameTypeList, gameTypeToVerbose, getDependencyInfluencedType, resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose } from './parser';
+import { AST, ASTElement, ASTField, ASTValue, EvaluationType, GameType, gameTypeList,
+	gameTypeToVerbose, getDependencyInfluencedType, ResourceScopeEligibleGameTypes,
+	resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose
+} from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
@@ -104,7 +107,8 @@ export class HoverManager {
 			message += `\n\nEvaluated type: \`${typeEvaluatedToVerbose(c.value.evaluatedType)}\``;
 		}
 		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
-		message += this.hoverValueAddiionForIdReferences(c);
+		message += this.hoverValueAddiionForReferences(c);
+		message += this.hoverValueAddiionForDefinitions(c);
 		return this.createHover(message, c.value.range);
 	}
 
@@ -241,7 +245,7 @@ export class HoverManager {
 		return addition;
 	}
 
-	private hoverValueAddiionForIdReferences(c: HoverContextValue): string {
+	private hoverValueAddiionForReferences(c: HoverContextValue): string {
 		let result = "";
 		const keys = this.findReferenceKeys(c, c.value.evaluatedType);
 		if (keys.length === 0) {
@@ -271,7 +275,7 @@ export class HoverManager {
 		}
 		return result;
 	}
-
+	
 	private findReferenceKeys(c: HoverContextValue, value: TypeEvaluated): KeyInfo[] {
 		const result: KeyInfo[] = [];
 		switch (value?.evaluationType) {
@@ -298,6 +302,40 @@ export class HoverManager {
 				// psv is handled by the this.findWhatValueIsAtPosition function
 				return result;
 		}
+	}
+
+	private hoverValueAddiionForDefinitions(c: HoverContextValue): string {
+		let result = "";
+		if (c.value.evaluatedType?.evaluationType !== EvaluationType.basic) {
+			return result;
+		}
+		const definition = c.value.evaluatedType.definition;
+		if (definition.type === TypeID.tagEmitter) {
+			// find all references to this definition
+			const receivers = this.project.index.findReceiversForAllGameTypes({ type: ERType.tag, group: definition.group, name: c.value.text });
+			result += receivers.length ? `\n\nReferences:` : `\n\nNo references found.`;
+			for (const receiver of receivers) {
+				const receiverOwner = this.project.index.getElementByNumericId(receiver.ownerId);
+				if (!receiverOwner) {
+					continue;
+				}
+				// check if this reference relies on the given definition or if this definition is overridden
+				const definitionIsReferredToInGameTypes: Set<GameType> = new Set();
+				for (const gameType of ResourceScopeEligibleGameTypes[receiverOwner.scope]) {
+					for (const emitter of this.project.index.findEmitters(gameType, receiver)) {
+						if (emitter.ownerId === c.element.id) {
+							definitionIsReferredToInGameTypes.add(gameType);
+							break;
+						}
+					}
+				}
+				const fileName = path.basename(receiver.uri);
+				result += `\n- [${[...definitionIsReferredToInGameTypes].map(gameTypeToVerbose).join(', ')}] `;
+				result += `[${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) `;
+				result += `line: ${receiver.range.start.line + 1}`;
+			}
+		}
+		return result;
 	}
 
 	/**

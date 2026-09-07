@@ -372,7 +372,7 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case TypeID.float:
 			return "Float";
 		case TypeID.id:
-			return `${t.group} ID`;
+			return `${t.group} ID reference`;
 		case TypeID.int:
 			return "Integer";
 		case TypeID.kw:

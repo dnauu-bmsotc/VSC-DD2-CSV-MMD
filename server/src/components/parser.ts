@@ -1,6 +1,7 @@
 import { Diagnostic, DiagnosticSeverity, Position, Range } from 'vscode-languageserver';
 import * as path from 'node:path';
-import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent, TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent,
+	TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { UriString } from '../../../shared/utils';
 
 export type AST = ASTElement[];
@@ -371,4 +372,10 @@ export function resourceScopeToVerbose(scope: ResourceScope): string {
 
 export function elementIsEligibleForGameType(element: ASTElement, gameType: GameType): boolean {
 	return !!element && ResourceScopeEligibleGameTypes[element.scope].includes(gameType);
+}
+
+export function elementsAreOnTheSameLevelAndGameType(e1: ASTElement, e2: ASTElement): boolean {
+	const gt1 = ResourceScopeEligibleGameTypes[e1.scope];
+	const gt2 = ResourceScopeEligibleGameTypes[e2.scope];
+	return (gt1 === gt2) && (ResourceScopePriority[e1.scope] === ResourceScopePriority[e2.scope]);
 }

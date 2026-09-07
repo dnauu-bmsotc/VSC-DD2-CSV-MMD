@@ -1,4 +1,5 @@
-import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID, GameType, gameTypeList, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
+import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID,
+	GameType, gameTypeList, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, UriString } from '../../../shared/utils';
 import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
@@ -103,6 +104,17 @@ export class Index {
 		return [...this.emittersByKey.get(getKey(info)) ?? []];
 	}
 
+	public findReceiversForAllGameTypes(info: KeyInfo): Receiver[] {
+		return [...this.receiversByKey.get(getKey(info)) ?? []];
+	}
+
+	/**
+	 * Searches for emitters for given game type and receiver info.
+	 * 
+	 * If an emitter is not available in the given game type, it is not included in the result.
+	 * 
+	 * If an emitter's owner element is overridden by another element in the given game type, it is also not included.
+	 */
 	public findEmitters(forGameType: GameType, info: KeyInfo): Emitter[] {
 		const emitters = this.findEmittersForAllGameTypes(info);
 		const filtered = emitters.filter(e => {
