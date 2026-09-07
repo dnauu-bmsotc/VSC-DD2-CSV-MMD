@@ -159,7 +159,7 @@ export class HoverManager {
 		}
 		const fieldInfluencer = influencedTypes.influenceSourceField;
 		if (influencedTypes.isDependentOnList) {
-			addition += `\n\nExpected for each value of *${fieldInfluencer.name}* field:`
+			addition += `\n\nExpected for each value of \`${fieldInfluencer.name}\` field:`
 			if (this.listHasEqualObjects(influencedTypes.types)) {
 				const type = influencedTypes.types[0];
 				if (type) {
@@ -230,7 +230,7 @@ export class HoverManager {
 		if (keys.length === 0) {
 			return result;
 		}
-		result += `\n\nDefinitions:`;
+		result += `\n\nProvided definitions:`;
 		for (const key of keys) {
 			const emitters = this.project.index.findEmittersForAllGameTypes(key);
 			for (const emitter of emitters) {
@@ -248,8 +248,9 @@ export class HoverManager {
 						result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
 					}
 				}
+				result += `${element.elementType} ${element.name} `;
 				result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
-				result += `line: ${emitter.range.start.line + 1}`;
+				result += `line ${emitter.range.start.line + 1}`;
 			}
 		}
 		return result;
@@ -304,7 +305,7 @@ export class HoverManager {
 				}
 			}
 			result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
-			result += `line: ${emitter.range.start.line + 1}`;
+			result += `line ${emitter.range.start.line + 1}`;
 		}
 		return result;
 	}
@@ -329,7 +330,7 @@ export class HoverManager {
 	}
 
 	private hoverAdditionReferences(c: HoverContextElement | HoverContextValue, receivers: Receiver[]): string {
-		let result = receivers.length ? `\n\nReferences:` : `\n\nNo references found in CSV files.`;
+		let result = receivers.length ? `\n\nReferenced by:` : `\n\nNo references found in CSV files.`;
 		for (const receiver of receivers) {
 			const receiverOwner = this.project.index.getElementByNumericId(receiver.ownerId);
 			if (!receiverOwner) {
@@ -348,7 +349,7 @@ export class HoverManager {
 			const fileName = path.basename(receiver.uri);
 			result += `\n- [${[...definitionIsReferredToInGameTypes].map(gameTypeToVerbose).join(', ')}] `;
 			result += `${receiverOwner.elementType} ${receiverOwner.name} `;
-			result += `([${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) line: ${receiver.range.start.line + 1})`;
+			result += `([${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) line ${receiver.range.start.line + 1})`;
 		}
 		return result;
 	}
