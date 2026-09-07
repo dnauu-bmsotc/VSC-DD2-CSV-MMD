@@ -1,6 +1,8 @@
 import { DiagnosticSeverity, Range } from 'vscode-languageserver';
-import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated, EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, gameTypeList } from './parser';
-import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionSequence, TypeDefinitionTagReceiver, TypeID, typeToVerbose, ValuesDescription } from './schema';
+import { ASTElement, ASTField, ASTValue, DiagnosticType, MmdDiagnostic, parsePSV, TypeEvaluated,
+	EvaluationType, GameType, ResourceScopeEligibleGameTypes, ResourceScope, gameTypeToVerbose, gameTypeList } from './parser';
+import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionID, TypeDefinitionKW,
+	TypeDefinitionSequence, TypeDefinitionTagReceiver, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { Emitter, ERType, getKeyFromElement, Index, KeyInfo} from '.';
 
 interface ValidationContext {

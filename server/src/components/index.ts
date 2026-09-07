@@ -167,6 +167,15 @@ export class Index {
 		return this.elements.size;
 	}
 
+	public getUriFromElement(element: ASTElement) {
+		const idEmitters = this.emittersByKey.get(getKey(getKeyFromElement(element)));
+		for (const emitter of idEmitters ?? []) {
+			if (emitter.ownerId === element.id) {
+				return emitter.uri;
+			}
+		}
+	}
+
 	private updateOverridesInElements(key: KeyInfo, ids: ElementNumberID[]) {
 		for (const id of ids) {
 			for (const gameType of gameTypeList) {

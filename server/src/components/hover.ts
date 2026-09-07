@@ -1,13 +1,24 @@
 import { HoverParams, Hover, MarkupKind, Position, Range } from 'vscode-languageserver';
 import { AST, ASTElement, ASTField, ASTValue, EvaluationType, GameType, gameTypeList,
 	gameTypeToVerbose, getDependencyInfluencedType, ResourceScopeEligibleGameTypes,
-	resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose
+	ResourceScopePriority, resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose
 } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
 import { ERType, getKeyFromElement, KeyInfo, Receiver } from '.';
 import * as path from 'node:path';
+
+type HoverContext =
+	| HoverContextValue
+	| HoverContextField
+	| HoverContextElement
+	| HoverContextNone
+
+interface HoverContextValue   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value: ASTValue; }
+interface HoverContextField   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value?: never; }
+interface HoverContextElement { uri: UriString, position: Position; element: ASTElement; field?: never;   value?: never; }
+interface HoverContextNone    { uri: UriString, position: Position; element?: never;     field?: never;   value?: never; }
 
 export class HoverManager {
 	constructor(
@@ -106,9 +117,9 @@ export class HoverManager {
 		if (c.value.evaluatedType) {
 			message += `\n\nEvaluated type: \`${typeEvaluatedToVerbose(c.value.evaluatedType)}\``;
 		}
-		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
 		message += this.hoverValueAddiionForReferences(c);
 		message += this.hoverValueAddiionForDefinitions(c);
+		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
 		return this.createHover(message, c.value.range);
 	}
 
@@ -187,40 +198,55 @@ export class HoverManager {
 	}
 
 	private listHasEqualObjects(l: any[]) {
-		return (l.length === 0) || l.every(x => this.objectsAreEqual(x, l[0]));
-	}
-
-	private objectsAreEqual(a: any, b: any) {
-		return JSON.stringify(a) === JSON.stringify(b);
+		return (l.length === 0) || l.every(x => JSON.stringify(x) === JSON.stringify(l[0]));
 	}
 
 	private hoverValueAddiionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
 		let addition = "";
+		// find the field-influencer
 		const groupIfThisFieldIsDependent = typeHasDependent(fieldInputDefinition);
 		const fieldInfluencer = groupIfThisFieldIsDependent ?? c.field.name;
+		// table view is not provided if the field-influencer by definition accepts only one value
 		if (elementDefinition.fields[fieldInfluencer]?.input.type !== TypeID.list) {
 			return "";
 		}
-		const connectedFields = c.element.fields
-			.filter(field => {
-				const group = typeHasDependent(elementDefinition.fields[field.name].input);
-				if ((fieldInfluencer === group) || (fieldInfluencer === field.name)) {
+		// find all fields that depend on the field-influencer
+		const connectedFields = Object.keys(elementDefinition.fields)
+			.filter(fieldName => {
+				const group = typeHasDependent(elementDefinition.fields[fieldName].input);
+				if ((group === fieldInfluencer) || (fieldName === fieldInfluencer)) {
 					return true;
 				}
 			});
 		if (connectedFields.length < 2) {
 			return "";
 		}
-		const tableObj = Object.fromEntries(c.element.fields
-			.filter(field => connectedFields.find(f => f.name === field.name))
-			.map(field => [field.name, field.values.map(v => v.text)])
-		);
-		if (Object.keys(tableObj).length < 2) {
-			return "";
+		// find same scope elements with the same signature
+		const sameScopeElements = this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))
+			.map(idEmitter => this.project.index.getElementByNumericId(idEmitter.ownerId))
+			.filter(element => !!element)
+			.filter(element => (ResourceScopePriority[element.scope] === ResourceScopePriority[c.element.scope]));
+			
+		const tableObjects = [];
+		for (const element of sameScopeElements) {
+			const fieldsInElement = element.fields.filter(f => connectedFields.indexOf(f.name) !== -1);
+			const tableObj = Object.fromEntries(fieldsInElement.map(field => [field.name, field.values.map(v => v.text)]));
+			if (Object.keys(tableObj).length < 2) {
+				continue;
+			}
+			const uri = this.project.index.getUriFromElement(element);
+			if (!uri) {
+				continue;
+			}
+			const filename = path.basename(uri).replace(/.group.csv$/i, "");
+			tableObjects.push({
+				table: tableObj,
+				idx: (element.id === c.element.id) ? this.findHoveredValuePosition(c) : null,
+				link: `[${filename}](${this.getJumpUri(uri, element.range)})&nbsp;(line&nbsp;${element.range.start.line})`,
+			});
 		}
-		const idx = this.findHoveredValuePosition(c);
 		addition += `\n\n`;
-		addition += dictToMarkdownTable(tableObj, idx);
+		addition += this.dictsToMarkdownTable(tableObjects);
 		return addition;
 	}
 
@@ -354,6 +380,57 @@ export class HoverManager {
 		return result;
 	}
 
+	private dictsToMarkdownTable(data: { table: Record<string, string[]>, idx: number | null, link: string }[]): string {
+		const allHeaders = [...new Set(data.map(entry => Object.keys(entry.table)).flat())];
+		let result = `\nTable data (gathered from ${data.map(entry => entry.link).join(', ')}):`;
+
+		// remove columns with no values
+		for (let i = allHeaders.length - 1; i >= 0; i--) {
+			const allEmpty = data.every(entry => entry.table[allHeaders[i]]?.length === 0);
+			if (allEmpty) {
+				allHeaders.splice(i, 1);
+			}
+		}
+
+		result += `\n| № | ${allHeaders.join(" | ")} | File |`;
+		result += `\n| --- | ${allHeaders.map(() => "---").join(" | ")} | --- |`;
+
+		// replace chances with percentages
+		const hasMChances = data.every(entry => Object.hasOwn(entry.table, "m_chances"));
+		const hasConditions = allHeaders.includes("m_conditions");
+		const formatNumber = (num: number) => parseFloat(num.toFixed(2));
+		if (hasMChances && !hasConditions) {
+			const totalChances = data
+				.map(entry => entry.table["m_chances"].map(cell => parseFloat(cell)))
+				.flat().reduce((acc, current) => acc += current, 0);
+			for (const entry of data) {
+				const m_chances = entry.table["m_chances"].map(cell => parseFloat(cell));
+				const weightedValues = m_chances.map(val => `${formatNumber(val)}&nbsp;(${formatNumber(val / totalChances * 100).toFixed(2)}%)`);
+				entry.table["m_chances"] = weightedValues;
+			}
+		}
+
+		let entryIndex = 1;
+		for (const entry of data) {
+			const maxRows = Math.max(...Object.values(entry.table).map(arr => arr.length));
+			for (let i = 0; i < maxRows; i++) {
+				const row = allHeaders.map(header => {
+					if (!Object.hasOwn(entry.table, header)) {
+						return "";
+					}
+					const cellValue = entry.table[header][i];
+					if (!cellValue) {
+						return "";
+					}
+					return (i === entry.idx ? `**${cellValue}**` : cellValue);
+				});
+				result += `\n| **${entryIndex}** | ${row.join(" | ")} | ${entry.link} |`;
+				entryIndex += 1;
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Searches the position of the hovered value.
 	 * 
@@ -370,52 +447,4 @@ export class HoverManager {
 		}
 		return 0;
 	}
-}
-
-type HoverContext =
-	| HoverContextValue
-	| HoverContextField
-	| HoverContextElement
-	| HoverContextNone
-
-interface HoverContextValue   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value: ASTValue; }
-interface HoverContextField   { uri: UriString, position: Position; element: ASTElement; field: ASTField; value?: never; }
-interface HoverContextElement { uri: UriString, position: Position; element: ASTElement; field?: never;   value?: never; }
-interface HoverContextNone    { uri: UriString, position: Position; element?: never;     field?: never;   value?: never; }
-
-function dictToMarkdownTable(data: Record<string, string[]>, highlightRow: number): string {
-	const m_chancesReplaced = replaceChancesWithWeightedValues(data);
-	const headers = Object.keys(data);
-	if (headers.length === 0) {
-		return "";
-	}
-	const maxRows = Math.max(...Object.values(data).map(arr => arr.length));
-	let result = `| № | ${headers.join(" | ")} |`;
-	result += `\n| --- | ${headers.map(() => "---").join(" | ")} |`;
-	for (let i = 0; i < maxRows; i++) {
-		const row = headers.map(header => {
-			const cellValue = data[header][i];
-			if (!cellValue) {
-				return "";
-			}
-			return (i === highlightRow ? `**${cellValue}**` : cellValue);
-		});
-		result += `\n| **${i + 1}** | ${row.join(" | ")} |`;
-	}
-	if (m_chancesReplaced) {
-		result += `\n\nChances are calculated with no condition input.`
-	}
-	return result;
-}
-
-function replaceChancesWithWeightedValues(tableObj: Record<string, string[]>): boolean {
-	const m_chances = tableObj["m_chances"]?.map(cell => parseFloat(cell));
-	if (m_chances?.every(n => typeof n === 'number')) {
-		const total = m_chances.reduce((sum, val) => sum + val, 0);
-		const formatNumber = (num: number) => parseFloat(num.toFixed(2));
-		const weightedValues = m_chances.map(val => `${formatNumber(val)} (${formatNumber(val / total * 100).toFixed(2)}%)`);
-		tableObj["m_chances"] = weightedValues;
-		return true;
-	}
-	return false;
 }
