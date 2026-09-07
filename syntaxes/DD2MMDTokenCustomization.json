@@ -2,7 +2,8 @@
     "MMD": {
         "semanticRules": {
             "id": "#ffd9d9",
-            "tag": "#e6d487",
+            "tagEmitter": "#f5d756",
+            "tagReceiver": "#c3d145",
             "keyword": "#d6f7be"
         },
         "textMateRules": [
@@ -21,19 +22,19 @@
             {
                 "scope": "keyword.control.start.dd2mmd",
                 "settings": {
-                    "foreground": "#8dd945"
+                    "foreground": "#d6b085"
                 }
             },
             {
                 "scope": "keyword.control.end.dd2mmd",
                 "settings": {
-                    "foreground": "#8dd945"
+                    "foreground": "#d6b085"
                 }
             },
             {
                 "scope": "entity.name.element-id.dd2mmd",
                 "settings": {
-                    "foreground": "#fc845b"
+                    "foreground": "#fc8c60"
                 }
             },
             {
@@ -77,8 +78,9 @@
     "PHombie": {
         "semanticRules": {
             "id": "#ffd9d9",
-            "tag": "#e6d487",
-            "keyword": "#ffae00"
+            "tagEmitter": "#f5d756",
+            "tagReceiver": "#c3d145",
+            "keyword": "#d6f7be"
         },
         "textMateRules": [
             {

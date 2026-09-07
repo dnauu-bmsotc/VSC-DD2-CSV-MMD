@@ -4,7 +4,7 @@ import { TypeDefinition, TypeID } from './schema';
 import { UriString } from '../../../shared/utils';
 import { ASTValue, EvaluationType, TypeEvaluated } from './parser';
 
-const semanticTokenDict = { 'id': 0, 'tag': 1, 'keyword': 2 };
+const semanticTokenDict = { 'id': 0, 'tagEmitter': 1, 'tagReceiver': 2, 'keyword': 3 };
 const semanticTokenTypes = [...Object.keys(semanticTokenDict)];
 
 export const semanticTokensLegend: SemanticTokensLegend = {
@@ -81,10 +81,10 @@ export class SemanticTokensProvider {
 				this.addToken(builder, range, semanticTokenDict.id);
 				break;
 			case TypeID.tagEmitter:
-				this.addToken(builder, range, semanticTokenDict.tag);
+				this.addToken(builder, range, semanticTokenDict.tagEmitter);
 				break;
 			case TypeID.tagReceiver:
-				this.addToken(builder, range, semanticTokenDict.tag);
+				this.addToken(builder, range, semanticTokenDict.tagReceiver);
 				break;
 			case TypeID.kw:
 				this.addToken(builder, range, semanticTokenDict.keyword);
