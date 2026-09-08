@@ -186,7 +186,8 @@ export class Parser {
 					}
 				}
 				else if (line.startsWith('//') || line.startsWith('#')) {
-					pushDiagnostic("Comments might cause errors", lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
+					const message = "Comments might cause errors. This warning can be turned of in the extension settings.";
+					pushDiagnostic(message, lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
 				}
 				else {
 					if (line.trim()) {

@@ -117,9 +117,10 @@ export class HoverManager {
 		if (c.value.evaluatedType) {
 			message += `\n\nEvaluated type: \`${typeEvaluatedToVerbose(c.value.evaluatedType)}\``;
 		}
-		message += this.hoverValueAddiionForReferences(c);
-		message += this.hoverValueAddiionForDefinitions(c);
-		message += this.hoverValueAddiionForDependentFields(c, elementDefinition, fieldInputDefinition);
+		message += this.hoverValueAdditionForKeywords(c);
+		message += this.hoverValueAdditionForReferences(c);
+		message += this.hoverValueAdditionForDefinitions(c);
+		message += this.hoverValueAdditionForDependentFields(c, elementDefinition, fieldInputDefinition);
 		return this.createHover(message, c.value.range);
 	}
 
@@ -201,7 +202,7 @@ export class HoverManager {
 		return (l.length === 0) || l.every(x => JSON.stringify(x) === JSON.stringify(l[0]));
 	}
 
-	private hoverValueAddiionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
+	private hoverValueAdditionForDependentFields(c: HoverContextValue, elementDefinition: Element, fieldInputDefinition: TypeDefinition): string {
 		let addition = "";
 		// find the field-influencer
 		const groupIfThisFieldIsDependent = typeHasDependent(fieldInputDefinition);
@@ -242,21 +243,35 @@ export class HoverManager {
 			tableObjects.push({
 				table: tableObj,
 				idx: (element.id === c.element.id) ? this.findHoveredValuePosition(c) : null,
-				link: `[${filename}](${this.getJumpUri(uri, element.range)})&nbsp;(line&nbsp;${element.range.start.line})`,
+				link: `[${filename}](${this.getJumpUri(uri, element.range)})&nbsp;(line&nbsp;${element.range.start.line + 1})`,
 			});
 		}
 		addition += `\n\n`;
 		addition += this.dictsToMarkdownTable(tableObjects);
 		return addition;
 	}
+	
+	private hoverValueAdditionForKeywords(c: HoverContextValue): string {
+		if (c.value.evaluatedType?.evaluationType === EvaluationType.basic) {
+			const definition = c.value.evaluatedType.definition;
+			if (definition.type === TypeID.kw) {
+				const kwgroup = this.project.compiledData.keywords[definition.group];
+				const valueDescription = kwgroup?.[c.value.text];
+				if (valueDescription && valueDescription.comment) {
+					return `\n\nComment: ${valueDescription.comment}`;
+				}
+			}
+		}
+		return "";
+	}
 
-	private hoverValueAddiionForReferences(c: HoverContextValue): string {
+	private hoverValueAdditionForReferences(c: HoverContextValue): string {
 		let result = "";
 		const keys = this.findReferenceKeys(c, c.value.evaluatedType);
 		if (keys.length === 0) {
 			return result;
 		}
-		result += `\n\nProvided definitions:`;
+		result += `\n\nDefined in:`;
 		for (const key of keys) {
 			const emitters = this.project.index.findEmittersForAllGameTypes(key);
 			for (const emitter of emitters) {
@@ -311,7 +326,7 @@ export class HoverManager {
 	}
 
 	private hoverElementAdditionForSameSignatures(c: HoverContextElement): string {
-		let result = `\n\nElements with the same ID and type:`
+		let result = `\n\nElements with the same ID and type (including this element):`
 		for (const emitter of this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element))) {
 			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
 			if (!doppelganger) {
@@ -341,7 +356,7 @@ export class HoverManager {
 		return this.hoverAdditionReferences(c, allReceivers);
 	}
 
-	private hoverValueAddiionForDefinitions(c: HoverContextValue): string {
+	private hoverValueAdditionForDefinitions(c: HoverContextValue): string {
 		if (c.value.evaluatedType?.evaluationType !== EvaluationType.basic) {
 			return "";
 		}
