@@ -57,6 +57,7 @@ export const enum DiagnosticType {
 	FieldValue		= 1 << 4,
 	EmptyField		= 1 << 5,
 	NotAddable		= 1 << 6,
+	Whitespace		= 1 << 7,
 }
 
 export enum GameType {
@@ -195,14 +196,37 @@ export class Parser {
 					}
 				}
 			}
+			
+			diagnostics.push(...this.markWhitespaces(line, i));
 		}
 		return {
 			AST: elements,
 			diagnostics: diagnostics,
 		};
 	}
-}
 
+	private markWhitespaces(line: string, lineNumber: number): MmdDiagnostic[] {
+		const regex = /\s+/g; 
+		const matches = [...line.matchAll(regex)];
+		const result: MmdDiagnostic[] = [];
+		for (const match of matches) {
+			const startChar = match.index;
+			const endChar = startChar + match[0].length;
+			result.push({
+				diagnostic: {
+					severity: DiagnosticSeverity.Information,
+					range: {
+						start: { line: lineNumber, character: startChar },
+						end: { line: lineNumber, character: endChar },
+					},
+					message: `Spaces count as individual characters. This message can be disabled in the extension settings.`,
+				},
+				flags: DiagnosticType.Whitespace,
+			});
+		}
+		return result;
+	}
+}
 
 /**
  * Tries to get a list of types that dependent field can/needs to provide.

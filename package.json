@@ -85,7 +85,8 @@
 						"validationFieldName": true,
 						"validationFieldValues": true,
 						"validationFieldEmpty": false,
-						"validationAddables": true
+						"validationAddables": true,
+						"validationWhitespace": true
 					},
 					"properties": {
 						"autocomplete": {
@@ -127,6 +128,10 @@
 						"validationAddables": {
 							"type": "boolean",
 							"description": "Warn about repeating non-addable elements with the same type and ID."
+						},
+						"validationWhitespace": {
+							"type": "boolean",
+							"description": "Warn about whitespaces."
 						}
 					}
 				}

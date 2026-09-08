@@ -125,7 +125,7 @@ export class HoverManager {
 	}
 
 	private hoverOverField(c: HoverContextField, elementDefinition: Element, fieldDefinition: Field): Hover | null {
-		let message = `(Field) ${c.field.name}`;
+		let message = `(Field) "${c.field.name}"`;
 		message += `\n\nExpected input: \`${typeToVerbose(fieldDefinition.input)}\``;
 		if (fieldDefinition.comment) {
 			message += `\n\nComment: ${fieldDefinition.comment}`;
@@ -135,7 +135,7 @@ export class HoverManager {
 	}
 
 	private hoverOverElement(c: HoverContextElement, elementDefinition: Element): Hover | null {
-		let message = `(Element) ${c.element.name}`;
+		let message = `(Element) "${c.element.name}"`;
 		message += `\n\nType: \`${elementDefinition.name}\` (${elementDefinition.addable ? "Addable" : "Not Addable"})`;
 		if (elementDefinition.comment) {
 			message += `\n\nComment: ${elementDefinition.comment}`;

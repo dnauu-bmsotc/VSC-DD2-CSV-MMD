@@ -51,6 +51,7 @@ export class DiagnosticsPublisher {
 				|| (features.validationFieldName		&& (d.flags & DiagnosticType.FieldName))
 				|| (features.validationComments 		&& (d.flags & DiagnosticType.Comment))
 				|| (features.validationAddables			&& (d.flags & DiagnosticType.NotAddable))
+				|| (features.validationWhitespace		&& (d.flags & DiagnosticType.Whitespace))
 			) {
 				result.push(d.diagnostic);
 			}
