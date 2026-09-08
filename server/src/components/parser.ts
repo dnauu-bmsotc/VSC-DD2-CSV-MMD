@@ -197,7 +197,9 @@ export class Parser {
 				}
 			}
 			
-			diagnostics.push(...this.markWhitespaces(line, i));
+			if (current) { // whitespaces outside elements are not checked.
+				diagnostics.push(...this.markWhitespaces(line, i));
+			}
 		}
 		return {
 			AST: elements,

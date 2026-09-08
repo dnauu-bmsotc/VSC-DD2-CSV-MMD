@@ -178,7 +178,10 @@ export class ProjectManager {
 		);
 
 		if (newAstResult.AST.length !== fileState.ast.length) {
-			console.error(`The number of elements in the model AST (${fileState.ast.length}) does not match the number of elements in the actual AST (${newAstResult.AST.length}).`);
+			const message = `The number of elements in the model AST (${fileState.ast.length}) does not` +
+			`match the number of elements in the actual AST (${newAstResult.AST.length}).`
+			this.replaceWholeFile(uri, newText, true);
+			console.error(message);
 		}
 		return;
 	}

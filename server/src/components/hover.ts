@@ -247,7 +247,7 @@ export class HoverManager {
 			});
 		}
 		addition += `\n\n`;
-		addition += this.dictsToMarkdownTable(tableObjects);
+		addition += this.dictsToMarkdownTable(c.element.name, tableObjects);
 		return addition;
 	}
 	
@@ -395,13 +395,13 @@ export class HoverManager {
 		return result;
 	}
 
-	private dictsToMarkdownTable(data: { table: Record<string, string[]>, idx: number | null, link: string }[]): string {
+	private dictsToMarkdownTable(name: string, data: { table: Record<string, string[]>, idx: number | null, link: string }[]): string {
 		const allHeaders = [...new Set(data.map(entry => Object.keys(entry.table)).flat())];
-		let result = `\nTable data (gathered from ${data.map(entry => entry.link).join(', ')}):`;
+		let result = `\n${name} table data (gathered from ${data.map(entry => entry.link).join(', ')}):`;
 
 		// remove columns with no values
 		for (let i = allHeaders.length - 1; i >= 0; i--) {
-			const allEmpty = data.every(entry => entry.table[allHeaders[i]]?.length === 0);
+			const allEmpty = data.every(entry => (entry.table[allHeaders[i]] ?? []).length === 0);
 			if (allEmpty) {
 				allHeaders.splice(i, 1);
 			}

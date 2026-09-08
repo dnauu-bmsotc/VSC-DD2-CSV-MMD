@@ -275,15 +275,19 @@ export class Semantic {
 					};
 				}
 				if ((influenceSourceSchema.type === TypeID.list)) {
-					if ((definition.type === TypeID.dependentRequired) && (influenceSourceField.values.length != c.field.values.length)
-						|| (definition.type === TypeID.dependent) && (influenceSourceField.values.length < c.field.values.length))
-					return {
-						diagnostic: {
-							severity: DiagnosticSeverity.Error,
-							range: c.field.range,
-							message: `Field-influencer ${influenceSourceField.name} has a different number of values (${influenceSourceField.values.length}) than this field (${c.field.values.length}).`,
-						},
-					flags: DiagnosticType.FieldValue,
+					const requiredAndNotSatisfied = (definition.type === TypeID.dependentRequired) && (influenceSourceField.values.length != c.field.values.length);
+					const dependentAndTooManyValues = (definition.type === TypeID.dependent) && (influenceSourceField.values.length < c.field.values.length);
+					if (requiredAndNotSatisfied || dependentAndTooManyValues) {
+						const message = `Field-influencer ${influenceSourceField.name} has a different number of` +
+							`values (${influenceSourceField.values.length}) than this field (${c.field.values.length}).`;
+						return {
+							diagnostic: {
+								severity: DiagnosticSeverity.Error,
+								range: c.field.range,
+								message: message,
+							},
+							flags: DiagnosticType.FieldValue,
+						}
 					};
 				}
 				const influenceKWGroup = this.keywords[influenceSourceSchemaContent.group];
