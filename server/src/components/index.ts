@@ -387,13 +387,18 @@ export class Index {
 				return true;
 
 			case TypeID.sub:
-				// I don't know how substats work so this currently does nothing.
 				try {
 					const KWGroup = c.keywords[definition.group];
 					const valueDesc = KWGroup[values[0].text];
 					const derivedType = valueDesc.influences?.[definition.subtypeString];
-					const substatName = values[1];
-					const substatValue = values[2];
+					if (!derivedType) {
+						return true;
+					}
+					this.extractEmittersAndReceivers([values[1]], derivedType.input, c);
+					if (!definition.subtypeValueType) {
+						return true;
+					}
+					this.extractEmittersAndReceivers([values[2]], definition.subtypeValueType, c);
 				}
 				finally {
 					return true;
