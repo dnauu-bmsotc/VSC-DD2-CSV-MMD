@@ -58,6 +58,8 @@ export type Element = {
 	 * false to ignore this element
 	 */
 	process: boolean;
+	graphViewExpand: boolean,
+	graphViewExtraConnections: string[],
 };
 
 export type Field = {
@@ -247,6 +249,8 @@ export function readFieldsDescription(filePathFields: string, filePathElements: 
 			comment: elementData["Comment"],
 			process: elementData["Process"] === "Yes",
 			addable: elementData["Addable"] === "Yes",
+			graphViewExpand: elementData["GraphViewExpand"] === "Yes",
+			graphViewExtraConnections: elementData["GraphViewExtraConnections"]?.split(",") ?? [],
 		};
 		for (const field of fieldsData) {
 			const inputString = field["Input Type"] ?? "";

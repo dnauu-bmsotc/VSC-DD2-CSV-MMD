@@ -20,6 +20,21 @@
 	],
 	"main": "./client/out/client/src/extension",
 	"contributes": {
+		"commands": [
+			{
+				"command": "DD2CSVMMD.graphView",
+				"title": "DD2CSV: Show element graph"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "DD2CSVMMD.graphView",
+					"group": "navigation",
+					"when": "editorTextFocus"
+				}
+			]
+		},
 		"languages": [
 			{
 				"id": "DD2MMD",

@@ -1,6 +1,4 @@
 export interface DD2CSVMMDSettings {
-	// validateProjectFiles: boolean;
-	// indexProjectFiles: boolean;
 	externalDirectories: string[];
 	features: {
 		autocomplete: boolean;
@@ -19,4 +17,29 @@ export interface DD2CSVMMDSettings {
 
 export interface InitializationSettings {
 	configuration: DD2CSVMMDSettings,
+}
+
+export interface GraphViewDataRequest {
+	uri: string;
+	line: number;
+}
+
+export type GraphViewDataAnswer = GraphData | null;
+
+export interface GraphData {
+    nodes: GraphDataNode[];
+    edges: GraphDataEdge[];
+}
+
+export interface GraphDataNode {
+	id: number;
+	label: string;
+	color: string;
+	[key: string]: any;
+}
+
+export interface GraphDataEdge {
+	from: number;
+	to: number;
+	[key: string]: any;
 }

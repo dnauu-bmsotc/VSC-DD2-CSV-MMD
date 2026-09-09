@@ -176,6 +176,14 @@ export class Index {
 		}
 	}
 
+	public getReceiversByElementId(id: ElementNumberID) {
+		return this.receiversByElement.get(id);
+	}
+
+	public getElements() {
+		return this.elements.values();
+	}
+
 	private updateOverridesInElements(key: KeyInfo, ids: ElementNumberID[]) {
 		for (const id of ids) {
 			for (const gameType of gameTypeList) {

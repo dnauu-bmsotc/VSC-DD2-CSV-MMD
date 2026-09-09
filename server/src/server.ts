@@ -29,6 +29,8 @@ import { assembleReadme } from './components/readme';
 import { compileData } from './components/schema';
 import { DiagnosticsPublisher } from './components/diagnostics';
 import { HoverManager } from './components/hover';
+import { getGraphData } from './components/graph';
+import { GameType } from './components/parser';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -181,6 +183,15 @@ connection.languages.semanticTokens.on(
 		return semanticTokensProvider.provide(makeUriString(params.textDocument.uri));
 	}
 );
+
+connection.onRequest('custom/fetchGraphViewData', (params) => {
+    const { uri, line } = params;
+	const file = project.getFileState(uri);
+	if (!file) {
+		return null;
+	}
+	return getGraphData(file.ast, line, GameType.Expedition, project.index, project.compiledData.schema);
+});
 
 // This handler provides the initial list of the completion items.
 connection.onCompletion(

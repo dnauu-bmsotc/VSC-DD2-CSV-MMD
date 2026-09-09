@@ -16,6 +16,7 @@ import {
 
 import { updateTokenColors } from './components/updateTokenColors';
 import { DD2CSVMMDSettings, InitializationSettings } from '../../shared/settings';
+import { createGraphViewDisposable } from './components/graphView';
 
 let client: LanguageClient;
 
@@ -66,6 +67,8 @@ export function activate(context: ExtensionContext) {
 		serverOptions,
 		clientOptions
 	);
+
+	context.subscriptions.push(createGraphViewDisposable(client));
 
 	// Start the client. This will also launch the server
 	client.start();

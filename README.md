@@ -245,6 +245,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataClass</b></summary>
 Addable: No.
+Main defining element of heroes and enemies
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -303,6 +304,7 @@ Addable: No.
 <details>
 <summary><b>ActorDataEffects</b></summary>
 Addable: Yes.
+Adds triggered effects to Heroes, Enemies, Skills, etc.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -452,6 +454,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataExternalBuffs</b></summary>
 Addable: Yes.
+Adds buffs to Heroes, Enemies, Paths, Items, etc.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |

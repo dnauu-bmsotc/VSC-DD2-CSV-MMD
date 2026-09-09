@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/10.1.2/standalone/umd/vis-network.min.js"></script>
+    <style type="text/css">
+        html, body { width: 100%; height: 100%; background-color: wheat; }
+        #graph { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div id="graph"></div>
+    <script type="text/javascript">
+        const nodes = [];
+        const edges = [];
+        const container = document.getElementById('graph');
+        const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+        const options = { };
+        const network = new vis.Network(container, data, options);
+    </script>
+</body>
+</html>
