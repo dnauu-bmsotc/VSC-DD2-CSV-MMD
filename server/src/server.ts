@@ -90,10 +90,10 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	}
 
 	const workspaceUri = params.workspaceFolders?.[0].uri;
-	if (!workspaceUri) {
-		throw new Error("Workspace required");
+	let workspace = null;
+	if (workspaceUri) {
+		workspace = URI.parse(workspaceUri);
 	}
-	const workspace = URI.parse(workspaceUri);
 	
 	const compiledData = await compileData();
 	assembleReadme(compiledData);

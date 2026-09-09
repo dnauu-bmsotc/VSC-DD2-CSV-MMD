@@ -34,7 +34,7 @@
 				},
 				{
 					"name": "constant.language.boolean.dd2mmd",
-					"match": "\\b(True|False)\\b"
+					"match": "(?i)\\b(True|False)\\b"
 				},
 				{
 					"name": "constant.numeric.dd2mmd",

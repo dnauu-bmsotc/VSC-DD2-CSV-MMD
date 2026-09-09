@@ -187,8 +187,11 @@ export class Parser {
 					}
 				}
 				else if (line.startsWith('//') || line.startsWith('#')) {
-					const message = "Comments might cause errors. This warning can be turned of in the extension settings.";
+					const message = "Comments might cause errors. This warning can be turned off in the extension settings.";
 					pushDiagnostic(message, lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
+				}
+				else if (this.stringHasOnlyCommasAndSpaces(line)) {
+					// nothing
 				}
 				else {
 					if (line.trim()) {
@@ -228,6 +231,8 @@ export class Parser {
 		}
 		return result;
 	}
+
+	private stringHasOnlyCommasAndSpaces = (str: string) => /^[ ,]+$/.test(str);
 }
 
 /**
@@ -353,7 +358,7 @@ export function getFileScope(fpath: string | UriString) {
 			break;
 	}
 
-	const overrider = grandParentDirName === "Overrides";
+	const overrider = (grandParentDirName === "Overrides") || (parentDirName === "Overrides");
 	if (overrider) {
 		switch (scope) {
 			case ResourceScope.Expedition:

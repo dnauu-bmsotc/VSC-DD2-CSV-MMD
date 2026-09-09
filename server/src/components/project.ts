@@ -44,9 +44,12 @@ export class ProjectManager {
 		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords, this.index);
 	}
 
-	public async initialize(workspaceRoot: URI) {
+	public async initialize(workspaceRoot: URI | null) {
 		const t0 = performance.now();
-		const dirs = [workspaceRoot.fsPath, ...this.configuration.externalDirectories];
+		const dirs = [...this.configuration.externalDirectories];
+		if (workspaceRoot) {
+			dirs.unshift(workspaceRoot.fsPath);
+		}
 		const gettingDirs = dirs.map(async dir => await this.findCsvFiles(dir));
 		const filepaths = (await Promise.all(gettingDirs)).flat(2);
 		// parse all files

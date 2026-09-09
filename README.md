@@ -1141,6 +1141,7 @@ Addable: No.
 |stage_coach_armor|integer|Change stagecoach armor. Can be negative.||
 |stage_coach_wheels|integer|Change stagecoach wheels. Can be negative.||
 |torch|integer|Change torch value. From -100 to 100.||
+|m_HealthHealAmountRange|integer|||
 </details>
 
 <details>
@@ -1645,7 +1646,7 @@ Addable: No.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_ActorStatSubType|keyword||keyword: bleed, blight, burn, death, debuff, disease, move, positivetoken, stress, stun<br>|
+|m_ActorStatSubType|Resist&nbsp;ID|||
 |m_ActorStatType|keyword||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |m_BuffTags|List(Buff&nbsp;Tag-)|||
 |m_CritMod|float|||

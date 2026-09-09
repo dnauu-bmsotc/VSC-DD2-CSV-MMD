@@ -416,7 +416,7 @@ export class Semantic {
 		return result;
 	}
 
-	private isBoolString = (str: string) => (str === "True") || (str === "False");
+	private isBoolString = (str: string) => (str.toLowerCase() === "true") || (str.toLowerCase() === "false");
 
 	private isNumericString = (str: string) => !isNaN(Number(str));
 
