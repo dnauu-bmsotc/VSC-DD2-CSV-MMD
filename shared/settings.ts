@@ -1,6 +1,4 @@
 export interface DD2CSVMMDSettings {
-	// validateProjectFiles: boolean;
-	// indexProjectFiles: boolean;
 	externalDirectories: string[];
 	features: {
 		autocomplete: boolean;

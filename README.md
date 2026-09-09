@@ -203,6 +203,7 @@ Addable: No.
 <details>
 <summary><b>ActOut</b></summary>
 Addable: No.
+Defining element of act outs and banters.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -236,6 +237,7 @@ Addable: No.
 <details>
 <summary><b>ActorDataActOut</b></summary>
 Addable: Yes.
+Adds ActOuts to Quirks and Relationships.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -245,6 +247,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataClass</b></summary>
 Addable: No.
+Main defining element of heroes and enemies
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -303,6 +306,7 @@ Addable: No.
 <details>
 <summary><b>ActorDataEffects</b></summary>
 Addable: Yes.
+Adds triggered effects to Heroes, Enemies, Skills, etc.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -452,6 +456,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataExternalBuffs</b></summary>
 Addable: Yes.
+Adds buffs to Heroes, Enemies, Paths, Items, etc.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -494,6 +499,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataSkill</b></summary>
 Addable: No.
+Skill defining element. Must match the name of the Resource Zoom In Skill file in Game files.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -561,6 +567,7 @@ Addable: No.
 <details>
 <summary><b>ActorDataSkillReplacement</b></summary>
 Addable: Yes.
+Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -570,6 +577,7 @@ Addable: Yes.
 <details>
 <summary><b>ActorDataStats</b></summary>
 Addable: No.
+Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
