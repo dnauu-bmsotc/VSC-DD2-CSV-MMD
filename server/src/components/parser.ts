@@ -115,7 +115,13 @@ export class Parser {
 			const lineStartPos = { line: i, character: 0 };
 			const lineEndPos = { line: i, character: line.length };
 
-			if (line.startsWith('element_start')) {
+			if (line.startsWith('//') || line.startsWith('#')) {
+				const message = "Comments in CSV files are not supported by the game engine. " +
+					"\n\n\"//\" or any other sequences are not filtered out which might cause unexpected behavior. " +
+					"\n\nThis warning can be turned off in the extension settings.";
+				pushDiagnostic(message, lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
+			}
+			else if (line.startsWith('element_start')) {
 				if (current) {
 					pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 				}
@@ -185,10 +191,6 @@ export class Parser {
 							evaluatedType: null,
 						});
 					}
-				}
-				else if (line.startsWith('//') || line.startsWith('#')) {
-					const message = "Comments might cause errors. This warning can be turned off in the extension settings.";
-					pushDiagnostic(message, lineStartPos, lineEndPos, DiagnosticType.Comment, DiagnosticSeverity.Warning);
 				}
 				else if (this.stringHasOnlyCommasAndSpaces(line)) {
 					// nothing
