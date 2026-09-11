@@ -176,6 +176,18 @@ export class Index {
 		}
 	}
 
+	public findAllEmittersByGroup(type: ERType, group: string) {
+		const result = [];
+		for (const emitters of this.emittersByKey.values()) {
+			for (const emitter of emitters) {
+				if ((emitter.type === type) && (emitter.group === group)) {
+					result.push(emitter);
+				}
+			}
+		}
+		return result;
+	}
+
 	private updateOverridesInElements(key: KeyInfo, ids: ElementNumberID[]) {
 		for (const id of ids) {
 			for (const gameType of gameTypeList) {
@@ -407,9 +419,6 @@ export class Index {
 			case TypeID.psv:
 				const psValues = parsePSV(values[0]);
 				this.extractEmittersAndReceivers(psValues, definition.element, c);
-				return true;
-
-			default:
 				return true;
 		}
 	}

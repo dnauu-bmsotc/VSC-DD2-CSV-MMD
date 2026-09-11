@@ -1104,8 +1104,8 @@ Addable: No.
 |m_StageCoachUpgradeRemoveId|Item&nbsp;ID|||
 |m_StressDamage|float|Deal stress damage to target.||
 |m_StressDamageRange|float|||
-|m_StressHeal|float|||
-|m_StressHealDownFromMax|float|Heal target’s stress.||
+|m_StressHeal|float|Heal target’s stress.||
+|m_StressHealDownFromMax|float|||
 |m_SummonAddToTurnOrderAfterCurrentTurnIndex|integer|||
 |m_SummonClassActorId|ActorDataClass&nbsp;ID|Summon another actor to target team.||
 |m_SummonIfRoom|boolean|||

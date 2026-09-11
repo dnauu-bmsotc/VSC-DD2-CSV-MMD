@@ -32,7 +32,8 @@ result += `
 	return result;
 }
 
-function makeFieldDescription(element: Element, fieldName: string, compiledData: CompiledData): { name: string, typeString: string, comment: string, values: string } {
+interface makeFieldDescriptionResult { name: string, typeString: string, comment: string, values: string };
+function makeFieldDescription(element: Element, fieldName: string, compiledData: CompiledData): makeFieldDescriptionResult {
 	const field = element.fields[fieldName];
 	const keywords = getInputKeywords(field, compiledData);
 	const inputTypeString = keywords.modifiedInputString

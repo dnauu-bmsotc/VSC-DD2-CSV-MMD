@@ -4,9 +4,6 @@ import {
 	ProposedFeatures,
 	InitializeParams,
 	DidChangeConfigurationNotification,
-	CompletionItem,
-	CompletionItemKind,
-	TextDocumentPositionParams,
 	TextDocumentSyncKind,
 	InitializeResult,
 	DidChangeWatchedFilesNotification,
@@ -29,6 +26,7 @@ import { assembleReadme } from './components/readme';
 import { compileData } from './components/schema';
 import { DiagnosticsPublisher } from './components/diagnostics';
 import { HoverManager } from './components/hover';
+import { CompletionProvider } from './components/autocomplete';
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -46,6 +44,7 @@ let project: ProjectManager;
 let diagnosticsPublisher: DiagnosticsPublisher;
 let hover: HoverManager;
 let semanticTokensProvider: SemanticTokensProvider;
+let autocomplete: CompletionProvider;
 
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const capabilities = params.capabilities;
@@ -103,6 +102,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	hover = new HoverManager(project);
 	diagnosticsPublisher = new DiagnosticsPublisher();
 	semanticTokensProvider = new SemanticTokensProvider(project);
+	autocomplete = new CompletionProvider(project);
 	
 	return result;
 });
@@ -183,40 +183,15 @@ connection.languages.semanticTokens.on(
 );
 
 // This handler provides the initial list of the completion items.
-connection.onCompletion(
-	(_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
-		// The pass parameter contains the position of the text document in
-		// which code complete got requested. For the example we ignore this
-		// info and always provide the same completion items.
-		return [
-			{
-				label: 'TypeScript',
-				kind: CompletionItemKind.Text,
-				data: 1
-			},
-			{
-				label: 'JavaScript',
-				kind: CompletionItemKind.Text,
-				data: 2
-			}
-		];
-	}
-);
+connection.onCompletion(params => {
+	return autocomplete.getOnCompletion(params);
+});
 
 // This handler resolves additional information for the item selected in
 // the completion list.
-connection.onCompletionResolve(
-	(item: CompletionItem): CompletionItem => {
-		if (item.data === 1) {
-			item.detail = 'TypeScript details';
-			item.documentation = 'TypeScript documentation';
-		} else if (item.data === 2) {
-			item.detail = 'JavaScript details';
-			item.documentation = 'JavaScript documentation';
-		}
-		return item;
-	}
-);
+connection.onCompletionResolve(params => {
+	return autocomplete.onCompletionResolve(params);
+});
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events

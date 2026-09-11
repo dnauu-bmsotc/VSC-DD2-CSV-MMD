@@ -230,6 +230,23 @@ export class ProjectManager {
 		return;
 	}
 
+	public getElementText(element: ASTElement, maxLines=12): string | null {
+		const uri = this.index.getUriFromElement(element);
+		if (!uri) {
+			return null;
+		}
+		const file = this.getFileState(uri);
+		if (!file) {
+			return null;
+		}
+		const range = element.fullRange;
+		const elementLines = file.text.split('\n').slice(range.start.line, range.end.line + 1);
+		if (elementLines.length > maxLines) {
+			elementLines.splice((maxLines - 2), (elementLines.length - maxLines + 1), '...');
+		}
+		return `\`\`\`DD2MMD\n${elementLines.join('\n')}\n\`\`\``;
+	}
+
 	/**
 	 * Returns a Set of numeric IDs of elements affected by update.
 	 */

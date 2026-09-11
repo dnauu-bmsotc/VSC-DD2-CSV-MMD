@@ -166,7 +166,9 @@ export class HoverManager {
 			return "";
 		}
 		let addition = "";
-		const influencedTypes = getDependencyInfluencedType(c.element, c.field, definition.input, this.project.compiledData.schema, this.project.compiledData.keywords);
+		const schema = this.project.compiledData.schema;
+		const keywords = this.project.compiledData.keywords;
+		const influencedTypes = getDependencyInfluencedType(c.element, c.field, definition.input, schema, keywords);
 		if (!influencedTypes || (influencedTypes.types.length === 0)) {
 			return addition;
 		}
