@@ -129,12 +129,29 @@ export class CompletionProvider {
 		const idKeysAdded = new Set<string>();
 		const kwAdded = new Set<string>();
 		const tagsAdded = new Set<string>();
+		const anyAdded = new Set<string>();
 		const valueCompletionRecursive = (definition: TypeDefinition) => {
 			switch (definition.type) {
+				case TypeID.any:
+					const anyValues = this.project.index.getAnyValues(element.elementType, field.name);
+					if (!anyValues) {
+						return;
+					}
+					const key = `${element.name},${field.name}`;
+					if (!anyAdded.has(key)) {
+						for (const v of [...anyValues]) {
+							result.push({
+								kind: CompletionItemKind.Text,
+								label: v,
+							});
+						}
+						anyAdded.add(key);
+					}
+					return;
+
 				case TypeID.int:
 				case TypeID.range:
 				case TypeID.float:
-				case TypeID.any:
 				case TypeID.nothing:
 					return;
 

@@ -51,7 +51,7 @@ export class ProjectManager {
 			dirs.unshift(workspaceRoot.fsPath);
 		}
 		const gettingDirs = dirs.map(async dir => await this.findCsvFiles(dir));
-		const filepaths = (await Promise.all(gettingDirs)).flat(2);
+		const filepaths = [... new Set((await Promise.all(gettingDirs)).flat(2))];
 		// parse all files
 		for (const filepath of filepaths) {
 			const uri = makeUriString(URI.file(filepath).toString());
@@ -79,7 +79,7 @@ export class ProjectManager {
 			}
 		}
 		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Initialized project with ${filepaths.length} files [${duration} ms].`);
+		console.log(`Initialized project with ${this.files.size} files [${duration} ms].`);
 		this.ready = true;
 	}
 

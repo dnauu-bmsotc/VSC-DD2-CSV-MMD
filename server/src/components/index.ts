@@ -1,7 +1,7 @@
 import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID,
 	GameType, gameTypeList, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
 import { Range } from 'vscode-languageserver';
-import { Brand, UriString } from '../../../shared/utils';
+import { Brand, mapGetOrSet, UriString } from '../../../shared/utils';
 import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
 
 export enum ERType { id, tag };
@@ -52,6 +52,11 @@ export class Index {
 
 	private readonly emittersByElement = new Map<ElementNumberID, Emitter[]>();
 	private readonly receiversByElement = new Map<ElementNumberID, Receiver[]>();
+
+	/**
+	 * Stores values with definition "any". Map<element type, Map<field name, values>>.
+	 */
+	private readonly anyValues = new Map<string, Map<string, Set<string>>>();
 
 	constructor(
 		private readonly schema: FieldsDescription,
@@ -188,6 +193,10 @@ export class Index {
 		return result;
 	}
 
+	public getAnyValues(elementType: string, fieldName: string) {
+		return this.anyValues.get(elementType)?.get(fieldName);
+	}
+
 	private updateOverridesInElements(key: KeyInfo, ids: ElementNumberID[]) {
 		for (const id of ids) {
 			for (const gameType of gameTypeList) {
@@ -301,6 +310,11 @@ export class Index {
 		}
 		switch (definition.type) {
 			case TypeID.any:
+				const g1 = mapGetOrSet(this.anyValues, c.element.elementType, new Map());
+				const g2 = mapGetOrSet(g1, c.field.name, new Set());
+				g2.add(values[0].text);
+				return true;
+
 			case TypeID.bool:
 			case TypeID.float:
 			case TypeID.int:
