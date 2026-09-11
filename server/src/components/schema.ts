@@ -58,6 +58,11 @@ export type Element = {
 	 * false to ignore this element
 	 */
 	process: boolean;
+	/**
+	 * Implied element connections by the same ID.
+	 * For example Buff and ActorDataStats/ActorDataEffects.
+	 */
+	supplementedBy: string[];
 };
 
 export type Field = {
@@ -247,6 +252,7 @@ export function readFieldsDescription(filePathFields: string, filePathElements: 
 			comment: elementData["Comment"],
 			process: elementData["Process"] === "Yes",
 			addable: elementData["Addable"] === "Yes",
+			supplementedBy: (elementData["SupplementedBy"] ?? "").split(','),
 		};
 		for (const field of fieldsData) {
 			const inputString = field["Input Type"] ?? "";

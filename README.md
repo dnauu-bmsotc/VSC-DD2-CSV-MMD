@@ -87,7 +87,7 @@ element_end
 
 So the example `ActorDataEffects` element defines what effects the Point Blank Shot skill has. This skill also needs to be connected, but the connection between actors and skills (except path skills) is defined outside CSV data, in compiled game files.
 
-The game's folder with vanilla data has this structure:
+The game's folder with official data has this structure:
 ```
 Excel
 ├───dlc_catacombs
@@ -98,7 +98,7 @@ Excel
 └───kingdom
 ```
 
-Mod folders look more or less like this:
+Mod folders look like this:
 
 ```
 Mod folder
@@ -157,7 +157,7 @@ More details:
 - Arbitrary values can be defined in some places, and in some places they are referenced.
 	- IDs are defined in next to `element_start`. It seems that fields do not define IDs.
 	- Tags are defined in fields.
-	- Substats. I don't know how these work. It looks like they are not arbitrary. For example, adding ```sub_stat,resistance,stun2,0.2,``` to a hero's `ActorDataStats` breaks the mod.
+	- Substats. They might be arbitrary. I don't know how these work.
 
 This extension tries to describe all this data in a formal way. Outer structure of elements (`element_begin`, `ID`, `type`, `element_end`) is considered fixed, structure of field inputs is described in this way:
 - `any` -- external information like localization, directories. Also used for fields of unknown nature. These fields are not validated.
@@ -203,7 +203,7 @@ Addable: No.
 <details>
 <summary><b>ActOut</b></summary>
 Addable: No.
-Defining element of act outs and banters.
+Defining element of act outs and barks.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -2266,7 +2266,7 @@ On text change:
 
 ### File scopes
 
-This extension tries to process Overrides by defining file scopes. Each file has one of these scopes assigned:
+This extension tries to process Overrides by defining file scopes. There are no scopes defined by the game, each overrides just happen in the order in which they are met. Later overrides replace previously gathered data. But the extension needs to keep track of all elements in all game modes. So each file has one of these scopes assigned:
 - General: e.g. files in the top folder of the mod.
 - Expedition: `expedition` folder.
 - Kingdom: `kingdom` folder.

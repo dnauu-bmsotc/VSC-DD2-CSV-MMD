@@ -110,6 +110,18 @@ export class CompletionProvider {
 					const elementText = this.project.getElementText(element);
 					if (elementText) {
 						item.documentation.value += '\n\n' + elementText;
+						const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
+						for (const supplementaryElement of supplementaryElements) {
+							if (supplementaryElements.length > 1) {
+								const uri = this.project.index.getUriFromElement(supplementaryElement);
+								if (uri) {
+									const fileName = path.basename(uri);
+									const nLine = supplementaryElement.fullRange.start.line + 1;
+									item.documentation.value += `\n\n(${resourceScopeToVerbose(element.scope)}) ${fileName} line ${nLine}`;
+								}
+							}
+							item.documentation.value += '\n\n' + this.project.getElementText(supplementaryElement);
+						}
 					}
 				}
 				break;

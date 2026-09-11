@@ -295,6 +295,23 @@ export class HoverManager {
 				result += `${element.elementType} ${element.name} `;
 				result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
 				result += `line ${emitter.range.start.line + 1}`;
+
+				// show element's csv text if it won't flood the hint
+				if ((keys.length === 1) && (emitters.length === 1)) {
+					result += '\n\n' + this.project.getElementText(element);
+					const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
+					for (const supplementaryElement of supplementaryElements) {
+						if (supplementaryElements.length > 1) {
+							const uri = this.project.index.getUriFromElement(supplementaryElement);
+							if (uri) {
+								const fileName = path.basename(uri);
+								const nLine = supplementaryElement.fullRange.start.line + 1;
+								result += `\n\n(${resourceScopeToVerbose(element.scope)}) ${fileName} line ${nLine}`;
+							}
+						}
+						result += '\n\n' + this.project.getElementText(supplementaryElement);
+					}
+				}
 			}
 		}
 		return result;

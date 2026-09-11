@@ -3,8 +3,8 @@ import * as path from 'node:path';
 import * as fs from "node:fs"
 import { Range } from 'vscode-languageserver';
 
-import { Index } from '.';
-import { AST, ASTElement, ElementNumberID, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
+import { ERType, Index, KeyInfo } from '.';
+import { AST, ASTElement, ElementNumberID, GameType, gameTypeList, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
@@ -245,6 +245,28 @@ export class ProjectManager {
 			elementLines.splice((maxLines - 2), (elementLines.length - maxLines + 1), '...');
 		}
 		return `\`\`\`DD2MMD\n${elementLines.join('\n')}\n\`\`\``;
+	}
+
+	public findSupplementaryElementsForAllGameTypes(element: ASTElement) {
+		const supplementsByGameType = gameTypeList.map(gameType => this.findSupplementaryElements(element, gameType));
+		return [...new Set(supplementsByGameType.flat())];
+	}
+
+	public findSupplementaryElements(element: ASTElement, gameType: GameType) {
+		const result = [];
+		const elementDefinition = this.compiledData.schema[element.elementType];
+		const supplements = elementDefinition?.supplementedBy ?? [];
+		for (const supplement of supplements) {
+			const key: KeyInfo = { type: ERType.id, group: supplement, name: element.name };
+			const emitters = this.index.findEmitters(gameType, key);
+			for (const emitter of emitters) {
+				const supplementElement = this.index.getElementByNumericId(emitter.ownerId);
+				if (supplementElement) {
+					result.push(supplementElement);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
