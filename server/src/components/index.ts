@@ -79,7 +79,7 @@ export class Index {
 		return affectedElements;
 	}
 
-	public addElement(element: ASTElement, emitters: Emitter[], receivers: Receiver[]) {
+	public addElement(element: ASTElement, emitters: Emitter[], receivers: Receiver[], calculateAffected=true) {
 		this.elements.set(element.id, element);
 
 		const affectedElements = new Set<ElementNumberID>();
@@ -87,6 +87,17 @@ export class Index {
 		this.receiversByElement.set(element.id, receivers);
 		this.addElementToKeyList(emitters, this.emittersByKey);
 		this.addElementToKeyList(receivers, this.receiversByKey);
+		// find and update overrides
+		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
+		this.updateOverridesInElements(getKeyFromElement(element), [element.id, ...sameSignatureElements]);
+		// affected elements are not calculated during initialization
+		if (!calculateAffected) {
+			return affectedElements;
+		}
+		// affected by overrides
+		for (const sameSignatureElement of sameSignatureElements) {
+			affectedElements.add(sameSignatureElement);
+		}
 		// newly added emitters can resolve references
 		for (const emitter of emitters) {
 			const key = getKey(emitter);
@@ -95,12 +106,6 @@ export class Index {
 					affectedElements.add(receiver.ownerId);
 				}
 			}
-		}
-		// find and update overrides
-		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
-		this.updateOverridesInElements(getKeyFromElement(element), [element.id, ...sameSignatureElements]);
-		for (const sameSignatureElement of sameSignatureElements) {
-			affectedElements.add(sameSignatureElement);
 		}
 		return affectedElements;
 	}

@@ -479,11 +479,11 @@ Addable: No.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
-|m_ActorClassIds|List(ActorDataClass&nbsp;ID)|||
-|m_ActorClassTags|List(ActorDataClass&nbsp;Tag-)|||
-|m_OrderPriority|integer|||
-|m_Tags|List(ActorDataPath&nbsp;Tag+)|||
-|m_UnlockId|Unlock&nbsp;ID|||
+|m_ActorClassIds|List(ActorDataClass&nbsp;ID)|IDs of heroes that will get this Path.||
+|m_ActorClassTags|List(ActorDataClass&nbsp;Tag-)|Tags of heroes that will get this Path.||
+|m_OrderPriority|integer|Specifies what position the path should take in the list of paths. The lower the value, the higher the path will be on the list.||
+|m_Tags|List(ActorDataPath&nbsp;Tag+)|Adds tags to this path. When a Path is activated, its tags are added to the hero’s list of tags.||
+|m_UnlockId|Unlock&nbsp;ID|Locks this path until the specified Unlock is acquired.||
 |m_ViewedByDefault|boolean|||
 </details>
 

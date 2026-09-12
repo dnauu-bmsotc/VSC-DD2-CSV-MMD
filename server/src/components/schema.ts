@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
-import { existsSync } from 'fs';
-import { fieldsDescriptionPath, elementsDescriptionPath, valuesDescriptionPath } from '../../../shared/projectPaths';
+import * as path from 'node:path';
+import { existsSync, statSync, readFileSync, writeFileSync } from 'fs';
+import { fieldsDescriptionPath, elementsDescriptionPath, valuesDescriptionPath, compiledDataGSRelative } from '../../../shared/projectPaths';
 
 export type TypeDefinitionBasic = 
 	| TypeDefinitionInt
@@ -82,6 +83,7 @@ export interface Value {
 export interface CompiledData {
 	schema: FieldsDescription;
 	keywords: ValuesDescription;
+	lastCompileTime: number;
 }
 
 /**
@@ -103,14 +105,31 @@ export type ValuesDescription = Record<string, KWGroup>;
 export type KWGroup = Record<string, Value>;
 
 
-export async function compileData(): Promise<CompiledData> {
+export function compileData(globalStoragePath: string): CompiledData {
 	const t0 = performance.now();
+	const compiledDataPath = path.join(globalStoragePath, compiledDataGSRelative);
+	if (existsSync(compiledDataPath)) {
+		try {
+			const csvDescPaths = [elementsDescriptionPath, fieldsDescriptionPath, valuesDescriptionPath];
+			const lastMTime = Math.max(...csvDescPaths.map(path => statSync(path).mtimeMs));
+			const cachedData: CompiledData = JSON.parse(readFileSync(compiledDataPath, 'utf8'));
+			if (lastMTime <= cachedData.lastCompileTime) {
+				console.info(`Loaded cached CSV Description data [${(performance.now() - t0).toFixed(1)} ms].`);
+				return cachedData;
+			}
+		}
+		catch (error) {
+			console.error('Error reading cached CSV description data.');
+		}
+	}
 	const schema = readFieldsDescription(fieldsDescriptionPath, elementsDescriptionPath);
 	const keywords = readValuesDescription(valuesDescriptionPath);
 	const result: CompiledData = {
 		schema,
 		keywords,
+		lastCompileTime: Date.now(),
 	}
+	writeFileSync(compiledDataPath, JSON.stringify(result));
 	console.info(`Compiled data [${(performance.now() - t0).toFixed(1)} ms].`);
 	return result;
 }

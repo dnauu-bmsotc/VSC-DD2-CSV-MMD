@@ -94,9 +94,9 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 		workspace = URI.parse(workspaceUri);
 	}
 	
-	const compiledData = await compileData();
-	assembleReadme(compiledData);
 	const initializationSettings: InitializationSettings = params.initializationOptions;
+	const compiledData = compileData(initializationSettings.globalStoragePath);
+	assembleReadme(compiledData);
 	project = new ProjectManager(compiledData, initializationSettings.configuration);
 	await project.initialize(workspace);
 	hover = new HoverManager(project);

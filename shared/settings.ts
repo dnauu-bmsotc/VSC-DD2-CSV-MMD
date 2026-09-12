@@ -17,4 +17,5 @@ export interface DD2CSVMMDSettings {
 
 export interface InitializationSettings {
 	configuration: DD2CSVMMDSettings,
+	globalStoragePath: string,
 }

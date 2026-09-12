@@ -125,7 +125,7 @@ export class Parser {
 				if (current) {
 					pushDiagnostic("Expected element_end", lineStartPos, lineEndPos, DiagnosticType.ElementBoundary);
 				}
-				const parts = line.replace(/,+$/, "").split(',');
+				const parts = line.split(',');
 				if (parts.length >= 3) {
 					current = {
 						name: parts[1],
@@ -165,7 +165,7 @@ export class Parser {
 				if (current) {
 					const parts = [];
 					let start = 0;
-					const lineTrunc = line.replace(/,+$/, "");
+					const lineTrunc = this.truncateTrailingCommas(line);
 					for (let j = 0; j <= lineTrunc.length; j++) {
 						if (j === lineTrunc.length || lineTrunc[j] === ',') {
 							const value = lineTrunc.substring(start, j);
@@ -235,6 +235,14 @@ export class Parser {
 	}
 
 	private stringHasOnlyCommasAndSpaces = (str: string) => /^[ ,]+$/.test(str);
+
+	private truncateTrailingCommas(str: string) {
+		let i = str.length;
+		while (i > 0 && str[i - 1] === ',') {
+			i--;
+		}
+		return i === str.length ? str : str.slice(0, i);
+	}
 }
 
 /**

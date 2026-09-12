@@ -53,10 +53,16 @@ export class ProjectManager {
 		const gettingDirs = dirs.map(async dir => await this.findCsvFiles(dir));
 		const filepaths = [... new Set((await Promise.all(gettingDirs)).flat(2))];
 		// parse all files
+		let fileReadingTime = 0;
+		let textParsingTime = 0;
 		for (const filepath of filepaths) {
+			const fileReadingTimeStart = performance.now();
 			const uri = makeUriString(URI.file(filepath).toString());
-			const text = await fs.promises.readFile(filepath, "utf8");
+			const text = fs.readFileSync(filepath).toString('utf8');
+			fileReadingTime += performance.now() - fileReadingTimeStart;
+			const textParsingTimeStart = performance.now();
 			const parseResult = this.parser.parseIntoAST(uri, text);
+			textParsingTime += performance.now() - textParsingTimeStart;
 			this.files.set(uri, {
 				uri: uri,
 				ast: parseResult.AST,
@@ -64,12 +70,12 @@ export class ProjectManager {
 				open: false,
 				text: text,
 			});
-		}
+		};
 		// get emitters from all files
 		for (const fileState of this.files.values()) {
 			for (const element of fileState.ast) {
 				const solveResult = this.index.indexElement(fileState.uri, element);
-				this.index.addElement(element, solveResult.emitters, solveResult.receivers);
+				this.index.addElement(element, solveResult.emitters, solveResult.receivers, false);
 			}
 		}
 		// semantic analysis for all files
@@ -79,7 +85,8 @@ export class ProjectManager {
 			}
 		}
 		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Initialized project with ${this.files.size} files [${duration} ms].`);
+		console.log(`Initialized project with ${this.files.size} files [${duration} ms].` +
+			`Including file reading [${fileReadingTime.toFixed(1)} ms] and text parsing [${textParsingTime.toFixed(1)} ms].`);
 		this.ready = true;
 	}
 
@@ -163,7 +170,7 @@ export class ProjectManager {
 		// find elements affected by addition
 		for (const element of replacementElements) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affected = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers);
+			const affected = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers, true);
 			for (const id of affected) {
 				affectedIds.add(id);
 			}
@@ -315,7 +322,7 @@ export class ProjectManager {
 		const affected = new Set<ElementNumberID>();
 		for (const element of parseResult.AST) {
 			const elementIndex = this.index.indexElement(uri, element);
-			const affectedByElement = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers);
+			const affectedByElement = this.index.addElement(element, elementIndex.emitters, elementIndex.receivers, true);
 			for (const id of affectedByElement) {
 				affected.add(id);
 			}
@@ -334,18 +341,18 @@ export class ProjectManager {
 		}
 	}
 
-	private async findCsvFiles(dir: string): Promise<string[]> {
+	private findCsvFiles(dir: string): string[] {
 		const result: string[] = [];
 		if (!fs.existsSync(dir)) {
 			return result;
 		}
-		const entries = await fs.promises.readdir(dir, {
+		const entries = fs.readdirSync(dir, {
 			withFileTypes: true,
 		});
 		for (const entry of entries) {
 			const filePath = path.join(dir, entry.name);
 			if (entry.isDirectory()) {
-				result.push(...await this.findCsvFiles(filePath));
+				result.push(...this.findCsvFiles(filePath));
 			}
 			if (entry.isFile() && this.isDd2Csv(entry.name)) {
 				result.push(filePath);

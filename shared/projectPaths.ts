@@ -8,3 +8,5 @@ export const elementsDescriptionPath = path.join(workspaceRoot, 'CSV description
 
 export const readmeBaseFilePath = path.resolve(workspaceRoot, 'readmeBase.md');
 export const readmeOutputFilePath = path.resolve(workspaceRoot, 'README.md');
+
+export const compiledDataGSRelative = 'compiledData.json';

@@ -4,6 +4,7 @@
  * ------------------------------------------------------------------------------------------ */
 
 import * as path from 'path';
+import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { workspace, ExtensionContext } from 'vscode';
 
@@ -45,6 +46,12 @@ export function activate(context: ExtensionContext) {
 	};
 
 	// Options to control the language client
+	fs.mkdirSync(context.globalStorageUri.fsPath, { recursive: true });
+	console.log(`globalStorage path: ${context.globalStorageUri.fsPath}`);
+	const initializationOptions: InitializationSettings = {
+		configuration: vscode.workspace.getConfiguration('DD2CSVMMD') as any as DD2CSVMMDSettings,
+		globalStoragePath: context.globalStorageUri.fsPath,
+	};
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
 		documentSelector: [{ scheme: 'file', language: 'DD2MMD' }],
@@ -54,9 +61,7 @@ export function activate(context: ExtensionContext) {
         		workspace.createFileSystemWatcher('**/'), // watch directories
 			],
 		},
-		initializationOptions: {
-			configuration: vscode.workspace.getConfiguration('DD2CSVMMD') as any as DD2CSVMMDSettings,
-		} as InitializationSettings,
+		initializationOptions: initializationOptions,
 	};
 
 	// Create the language client and start the client.
