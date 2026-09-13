@@ -6,7 +6,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 
 - [Extension Features](#extension-features)
 - [DD2 CSV Data Overview](#dd2-csv-data-overview)
-- [CSV data description](#csv-data-description)
+- [CSV Data Description](#csv-data-description)
 - [Extension Documentation](#extension-documentation)
     - [Data description](#data-description)
     - [Main process](#main-process)
@@ -30,9 +30,9 @@ This extension has these features (can be toggled off in settings):
 
 ## DD2 CSV Data Overview
 
-Darkest Dungeon 2's CSV data is nuanced. At the surface level it is stored in .csv files and they are parsed as such. There are no embedded commas, they all are separators. CSV filenames should end with `.Group.csv` otherwise the game will skip them.
+On the surface level Darkest Dungeon 2's CSV data is stored in .csv files and they are parsed as such. All commas are separators. CSV filenames should end with `.Group.csv` otherwise the game will not read them.
 
-Unless mod data is supposed override original data, mod's .csv files should be placed on the top level of the mod folder. The choice of dividing data into separate files or putting everything in one file is arbitrary. All files are parsed independently a into one data pool each time a game save file is loaded.
+Unless mod data is supposed override original data, mod's .csv files should be placed on the top level of the mod folder. Dividing data into separate files or putting everything in one file is an arbitrary choice. All files are parsed independently a into one data pool each time a game save file is loaded.
 
 A DD2 CSV file's data consists of blocks called elements. Each element has an ID (not necessarily unique), and a type. A typical element looks like this:
 ```csv
@@ -179,7 +179,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 - `Sub(X KW,A,float)` is used for substats. The first value is a stat group. The second value is the substat.
 - `PSV(X)` -- values separated by `+`.
 
-## CSV data description
+## CSV Data Description
 
 _DD2CSVMMDDescription
 
