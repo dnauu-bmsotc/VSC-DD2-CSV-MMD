@@ -45,7 +45,6 @@ export class DiagnosticsPublisher {
 		for (const d of diagnostics) {
 			if (
 				   (features.validationFieldValues		&& (d.flags & DiagnosticType.FieldValue))
-				|| (features.validationFieldEmpty		&& (d.flags & DiagnosticType.EmptyField))
 				|| (features.validationElementBoundary	&& (d.flags & DiagnosticType.ElementBoundary))
 				|| (features.validationElementType		&& (d.flags & DiagnosticType.ElementType))
 				|| (features.validationFieldName		&& (d.flags & DiagnosticType.FieldName))

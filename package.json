@@ -84,7 +84,6 @@
 						"validationElementType": true,
 						"validationFieldName": true,
 						"validationFieldValues": true,
-						"validationFieldEmpty": false,
 						"validationAddables": true,
 						"validationWhitespace": true
 					},
@@ -120,10 +119,6 @@
 						"validationFieldValues": {
 							"type": "boolean",
 							"description": "Validate inputs of fields."
-						},
-						"validationFieldEmpty": {
-							"type": "boolean",
-							"description": "Show empty fields."
 						},
 						"validationAddables": {
 							"type": "boolean",

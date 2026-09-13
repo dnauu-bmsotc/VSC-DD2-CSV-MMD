@@ -30,9 +30,9 @@ This extension has these features (can be toggled off in settings):
 
 ## DD2 CSV Data Overview
 
-On the surface level Darkest Dungeon 2's CSV data is stored in .csv files and they are parsed as such. All commas are separators. CSV filenames should end with `.Group.csv` otherwise the game will not read them.
+Darkest Dungeon 2's CSV data is stored in .csv files but the data format differs from common CSV data. All commas are separators. CSV filenames should end with `.Group.csv` otherwise the game will not read them.
 
-Unless mod data is supposed override original data, mod's .csv files should be placed on the top level of the mod folder. Dividing data into separate files or putting everything in one file is an arbitrary choice. All files are parsed independently a into one data pool each time a game save file is loaded.
+Unless mod data is supposed override original data, mod's CSV files should be placed on the top level of the mod folder. Dividing data into separate files or putting everything in one file is an arbitrary choice. All files are parsed independently a into one data pool each time a game save file is loaded.
 
 A DD2 CSV file's data consists of blocks called elements. Each element has an ID (not necessarily unique), and a type. A typical element looks like this:
 ```csv

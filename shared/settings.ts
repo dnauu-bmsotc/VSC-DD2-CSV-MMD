@@ -9,7 +9,6 @@ export interface DD2CSVMMDSettings {
 		validationElementType: boolean;
 		validationFieldName: boolean;
 		validationFieldValues: boolean;
-		validationFieldEmpty: boolean;
 		validationAddables: boolean;
 		validationWhitespace: boolean;
 	},

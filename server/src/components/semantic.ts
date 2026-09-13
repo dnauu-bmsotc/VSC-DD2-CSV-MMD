@@ -83,14 +83,6 @@ export class Semantic {
 				continue;
 			}
 			if (field.values.length === 0) {
-				element.diagnostics.push({
-					diagnostic: {
-						severity: DiagnosticSeverity.Warning,
-						range: field.range,
-						message: `Empty field`,
-					},
-					flags: DiagnosticType.EmptyField,
-				});
 				continue;
 			}
 			const context = { element, field };
