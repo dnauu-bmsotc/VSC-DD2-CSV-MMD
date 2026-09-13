@@ -6,7 +6,7 @@ import { Range } from 'vscode-languageserver';
 import { ERType, Index, KeyInfo } from '.';
 import { AST, ASTElement, ElementNumberID, GameType, gameTypeList, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
-import { makeUriString, UriString } from '../../../shared/utils';
+import { makePathString, makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
 import { CompiledData } from './schema';
 
@@ -50,8 +50,8 @@ export class ProjectManager {
 		if (workspaceRoot) {
 			dirs.unshift(workspaceRoot.fsPath);
 		}
-		const gettingDirs = dirs.map(async dir => await this.findCsvFiles(dir));
-		const filepaths = [... new Set((await Promise.all(gettingDirs)).flat(2))];
+		const gettingDirs = dirs.map(dir => this.findCsvFiles(dir)).flat();
+		const filepaths = [...new Set(gettingDirs.map(makePathString))];
 		// parse all files
 		let fileReadingTime = 0;
 		let textParsingTime = 0;
@@ -71,6 +71,7 @@ export class ProjectManager {
 				text: text,
 			});
 		};
+		const validationTimeStart = performance.now();
 		// get emitters from all files
 		for (const fileState of this.files.values()) {
 			for (const element of fileState.ast) {
@@ -84,9 +85,12 @@ export class ProjectManager {
 				this.analyzer.solveElement(element);
 			}
 		}
-		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Initialized project with ${this.files.size} files [${duration} ms].` +
-			`Including file reading [${fileReadingTime.toFixed(1)} ms] and text parsing [${textParsingTime.toFixed(1)} ms].`);
+		const totalDuration = (performance.now() - t0).toFixed(1);
+		const validationDuration = (performance.now() - validationTimeStart).toFixed(1);
+		console.log(`Initialized project with ${this.files.size} files [${totalDuration} ms], including:` +
+			`\n\t- File reading [${fileReadingTime.toFixed(1)} ms]` +
+			`\n\t- Text parsing [${textParsingTime.toFixed(1)} ms]` +
+			`\n\t- Initial validation [${validationDuration} ms]`);
 		this.ready = true;
 	}
 
@@ -216,7 +220,8 @@ export class ProjectManager {
 			this.files.delete(uriToRemove);
 		}
 		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Removed ${urisToRemove.length} file(s) from project [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files remain.`);
+		console.log(`Removed ${urisToRemove.length} file(s) from project [${duration} ms]. `+
+			`Affected ${affected.size} elements. ${this.files.size} files remain.`);
 		this.reanalyzeIds(affected);
 		return;
 	}
@@ -233,7 +238,8 @@ export class ProjectManager {
 			affectedByFile.forEach(id => affected.add(id));
 		}
 		const duration = (performance.now() - t0).toFixed(1);
-		console.log(`Added/updated ${filePathsToUpdate.length} file(s) [${duration} ms]. Affected ${affected.size} elements. ${this.files.size} files in project.`);
+		console.log(`Added/updated ${filePathsToUpdate.length} file(s) [${duration} ms]. ` +
+			`Affected ${affected.size} elements. ${this.files.size} files in project.`);
 		return;
 	}
 

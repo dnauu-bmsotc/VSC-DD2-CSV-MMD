@@ -1,10 +1,17 @@
+import * as path from 'node:path';
 
 export type Brand<K, T> = K & { readonly __brand: T };
 
 export type UriString = Brand<string, "uri">;
+export type PathString = Brand<string, "resolvedPath">;
 
-export function makeUriString(id: string): UriString {
-  return id as UriString;
+export function makeUriString(s: string): UriString {
+	return (isCaseInsensitive() ? s.toLowerCase() : s) as UriString;
+}
+
+export function makePathString(p: string): PathString {
+	const resolved = path.resolve(p);
+	return (isCaseInsensitive() ? resolved.toLowerCase() : resolved) as PathString;
 }
 
 export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
@@ -13,4 +20,8 @@ export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
 	}
 	map.set(key, defaultValue);
 	return defaultValue;
+}
+
+function isCaseInsensitive() {
+  	return process.platform === 'win32' || process.platform === 'darwin';
 }
