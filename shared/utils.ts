@@ -25,3 +25,5 @@ export function mapGetOrSet<K, V>(map: Map<K, V>, key: K, defaultValue: V): V {
 function isCaseInsensitive() {
   	return process.platform === 'win32' || process.platform === 'darwin';
 }
+
+export const listHasDuplicates = (arr: any[]) => new Set(arr).size !== arr.length;

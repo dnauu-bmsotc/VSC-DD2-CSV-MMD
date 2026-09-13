@@ -7,7 +7,7 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 - [Extension Features](#extension-features)
 - [DD2 CSV Data Overview](#dd2-csv-data-overview)
 - [CSV data description](#csv-data-description)
-- [Documentation](#documentation)
+- [Extension Documentation](#extension-documentation)
     - [Data description](#data-description)
     - [Main process](#main-process)
     - [File scopes](#file-scopes)
@@ -183,7 +183,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 
 _DD2CSVMMDDescription
 
-## Documentation
+## Extension Documentation
 
 ### Data description
 
@@ -200,7 +200,7 @@ Description of CSV data is stored in `./CSV Description` directory in LibreOffic
 On startup:
 1. The extension reads contents of the VSCode project and Excel directories from the Darkest Dungeon II installation folder.
    Excel directories can be configured in extension's settings.
-2. Each file is parsed into a list of elements, fields, values by commas. The "+" separator is not processed yet.
+2. Each file is parsed into a list of elements, fields, values by commas. The `+` separator is not processed yet.
    After this step the extension has a list of files and what elements are stored in each file.
    Exact positions of fields and values in text are also stored.
 3. Then each element is analyzed for IDs and tags.

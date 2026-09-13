@@ -271,7 +271,7 @@ export function readFieldsDescription(filePathFields: string, filePathElements: 
 			comment: elementData["Comment"],
 			process: elementData["Process"] === "Yes",
 			addable: elementData["Addable"] === "Yes",
-			supplementedBy: (elementData["SupplementedBy"] ?? "").split(','),
+			supplementedBy: (elementData["SupplementedBy"]?.split(',') ?? []),
 		};
 		for (const field of fieldsData) {
 			const inputString = field["Input Type"] ?? "";

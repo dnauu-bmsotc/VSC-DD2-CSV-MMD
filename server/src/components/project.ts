@@ -265,6 +265,13 @@ export class ProjectManager {
 		return [...new Set(supplementsByGameType.flat())];
 	}
 
+	/**
+	 * Searches supplementary elements (from defining element to dependent element).
+	 * 
+	 * For Buff elements it searches for ActorDataStats, ActorDataEffects, etc. elements.
+	 * 
+	 * For ActorDataStats it does not search for Buff elements.
+	 */
 	public findSupplementaryElements(element: ASTElement, gameType: GameType) {
 		const result = [];
 		const elementDefinition = this.compiledData.schema[element.elementType];
@@ -280,6 +287,47 @@ export class ProjectManager {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Searches supplementary elements (both ways).
+	 * 
+	 * For Buff elements it searches for ActorDataStats, ActorDataEffects, etc. elements.
+	 * 
+	 * For ActorDataStats it searches for Buff, ActorDataSkill, BiomeUpgrade, etc. elements.
+	 */
+	public findSameIdConnectedElementsForAllGameTypes(element: ASTElement) {
+		const connections = [];
+		const allElementTypes = Object.keys(this.compiledData.schema);
+		for (const elementType of allElementTypes) {
+			const elementDefinition = this.compiledData.schema[elementType];
+			const supplementedBy = elementDefinition?.supplementedBy;
+			if (!supplementedBy) {
+				continue;
+			}
+			if (elementType === element.elementType) {
+				connections.push(...elementDefinition.supplementedBy);
+			}
+			else {
+				if (supplementedBy.includes(element.elementType)) {
+					connections.push(elementType);
+				}
+			}
+		}
+		const result = new Set<ASTElement>();
+		for (const connectedType of connections) {
+			for (const gameType of gameTypeList) {
+				const key: KeyInfo = { type: ERType.id, group: connectedType, name: element.name };
+				const emitters = this.index.findEmitters(gameType, key);
+				for (const emitter of emitters) {
+					const supplementElement = this.index.getElementByNumericId(emitter.ownerId);
+					if (supplementElement) {
+						result.add(supplementElement);
+					}
+				}
+			}
+		}
+		return [...result];
 	}
 
 	/**

@@ -4,7 +4,7 @@ import { AST, ASTElement, ASTField, ASTValue, EvaluationType, GameType, gameType
 	ResourceScopePriority, resourceScopeToVerbose, TypeEvaluated, typeEvaluatedToVerbose
 } from './parser';
 import { Element, Field, TypeDefinition, typeHasDependent, TypeID, typeToVerbose } from './schema';
-import { makeUriString, UriString } from '../../../shared/utils';
+import { listHasDuplicates, makeUriString, UriString } from '../../../shared/utils';
 import { ProjectManager } from './project';
 import { ERType, getKeyFromElement, KeyInfo, Receiver } from '.';
 import * as path from 'node:path';
@@ -142,6 +142,7 @@ export class HoverManager {
 		}
 		message += this.hoverElementAdditionForSameSignatures(c);
 		message += this.hoverElementAdditionReferences(c);
+		message += this.hoverElementAdditionSupplements(c);
 		return this.createHover(message, c.element.range);
 	}
 
@@ -299,8 +300,9 @@ export class HoverManager {
 				if ((keys.length === 1) && (emitters.length === 1)) {
 					result += '\n\n' + this.project.getElementText(element);
 					const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
+					const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
 					for (const supplementaryElement of supplementaryElements) {
-						if (supplementaryElements.length > 1) {
+						if (elementsHaveDuplicateTypes) {
 							const uri = this.project.index.getUriFromElement(supplementaryElement);
 							if (uri) {
 								const fileName = path.basename(uri);
@@ -374,6 +376,28 @@ export class HoverManager {
 		return result;
 	}
 
+	private hoverElementAdditionSupplements(c: HoverContextElement): string {
+		let result = ``;
+		const supplementaryElements = this.project.findSameIdConnectedElementsForAllGameTypes(c.element);
+		if (supplementaryElements.length === 0) {
+			return result;
+		}
+		result += '\n\n' + this.project.getElementText(c.element);
+		const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
+		for (const supplementaryElement of supplementaryElements) {
+			if (elementsHaveDuplicateTypes) {
+				const uri = this.project.index.getUriFromElement(supplementaryElement);
+				if (uri) {
+					const fileName = path.basename(uri);
+					const nLine = supplementaryElement.fullRange.start.line + 1;
+					result += `\n\n&emsp;(${resourceScopeToVerbose(c.element.scope)}) ${fileName} line ${nLine}`;
+				}
+			}
+			result += '\n\n' + this.project.getElementText(supplementaryElement);
+		}
+		return result;
+	}
+
 	private hoverElementAdditionReferences(c: HoverContextElement): string {
 		const allReceivers = this.project.index.findReceiversForAllGameTypes({ type: ERType.id, group: c.element.elementType, name: c.element.name });
 		return this.hoverAdditionReferences(c, allReceivers);
@@ -394,7 +418,7 @@ export class HoverManager {
 	}
 
 	private hoverAdditionReferences(c: HoverContextElement | HoverContextValue, receivers: Receiver[]): string {
-		let result = receivers.length ? `\n\nReferenced by:` : `\n\nNo references found in CSV files.`;
+		let result = receivers.length ? `\n\nReferenced by:` : `\n\nNo explicit references found in CSV files.`;
 		for (const receiver of receivers) {
 			const receiverOwner = this.project.index.getElementByNumericId(receiver.ownerId);
 			if (!receiverOwner) {

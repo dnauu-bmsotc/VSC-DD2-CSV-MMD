@@ -1,6 +1,6 @@
 import { TextDocumentPositionParams, CompletionItem, CompletionItemKind, MarkupKind } from 'vscode-languageserver';
 import { ProjectManager } from './project';
-import { makeUriString } from '../../../shared/utils';
+import { listHasDuplicates, makeUriString } from '../../../shared/utils';
 import { Field, TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver, TypeID, typeToVerbose } from './schema';
 import { ASTElement, ASTField, getDependencyInfluencedType, resourceScopeToVerbose } from './parser';
 import { ERType } from '.';
@@ -111,8 +111,9 @@ export class CompletionProvider {
 					if (elementText) {
 						item.documentation.value += '\n\n' + elementText;
 						const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
+						const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
 						for (const supplementaryElement of supplementaryElements) {
-							if (supplementaryElements.length > 1) {
+							if (elementsHaveDuplicateTypes) {
 								const uri = this.project.index.getUriFromElement(supplementaryElement);
 								if (uri) {
 									const fileName = path.basename(uri);

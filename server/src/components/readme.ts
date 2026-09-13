@@ -14,17 +14,24 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 	let result = "";
 	for (const elementType of Object.keys(compiledData.schema)) {
 		const element = compiledData.schema[elementType];
+		const idConnections = getConnectedElements(elementType, compiledData);
+		const idConnectionsText = idConnections.length > 0 ? (`Connections by same ID: ${
+			idConnections.map(t => '\`' + t + '\`').join(', ')}`) : '';
 		result += `
 <details>
 <summary><b>${element.name}</b></summary>
-Addable: ${element.addable ? "Yes" : "No"}.
+
+Addable: ${element.addable ? "Yes" : "No"}. ${idConnectionsText}
+
 ${element.comment ? element.comment + "\n" : ""}
 | Field Name | Input Type | Comment | Values |
-| ---------- | ---------- | ------- | ------ |`
+| ---------- | ---------- | ------- | ------ |`;
+
 for (const fieldName of Object.keys(element.fields)) {
 	const desc = makeFieldDescription(element, fieldName, compiledData);
 	result += `\n|${desc.name}|${desc.typeString}|${desc.comment}|${desc.values}|`
 }
+
 result += `
 </details>
 `
@@ -116,4 +123,25 @@ function removeCaseDuplicates(arr: string[]) {
 		seen.add(key);
 		return true;
 	});
+}
+
+function getConnectedElements(elementType: string, compiledData: CompiledData) {
+	const connections: string[] = [];
+	const allElementTypes = Object.keys(compiledData.schema);
+	for (const elementTypeEntry of allElementTypes) {
+		const elementDefinition = compiledData.schema[elementTypeEntry];
+		const supplementedBy = elementDefinition?.supplementedBy;
+		if (!supplementedBy) {
+			continue;
+		}
+		if (elementTypeEntry === elementType) {
+			connections.push(...elementDefinition.supplementedBy);
+		}
+		else {
+			if (supplementedBy.includes(elementType)) {
+				connections.push(elementTypeEntry);
+			}
+		}
+	}
+	return connections;
 }
