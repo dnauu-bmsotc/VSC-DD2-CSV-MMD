@@ -141,7 +141,6 @@ export class HoverManager {
 			message += `\n\nComment: ${elementDefinition.comment}`;
 		}
 		message += this.hoverElementAdditionForSameSignatures(c);
-		message += this.hoverElementAdditionForSameIDs(c);
 		message += this.hoverElementAdditionReferences(c);
 		return this.createHover(message, c.element.range);
 	}
@@ -289,7 +288,7 @@ export class HoverManager {
 						result += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
 					}
 					if (c.element.overriddenBy[gameType]?.has(element.id)) {
-						result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
+						result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}] `;
 					}
 				}
 				result += `${element.elementType} ${element.name} `;
@@ -366,30 +365,8 @@ export class HoverManager {
 					result += `[Overridden by the hovered element in ${gameTypeToVerbose(gameType)}] `;
 				}
 				if (c.element.overriddenBy[gameType]?.has(doppelganger.id)) {
-					result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}}] `;
+					result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}] `;
 				}
-			}
-			result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
-			result += `line ${emitter.range.start.line + 1}`;
-		}
-		return result;
-	}
-
-	private hoverElementAdditionForSameIDs(c: HoverContextElement): string {
-		const emitters = this.project.index.findEmittersForAllGameTypes(getKeyFromElement(c.element));
-		if (emitters.length === 1) {
-			return `\n\nNo other elements with the same ID found.`;
-		}
-		let result = `\n\nElements with the same ID (including this element):`;
-		for (const emitter of emitters) {
-			const doppelganger = this.project.index.getElementByNumericId(emitter.ownerId);
-			if (!doppelganger) {
-				continue;
-			}
-			const fileName = path.basename(emitter.uri);
-			result += `\n- `;
-			if (doppelganger.id === c.element.id) {
-				result += `[Hovered element] `
 			}
 			result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
 			result += `line ${emitter.range.start.line + 1}`;

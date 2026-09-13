@@ -57,7 +57,8 @@ export class Semantic {
 						diagnostic: {
 							severity: DiagnosticSeverity.Error,
 							range: element.range,
-							message: `${element.elementType} is not addable (${gameTypeToVerbose(gameType)}).`,
+							message: `${element.elementType} is not addable. `
+								+ `Found ${emitters.length} definitions in [${gameTypeToVerbose(gameType)}].`,
 						},
 						flags: DiagnosticType.NotAddable,
 					});
