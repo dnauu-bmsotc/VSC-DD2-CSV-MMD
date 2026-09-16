@@ -334,6 +334,9 @@ export class ProjectManager {
 	 * Returns a Set of numeric IDs of elements affected by update.
 	 */
 	private async updateFileFromDisk(filePath: string): Promise<Set<ElementNumberID>> {
+		if (!this.isDd2Csv(filePath)) {
+			return new Set();
+		}
 		const uri = makeUriString(URI.file(filePath).toString());
 		const fileState = this.files.get(uri);
 		if (fileState?.open) {

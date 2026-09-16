@@ -21,7 +21,7 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 <details>
 <summary><b>${element.name}</b></summary>
 
-Addable: ${element.addable ? "Yes" : "No"}. ${idConnectionsText}
+Addable: ${element.addable ? "Yes" : "No"}.
 
 ${element.comment ? element.comment + "\n" : ""}
 | Field Name | Input Type | Comment | Values |

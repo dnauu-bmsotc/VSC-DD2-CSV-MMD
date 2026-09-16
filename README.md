@@ -185,7 +185,7 @@ This extension tries to describe all this data in a formal way. Outer structure 
 <details>
 <summary><b>Achievement</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -205,7 +205,7 @@ Addable: No.
 <details>
 <summary><b>ActOut</b></summary>
 
-Addable: No. 
+Addable: No.
 
 Defining element of act outs and barks.
 
@@ -241,7 +241,7 @@ Defining element of act outs and barks.
 <details>
 <summary><b>ActorDataActOut</b></summary>
 
-Addable: Yes. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs`, `AffinityRelationship`, `Quirk`, `RunLevel`
+Addable: Yes.
 
 Adds ActOuts to Quirks and Relationships.
 
@@ -253,7 +253,7 @@ Adds ActOuts to Quirks and Relationships.
 <details>
 <summary><b>ActorDataClass</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs`, `ActorDataStats`
+Addable: No.
 
 Main defining element of heroes and enemies
 
@@ -314,7 +314,7 @@ Main defining element of heroes and enemies
 <details>
 <summary><b>ActorDataEffects</b></summary>
 
-Addable: Yes. Connections by same ID: `ActorDataActOut`, `ActorDataClass`, `ActorDataPath`, `ActorDataSkill`, `BattleModifier`, `Buff`, `KingdomEvent`, `Quirk`, `RunLevel`, `RunValueLevel`, `Token`, `TorchLevel`
+Addable: Yes.
 
 Adds triggered effects to Heroes, Enemies, Skills, etc.
 
@@ -466,7 +466,7 @@ Adds triggered effects to Heroes, Enemies, Skills, etc.
 <details>
 <summary><b>ActorDataExternalBuffs</b></summary>
 
-Addable: Yes. Connections by same ID: `ActorDataActOut`, `ActorDataClass`, `ActorStatus`, `BattleModifier`, `BiomeModifier`, `BiomeUpgrade`, `Item`, `KingdomDifficulty`, `Quirk`, `RunValueLevel`, `TorchLevel`
+Addable: Yes.
 
 Adds buffs to Heroes, Enemies, Paths, Items, etc.
 
@@ -479,7 +479,7 @@ Adds buffs to Heroes, Enemies, Paths, Items, etc.
 <details>
 <summary><b>ActorDataMode</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -490,7 +490,7 @@ Addable: No.
 <details>
 <summary><b>ActorDataPath</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataRunGoals`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -506,7 +506,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataRunGoals`
 <details>
 <summary><b>ActorDataRunGoals</b></summary>
 
-Addable: Yes. Connections by same ID: `ActorDataPath`
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -517,7 +517,7 @@ Addable: Yes. Connections by same ID: `ActorDataPath`
 <details>
 <summary><b>ActorDataSkill</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataStats`, `SkillReplacement`, `Token`
+Addable: No.
 
 Skill-defining element. Must match the name of the Resource Zoom In Skill file in Game files.
 
@@ -587,7 +587,7 @@ Skill-defining element. Must match the name of the Resource Zoom In Skill file i
 <details>
 <summary><b>ActorDataSkillReplacement</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 
@@ -599,7 +599,7 @@ Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 <details>
 <summary><b>ActorDataStats</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataClass`, `ActorDataSkill`, `Buff`
+Addable: No.
 
 Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 
@@ -616,7 +616,7 @@ Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 <details>
 <summary><b>ActorEffectTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -638,7 +638,7 @@ Addable: No.
 <details>
 <summary><b>ActorStatus</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataExternalBuffs`, ``
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -649,7 +649,7 @@ Addable: No. Connections by same ID: `ActorDataExternalBuffs`, ``
 <details>
 <summary><b>AffinityLeaningLevel</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -662,7 +662,7 @@ Addable: No.
 <details>
 <summary><b>AffinityRelationship</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataActOut`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -675,7 +675,7 @@ Addable: No. Connections by same ID: `ActorDataActOut`
 <details>
 <summary><b>AffinityTickTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -697,7 +697,7 @@ Addable: No.
 <details>
 <summary><b>ArenaModifier</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -715,7 +715,7 @@ Addable: No.
 <details>
 <summary><b>BarkTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -732,7 +732,7 @@ Addable: No.
 <details>
 <summary><b>BattleConfiguration</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -777,7 +777,7 @@ Addable: No.
 <details>
 <summary><b>BattleConfigurationTable</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -792,7 +792,7 @@ Addable: Yes.
 <details>
 <summary><b>BattleModifier</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -806,7 +806,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs
 <details>
 <summary><b>Biome</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -823,7 +823,7 @@ Addable: No.
 <details>
 <summary><b>BiomeGoal</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -845,7 +845,7 @@ Addable: No.
 <details>
 <summary><b>BiomeKillContract</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -862,7 +862,7 @@ Addable: No.
 <details>
 <summary><b>BiomeModifier</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataExternalBuffs`, `DataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -883,7 +883,7 @@ Addable: No. Connections by same ID: `ActorDataExternalBuffs`, `DataExternalBuff
 <details>
 <summary><b>BiomeStatus</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -896,7 +896,7 @@ Addable: No.
 <details>
 <summary><b>BiomeUpgrade</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataExternalBuffs`, `RunDataStats`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -907,7 +907,7 @@ Addable: No. Connections by same ID: `ActorDataExternalBuffs`, `RunDataStats`
 <details>
 <summary><b>Boss</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -932,7 +932,7 @@ Addable: No.
 <details>
 <summary><b>BossModifier</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -948,7 +948,7 @@ Addable: No.
 <details>
 <summary><b>Buff</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataStats`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -969,7 +969,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataStats`
 <details>
 <summary><b>CinematicSubtitles</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -982,7 +982,7 @@ Addable: No.
 <details>
 <summary><b>Condition</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1003,7 +1003,7 @@ Addable: No.
 <details>
 <summary><b>Cost</b></summary>
 
-Addable: No. Connections by same ID: `InnUpgrade`, `NodeDeliverable`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1022,7 +1022,7 @@ Addable: No. Connections by same ID: `InnUpgrade`, `NodeDeliverable`
 <details>
 <summary><b>DataAffinityTickTriggers</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1033,7 +1033,7 @@ Addable: Yes.
 <details>
 <summary><b>DataExternalBuffs</b></summary>
 
-Addable: Yes. Connections by same ID: `BiomeModifier`, `Token`
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1044,7 +1044,7 @@ Addable: Yes. Connections by same ID: `BiomeModifier`, `Token`
 <details>
 <summary><b>DataNodeReplacements</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1055,7 +1055,7 @@ Addable: Yes.
 <details>
 <summary><b>DataStoryChoiceReplacements</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1066,7 +1066,7 @@ Addable: Yes.
 <details>
 <summary><b>DoomLevel</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1079,7 +1079,7 @@ Addable: No.
 <details>
 <summary><b>Dot</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1098,7 +1098,7 @@ Addable: No.
 <details>
 <summary><b>Effect</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1229,7 +1229,7 @@ Addable: No.
 <details>
 <summary><b>ExtendedBoss</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1253,7 +1253,7 @@ Addable: No.
 <details>
 <summary><b>Gang</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1269,7 +1269,7 @@ Addable: No.
 <details>
 <summary><b>Haptics</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1288,7 +1288,7 @@ Addable: No.
 <details>
 <summary><b>HapticsDeviceIntensity</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1300,7 +1300,7 @@ Addable: No.
 <details>
 <summary><b>HapticsDisabledAudio</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1311,7 +1311,7 @@ Addable: No.
 <details>
 <summary><b>HapticsDuration</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1322,7 +1322,7 @@ Addable: No.
 <details>
 <summary><b>HapticsIntensity</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1340,7 +1340,7 @@ Addable: No.
 <details>
 <summary><b>Inn</b></summary>
 
-Addable: No. Connections by same ID: `InnTable`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1375,7 +1375,7 @@ Addable: No. Connections by same ID: `InnTable`
 <details>
 <summary><b>InnBonus</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1394,7 +1394,7 @@ Addable: No.
 <details>
 <summary><b>InnDataStats</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1406,7 +1406,7 @@ Addable: Yes.
 <details>
 <summary><b>InnTable</b></summary>
 
-Addable: Yes. Connections by same ID: `Inn`
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1419,7 +1419,7 @@ Addable: Yes. Connections by same ID: `Inn`
 <details>
 <summary><b>InnUpgrade</b></summary>
 
-Addable: No. Connections by same ID: `Cost`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1447,7 +1447,7 @@ Addable: No. Connections by same ID: `Cost`
 <details>
 <summary><b>Item</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1502,7 +1502,7 @@ Addable: No. Connections by same ID: `ActorDataExternalBuffs`
 <details>
 <summary><b>ItemBlock</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1513,7 +1513,7 @@ Addable: No.
 <details>
 <summary><b>ItemSubtype</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1527,7 +1527,7 @@ Addable: No.
 <details>
 <summary><b>KingdomDifficulty</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1549,7 +1549,7 @@ Addable: No. Connections by same ID: `ActorDataExternalBuffs`
 <details>
 <summary><b>KingdomEvent</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1573,7 +1573,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`
 <details>
 <summary><b>KingdomMap</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1583,7 +1583,7 @@ Addable: No.
 <details>
 <summary><b>KingdomSiegeAttack</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1598,7 +1598,7 @@ Addable: No.
 <details>
 <summary><b>KingdomSiegeDefense</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1609,7 +1609,7 @@ Addable: No.
 <details>
 <summary><b>KingdomTreasure</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1625,7 +1625,7 @@ Addable: No.
 <details>
 <summary><b>LootTable</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1642,7 +1642,7 @@ Addable: Yes.
 <details>
 <summary><b>NarrationEntry</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1663,7 +1663,7 @@ Addable: No.
 <details>
 <summary><b>NarrationType</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1677,7 +1677,7 @@ Addable: No.
 <details>
 <summary><b>NodeDeliverable</b></summary>
 
-Addable: No. Connections by same ID: `Cost`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1691,7 +1691,7 @@ Addable: No. Connections by same ID: `Cost`
 <details>
 <summary><b>NodeReplacement</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1709,7 +1709,7 @@ Addable: No.
 <details>
 <summary><b>Overstress</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1723,7 +1723,7 @@ Addable: No.
 <details>
 <summary><b>Quest</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1737,7 +1737,7 @@ Addable: No.
 <details>
 <summary><b>QuestStep</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1755,7 +1755,7 @@ Addable: No.
 <details>
 <summary><b>Quirk</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataActOut`, `ActorDataEffects`, `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1773,7 +1773,7 @@ Addable: No. Connections by same ID: `ActorDataActOut`, `ActorDataEffects`, `Act
 <details>
 <summary><b>QuirkContainer</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1787,7 +1787,7 @@ Addable: No.
 <details>
 <summary><b>Resist</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1815,7 +1815,7 @@ Addable: No.
 <details>
 <summary><b>RoadEvent</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1828,7 +1828,7 @@ Addable: No.
 <details>
 <summary><b>Route</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1845,7 +1845,7 @@ Addable: No.
 <details>
 <summary><b>Rules</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1998,7 +1998,7 @@ Addable: No.
 <details>
 <summary><b>RunDataStats</b></summary>
 
-Addable: Yes. Connections by same ID: `BiomeUpgrade`
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2014,7 +2014,7 @@ Addable: Yes. Connections by same ID: `BiomeUpgrade`
 <details>
 <summary><b>RunGoal</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2035,7 +2035,7 @@ Addable: No.
 <details>
 <summary><b>RunGoalCategory</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2046,7 +2046,7 @@ Addable: No.
 <details>
 <summary><b>RunLevel</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataActOut`, `ActorDataEffects`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2059,7 +2059,7 @@ Addable: No. Connections by same ID: `ActorDataActOut`, `ActorDataEffects`
 <details>
 <summary><b>RunValueLevel</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2075,7 +2075,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs
 <details>
 <summary><b>RunValueTransaction</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2089,7 +2089,7 @@ Addable: No.
 <details>
 <summary><b>SkillBlock</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2102,7 +2102,7 @@ Addable: No.
 <details>
 <summary><b>SkillModifier</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2116,7 +2116,7 @@ Addable: No.
 <details>
 <summary><b>SkillReplacement</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataSkill`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2129,7 +2129,7 @@ Addable: No. Connections by same ID: `ActorDataSkill`
 <details>
 <summary><b>SkillSet</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2141,7 +2141,7 @@ Addable: No.
 <details>
 <summary><b>StageCoachSkin</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2152,7 +2152,7 @@ Addable: No.
 <details>
 <summary><b>StoryAlignment</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2164,7 +2164,7 @@ Addable: No.
 <details>
 <summary><b>StoryChoice</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2196,7 +2196,7 @@ Addable: No.
 <details>
 <summary><b>StoryChoiceReplacement</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2209,7 +2209,7 @@ Addable: No.
 <details>
 <summary><b>StoryDataEffects</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2224,7 +2224,7 @@ Addable: Yes.
 <details>
 <summary><b>StressTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2242,7 +2242,7 @@ Addable: No.
 <details>
 <summary><b>SummonControllerConfiguration</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2254,7 +2254,7 @@ Addable: No.
 <details>
 <summary><b>SummonSequenceElement</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2268,7 +2268,7 @@ Addable: No.
 <details>
 <summary><b>Token</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `DataExternalBuffs`, `ActorDataSkill`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2314,7 +2314,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `DataExternalBuffs`, `A
 <details>
 <summary><b>TokenIgnore</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2333,7 +2333,7 @@ Addable: No.
 <details>
 <summary><b>TorchLevel</b></summary>
 
-Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs`
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2346,7 +2346,7 @@ Addable: No. Connections by same ID: `ActorDataEffects`, `ActorDataExternalBuffs
 <details>
 <summary><b>TorchLevelGroup</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2357,7 +2357,7 @@ Addable: No.
 <details>
 <summary><b>TorchTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2370,7 +2370,7 @@ Addable: No.
 <details>
 <summary><b>TrinketSet</b></summary>
 
-Addable: No. 
+Addable: No.
 
 Unused Element
 
@@ -2382,7 +2382,7 @@ Unused Element
 <details>
 <summary><b>Unlock</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2394,7 +2394,7 @@ Addable: No.
 <details>
 <summary><b>UnlockTable</b></summary>
 
-Addable: Yes. 
+Addable: Yes.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2409,7 +2409,7 @@ Addable: Yes.
 <details>
 <summary><b>UnlockTrack</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2421,7 +2421,7 @@ Addable: No.
 <details>
 <summary><b>WoundTrigger</b></summary>
 
-Addable: No. 
+Addable: No.
 
 
 | Field Name | Input Type | Comment | Values |
