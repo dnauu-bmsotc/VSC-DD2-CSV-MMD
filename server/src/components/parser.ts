@@ -329,22 +329,28 @@ export function typeEvaluatedToVerbose(type: TypeEvaluated): string {
 }
 
 export function offsetElementByLines(element: ASTElement, offset: number) {
-	element.range.start.line += offset;
-	element.range.end.line += offset;
-	element.fullRange.start.line += offset;
-	element.fullRange.end.line += offset;
+	element.range = offsetRangeByLines(element.range, offset);
+	element.fullRange = offsetRangeByLines(element.fullRange, offset);
 	for (const field of element.fields) {
-		field.range.start.line += offset;
-		field.range.end.line += offset;
+		field.range = offsetRangeByLines(field.range, offset);
 		for (const value of field.values) {
-			value.range.start.line += offset;
-			value.range.end.line += offset;
+			value.range = offsetRangeByLines(value.range, offset);
 		}
 	}
 	for (const diagnostic of element.diagnostics) {
-		diagnostic.diagnostic.range = structuredClone(diagnostic.diagnostic.range);
-		diagnostic.diagnostic.range.start.line += offset;
-		diagnostic.diagnostic.range.end.line += offset;
+		diagnostic.diagnostic.range = offsetRangeByLines(diagnostic.diagnostic.range, offset);
+	}
+}
+
+/**
+ * returns a new object to avoid situations where a range is shared
+ * between two objects (like diagnostic's range references to value's range)
+ * which causes double offset.
+ */
+function offsetRangeByLines(range: Range, offset: number): Range {
+	return {
+		start: { line: range.start.line + offset, character: range.start.character },
+		end: { line: range.end.line + offset, character: range.end.character },
 	}
 }
 
