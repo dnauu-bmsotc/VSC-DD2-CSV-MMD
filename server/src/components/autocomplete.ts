@@ -17,11 +17,17 @@ export class CompletionProvider {
 	) {}
 
 	public getOnCompletion (textDocumentPosition: TextDocumentPositionParams): CompletionItem[] {
-		const t0 = performance.now();
-		const result = this._getOnCompletion(textDocumentPosition);
-		const duration = (performance.now() - t0).toFixed(1);
-		// console.log(`Completion search [${duration} ms].`);
-		return result;
+		try {
+			const t0 = performance.now();
+			const result = this._getOnCompletion(textDocumentPosition);
+			const duration = (performance.now() - t0).toFixed(1);
+			// console.log(`Completion search [${duration} ms].`);
+			return result;
+		}
+		catch (error) {
+			console.error(error);
+			return [];
+		}
 	};
 
 	private _getOnCompletion(textDocumentPosition: TextDocumentPositionParams): CompletionItem[] {
@@ -262,7 +268,11 @@ export class CompletionProvider {
 
 				case TypeID.sub:
 					const KWGroup = keywords[definition.group];
+					valueCompletionRecursive({ type: TypeID.kw, group: definition.group });
 					const valueDesc = KWGroup[field.values[0].text];
+					if (!valueDesc) {
+						return;
+					}
 					const derivedType = valueDesc.influences?.[definition.subtypeString];
 					if (!derivedType) {
 						return;

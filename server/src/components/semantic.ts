@@ -343,6 +343,12 @@ export class Semantic {
 				if (subtypeValidateResult) {
 					return subtypeValidateResult;
 				}
+				if (!definition.subtypeValueType) {
+					return null;
+				}
+				if (values.length < 3) {
+					return this.createExpectedTypeDiagnostic(definition.subtypeValueType, values[0].range);
+				}
 				return definition.subtypeValueType
 					? this.validateValues([values[2]], definition.subtypeValueType, c)
 					: null;
