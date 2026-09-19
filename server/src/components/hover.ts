@@ -146,11 +146,6 @@ export class HoverManager {
 		return this.createHover(message, c.element.range);
 	}
 
-	private getJumpUri(uri: UriString, range: Range) {
-		const fragment = `L${range.start.line + 1}:${range.start.character + 1}-L${range.end.line + 1}:${range.end.character + 1}`;
-		return `${uri}${fragment ? '#' + fragment : ''}`;
-	}
-
 	private createHover(message: string, range: Range): Hover {
 		return {
 			contents: {
@@ -246,7 +241,7 @@ export class HoverManager {
 			tableObjects.push({
 				table: tableObj,
 				idx: (element.id === c.element.id) ? this.findHoveredValuePosition(c) : null,
-				link: `[${filename}](${this.getJumpUri(uri, element.range)})&nbsp;(line&nbsp;${element.range.start.line + 1})`,
+				link: `[${filename}](${this.project.getJumpUri(uri, element.range)})&nbsp;(line&nbsp;${element.range.start.line + 1})`,
 			});
 		}
 		addition += `\n\n`;
@@ -293,25 +288,31 @@ export class HoverManager {
 					}
 				}
 				result += `${element.elementType} ${element.name} `;
-				result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
+				result += `[${fileName}](${this.project.getJumpUri(emitter.uri, emitter.range)}) `;
 				result += `line ${emitter.range.start.line + 1}`;
-
-				// show element's csv text if it won't flood the hint
-				if ((keys.length === 1) && (emitters.length === 1)) {
-					result += '\n\n' + this.project.getElementText(element);
-					const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
-					const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
-					for (const supplementaryElement of supplementaryElements) {
-						if (elementsHaveDuplicateTypes) {
-							const uri = this.project.index.getUriFromElement(supplementaryElement);
-							if (uri) {
-								const fileName = path.basename(uri);
-								const nLine = supplementaryElement.fullRange.start.line + 1;
-								result += `\n\n(${resourceScopeToVerbose(element.scope)}) ${fileName} line ${nLine}`;
-							}
+			}
+		}
+		const gameTypes = ResourceScopeEligibleGameTypes[c.element.scope];
+		for (const key of keys) {
+			const emitters = new Set(gameTypes.map(g => this.project.index.findEmitters(g, key)).flat());
+			for (const emitter of emitters) {
+				const element = this.project.index.getElementByNumericId(emitter.ownerId);
+				if (!element) {
+					continue;
+				}
+				result += '\n\n' + this.project.getElementText(element);
+				const supplementaryElements = this.project.index.findSupplementedBy(element, gameTypes);
+				const elementsHaveDuplicateTypes = listHasDuplicates([...supplementaryElements].map(e => e.elementType));
+				for (const supplementaryElement of supplementaryElements) {
+					if (elementsHaveDuplicateTypes) {
+						const uri = this.project.index.getUriFromElement(supplementaryElement);
+						if (uri) {
+							const fileName = path.basename(uri);
+							const nLine = supplementaryElement.fullRange.start.line + 1;
+							result += `\n\n(${resourceScopeToVerbose(element.scope)}) ${fileName} line ${nLine}`;
 						}
-						result += '\n\n' + this.project.getElementText(supplementaryElement);
 					}
+					result += '\n\n' + this.project.getElementText(supplementaryElement);
 				}
 			}
 		}
@@ -370,7 +371,7 @@ export class HoverManager {
 					result += `[Overrides the hovered element in ${gameTypeToVerbose(gameType)}] `;
 				}
 			}
-			result += `[${fileName}](${this.getJumpUri(emitter.uri, emitter.range)}) `;
+			result += `[${fileName}](${this.project.getJumpUri(emitter.uri, emitter.range)}) `;
 			result += `line ${emitter.range.start.line + 1}`;
 		}
 		return result;
@@ -378,22 +379,24 @@ export class HoverManager {
 
 	private hoverElementAdditionSupplements(c: HoverContextElement): string {
 		let result = ``;
-		const supplementaryElements = this.project.findSameIdConnectedElementsForAllGameTypes(c.element);
-		if (supplementaryElements.length === 0) {
+		const gameTypes = ResourceScopeEligibleGameTypes[c.element.scope];
+		const sameIdGroupElements = this.project.index.getSameIdGroup(c.element, gameTypes);
+		if (sameIdGroupElements.length === 0) {
+			result += '\n\n' + this.project.getElementText(c.element);
 			return result;
 		}
-		result += '\n\n' + this.project.getElementText(c.element);
-		const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
-		for (const supplementaryElement of supplementaryElements) {
+		const elementsHaveDuplicateTypes = listHasDuplicates(sameIdGroupElements.map(e => e.elementType));
+		for (const sameIdGroupElement of sameIdGroupElements) {
 			if (elementsHaveDuplicateTypes) {
-				const uri = this.project.index.getUriFromElement(supplementaryElement);
+				const uri = this.project.index.getUriFromElement(sameIdGroupElement);
 				if (uri) {
 					const fileName = path.basename(uri);
-					const nLine = supplementaryElement.fullRange.start.line + 1;
-					result += `\n\n&emsp;(${resourceScopeToVerbose(c.element.scope)}) ${fileName} line ${nLine}`;
+					const nLine = sameIdGroupElement.fullRange.start.line + 1;
+					const scopeVerbose = resourceScopeToVerbose(sameIdGroupElement.scope);
+					result += `\n\n&emsp;(${scopeVerbose}) ${fileName} line ${nLine}`;
 				}
 			}
-			result += '\n\n' + this.project.getElementText(supplementaryElement);
+			result += '\n\n' + this.project.getElementText(sameIdGroupElement);
 		}
 		return result;
 	}
@@ -437,7 +440,7 @@ export class HoverManager {
 			const fileName = path.basename(receiver.uri);
 			result += `\n- [${[...definitionIsReferredToInGameTypes].map(gameTypeToVerbose).join(', ')}] `;
 			result += `${receiverOwner.elementType} ${receiverOwner.name} `;
-			result += `([${fileName}](${this.getJumpUri(receiver.uri, receiver.range)}) line ${receiver.range.start.line + 1})`;
+			result += `([${fileName}](${this.project.getJumpUri(receiver.uri, receiver.range)}) line ${receiver.range.start.line + 1})`;
 		}
 		return result;
 	}

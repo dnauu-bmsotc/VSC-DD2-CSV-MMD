@@ -2,7 +2,7 @@ import { TextDocumentPositionParams, CompletionItem, CompletionItemKind, MarkupK
 import { ProjectManager } from './project';
 import { listHasDuplicates, makeUriString } from '../../../shared/utils';
 import { Field, TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver, TypeID, typeToVerbose } from './schema';
-import { ASTElement, ASTField, getDependencyInfluencedType, resourceScopeToVerbose } from './parser';
+import { ASTElement, ASTField, getDependencyInfluencedType, ResourceScope, ResourceScopeEligibleGameTypes, resourceScopeToVerbose } from './parser';
 import { ERType } from '.';
 import * as path from 'node:path';
 
@@ -109,22 +109,24 @@ export class CompletionProvider {
 					if (!element) {
 						continue;
 					}
-					const range = element.fullRange;
-					const filename = path.basename(decodeURIComponent(idEmitter.uri)).replace(/.group.csv$/i, "");
+					const filename = path.basename(decodeURIComponent(idEmitter.uri));
 					const scopeVerbose = resourceScopeToVerbose(element.scope);
-					item.documentation.value += `\n\n(${scopeVerbose}) ${filename} line ${range.start.line + 1}`;
+					const link = `[${filename}](${this.project.getJumpUri(idEmitter.uri, element.range)})`;
+					item.documentation.value += `\n\n(${scopeVerbose}) ${link} line ${element.fullRange.start.line + 1}`;
 					const elementText = this.project.getElementText(element);
 					if (elementText) {
 						item.documentation.value += '\n\n' + elementText;
-						const supplementaryElements = this.project.findSupplementaryElementsForAllGameTypes(element);
-						const elementsHaveDuplicateTypes = listHasDuplicates(supplementaryElements.map(e => e.elementType));
+						const gameTypes = ResourceScopeEligibleGameTypes[element.scope];
+						const supplementaryElements = this.project.index.findSupplementedBy(element, gameTypes);
+						const elementsHaveDuplicateTypes = listHasDuplicates([...supplementaryElements].map(e => e.elementType));
 						for (const supplementaryElement of supplementaryElements) {
 							if (elementsHaveDuplicateTypes) {
 								const uri = this.project.index.getUriFromElement(supplementaryElement);
 								if (uri) {
 									const fileName = path.basename(uri);
 									const nLine = supplementaryElement.fullRange.start.line + 1;
-									item.documentation.value += `\n\n(${resourceScopeToVerbose(element.scope)}) ${fileName} line ${nLine}`;
+									const link = `[${fileName}](${this.project.getJumpUri(uri, supplementaryElement.range)})`;
+									item.documentation.value += `\n\n(${resourceScopeToVerbose(element.scope)}) ${link} line ${nLine}`;
 								}
 							}
 							item.documentation.value += '\n\n' + this.project.getElementText(supplementaryElement);

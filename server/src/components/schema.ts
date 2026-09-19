@@ -51,6 +51,9 @@ export type TypeDefinitionSubtype			= { type: TypeID.sub; group: string, subtype
 export type TypeDefinitionPSV				= { type: TypeID.psv, element: TypeDefinition };
 
 export type Element = {
+	/**
+	 * element's type
+	 */
 	name: string;
 	fields: Record<string, Field>;
 	comment: string;

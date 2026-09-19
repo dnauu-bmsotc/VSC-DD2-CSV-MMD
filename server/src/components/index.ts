@@ -58,46 +58,98 @@ export class Index {
 	 */
 	private readonly anyValues = new Map<string, Map<string, Set<string>>>();
 
+	/**
+	 * Tracking elements that are connected implicitly by having the same ID.
+	 * sameIdGroupsById's Set value is shared between multiple entries.
+	 */
+	private readonly sameIdGroupsById = new Map<ElementNumberID, Set<ElementNumberID>>();
+	private readonly typeSupplementing = new Map<string,Set<string>>();
+	private readonly typeSupplementedBy = new Map<string,Set<string>>();
+
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
-	) {}
+	) {
+		const sameIdConnections = Object.values(schema)
+			.map(d => d.supplementedBy.map(e => [d.name, e] as [string, string])).flat(1);
+		for (const elementType of Object.keys(schema)) {
+			this.typeSupplementing.set(elementType, findAncestors(sameIdConnections, elementType));
+			this.typeSupplementedBy.set(elementType, findChildren(sameIdConnections, elementType));
+		}
+	}
 
 	public removeElement(element: ASTElement) {
 		this.elements.delete(element.id);
+
+		// remove receivers and emitters from lists
 		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(element.id, element.elementType, element.name);
 		this.removeElementFromKeyList(element.id, this.emittersByKey, this.emittersByElement);
 		this.removeElementFromKeyList(element.id, this.receiversByKey, this.receiversByElement);
 		this.emittersByElement.delete(element.id);
 		this.receiversByElement.delete(element.id);
+
 		// find and update overrides
 		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
 		this.updateOverridesInElements(getKeyFromElement(element), sameSignatureElements);
 		for (const sameSignatureElement of sameSignatureElements) {
 			affectedElements.add(sameSignatureElement);
 		}
+		// find connections by the same id
+		const sameIdGroup = this.sameIdGroupsById.get(element.id);
+		if (sameIdGroup) {
+			this.sameIdGroupsById.delete(element.id);
+			sameIdGroup.delete(element.id);
+			sameIdGroup.forEach(id => affectedElements.add(id));
+		}
 		return affectedElements;
 	}
 
 	public addElement(element: ASTElement, emitters: Emitter[], receivers: Receiver[], calculateAffected=true) {
 		this.elements.set(element.id, element);
-
 		const affectedElements = new Set<ElementNumberID>();
+
+		// register receivers and emitters
 		this.emittersByElement.set(element.id, emitters);
 		this.receiversByElement.set(element.id, receivers);
 		this.addElementToKeyList(emitters, this.emittersByKey);
 		this.addElementToKeyList(receivers, this.receiversByKey);
+
 		// find and update overrides
 		const sameSignatureElements = this.findSameSignatureElements(element.elementType, element.name);
 		this.updateOverridesInElements(getKeyFromElement(element), [element.id, ...sameSignatureElements]);
+
+		// find connections by the same id
+		const supplementing = this.typeSupplementing.get(element.elementType) ?? [];
+		const supplementedBy = this.typeSupplementedBy.get(element.elementType) ?? [];
+		for (const elementType of [...supplementing, ...supplementedBy]) {
+			const key = getKey({ type: ERType.id, group: elementType, name: element.name });
+			const idEmitters = this.emittersByKey.get(key) ?? [];
+			for (const idEmitter of idEmitters) {
+				const connectedElement = this.getElementByNumericId(idEmitter.ownerId);
+				if (!connectedElement) {
+					continue;
+				}
+				const sameIdGroup = this.sameIdGroupsById.get(element.id)
+					?? this.sameIdGroupsById.get(connectedElement.id)
+					?? new Set([element.id, connectedElement.id]);
+				sameIdGroup.add(element.id);
+				sameIdGroup.add(connectedElement.id);
+				this.sameIdGroupsById.set(connectedElement.id, sameIdGroup);
+				this.sameIdGroupsById.set(element.id, sameIdGroup);
+				affectedElements.add(connectedElement.id);
+			}
+		}
+
 		// affected elements are not calculated during initialization
 		if (!calculateAffected) {
 			return affectedElements;
 		}
+
 		// affected by overrides
 		for (const sameSignatureElement of sameSignatureElements) {
 			affectedElements.add(sameSignatureElement);
 		}
+
 		// newly added emitters can resolve references
 		for (const emitter of emitters) {
 			const key = getKey(emitter);
@@ -116,6 +168,36 @@ export class Index {
 
 	public findReceiversForAllGameTypes(info: KeyInfo): Receiver[] {
 		return [...this.receiversByKey.get(getKey(info)) ?? []];
+	}
+
+	public getSameIdGroup(element: ASTElement, gameTypes: GameType[]) {
+		const result = new Set<ASTElement>();
+		for (const g of gameTypes) {
+			const group = [...this.sameIdGroupsById.get(element.id) ?? []];
+			const elements = group.map(id => this.getElementByNumericId(id))
+				.filter(e => !!e)
+				.filter(e => elementIsEligibleForGameType(e, g))
+				.filter(e => this.getOverridersOfElement(e.id, getKeyFromElement(e), g).size === 0);
+			elements.map(e => result.add(e));
+		}
+		return [...result];
+	}
+
+	public findSupplementedBy(element: ASTElement, gameTypes: GameType[]) {
+		const result: ASTElement[] = [];
+		const sameIdGroupElements = this.getSameIdGroup(element, gameTypes);
+		const supplementedByTypes = this.typeSupplementedBy.get(element.elementType);
+		if (!supplementedByTypes) {
+			return result;
+		}
+		for (const elementType of supplementedByTypes) {
+			for (const candidate of sameIdGroupElements) {
+				if (candidate.elementType === elementType) {
+					result.push(candidate);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -460,4 +542,68 @@ export function erTypeToVerbose(t: ERType) {
 		case ERType.tag:
 			return "Tag";
 	}
+}
+
+function findAncestors(edges: [string, string][], node: string): Set<string> {
+	const parents = new Map<string, string[]>();
+	for (const [from, to] of edges) {
+		const list = parents.get(to);
+		if (list) {
+			list.push(from)
+		}
+		else {
+			parents.set(to, [from])
+		};
+	}
+
+	const result = new Set<string>();
+	const stack = [...(parents.get(node) ?? [])];
+
+	while (stack.length > 0) {
+		const current = stack[stack.length - 1];
+		stack.pop()!;
+		if (result.has(current)) {
+			continue;
+		}
+		result.add(current);
+		for (const p of parents.get(current) ?? []) {
+			if (!result.has(p)) {
+				stack.push(p);
+			}
+		}
+	}
+
+	return result;
+}
+
+function findChildren(edges: [string, string][], node: string): Set<string> {
+	const children = new Map<string, string[]>();
+	for (const [from, to] of edges) {
+		const list = children.get(from);
+		if (list) {
+			list.push(to);
+		}
+		else {
+			children.set(from, [to]);
+		}
+	}
+
+	const result = new Set<string>();
+	const stack = [...(children.get(node) ?? [])];
+
+	while (stack.length > 0) {
+		const current = stack[stack.length - 1];
+		stack.pop()!;
+		if (result.has(current)) {
+			continue;
+		}
+		result.add(current);
+		for (const c of children.get(current) ?? []) {
+			if (!result.has(c)) {
+				stack.push(c);
+			}
+		}
+	}
+
+	return result;
 }
