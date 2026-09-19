@@ -1,4 +1,4 @@
-import { TextDocumentPositionParams, CompletionItem, CompletionItemKind, MarkupKind } from 'vscode-languageserver';
+import { TextDocumentPositionParams, CompletionItem, CompletionItemKind, MarkupKind, InsertTextFormat } from 'vscode-languageserver';
 import { ProjectManager } from './project';
 import { listHasDuplicates, makeUriString } from '../../../shared/utils';
 import { Field, TypeDefinition, TypeDefinitionID, TypeDefinitionKW, TypeDefinitionTagReceiver, TypeID, typeToVerbose } from './schema';
@@ -50,8 +50,16 @@ export class CompletionProvider {
 				label: elementType,
 				detail: schema[elementType]?.comment ?? "",
 			}));
+			const elementStructureSnippet: CompletionItem = {
+				kind: CompletionItemKind.Snippet,
+				insertTextFormat: InsertTextFormat.Snippet,
+				label: 'Element block',
+				detail: `element_start,id,type`,
+				insertText: 'element_start,${1:id},${2:type}\n${3}\nelement_end',
+			}
 			return [
 				...elementTypeItems,
+				elementStructureSnippet,
 				{ kind: CompletionItemKind.Text, label: 'element_start' },
 				{ kind: CompletionItemKind.Text, label: 'element_end', },
 			];
