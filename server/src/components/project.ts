@@ -3,8 +3,8 @@ import * as path from 'node:path';
 import * as fs from "node:fs"
 import { Range } from 'vscode-languageserver';
 
-import { ERType, Index, KeyInfo } from '.';
-import { AST, ASTElement, ElementNumberID, GameType, gameTypeList, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
+import { Index } from '.';
+import { AST, ASTElement, ElementNumberID, MmdDiagnostic, offsetElementByLines, Parser } from './parser';
 import { DD2CSVMMDSettings } from '../../../shared/settings';
 import { makePathString, makeUriString, UriString } from '../../../shared/utils';
 import { Semantic } from './semantic';
@@ -40,8 +40,8 @@ export class ProjectManager {
 		this.configuration = configuration;
 		this.files = new Map<UriString, FileState>();
 		this.parser = new Parser();
-		this.index = new Index(this.compiledData.schema, this.compiledData.keywords);
-		this.analyzer = new Semantic(this.compiledData.schema, this.compiledData.keywords, this.index);
+		this.index = new Index(compiledData.schema, compiledData.keywords, compiledData.typeSupplementing, compiledData.typeSupplementedBy);
+		this.analyzer = new Semantic(compiledData.schema, compiledData.keywords, this.index);
 	}
 
 	public async initialize(workspaceRoot: URI | null) {

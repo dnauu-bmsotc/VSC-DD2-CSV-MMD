@@ -19,8 +19,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 This extension has these features (can be toggled off in settings):
 - Syntax highlighting for DD2 CSV files.
 - Validation of elements, fields, and values.
-- Hints on hover for fields and values.
+- Hints on hover.
 - Jump to Definition (acessible through hover).
+- Find unused elements.
 
 ![Image: missing id](./images/screenshot_missing_id.png)
 *Missing tag definition*

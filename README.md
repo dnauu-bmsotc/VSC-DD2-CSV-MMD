@@ -19,8 +19,9 @@ Syntax highlighting and validation for Darkest Dungeon 2 CSV files.
 This extension has these features (can be toggled off in settings):
 - Syntax highlighting for DD2 CSV files.
 - Validation of elements, fields, and values.
-- Hints on hover for fields and values.
+- Hints on hover.
 - Jump to Definition (acessible through hover).
+- Find unused elements.
 
 ![Image: missing id](./images/screenshot_missing_id.png)
 *Missing tag definition*
@@ -188,6 +189,10 @@ This extension tries to describe all this data in a formal way. Outer structure 
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_allTags||||
@@ -206,6 +211,10 @@ Addable: No.
 <summary><b>ActOut</b></summary>
 
 Addable: No.
+
+
+
+
 
 Defining element of act outs and barks.
 
@@ -243,6 +252,10 @@ Defining element of act outs and barks.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `RunLevel`, `Quirk`, `AffinityRelationship`
+- `ActorDataExternalBuffs`, `ActorDataEffects`
+
 Adds ActOuts to Quirks and Relationships.
 
 | Field Name | Input Type | Comment | Values |
@@ -254,6 +267,10 @@ Adds ActOuts to Quirks and Relationships.
 <summary><b>ActorDataClass</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `ActorDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
 
 Main defining element of heroes and enemies
 
@@ -315,6 +332,10 @@ Main defining element of heroes and enemies
 <summary><b>ActorDataEffects</b></summary>
 
 Addable: Yes.
+
+Connections by the same ID:
+- `TorchLevel`, `Token`, `RunValueLevel`, `RunLevel`, `Quirk`, `KingdomEvent`, `Item`, `Buff`, `BattleModifier`, `ActorDataSkill`, `SkillReplacement`, `ActorDataPath`, `ActorDataClass`, `ActorDataActOut`, `AffinityRelationship`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -467,6 +488,10 @@ Addable: Yes.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `TorchLevel`, `RunValueLevel`, `Quirk`, `KingdomDifficulty`, `Item`, `BiomeUpgrade`, `BiomeModifier`, `BattleModifier`, `ActorStatus`, `ActorDataClass`, `ActorDataActOut`, `RunLevel`, `AffinityRelationship`
+
+
 Adds buffs to Heroes, Enemies, Paths, Items, etc.
 
 | Field Name | Input Type | Comment | Values |
@@ -481,6 +506,10 @@ Adds buffs to Heroes, Enemies, Paths, Items, etc.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_BarkOverrideKey||||
@@ -490,6 +519,10 @@ Addable: No.
 <summary><b>ActorDataPath</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `DataExternalBuffs`, `ActorDataRunGoals`, `ActorDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -507,6 +540,10 @@ Addable: No.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `ActorDataPath`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -517,6 +554,10 @@ Addable: Yes.
 <summary><b>ActorDataSkill</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+- `Token`, `SkillReplacement`
+- `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`
 
 Skill-defining element. Must match the name of the Resource Zoom In Skill file in Game files.
 
@@ -549,8 +590,8 @@ Skill-defining element. Must match the name of the Resource Zoom In Skill file i
 |m_IsBlockPass|boolean|||
 |m_IsForced|boolean|||
 |m_IsFreeAction|boolean|||
-|m_IsFriendly|boolean|||
-|m_IsFriendlySelfTargetValid|boolean|||
+|m_IsFriendly|boolean|Whether this skill targets friendly party||
+|m_IsFriendlySelfTargetValid|boolean|Whether this skill can target the performer||
 |m_IsLootWindowVisible|boolean|Default True||
 |m_IsMoveToTarget|boolean|||
 |m_IsMultiHit|boolean|||
@@ -588,6 +629,10 @@ Skill-defining element. Must match the name of the Resource Zoom In Skill file i
 
 Addable: Yes.
 
+
+
+
+
 Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 
 | Field Name | Input Type | Comment | Values |
@@ -600,6 +645,10 @@ Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 
 Addable: No.
 
+Connections by the same ID:
+- `Buff`, `ActorDataSkill`, `Token`, `SkillReplacement`, `ActorDataClass`
+
+
 Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 
 | Field Name | Input Type | Comment | Values |
@@ -609,7 +658,7 @@ Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 |key_map|List(keyword)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |multiply_stat|Seq(keyword, float)||keyword: <details><summary>expand</summary>affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, crit_chance, deaths_door_chance, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, effect_target_chance_multiplier, health_damage, health_damage_dealt_mult_percent, health_damage_dealt_percent, health_damage_range, health_damage_received_percent, health_heal_dealt_percent, health_heal_percent_between_nodes, health_heal_received_percent, health_max, inn_quirk_generation_chance_modifier, kingdom_actor_travel_distance, kingdom_actor_travel_effect_chance, kingdom_wound_heal_multiplier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_chance, route_choice_preference, speed, speed_number_of_turns, speed_tie_breaker, stress_max, token_limit, wound_percent_max</details><br>|
 |multiply_stats|Dep*(key_map)|||
-|sub_stat|Sub(keyword, Substat, float)||keyword: affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, health_heal_dealt_percent, health_heal_received_percent, inn_quirk_generation_chance_modifier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_preference<br>|
+|sub_stat|Sub(keyword, Substat, float)|Add/modify a substat|keyword: affinity_relationship_tag_chance_modifier, affinity_relationship_tag_extra_duration, dot_effect_value_dealt_change, dot_effect_value_dealt_multiplier, dot_effect_value_received_change, dot_effect_value_received_multiplier, dot_extra_duration_dealt, dot_extra_duration_received, effect_performer_chance_multiplier, health_heal_dealt_percent, health_heal_received_percent, inn_quirk_generation_chance_modifier, overstress_chance_modifier, resistance, resistance_ignore, rest_item_effect_chance_modifier, route_choice_preference<br>|
 </details>
 
 <details>
@@ -618,19 +667,23 @@ Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |effects|List(Effect&nbsp;ID)|||
-|m_ActorCount|integer|||
-|m_ActorEffectTriggerSourceType|keyword||keyword: performer, target<br>|
-|m_ActorEffectTriggerTargetType|keyword||keyword: enemy_team, friendly_team, neighbor, party, performer, target<br>|
+|m_ActorCount|integer|Number of actors to be affected. If this number is less than the number of actors that other fields state, then effects are applied randomly to no more than to `m_ActorCount` actors.||
+|m_ActorEffectTriggerSourceType|keyword|Tells from whom effects should originate. It has meaning for two-sided effects like copying and stealing tokens.|keyword: performer, target<br>|
+|m_ActorEffectTriggerTargetType|keyword|Tells to whom effects should be applied.|keyword: enemy_team, friendly_team, neighbor, party, performer, target<br>|
 |m_ActorEffectType|keyword||keyword: <details><summary>expand</summary>affinity_leaning_negative_change_observing, affinity_leaning_negative_change_participating, affinity_leaning_positive_change_observing, affinity_leaning_positive_change_participating, change_class, combat_end, combat_health_damage, combat_health_damage_enemy_team, combat_health_damage_enemy_team_random, combat_health_damage_friendly_team, combat_health_damage_friendly_team_random, combat_health_heal, combat_health_heal_enemy_team, combat_health_heal_enemy_team_random, combat_health_heal_friendly_team, combat_health_heal_friendly_team_random, combat_start, combat_stress_damage, combat_stress_damage_enemy_team, combat_stress_damage_enemy_team_random, combat_stress_damage_friendly_team, combat_stress_damage_friendly_team_random, combat_stress_heal, combat_stress_heal_enemy_team, combat_stress_heal_enemy_team_random, combat_stress_heal_friendly_team, combat_stress_heal_friendly_team_random, death, deaths_door_enter, deaths_door_exit, deaths_door_survive, embark, enemy_death, enemy_death_team, enemy_team, enemy_team_hit, enemy_team_hit_member_random, enemy_team_member_random, enter_biome, friendly_death, friendly_death_team, friendly_team, friendly_team_hit, friendly_team_hit_member_random, friendly_team_member_random, inn_start, kingdom, kingdom_cleanse, kingdom_contagion, move, move_enemy, move_friendly, node, node_after, node_before, node_execute_completed, node_execute_started, on_attack_as_performer_to_performer, on_attack_as_performer_to_target, on_attack_as_target_to_performer, on_attack_as_target_to_target, on_crit_as_performer_to_performer, on_crit_as_performer_to_target, on_crit_as_target_to_performer, on_crit_as_target_to_target, on_hit_as_performer_to_performer, on_hit_as_performer_to_target, on_hit_as_target_to_performer, on_hit_as_target_to_target, on_kill_as_performer_to_performer, on_kill_as_target_to_performer, on_miss_as_performer_to_performer, on_miss_as_performer_to_target, on_miss_as_target_to_performer, on_miss_as_target_to_target, on_not_crit_as_performer_to_performer, on_not_crit_as_performer_to_target, on_not_crit_as_target_to_performer, on_not_crit_as_target_to_target, on_overstress, on_relationship, on_release_per_round_captured, on_release_per_turn_captured, on_resist, performer, performer_after_target, performer_from_target, performer_neighbor_random, performer_neighbors, performer_on_crit_single, performer_on_kill_fail, performer_per_crit, performer_per_target, performer_team, performer_team_hit, performer_team_hit_member_random, performer_team_hit_others, performer_team_hit_others_member_random, performer_team_member_random, performer_team_others, performer_team_others_member_random, respawn, rest_item, roster_status_enter, roster_status_exit, round_end, round_start, spawn, target, target_neighbor_random, target_neighbors, target_self, target_team, target_team_hit, target_team_hit_member_random, target_team_hit_others, target_team_hit_others_member_random, target_team_member_random, target_team_others, target_team_others_member_random, turn_delay, turn_end, turn_end_enemy_team, turn_end_enemy_team_random, turn_end_friendly_team, turn_end_friendly_team_random, turn_skip, turn_start, turn_start_enemy_team, turn_start_enemy_team_random, turn_start_friendly_team, turn_start_friendly_team_random</details><br>|
 |m_ApplyLimit|integer|||
 |m_ApplyTargetToSource|boolean|||
 |m_IncludeSourceActor|boolean|||
-|m_NeighborActorEffectTriggerSourceType|keyword||keyword: performer, target<br>|
-|m_NeighborBackCount|integer|||
-|m_NeighborFrontCount|integer|||
+|m_NeighborActorEffectTriggerSourceType|keyword|When `m_ActorEffectTriggerTargetType` is set to `neighbor`, this field states whose neighbors will be affected.|keyword: performer, target<br>|
+|m_NeighborBackCount|integer|When `m_ActorEffectTriggerTargetType` is set to `neighbor`, this field states the number of neighbors in front of the actor specified in `m_ActorEffectTriggerSourceType` or `m_NeighborActorEffectTriggerSourceType`.||
+|m_NeighborFrontCount|integer|When `m_ActorEffectTriggerTargetType` is set to `neighbor`, this field states the number of neighbors behind actor specified in `m_ActorEffectTriggerSourceType` or `m_NeighborActorEffectTriggerSourceType`.||
 |m_UseActorDataEffectsConditionCalculationInput|boolean|||
 </details>
 
@@ -638,6 +691,10 @@ Addable: No.
 <summary><b>ActorStatus</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- ``, `ActorDataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -649,6 +706,10 @@ Addable: No.
 <summary><b>AffinityLeaningLevel</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -663,6 +724,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `ActorDataActOut`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -675,6 +740,10 @@ Addable: No.
 <summary><b>AffinityTickTrigger</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -699,6 +768,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |enter_actor_apply_limit_effects|List(Effect&nbsp;ID)|||
@@ -717,6 +790,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
@@ -732,6 +809,10 @@ Addable: No.
 <summary><b>BattleConfiguration</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -779,6 +860,10 @@ Addable: No.
 Addable: Yes.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_chances|Dep*(m_types)|||
@@ -793,6 +878,10 @@ Addable: Yes.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -806,6 +895,10 @@ Addable: No.
 <summary><b>Biome</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `RunDataStats`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -823,6 +916,10 @@ Addable: No.
 <summary><b>BiomeGoal</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -847,6 +944,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
@@ -862,6 +963,10 @@ Addable: No.
 <summary><b>BiomeModifier</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `RunDataStats`, `DataExternalBuffs`, `ActorDataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -884,6 +989,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `RunDataStats`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -897,6 +1006,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `RunDataStats`, `ActorDataExternalBuffs`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -907,6 +1020,10 @@ Addable: No.
 <summary><b>Boss</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `RunDataStats`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -934,6 +1051,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_ActorDataEffectsId|ActorDataEffects&nbsp;ID|||
@@ -948,6 +1069,10 @@ Addable: No.
 <summary><b>Buff</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `Condition`, `ActorDataStats`, `ActorDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -971,6 +1096,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_cinematicName||||
@@ -982,6 +1111,10 @@ Addable: No.
 <summary><b>Condition</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+- `Buff`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1004,6 +1137,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+- `Unlock`, `ActorDataSkill`, `Token`, `SkillReplacement`, `RunValueTransaction`, `NodeDeliverable`, `InnUpgrade`, `InnBonus`, `Item`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1023,6 +1160,10 @@ Addable: No.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `Token`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1033,6 +1174,10 @@ Addable: Yes.
 <summary><b>DataExternalBuffs</b></summary>
 
 Addable: Yes.
+
+Connections by the same ID:
+- `Token`, `KingdomEvent`, `BiomeModifier`, `ActorDataPath`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1045,6 +1190,10 @@ Addable: Yes.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `Item`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1055,6 +1204,10 @@ Addable: Yes.
 <summary><b>DataStoryChoiceReplacements</b></summary>
 
 Addable: Yes.
+
+Connections by the same ID:
+- `QuestStep`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1068,6 +1221,10 @@ Addable: Yes.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_DoomMax|float|||
@@ -1079,6 +1236,10 @@ Addable: No.
 <summary><b>Dot</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1098,6 +1259,10 @@ Addable: No.
 <summary><b>Effect</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1230,6 +1395,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `RunDataStats`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1255,6 +1424,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |escalation_torch_level_groups|List(TorchLevelGroup&nbsp;ID)|||
@@ -1269,6 +1442,10 @@ Addable: No.
 <summary><b>Haptics</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1290,6 +1467,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_devicePrefixes||||
@@ -1300,6 +1481,10 @@ Addable: No.
 <summary><b>HapticsDisabledAudio</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1313,6 +1498,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_seconds|float|||
@@ -1322,6 +1511,10 @@ Addable: No.
 <summary><b>HapticsIntensity</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1340,6 +1533,10 @@ Addable: No.
 <summary><b>Inn</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `InnDataStats`, `InnTable`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1376,6 +1573,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+- `Item`
+- `Cost`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1395,6 +1596,10 @@ Addable: No.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `InnUpgrade`, `Inn`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1406,6 +1611,10 @@ Addable: Yes.
 <summary><b>InnTable</b></summary>
 
 Addable: Yes.
+
+Connections by the same ID:
+- `Inn`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1419,6 +1628,10 @@ Addable: Yes.
 <summary><b>InnUpgrade</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `InnDataStats`, `KingdomSiegeDefense`, `Cost`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1447,6 +1660,10 @@ Addable: No.
 <summary><b>Item</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `InnBonus`, `Cost`, `DataNodeReplacements`, `RunDataStats`, `ActorDataEffects`, `ActorDataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1503,6 +1720,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+- `Quirk`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1513,6 +1734,10 @@ Addable: No.
 <summary><b>ItemSubtype</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1527,6 +1752,10 @@ Addable: No.
 <summary><b>KingdomDifficulty</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `ActorDataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1549,6 +1778,10 @@ Addable: No.
 <summary><b>KingdomEvent</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `DataExternalBuffs`, `RunDataStats`, `ActorDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1575,6 +1808,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 </details>
@@ -1583,6 +1820,10 @@ Addable: No.
 <summary><b>KingdomSiegeAttack</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1599,6 +1840,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+- `InnUpgrade`
+
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -1609,6 +1854,10 @@ Addable: No.
 <summary><b>KingdomTreasure</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1627,6 +1876,10 @@ Addable: No.
 Addable: Yes.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_chances|Dep*(m_types)|||
@@ -1642,6 +1895,10 @@ Addable: Yes.
 <summary><b>NarrationEntry</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1665,6 +1922,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_chance|float|||
@@ -1677,6 +1938,10 @@ Addable: No.
 <summary><b>NodeDeliverable</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `Cost`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1691,6 +1956,10 @@ Addable: No.
 <summary><b>NodeReplacement</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1711,6 +1980,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |effects|List(Effect&nbsp;ID)|||
@@ -1725,6 +1998,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_QuestType|keyword||keyword: game, profile<br>|
@@ -1737,6 +2014,10 @@ Addable: No.
 <summary><b>QuestStep</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `DataStoryChoiceReplacements`, `RunDataStats`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1755,6 +2036,10 @@ Addable: No.
 <summary><b>Quirk</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `ItemBlock`, `ActorDataExternalBuffs`, `ActorDataEffects`, `ActorDataActOut`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1775,6 +2060,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |invalid_quirks|List(Quirk&nbsp;ID)|||
@@ -1787,6 +2076,10 @@ Addable: No.
 <summary><b>Resist</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1817,6 +2110,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_Chance|float|||
@@ -1828,6 +2125,10 @@ Addable: No.
 <summary><b>Route</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1845,6 +2146,10 @@ Addable: No.
 <summary><b>Rules</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1999,6 +2304,10 @@ Addable: No.
 
 Addable: Yes.
 
+Connections by the same ID:
+- `TorchLevel`, `RunValueLevel`, `RunLevel`, `RunDataStats`, `QuestStep`, `KingdomEvent`, `Item`, `ExtendedBoss`, `Boss`, `BiomeUpgrade`, `BiomeStatus`, `BiomeModifier`, `Biome`
+- `RunDataStats`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -2014,6 +2323,10 @@ Addable: Yes.
 <summary><b>RunGoal</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2037,6 +2350,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_PrerequisiteRunGoalCategoryId|RunGoalCategory&nbsp;ID|||
@@ -2046,6 +2363,10 @@ Addable: No.
 <summary><b>RunLevel</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `RunDataStats`, `ActorDataEffects`, `ActorDataActOut`, `ActorDataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2059,6 +2380,10 @@ Addable: No.
 <summary><b>RunValueLevel</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `RunDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2076,6 +2401,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `Cost`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -2089,6 +2418,10 @@ Addable: No.
 <summary><b>SkillBlock</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+- `Token`, `SkillBlock`
+- `SkillBlock`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2104,6 +2437,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |effects|List(Effect&nbsp;ID)|||
@@ -2116,6 +2453,10 @@ Addable: No.
 <summary><b>SkillReplacement</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `ActorDataSkill`, `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2131,6 +2472,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_IsDefault|boolean|||
@@ -2141,6 +2486,10 @@ Addable: No.
 <summary><b>StageCoachSkin</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2154,6 +2503,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_DisharmoniousAlignments|List(StoryAlignment&nbsp;ID)|||
@@ -2164,6 +2517,10 @@ Addable: No.
 <summary><b>StoryChoice</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `StoryDataEffects`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2198,6 +2555,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_FromDrawTags|List(StoryChoiceDraw&nbsp;Tag-)|||
@@ -2209,6 +2570,10 @@ Addable: No.
 <summary><b>StoryDataEffects</b></summary>
 
 Addable: Yes.
+
+Connections by the same ID:
+- `StoryChoice`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2224,6 +2589,10 @@ Addable: Yes.
 <summary><b>StressTrigger</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2244,6 +2613,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_ShowWaveProgress|boolean|||
@@ -2254,6 +2627,10 @@ Addable: No.
 <summary><b>SummonSequenceElement</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2268,6 +2645,10 @@ Addable: No.
 <summary><b>Token</b></summary>
 
 Addable: No.
+
+Connections by the same ID:
+
+- `SkillBlock`, `DataAffinityTickTriggers`, `ActorDataSkill`, `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`, `DataExternalBuffs`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2316,6 +2697,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |all_conditions|List(Condition&nbsp;ID)|||
@@ -2334,6 +2719,10 @@ Addable: No.
 
 Addable: No.
 
+Connections by the same ID:
+
+- `RunDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -2348,6 +2737,10 @@ Addable: No.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |torch_levels|List(TorchLevel&nbsp;ID)|||
@@ -2357,6 +2750,10 @@ Addable: No.
 <summary><b>TorchTrigger</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2371,6 +2768,10 @@ Addable: No.
 
 Addable: No.
 
+
+
+
+
 Unused Element
 
 | Field Name | Input Type | Comment | Values |
@@ -2383,6 +2784,10 @@ Unused Element
 
 Addable: No.
 
+Connections by the same ID:
+- `ActorDataSkill`, `Token`, `SkillReplacement`
+- `Cost`
+
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
@@ -2394,6 +2799,10 @@ Addable: No.
 <summary><b>UnlockTable</b></summary>
 
 Addable: Yes.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2411,6 +2820,10 @@ Addable: Yes.
 Addable: No.
 
 
+
+
+
+
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |
 |m_ProgressGroupId|keyword||keyword: base, base_altar, base_cosmetic, base_item, base_story, dlc, dlc_altar, dlc_cosmetic, dlc_item, dlc_story<br>|
@@ -2421,6 +2834,10 @@ Addable: No.
 <summary><b>WoundTrigger</b></summary>
 
 Addable: No.
+
+
+
+
 
 
 | Field Name | Input Type | Comment | Values |

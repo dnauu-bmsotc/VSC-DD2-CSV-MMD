@@ -90,6 +90,8 @@ export interface Value {
 export interface CompiledData {
 	schema: FieldsDescription;
 	keywords: ValuesDescription;
+	typeSupplementing: Map<string,Set<string>>;
+	typeSupplementedBy: Map<string,Set<string>>;
 	lastCompileTime: number;
 }
 
@@ -131,10 +133,22 @@ export function compileData(globalStoragePath: string): CompiledData {
 	}
 	const schema = readFieldsDescription(fieldsDescriptionPath, elementsDescriptionPath);
 	const keywords = readValuesDescription(valuesDescriptionPath);
+
+	const typeSupplementing = new Map<string,Set<string>>();
+	const typeSupplementedBy = new Map<string,Set<string>>();
+	const sameIdConnections = Object.values(schema)
+		.map(d => d.supplementedBy.map(e => [d.name, e] as [string, string])).flat(1);
+	for (const elementType of Object.keys(schema)) {
+		typeSupplementing.set(elementType, findAncestors(sameIdConnections, elementType));
+		typeSupplementedBy.set(elementType, findChildren(sameIdConnections, elementType));
+	}
+
 	const result: CompiledData = {
 		schema,
 		keywords,
 		lastCompileTime: Date.now(),
+		typeSupplementing,
+		typeSupplementedBy,
 	}
 	writeFileSync(compiledDataPath, JSON.stringify(result));
 	console.info(`Compiled data [${(performance.now() - t0).toFixed(1)} ms].`);
@@ -431,4 +445,68 @@ export function typeToVerbose(t: TypeDefinition): string {
 		case TypeID.psv:
 			return `Plus-separated values (${typeToVerbose(t.element)})`;
 	}
+}
+
+function findAncestors(edges: [string, string][], node: string): Set<string> {
+	const parents = new Map<string, string[]>();
+	for (const [from, to] of edges) {
+		const list = parents.get(to);
+		if (list) {
+			list.push(from)
+		}
+		else {
+			parents.set(to, [from])
+		};
+	}
+
+	const result = new Set<string>();
+	const stack = [...(parents.get(node) ?? [])];
+
+	while (stack.length > 0) {
+		const current = stack[stack.length - 1];
+		stack.pop()!;
+		if (result.has(current)) {
+			continue;
+		}
+		result.add(current);
+		for (const p of parents.get(current) ?? []) {
+			if (!result.has(p)) {
+				stack.push(p);
+			}
+		}
+	}
+
+	return result;
+}
+
+function findChildren(edges: [string, string][], node: string): Set<string> {
+	const children = new Map<string, string[]>();
+	for (const [from, to] of edges) {
+		const list = children.get(from);
+		if (list) {
+			list.push(to);
+		}
+		else {
+			children.set(from, [to]);
+		}
+	}
+
+	const result = new Set<string>();
+	const stack = [...(children.get(node) ?? [])];
+
+	while (stack.length > 0) {
+		const current = stack[stack.length - 1];
+		stack.pop()!;
+		if (result.has(current)) {
+			continue;
+		}
+		result.add(current);
+		for (const c of children.get(current) ?? []) {
+			if (!result.has(c)) {
+				stack.push(c);
+			}
+		}
+	}
+
+	return result;
 }

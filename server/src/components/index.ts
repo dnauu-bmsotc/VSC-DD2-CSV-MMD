@@ -63,20 +63,13 @@ export class Index {
 	 * sameIdGroupsById's Set value is shared between multiple entries.
 	 */
 	private readonly sameIdGroupsById = new Map<ElementNumberID, Set<ElementNumberID>>();
-	private readonly typeSupplementing = new Map<string,Set<string>>();
-	private readonly typeSupplementedBy = new Map<string,Set<string>>();
 
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
-	) {
-		const sameIdConnections = Object.values(schema)
-			.map(d => d.supplementedBy.map(e => [d.name, e] as [string, string])).flat(1);
-		for (const elementType of Object.keys(schema)) {
-			this.typeSupplementing.set(elementType, findAncestors(sameIdConnections, elementType));
-			this.typeSupplementedBy.set(elementType, findChildren(sameIdConnections, elementType));
-		}
-	}
+		private readonly typeSupplementing: Map<string,Set<string>>,
+		private readonly typeSupplementedBy: Map<string,Set<string>>,
+	) {}
 
 	public removeElement(element: ASTElement) {
 		this.elements.delete(element.id);
@@ -585,68 +578,4 @@ export function erTypeToVerbose(t: ERType) {
 		case ERType.tag:
 			return "Tag";
 	}
-}
-
-function findAncestors(edges: [string, string][], node: string): Set<string> {
-	const parents = new Map<string, string[]>();
-	for (const [from, to] of edges) {
-		const list = parents.get(to);
-		if (list) {
-			list.push(from)
-		}
-		else {
-			parents.set(to, [from])
-		};
-	}
-
-	const result = new Set<string>();
-	const stack = [...(parents.get(node) ?? [])];
-
-	while (stack.length > 0) {
-		const current = stack[stack.length - 1];
-		stack.pop()!;
-		if (result.has(current)) {
-			continue;
-		}
-		result.add(current);
-		for (const p of parents.get(current) ?? []) {
-			if (!result.has(p)) {
-				stack.push(p);
-			}
-		}
-	}
-
-	return result;
-}
-
-function findChildren(edges: [string, string][], node: string): Set<string> {
-	const children = new Map<string, string[]>();
-	for (const [from, to] of edges) {
-		const list = children.get(from);
-		if (list) {
-			list.push(to);
-		}
-		else {
-			children.set(from, [to]);
-		}
-	}
-
-	const result = new Set<string>();
-	const stack = [...(children.get(node) ?? [])];
-
-	while (stack.length > 0) {
-		const current = stack[stack.length - 1];
-		stack.pop()!;
-		if (result.has(current)) {
-			continue;
-		}
-		result.add(current);
-		for (const c of children.get(current) ?? []) {
-			if (!result.has(c)) {
-				stack.push(c);
-			}
-		}
-	}
-
-	return result;
 }

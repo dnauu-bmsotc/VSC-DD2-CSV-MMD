@@ -14,14 +14,20 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 	let result = "";
 	for (const elementType of Object.keys(compiledData.schema)) {
 		const element = compiledData.schema[elementType];
-		const idConnections = getConnectedElements(elementType, compiledData);
-		const idConnectionsText = idConnections.length > 0 ? (`Connections by same ID: ${
-			idConnections.map(t => '\`' + t + '\`').join(', ')}`) : '';
+		const thisTypeSupplements = [...compiledData.typeSupplementing.get(elementType) ?? []];
+		const thisTypeIsSupplementedBy = [...compiledData.typeSupplementedBy.get(elementType) ?? []];
+		const thisTypeSupplementsStr = thisTypeSupplements.map(t => '\`' + t + '\`').join(', ');
+		const thisTypeIsSupplementedByStr = thisTypeIsSupplementedBy.map(t => '\`' + t + '\`').join(', ');
+
 		result += `
 <details>
 <summary><b>${element.name}</b></summary>
 
 Addable: ${element.addable ? "Yes" : "No"}.
+
+${((thisTypeSupplements.length > 0) || (thisTypeIsSupplementedBy.length > 0)) ? 'Connections by the same ID:' : ''}
+${(thisTypeIsSupplementedBy.length > 0) ? '- ' + thisTypeIsSupplementedByStr : ''}
+${(thisTypeSupplements.length > 0) ? '- ' + thisTypeSupplementsStr : ''}
 
 ${element.comment ? element.comment + "\n" : ""}
 | Field Name | Input Type | Comment | Values |
@@ -123,25 +129,4 @@ function removeCaseDuplicates(arr: string[]) {
 		seen.add(key);
 		return true;
 	});
-}
-
-function getConnectedElements(elementType: string, compiledData: CompiledData) {
-	const connections: string[] = [];
-	const allElementTypes = Object.keys(compiledData.schema);
-	for (const elementTypeEntry of allElementTypes) {
-		const elementDefinition = compiledData.schema[elementTypeEntry];
-		const supplementedBy = elementDefinition?.supplementedBy;
-		if (!supplementedBy) {
-			continue;
-		}
-		if (elementTypeEntry === elementType) {
-			connections.push(...elementDefinition.supplementedBy);
-		}
-		else {
-			if (supplementedBy.includes(elementType)) {
-				connections.push(elementTypeEntry);
-			}
-		}
-	}
-	return connections;
 }
