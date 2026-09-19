@@ -57,6 +57,7 @@ export const enum DiagnosticType {
 	FieldValue		= 1 << 4,
 	NotAddable		= 1 << 5,
 	Whitespace		= 1 << 6,
+	UnusedElement	= 1 << 7,
 }
 
 export enum GameType {

@@ -86,7 +86,8 @@
 						"validationFieldName": true,
 						"validationFieldValues": true,
 						"validationAddables": true,
-						"validationWhitespace": true
+						"validationWhitespace": true,
+						"validationUnusedElements": true
 					},
 					"properties": {
 						"autocomplete": {
@@ -128,6 +129,10 @@
 						"validationWhitespace": {
 							"type": "boolean",
 							"description": "Warn about whitespaces."
+						},
+						"validationUnusedElements": {
+							"type": "boolean",
+							"description": "Warn about unused elements."
 						}
 					}
 				}

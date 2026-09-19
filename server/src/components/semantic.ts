@@ -28,7 +28,6 @@ export class Semantic {
 				v.evaluatedType = null;
 			}
 		}
-
 		// find element in csv description
 		const elementDefinition = this.schema[element.elementType];
 		if (!elementDefinition) {
@@ -46,7 +45,7 @@ export class Semantic {
 		if (!elementDefinition.process) {
 			return;
 		}
-		// Addables check
+		// Addables check.
 		if (!elementDefinition.addable) {
 			const key = getKeyFromElement(element);
 			const gameTypeAvailability = this.emitterGameTypeAvailability(element.scope, key);
@@ -63,6 +62,32 @@ export class Semantic {
 						flags: DiagnosticType.NotAddable,
 					});
 				}
+			}
+		}
+		// Check if this element is unused.
+		if (elementDefinition.checkIfUsed) {
+			const gameTypes = ResourceScopeEligibleGameTypes[element.scope];
+			let used = false;
+			if (!this.index.isElementTypeIndependent(element.elementType)) {
+				const sameIdGroup = this.index.getSameIdGroup(element, gameTypes);
+				if (sameIdGroup.length > 1) {
+					used = true;
+				}
+			}
+			const key = getKeyFromElement(element);
+			const receivers = gameTypes.map(g => this.index.findReceivers(g, key)).flat();
+			if (receivers.length > 0) {
+				used = true;
+			}
+			if (!used) {
+				element.diagnostics.push({
+					diagnostic: {
+						severity: DiagnosticSeverity.Warning,
+						range: element.range,
+						message: `Unused element`,
+					},
+					flags: DiagnosticType.UnusedElement,
+				});
 			}
 		}
 		// Process each field in the element.

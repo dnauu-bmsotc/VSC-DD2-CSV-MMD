@@ -316,7 +316,6 @@ Main defining element of heroes and enemies
 
 Addable: Yes.
 
-Adds triggered effects to Heroes, Enemies, Skills, etc.
 
 | Field Name | Input Type | Comment | Values |
 | ---------- | ---------- | ------- | ------ |

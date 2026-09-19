@@ -63,6 +63,10 @@ export type Element = {
 	 */
 	process: boolean;
 	/**
+	 * should this element type be checked on whether it's referenced anywhere in CSV files.
+	 */
+	checkIfUsed: boolean;
+	/**
 	 * Implied element connections by the same ID.
 	 * For example Buff and ActorDataStats/ActorDataEffects.
 	 */
@@ -274,6 +278,7 @@ export function readFieldsDescription(filePathFields: string, filePathElements: 
 			comment: elementData["Comment"],
 			process: elementData["Process"] === "Yes",
 			addable: elementData["Addable"] === "Yes",
+			checkIfUsed: elementData["CheckIfUsed"] === "Yes",
 			supplementedBy: (elementData["SupplementedBy"]?.split(',') ?? []),
 		};
 		for (const field of fieldsData) {

@@ -81,8 +81,19 @@ export class Index {
 	public removeElement(element: ASTElement) {
 		this.elements.delete(element.id);
 
-		// remove receivers and emitters from lists
+		// find elements that reference this element explicitly
 		const affectedElements = this.findElementsDependentOnEmittersOfAnElement(element.id, element.elementType, element.name);
+
+		// find elements that were referenced by deleted element (unused elements validation)
+		const receivers = this.receiversByElement.get(element.id) ?? [];
+		for (const receiver of receivers) {
+			const key = getKey(receiver);
+			for (const emitter of this.emittersByKey.get(key) ?? []) {
+				affectedElements.add(emitter.ownerId);
+			}
+		}
+
+		// remove receivers and emitters from lists
 		this.removeElementFromKeyList(element.id, this.emittersByKey, this.emittersByElement);
 		this.removeElementFromKeyList(element.id, this.receiversByKey, this.receiversByElement);
 		this.emittersByElement.delete(element.id);
@@ -94,6 +105,7 @@ export class Index {
 		for (const sameSignatureElement of sameSignatureElements) {
 			affectedElements.add(sameSignatureElement);
 		}
+
 		// find connections by the same id
 		const sameIdGroup = this.sameIdGroupsById.get(element.id);
 		if (sameIdGroup) {
@@ -101,6 +113,7 @@ export class Index {
 			sameIdGroup.delete(element.id);
 			sameIdGroup.forEach(id => affectedElements.add(id));
 		}
+
 		return affectedElements;
 	}
 
@@ -154,9 +167,15 @@ export class Index {
 		for (const emitter of emitters) {
 			const key = getKey(emitter);
 			for (const receiver of this.receiversByKey.get(key) ?? []) {
-				if (receiver.ownerId !== element.id) {
-					affectedElements.add(receiver.ownerId);
-				}
+				affectedElements.add(receiver.ownerId);
+			}
+		}
+
+		// newly added receivers can affect used/unused elements
+		for (const receiver of receivers) {
+			const key = getKey(receiver);
+			for (const emitter of this.emittersByKey.get(key) ?? []) {
+				affectedElements.add(emitter.ownerId);
 			}
 		}
 		return affectedElements;
@@ -200,6 +219,11 @@ export class Index {
 		return result;
 	}
 
+	public isElementTypeIndependent(elementType: string) {
+		const supplementing = this.typeSupplementing.get(elementType);
+		return supplementing ? (supplementing.size === 0) : true;
+	}
+
 	/**
 	 * Searches for emitters for given game type and receiver info.
 	 * 
@@ -210,6 +234,25 @@ export class Index {
 	public findEmitters(forGameType: GameType, info: KeyInfo): Emitter[] {
 		const emitters = this.findEmittersForAllGameTypes(info);
 		const filtered = emitters.filter(e => {
+			const element = this.elements.get(e.ownerId);
+			if (!element) {
+				return false;
+			}
+			const overriders = element.overriddenBy[forGameType];
+			if (overriders && overriders.size > 0) {
+				return false;
+			}
+			if (!elementIsEligibleForGameType(element, forGameType)) {
+				return false;
+			}
+			return true;
+		});
+		return filtered;
+	}
+
+	public findReceivers(forGameType: GameType, info: KeyInfo): Receiver[] {
+		const receivers = this.findReceiversForAllGameTypes(info);
+		const filtered = receivers.filter(e => {
 			const element = this.elements.get(e.ownerId);
 			if (!element) {
 				return false;

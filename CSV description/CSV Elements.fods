@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" office:version="1.4" office:mimetype="application/vnd.oasis.opendocument.spreadsheet">
- <office:meta><meta:creation-date>2026-08-09T22:45:46.192149500</meta:creation-date><meta:generator>LibreOffice/26.2.5.2$Windows_X86_64 LibreOffice_project/cd7284b4cbbfeb507e630c1aac019f4157393acb</meta:generator><dc:date>2026-09-16T16:52:50.987377900</dc:date><meta:editing-duration>PT1H37M54S</meta:editing-duration><meta:editing-cycles>18</meta:editing-cycles><meta:document-statistic meta:table-count="1" meta:cell-count="348" meta:object-count="0"/></office:meta>
+ <office:meta><meta:creation-date>2026-08-09T22:45:46.192149500</meta:creation-date><meta:generator>LibreOffice/26.2.5.2$Windows_X86_64 LibreOffice_project/cd7284b4cbbfeb507e630c1aac019f4157393acb</meta:generator><dc:date>2026-09-19T15:12:10.975093900</dc:date><meta:editing-duration>PT2H52M3S</meta:editing-duration><meta:editing-cycles>86</meta:editing-cycles><meta:document-statistic meta:table-count="1" meta:cell-count="463" meta:object-count="0"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">0</config:config-item>
    <config:config-item config:name="VisibleAreaLeft" config:type="int">0</config:config-item>
-   <config:config-item config:name="VisibleAreaWidth" config:type="int">33930</config:config-item>
-   <config:config-item config:name="VisibleAreaHeight" config:type="int">48585</config:config-item>
+   <config:config-item config:name="VisibleAreaWidth" config:type="int">36555</config:config-item>
+   <config:config-item config:name="VisibleAreaHeight" config:type="int">51313</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
      <config:config-item-map-named config:name="Tables">
       <config:config-item-map-entry config:name="Elements">
-       <config:config-item config:name="CursorPositionX" config:type="int">3</config:config-item>
-       <config:config-item config:name="CursorPositionY" config:type="int">31</config:config-item>
+       <config:config-item config:name="CursorPositionX" config:type="int">5</config:config-item>
+       <config:config-item config:name="CursorPositionY" config:type="int">6</config:config-item>
        <config:config-item config:name="ActiveSplitRange" config:type="short">2</config:config-item>
        <config:config-item config:name="PositionLeft" config:type="int">0</config:config-item>
        <config:config-item config:name="PositionRight" config:type="int">0</config:config-item>
        <config:config-item config:name="PositionTop" config:type="int">0</config:config-item>
-       <config:config-item config:name="PositionBottom" config:type="int">7</config:config-item>
+       <config:config-item config:name="PositionBottom" config:type="int">0</config:config-item>
        <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
        <config:config-item config:name="ZoomValue" config:type="int">110</config:config-item>
        <config:config-item config:name="PageViewZoomValue" config:type="int">60</config:config-item>
@@ -75,6 +75,15 @@
    <config:config-item config:name="EmbedFonts" config:type="boolean">false</config:config-item>
    <config:config-item config:name="EmbedLatinScriptFonts" config:type="boolean">true</config:config-item>
    <config:config-item config:name="EmbedOnlyUsedFonts" config:type="boolean">false</config:config-item>
+   <config:config-item-map-indexed config:name="ForbiddenCharacters">
+    <config:config-item-map-entry>
+     <config:config-item config:name="Language" config:type="string">en</config:config-item>
+     <config:config-item config:name="Country" config:type="string">US</config:config-item>
+     <config:config-item config:name="Variant" config:type="string"/>
+     <config:config-item config:name="BeginLine" config:type="string"/>
+     <config:config-item config:name="EndLine" config:type="string"/>
+    </config:config-item-map-entry>
+   </config:config-item-map-indexed>
    <config:config-item config:name="GridColor" config:type="int">12632256</config:config-item>
    <config:config-item config:name="HasColumnRowHeaders" config:type="boolean">true</config:config-item>
    <config:config-item config:name="HasSheetTabs" config:type="boolean">true</config:config-item>
@@ -237,12 +246,15 @@
    <style:table-column-properties fo:break-before="auto" style:column-width="0.7291in"/>
   </style:style>
   <style:style style:name="co3" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="3.0516in"/>
+   <style:table-column-properties fo:break-before="auto" style:column-width="1.0335in"/>
   </style:style>
   <style:style style:name="co4" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="6.6291in"/>
+   <style:table-column-properties fo:break-before="auto" style:column-width="3.0516in"/>
   </style:style>
   <style:style style:name="co5" style:family="table-column">
+   <style:table-column-properties fo:break-before="auto" style:column-width="6.6291in"/>
+  </style:style>
+  <style:style style:name="co6" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="0.889in"/>
   </style:style>
   <style:style style:name="ro1" style:family="table-row">
@@ -263,19 +275,6 @@
   <number:boolean-style style:name="N99">
    <number:boolean/>
   </number:boolean-style>
-  <style:style style:name="ce1" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:border="0.74pt solid #000000"/>
-   <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"/>
-  </style:style>
-  <style:style style:name="ce2" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:border="0.74pt solid #000000"/>
-  </style:style>
-  <style:style style:name="ce4" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N99">
-   <style:table-cell-properties fo:border="0.74pt solid #000000"/>
-  </style:style>
-  <style:style style:name="ce6" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N99">
-   <style:table-cell-properties fo:wrap-option="wrap" fo:border="0.74pt solid #000000"/>
-  </style:style>
   <style:style style:name="ce8" style:family="table-cell" style:parent-style-name="Default">
    <style:table-cell-properties fo:border="0.74pt solid #000000"/>
    <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"/>
@@ -283,7 +282,7 @@
   <style:style style:name="ce9" style:family="table-cell" style:parent-style-name="Default">
    <style:table-cell-properties fo:border="0.74pt solid #000000"/>
   </style:style>
-  <style:style style:name="ce10" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N99">
+  <style:style style:name="ce3" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N99">
    <style:table-cell-properties fo:border="0.74pt solid #000000"/>
   </style:style>
   <style:style style:name="ce11" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N99">
@@ -331,7 +330,7 @@
      <text:p><text:sheet-name>???</text:sheet-name><text:s/>(<text:title>???</text:title>)</text:p>
     </style:region-left>
     <style:region-right>
-     <text:p><text:date style:data-style-name="N2" text:date-value="2026-09-16">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="21:49:51.171495400">00:00:00</text:time></text:p>
+     <text:p><text:date style:data-style-name="N2" text:date-value="2026-09-19">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="13:57:27.735843500">00:00:00</text:time></text:p>
     </style:region-right>
    </style:header>
    <style:header-left style:display="false"/>
@@ -349,9 +348,10 @@
    <table:table table:name="Elements" table:style-name="ta1">
     <table:table-column table:style-name="co1" table:default-cell-style-name="ce9"/>
     <table:table-column table:style-name="co2" table:default-cell-style-name="ce9"/>
-    <table:table-column table:style-name="co2" table:default-cell-style-name="ce10"/>
-    <table:table-column table:style-name="co3" table:default-cell-style-name="ce11"/>
-    <table:table-column table:style-name="co4" table:default-cell-style-name="ce9"/>
+    <table:table-column table:style-name="co2" table:default-cell-style-name="ce3"/>
+    <table:table-column table:style-name="co3" table:default-cell-style-name="ce3"/>
+    <table:table-column table:style-name="co4" table:default-cell-style-name="ce11"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce9"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell table:style-name="ce8" office:value-type="string" calcext:value-type="string">
       <text:p>Element Type</text:p>
@@ -361,6 +361,9 @@
      </table:table-cell>
      <table:table-cell table:style-name="ce8" office:value-type="string" calcext:value-type="string">
       <text:p>Addable</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce8" office:value-type="string" calcext:value-type="string">
+      <text:p>CheckIfUsed</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce8" office:value-type="string" calcext:value-type="string">
       <text:p>SupplementedBy</text:p>
@@ -376,10 +379,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -392,7 +395,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Defining element of act outs and barks.</text:p>
      </table:table-cell>
@@ -401,7 +407,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataActOut</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -418,7 +424,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -432,22 +438,20 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataEffects</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>Adds triggered effects to Heroes, Enemies, Skills, etc.</text:p>
-     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataExternalBuffs</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Adds buffs to Heroes, Enemies, Paths, Items, etc.</text:p>
      </table:table-cell>
@@ -462,21 +466,24 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataPath</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects,ActorDataRunGoals</text:p>
+      <text:p>ActorDataEffects,ActorDataRunGoals,DataExternalBuffs</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -484,7 +491,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataRunGoals</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -496,11 +503,11 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects,ActorDataStats</text:p>
+      <text:p>ActorDataEffects,ActorDataStats,Unlock</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Skill-defining element. Must match the name of the Resource Zoom In Skill file in Game files.</text:p>
@@ -513,7 +520,10 @@
      <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Replaces wanderer skills with path skills for ActorDataPath with the same ID.</text:p>
      </table:table-cell>
@@ -528,7 +538,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Adds stats and substats to Heroes, Enemies, Skills, Buffs.</text:p>
      </table:table-cell>
@@ -543,7 +556,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -557,6 +573,9 @@
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataExternalBuffs,</text:p>
      </table:table-cell>
      <table:table-cell/>
@@ -568,7 +587,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -580,7 +599,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -598,6 +617,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -610,6 +632,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -619,7 +644,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -634,13 +659,16 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>BattleConfigurationTable</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -652,7 +680,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -667,10 +695,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -679,7 +710,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -691,23 +722,23 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>BiomeModifier</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataExternalBuffs,DataExternalBuffs</text:p>
+      <text:p>ActorDataExternalBuffs,DataExternalBuffs,RunDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -721,7 +752,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -732,6 +769,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataExternalBuffs,RunDataStats</text:p>
@@ -748,7 +788,12 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3" office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats</text:p>
+     </table:table-cell>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -761,7 +806,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -774,7 +822,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10" office:value-type="string" calcext:value-type="string">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3" office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataEffects,ActorDataStats,Condition</text:p>
      </table:table-cell>
      <table:table-cell/>
@@ -786,10 +837,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -802,7 +853,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -815,47 +869,50 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>DataAffinityTickTriggers</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>DataExternalBuffs</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>DataNodeReplacements</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>DataStoryChoiceReplacements</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -865,10 +922,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -881,7 +938,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -894,7 +954,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -907,7 +970,12 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3" office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats</text:p>
+     </table:table-cell>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -920,7 +988,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -930,10 +1001,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -943,10 +1014,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -956,10 +1027,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -972,7 +1043,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -985,7 +1059,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -995,11 +1072,11 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>InnTable</text:p>
+      <text:p>InnTable,InnDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1013,13 +1090,19 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Cost</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>InnDataStats</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1028,7 +1111,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>InnTable</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1040,15 +1123,15 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>Cost</text:p>
+      <text:p>Cost,KingdomSiegeDefense,InnDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Item</text:p>
      </table:table-cell>
@@ -1059,7 +1142,10 @@
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataExternalBuffs</text:p>
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>ActorDataExternalBuffs,ActorDataEffects,RunDataStats,DataNodeReplacements,InnBonus</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1073,6 +1159,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1085,6 +1174,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1094,7 +1186,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1102,18 +1194,18 @@
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>KingdomEvent</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects</text:p>
+      <text:p>ActorDataEffects,RunDataStats,DataExternalBuffs</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1121,7 +1213,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>KingdomMap</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1133,7 +1225,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1148,6 +1240,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1157,7 +1252,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1166,7 +1261,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>LootTable</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1178,7 +1273,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1193,6 +1288,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1202,7 +1300,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1220,6 +1318,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1231,6 +1332,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
@@ -1244,6 +1348,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1256,7 +1363,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats,DataStoryChoiceReplacements</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1269,7 +1382,10 @@
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataActOut,ActorDataEffects,ActorDataExternalBuffs</text:p>
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>ActorDataActOut,ActorDataEffects,ActorDataExternalBuffs,ItemBlock</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1283,6 +1399,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1294,6 +1413,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
@@ -1307,6 +1429,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1319,6 +1444,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1328,7 +1456,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1337,10 +1465,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>RunDataStats</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>RunDataStats</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1349,7 +1480,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1364,35 +1495,38 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>RunLevel</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataActOut,ActorDataEffects</text:p>
+      <text:p>ActorDataActOut,ActorDataEffects,RunDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>RunValueLevel</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects,ActorDataExternalBuffs</text:p>
+      <text:p>ActorDataEffects,ActorDataExternalBuffs,RunDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1406,7 +1540,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Cost</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1418,7 +1558,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>SkillBlock</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1429,6 +1575,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
@@ -1441,6 +1590,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>ActorDataSkill</text:p>
@@ -1457,6 +1609,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1466,7 +1621,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1481,6 +1636,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1490,10 +1648,13 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>StoryDataEffects</text:p>
+     </table:table-cell>
+     <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1505,13 +1666,16 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>StoryDataEffects</text:p>
      </table:table-cell>
-     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="3" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1523,7 +1687,7 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
@@ -1538,6 +1702,9 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1549,6 +1716,9 @@
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
      </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
@@ -1563,7 +1733,10 @@
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects,DataExternalBuffs,ActorDataSkill</text:p>
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>ActorDataEffects,DataExternalBuffs,ActorDataSkill,DataAffinityTickTriggers,SkillBlock</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1577,9 +1750,12 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
      <table:table-cell table:number-columns-repeated="2"/>
     </table:table-row>
-    <table:table-row table:style-name="ro1">
+    <table:table-row table:style-name="ro3">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>TorchLevel</text:p>
      </table:table-cell>
@@ -1590,7 +1766,10 @@
       <text:p>No</text:p>
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
-      <text:p>ActorDataEffects,ActorDataExternalBuffs</text:p>
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>ActorDataEffects,ActorDataExternalBuffs,RunDataStats</text:p>
      </table:table-cell>
      <table:table-cell/>
     </table:table-row>
@@ -1601,10 +1780,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1614,10 +1793,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1630,7 +1809,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Unused Element</text:p>
      </table:table-cell>
@@ -1645,7 +1827,12 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Yes</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3" office:value-type="string" calcext:value-type="string">
+      <text:p>Cost</text:p>
+     </table:table-cell>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1655,7 +1842,10 @@
      <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>No</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1665,10 +1855,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1678,10 +1868,10 @@
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Yes</text:p>
      </table:table-cell>
-     <table:table-cell office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:number-columns-repeated="2" office:value-type="string" calcext:value-type="string">
       <text:p>No</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce10"/>
+     <table:table-cell table:style-name="ce3"/>
      <table:table-cell/>
     </table:table-row>
    </table:table>
