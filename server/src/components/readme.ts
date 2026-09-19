@@ -14,8 +14,8 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 	let result = "";
 	for (const elementType of Object.keys(compiledData.schema)) {
 		const element = compiledData.schema[elementType];
-		const thisTypeSupplements = [...compiledData.typeSupplementing.get(elementType) ?? []];
-		const thisTypeIsSupplementedBy = [...compiledData.typeSupplementedBy.get(elementType) ?? []];
+		const thisTypeSupplements = [...compiledData.typeSupplementing[elementType] ?? []];
+		const thisTypeIsSupplementedBy = [...compiledData.typeSupplementedBy[elementType] ?? []];
 		const thisTypeSupplementsStr = thisTypeSupplements.map(t => '\`' + t + '\`').join(', ');
 		const thisTypeIsSupplementedByStr = thisTypeIsSupplementedBy.map(t => '\`' + t + '\`').join(', ');
 
@@ -25,7 +25,7 @@ function generateFieldsDescription(compiledData: CompiledData): string {
 
 Addable: ${element.addable ? "Yes" : "No"}.
 
-${((thisTypeSupplements.length > 0) || (thisTypeIsSupplementedBy.length > 0)) ? 'Connections by the same ID:' : ''}
+${((thisTypeSupplements.length > 0) || (thisTypeIsSupplementedBy.length > 0)) ? 'Connections by same ID:' : ''}
 ${(thisTypeIsSupplementedBy.length > 0) ? '- ' + thisTypeIsSupplementedByStr : ''}
 ${(thisTypeSupplements.length > 0) ? '- ' + thisTypeSupplementsStr : ''}
 

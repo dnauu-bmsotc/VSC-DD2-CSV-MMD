@@ -90,8 +90,8 @@ export interface Value {
 export interface CompiledData {
 	schema: FieldsDescription;
 	keywords: ValuesDescription;
-	typeSupplementing: Map<string,Set<string>>;
-	typeSupplementedBy: Map<string,Set<string>>;
+	typeSupplementing: Record<string,string[]>;
+	typeSupplementedBy: Record<string,string[]>;
 	lastCompileTime: number;
 }
 
@@ -134,13 +134,13 @@ export function compileData(globalStoragePath: string): CompiledData {
 	const schema = readFieldsDescription(fieldsDescriptionPath, elementsDescriptionPath);
 	const keywords = readValuesDescription(valuesDescriptionPath);
 
-	const typeSupplementing = new Map<string,Set<string>>();
-	const typeSupplementedBy = new Map<string,Set<string>>();
+	const typeSupplementing: Record<string,string[]> = {};
+	const typeSupplementedBy: Record<string,string[]> = {};
 	const sameIdConnections = Object.values(schema)
 		.map(d => d.supplementedBy.map(e => [d.name, e] as [string, string])).flat(1);
 	for (const elementType of Object.keys(schema)) {
-		typeSupplementing.set(elementType, findAncestors(sameIdConnections, elementType));
-		typeSupplementedBy.set(elementType, findChildren(sameIdConnections, elementType));
+		typeSupplementing[elementType] = [...findAncestors(sameIdConnections, elementType)];
+		typeSupplementedBy[elementType] = [...findChildren(sameIdConnections, elementType)];
 	}
 
 	const result: CompiledData = {

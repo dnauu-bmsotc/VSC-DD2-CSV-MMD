@@ -67,8 +67,8 @@ export class Index {
 	constructor(
 		private readonly schema: FieldsDescription,
 		private readonly keywords: ValuesDescription,
-		private readonly typeSupplementing: Map<string,Set<string>>,
-		private readonly typeSupplementedBy: Map<string,Set<string>>,
+		private readonly typeSupplementing: Record<string,string[]>,
+		private readonly typeSupplementedBy: Record<string,string[]>,
 	) {}
 
 	public removeElement(element: ASTElement) {
@@ -125,8 +125,8 @@ export class Index {
 		this.updateOverridesInElements(getKeyFromElement(element), [element.id, ...sameSignatureElements]);
 
 		// find connections by the same id
-		const supplementing = this.typeSupplementing.get(element.elementType) ?? [];
-		const supplementedBy = this.typeSupplementedBy.get(element.elementType) ?? [];
+		const supplementing = this.typeSupplementing[element.elementType] ?? [];
+		const supplementedBy = this.typeSupplementedBy[element.elementType] ?? [];
 		for (const elementType of [...supplementing, ...supplementedBy]) {
 			const key = getKey({ type: ERType.id, group: elementType, name: element.name });
 			const idEmitters = this.emittersByKey.get(key) ?? [];
@@ -198,7 +198,7 @@ export class Index {
 	public findSupplementedBy(element: ASTElement, gameTypes: GameType[]) {
 		const result: ASTElement[] = [];
 		const sameIdGroupElements = this.getSameIdGroup(element, gameTypes);
-		const supplementedByTypes = this.typeSupplementedBy.get(element.elementType);
+		const supplementedByTypes = this.typeSupplementedBy[element.elementType];
 		if (!supplementedByTypes) {
 			return result;
 		}
@@ -213,8 +213,8 @@ export class Index {
 	}
 
 	public isElementTypeIndependent(elementType: string) {
-		const supplementing = this.typeSupplementing.get(elementType);
-		return supplementing ? (supplementing.size === 0) : true;
+		const supplementing = this.typeSupplementing[elementType];
+		return supplementing ? (supplementing.length === 0) : true;
 	}
 
 	/**

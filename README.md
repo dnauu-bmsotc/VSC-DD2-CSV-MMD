@@ -252,9 +252,9 @@ Defining element of act outs and barks.
 
 Addable: Yes.
 
-Connections by the same ID:
-- `RunLevel`, `Quirk`, `AffinityRelationship`
+Connections by same ID:
 - `ActorDataExternalBuffs`, `ActorDataEffects`
+- `RunLevel`, `Quirk`, `AffinityRelationship`
 
 Adds ActOuts to Quirks and Relationships.
 
@@ -268,9 +268,9 @@ Adds ActOuts to Quirks and Relationships.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ActorDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 Main defining element of heroes and enemies
 
@@ -333,9 +333,9 @@ Main defining element of heroes and enemies
 
 Addable: Yes.
 
-Connections by the same ID:
-- `TorchLevel`, `Token`, `RunValueLevel`, `RunLevel`, `Quirk`, `KingdomEvent`, `Item`, `Buff`, `BattleModifier`, `ActorDataSkill`, `SkillReplacement`, `ActorDataPath`, `ActorDataClass`, `ActorDataActOut`, `AffinityRelationship`
+Connections by same ID:
 
+- `TorchLevel`, `Token`, `RunValueLevel`, `RunLevel`, `Quirk`, `KingdomEvent`, `Item`, `Buff`, `BattleModifier`, `ActorDataSkill`, `SkillReplacement`, `ActorDataPath`, `ActorDataClass`, `ActorDataActOut`, `AffinityRelationship`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -488,9 +488,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `TorchLevel`, `RunValueLevel`, `Quirk`, `KingdomDifficulty`, `Item`, `BiomeUpgrade`, `BiomeModifier`, `BattleModifier`, `ActorStatus`, `ActorDataClass`, `ActorDataActOut`, `RunLevel`, `AffinityRelationship`
+Connections by same ID:
 
+- `TorchLevel`, `RunValueLevel`, `Quirk`, `KingdomDifficulty`, `Item`, `BiomeUpgrade`, `BiomeModifier`, `BattleModifier`, `ActorStatus`, `ActorDataClass`, `ActorDataActOut`, `RunLevel`, `AffinityRelationship`
 
 Adds buffs to Heroes, Enemies, Paths, Items, etc.
 
@@ -520,9 +520,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `DataExternalBuffs`, `ActorDataRunGoals`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -540,9 +540,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `ActorDataPath`
+Connections by same ID:
 
+- `ActorDataPath`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -555,9 +555,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-- `Token`, `SkillReplacement`
+Connections by same ID:
 - `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`
+- `Token`, `SkillReplacement`
 
 Skill-defining element. Must match the name of the Resource Zoom In Skill file in Game files.
 
@@ -645,9 +645,9 @@ Replaces wanderer skills with path skills for ActorDataPath with the same ID.
 
 Addable: No.
 
-Connections by the same ID:
-- `Buff`, `ActorDataSkill`, `Token`, `SkillReplacement`, `ActorDataClass`
+Connections by same ID:
 
+- `Buff`, `ActorDataSkill`, `Token`, `SkillReplacement`, `ActorDataClass`
 
 Adds stats and substats to Heroes, Enemies, Skills, Buffs.
 
@@ -692,9 +692,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - ``, `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -724,9 +724,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ActorDataActOut`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -878,9 +878,9 @@ Addable: Yes.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -896,9 +896,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -964,9 +964,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`, `DataExternalBuffs`, `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -989,9 +989,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1006,9 +1006,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`, `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1021,9 +1021,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1070,9 +1070,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `Condition`, `ActorDataStats`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1112,9 +1112,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-- `Buff`
+Connections by same ID:
 
+- `Buff`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1137,9 +1137,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-- `Unlock`, `ActorDataSkill`, `Token`, `SkillReplacement`, `RunValueTransaction`, `NodeDeliverable`, `InnUpgrade`, `InnBonus`, `Item`
+Connections by same ID:
 
+- `Unlock`, `ActorDataSkill`, `Token`, `SkillReplacement`, `RunValueTransaction`, `NodeDeliverable`, `InnUpgrade`, `InnBonus`, `Item`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1160,9 +1160,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `Token`
+Connections by same ID:
 
+- `Token`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1175,9 +1175,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `Token`, `KingdomEvent`, `BiomeModifier`, `ActorDataPath`
+Connections by same ID:
 
+- `Token`, `KingdomEvent`, `BiomeModifier`, `ActorDataPath`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1190,9 +1190,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `Item`
+Connections by same ID:
 
+- `Item`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1205,9 +1205,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `QuestStep`
+Connections by same ID:
 
+- `QuestStep`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1395,9 +1395,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1534,9 +1534,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `InnDataStats`, `InnTable`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1573,9 +1573,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-- `Item`
+Connections by same ID:
 - `Cost`
+- `Item`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1596,9 +1596,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `InnUpgrade`, `Inn`
+Connections by same ID:
 
+- `InnUpgrade`, `Inn`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1612,9 +1612,9 @@ Connections by the same ID:
 
 Addable: Yes.
 
-Connections by the same ID:
-- `Inn`
+Connections by same ID:
 
+- `Inn`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1629,9 +1629,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `InnDataStats`, `KingdomSiegeDefense`, `Cost`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1661,9 +1661,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `InnBonus`, `Cost`, `DataNodeReplacements`, `RunDataStats`, `ActorDataEffects`, `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1720,9 +1720,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-- `Quirk`
+Connections by same ID:
 
+- `Quirk`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1753,9 +1753,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1779,9 +1779,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `DataExternalBuffs`, `RunDataStats`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1840,9 +1840,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-- `InnUpgrade`
+Connections by same ID:
 
+- `InnUpgrade`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -1939,9 +1939,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `Cost`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2015,9 +2015,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `DataStoryChoiceReplacements`, `RunDataStats`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2037,9 +2037,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ItemBlock`, `ActorDataExternalBuffs`, `ActorDataEffects`, `ActorDataActOut`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2304,9 +2304,9 @@ Addable: No.
 
 Addable: Yes.
 
-Connections by the same ID:
-- `TorchLevel`, `RunValueLevel`, `RunLevel`, `RunDataStats`, `QuestStep`, `KingdomEvent`, `Item`, `ExtendedBoss`, `Boss`, `BiomeUpgrade`, `BiomeStatus`, `BiomeModifier`, `Biome`
+Connections by same ID:
 - `RunDataStats`
+- `TorchLevel`, `RunValueLevel`, `RunLevel`, `RunDataStats`, `QuestStep`, `KingdomEvent`, `Item`, `ExtendedBoss`, `Boss`, `BiomeUpgrade`, `BiomeStatus`, `BiomeModifier`, `Biome`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2364,9 +2364,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`, `ActorDataEffects`, `ActorDataActOut`, `ActorDataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2381,9 +2381,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2401,9 +2401,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `Cost`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2419,9 +2419,9 @@ Connections by the same ID:
 
 Addable: No.
 
-Connections by the same ID:
-- `Token`, `SkillBlock`
+Connections by same ID:
 - `SkillBlock`
+- `Token`, `SkillBlock`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2454,9 +2454,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `ActorDataSkill`, `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2518,9 +2518,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `StoryDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2571,9 +2571,9 @@ Addable: No.
 
 Addable: Yes.
 
-Connections by the same ID:
-- `StoryChoice`
+Connections by same ID:
 
+- `StoryChoice`
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2646,9 +2646,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `SkillBlock`, `DataAffinityTickTriggers`, `ActorDataSkill`, `Unlock`, `Cost`, `ActorDataStats`, `ActorDataEffects`, `DataExternalBuffs`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2719,9 +2719,9 @@ Addable: No.
 
 Addable: No.
 
-Connections by the same ID:
-
+Connections by same ID:
 - `RunDataStats`, `ActorDataExternalBuffs`, `ActorDataEffects`
+
 
 
 | Field Name | Input Type | Comment | Values |
@@ -2784,9 +2784,9 @@ Unused Element
 
 Addable: No.
 
-Connections by the same ID:
-- `ActorDataSkill`, `Token`, `SkillReplacement`
+Connections by same ID:
 - `Cost`
+- `ActorDataSkill`, `Token`, `SkillReplacement`
 
 
 | Field Name | Input Type | Comment | Values |
