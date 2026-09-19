@@ -35,6 +35,7 @@ export class SemanticTokensProvider {
 			return builder.build();
 		}
 		catch (error) {
+			console.error(error);
 			return { data: [] };
 		}
 	}

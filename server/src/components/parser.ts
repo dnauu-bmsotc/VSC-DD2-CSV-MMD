@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { FieldsDescription, TypeDefinition, TypeDefinitionBasic, TypeDefinitionDependent,
 	TypeDefinitionDependentRequired, TypeID, typeToVerbose, ValuesDescription } from './schema';
 import { UriString } from '../../../shared/utils';
+import { off } from 'node:process';
 
 export type AST = ASTElement[];
 
@@ -336,10 +337,31 @@ export function offsetElementByLines(element: ASTElement, offset: number) {
 		field.range = offsetRangeByLines(field.range, offset);
 		for (const value of field.values) {
 			value.range = offsetRangeByLines(value.range, offset);
+			offsetEvaluatedValue(value.evaluatedType, offset);
 		}
 	}
 	for (const diagnostic of element.diagnostics) {
 		diagnostic.diagnostic.range = offsetRangeByLines(diagnostic.diagnostic.range, offset);
+	}
+}
+
+function offsetEvaluatedValue(value: TypeEvaluated, offset: number): true {
+	if (!value) {
+		return true;
+	}
+	switch (value.evaluationType) {
+		case EvaluationType.basic:
+			return true;
+		case EvaluationType.union:
+			for (const v of value.definitions) {
+				offsetEvaluatedValue(v, offset);
+			}
+			return true;
+		case EvaluationType.psv:
+			for (const v of value.values) {
+				v.range = offsetRangeByLines(v.range, offset);
+			}
+			return true;
 	}
 }
 
