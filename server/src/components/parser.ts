@@ -370,7 +370,7 @@ function offsetEvaluatedValue(value: TypeEvaluated, offset: number): true {
  * between two objects (like diagnostic's range references to value's range)
  * which causes double offset.
  */
-function offsetRangeByLines(range: Range, offset: number): Range {
+export function offsetRangeByLines(range: Range, offset: number): Range {
 	return {
 		start: { line: range.start.line + offset, character: range.start.character },
 		end: { line: range.end.line + offset, character: range.end.character },

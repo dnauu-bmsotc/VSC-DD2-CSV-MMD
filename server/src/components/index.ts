@@ -1,5 +1,5 @@
 import { ASTElement, ASTField, ASTValue, elementIsEligibleForGameType, ElementNumberID,
-	GameType, gameTypeList, getDependencyInfluencedType, parsePSV, ResourceScopePriority } from './parser';
+	GameType, gameTypeList, getDependencyInfluencedType, offsetRangeByLines, parsePSV, ResourceScopePriority } from './parser';
 import { Range } from 'vscode-languageserver';
 import { Brand, mapGetOrSet, UriString } from '../../../shared/utils';
 import { FieldsDescription, TypeDefinition, TypeID, ValuesDescription } from './schema';
@@ -422,6 +422,16 @@ export class Index {
 			}
 		}
 		return { emitters, receivers, };
+	}
+
+	public registerElementOffsetByLines(id: ElementNumberID, offset: number) {
+		const mentions: EmitterOrReceiverBase[] = [
+			...this.emittersByElement.get(id) ?? [],
+			...this.receiversByElement.get(id) ?? [],
+		];
+		for (const mention of mentions) {
+			mention.range = offsetRangeByLines(mention.range, offset);
+		}
 	}
 
 	/**

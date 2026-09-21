@@ -401,6 +401,7 @@ export class ProjectManager {
 		let i = oldAst.length - 1;
 		while ((i >= 0) && (oldAst[i].fullRange.start.line >= changeRegion.oldRange.end.line)) {
 			offsetElementByLines(oldAst[i], changeRegion.offset);
+			this.index.registerElementOffsetByLines(oldAst[i].id, changeRegion.offset);
 			i -= 1;
 		}
 		oldAst.splice(firstIdxToRemove, removedIds.size, ...replacementElements);
