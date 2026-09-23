@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" office:version="1.4" office:mimetype="application/vnd.oasis.opendocument.spreadsheet">
- <office:meta><meta:creation-date>2026-08-03T12:05:34.418435</meta:creation-date><dc:date>2026-09-19T18:42:18.765247000</dc:date><meta:generator>LibreOffice/26.2.5.2$Windows_X86_64 LibreOffice_project/cd7284b4cbbfeb507e630c1aac019f4157393acb</meta:generator><meta:editing-cycles>413</meta:editing-cycles><meta:editing-duration>P7DT16H34M58S</meta:editing-duration><meta:document-statistic meta:table-count="104" meta:cell-count="2920" meta:object-count="0"/></office:meta>
+ <office:meta><meta:creation-date>2026-08-03T12:05:34.418435</meta:creation-date><dc:date>2026-09-23T14:08:05.076897900</dc:date><meta:generator>LibreOffice/26.2.5.2$Windows_X86_64 LibreOffice_project/cd7284b4cbbfeb507e630c1aac019f4157393acb</meta:generator><meta:editing-cycles>415</meta:editing-cycles><meta:editing-duration>P7DT16H36M33S</meta:editing-duration><meta:document-statistic meta:table-count="104" meta:cell-count="2919" meta:object-count="0"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">0</config:config-item>
    <config:config-item config:name="VisibleAreaLeft" config:type="int">0</config:config-item>
-   <config:config-item config:name="VisibleAreaWidth" config:type="int">25044</config:config-item>
-   <config:config-item config:name="VisibleAreaHeight" config:type="int">11367</config:config-item>
+   <config:config-item config:name="VisibleAreaWidth" config:type="int">20830</config:config-item>
+   <config:config-item config:name="VisibleAreaHeight" config:type="int">62899</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
@@ -734,12 +734,12 @@
       </config:config-item-map-entry>
       <config:config-item-map-entry config:name="Effect">
        <config:config-item config:name="CursorPositionX" config:type="int">2</config:config-item>
-       <config:config-item config:name="CursorPositionY" config:type="int">85</config:config-item>
+       <config:config-item config:name="CursorPositionY" config:type="int">62</config:config-item>
        <config:config-item config:name="ActiveSplitRange" config:type="short">2</config:config-item>
        <config:config-item config:name="PositionLeft" config:type="int">0</config:config-item>
        <config:config-item config:name="PositionRight" config:type="int">0</config:config-item>
        <config:config-item config:name="PositionTop" config:type="int">0</config:config-item>
-       <config:config-item config:name="PositionBottom" config:type="int">0</config:config-item>
+       <config:config-item config:name="PositionBottom" config:type="int">45</config:config-item>
        <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
        <config:config-item config:name="ZoomValue" config:type="int">150</config:config-item>
        <config:config-item config:name="PageViewZoomValue" config:type="int">60</config:config-item>
@@ -1885,7 +1885,7 @@
        <config:config-item config:name="UseTrailingEmptyLinesInLayout" config:type="boolean">false</config:config-item>
       </config:config-item-map-entry>
      </config:config-item-map-named>
-     <config:config-item config:name="ActiveTable" config:type="string">ActorEffectTrigger</config:config-item>
+     <config:config-item config:name="ActiveTable" config:type="string">Effect</config:config-item>
      <config:config-item config:name="HorizontalScrollbarWidth" config:type="int">1855</config:config-item>
      <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
      <config:config-item config:name="ZoomValue" config:type="int">150</config:config-item>
@@ -2416,6 +2416,9 @@
   <style:style style:name="co4" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="2.1161in"/>
   </style:style>
+  <style:style style:name="co5" style:family="table-column">
+   <style:table-column-properties fo:break-before="auto" style:column-width="0.889in"/>
+  </style:style>
   <style:style style:name="co6" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="2.9311in"/>
   </style:style>
@@ -2424,9 +2427,6 @@
   </style:style>
   <style:style style:name="co8" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="3.7819in"/>
-  </style:style>
-  <style:style style:name="co5" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="0.889in"/>
   </style:style>
   <style:style style:name="co9" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="1.1654in"/>
@@ -2505,6 +2505,15 @@
   </style:style>
   <style:style style:name="co34" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="3.6839in"/>
+  </style:style>
+  <style:style style:name="co35" style:family="table-column">
+   <style:table-column-properties fo:break-before="auto" style:column-width="3.4543in"/>
+  </style:style>
+  <style:style style:name="co36" style:family="table-column">
+   <style:table-column-properties fo:break-before="auto" style:column-width="2.7382in"/>
+  </style:style>
+  <style:style style:name="co37" style:family="table-column">
+   <style:table-column-properties fo:break-before="auto" style:column-width="3.6673in"/>
   </style:style>
   <style:style style:name="co38" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="1.1484in"/>
@@ -3142,15 +3151,6 @@
   <style:style style:name="co249" style:family="table-column">
    <style:table-column-properties fo:break-before="auto" style:column-width="4.511in"/>
   </style:style>
-  <style:style style:name="co250" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="3.4543in"/>
-  </style:style>
-  <style:style style:name="co251" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="2.7382in"/>
-  </style:style>
-  <style:style style:name="co252" style:family="table-column">
-   <style:table-column-properties fo:break-before="auto" style:column-width="3.6673in"/>
-  </style:style>
   <style:style style:name="ro1" style:family="table-row">
    <style:table-row-properties style:row-height="0.178in" fo:break-before="auto" style:use-optimal-row-height="true"/>
   </style:style>
@@ -3178,11 +3178,11 @@
   <style:style style:name="ro9" style:family="table-row">
    <style:table-row-properties style:row-height="0.3256in" fo:break-before="auto" style:use-optimal-row-height="true"/>
   </style:style>
+  <style:style style:name="ro10" style:family="table-row">
+   <style:table-row-properties style:row-height="0.798in" fo:break-before="auto" style:use-optimal-row-height="true"/>
+  </style:style>
   <style:style style:name="ro11" style:family="table-row">
    <style:table-row-properties style:row-height="0.1791in" fo:break-before="auto" style:use-optimal-row-height="true"/>
-  </style:style>
-  <style:style style:name="ro12" style:family="table-row">
-   <style:table-row-properties style:row-height="0.798in" fo:break-before="auto" style:use-optimal-row-height="true"/>
   </style:style>
   <style:style style:name="ta1" style:family="table" style:master-page-name="Default">
    <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
@@ -3190,32 +3190,7 @@
   <number:number-style style:name="N2">
    <number:number number:decimal-places="2" number:min-decimal-places="2" number:min-integer-digits="1"/>
   </number:number-style>
-  <style:style style:name="ce11" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:wrap-option="wrap" fo:border="0.74pt solid #000000"/>
-  </style:style>
-  <style:style style:name="ce12" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:wrap-option="wrap"/>
-  </style:style>
-  <style:style style:name="ce3" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:wrap-option="wrap" fo:border="0.74pt solid #000000"/>
-   <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"/>
-  </style:style>
-  <style:style style:name="ce8" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:border="0.74pt solid #000000"/>
-   <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"/>
-  </style:style>
-  <style:style style:name="ce9" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties fo:border="0.74pt solid #000000"/>
-  </style:style>
-  <style:style style:name="ce13" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties style:text-align-source="fix" style:repeat-content="false" fo:border="0.74pt solid #000000"/>
-   <style:paragraph-properties fo:text-align="justify" fo:margin-left="0in"/>
-  </style:style>
-  <style:style style:name="ce14" style:family="table-cell" style:parent-style-name="Default">
-   <style:table-cell-properties style:text-align-source="fix" style:repeat-content="false" fo:border="0.74pt solid #000000"/>
-   <style:paragraph-properties fo:text-align="start" fo:margin-left="0in"/>
-  </style:style>
-  <style:style style:name="ce15" style:family="table-cell" style:parent-style-name="Default">
+  <style:style style:name="ce1" style:family="table-cell" style:parent-style-name="Default">
    <style:table-cell-properties fo:border="0.74pt solid #000000"/>
    <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"/>
   </style:style>
@@ -3282,7 +3257,7 @@
      <text:p><text:sheet-name>???</text:sheet-name><text:s/>(<text:title>???</text:title>)</text:p>
     </style:region-left>
     <style:region-right>
-     <text:p><text:date style:data-style-name="N2" text:date-value="2026-09-19">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="18:41:19.358770700">00:00:00</text:time></text:p>
+     <text:p><text:date style:data-style-name="N2" text:date-value="2026-09-23">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="14:06:33.400823400">00:00:00</text:time></text:p>
     </style:region-right>
    </style:header>
    <style:header-left style:display="false"/>
@@ -3302,16 +3277,16 @@
     <table:table-column table:style-name="co3" table:default-cell-style-name="ce19"/>
     <table:table-column table:style-name="co4" table:default-cell-style-name="Default"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type Readme Override</text:p>
      </table:table-cell>
     </table:table-row>
@@ -3427,10 +3402,10 @@
     <table:table-column table:style-name="co7" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co8" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -3686,9 +3661,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorDataActOut" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co9" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co10" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co9" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co10" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -3715,10 +3690,10 @@
     <table:table-column table:style-name="co12" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co13" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -4221,13 +4196,13 @@
     <table:table-column table:style-name="co15" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co16" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -5506,10 +5481,10 @@
     <table:table-column table:style-name="co18" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co19" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -5544,9 +5519,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorDataMode" table:style-name="ta1">
-    <table:table-column table:style-name="co20" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co21" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co22" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co20" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co21" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co22" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -5573,13 +5548,13 @@
     <table:table-column table:style-name="co24" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co25" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -5649,9 +5624,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorDataRunGoals" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co26" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co26" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -5678,10 +5653,10 @@
     <table:table-column table:style-name="co28" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co29" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -6263,9 +6238,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorDataSkillReplacement" table:style-name="ta1">
-    <table:table-column table:style-name="co17" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co30" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co31" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co17" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co30" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co31" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -6292,13 +6267,13 @@
     <table:table-column table:style-name="co33" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co34" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6360,14 +6335,14 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorEffectTrigger" table:style-name="ta1">
-    <table:table-column table:style-name="co250" table:default-cell-style-name="Default"/>
-    <table:table-column table:style-name="co251" table:default-cell-style-name="Default"/>
-    <table:table-column table:style-name="co252" table:default-cell-style-name="ce19"/>
+    <table:table-column table:style-name="co35" table:default-cell-style-name="Default"/>
+    <table:table-column table:style-name="co36" table:default-cell-style-name="Default"/>
+    <table:table-column table:style-name="co37" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -6463,7 +6438,7 @@
       <text:p>When `m_ActorEffectTriggerTargetType` is set to `neighbor`, this field states whose neighbors will be affected.</text:p>
      </table:table-cell>
     </table:table-row>
-    <table:table-row table:style-name="ro12">
+    <table:table-row table:style-name="ro10">
      <table:table-cell table:style-name="ce16" office:value-type="string" calcext:value-type="string">
       <text:p>m_NeighborBackCount</text:p>
      </table:table-cell>
@@ -6474,7 +6449,7 @@
       <text:p>When `m_ActorEffectTriggerTargetType` is set to `neighbor`, this field states the number of neighbors in front of the actor specified in `m_ActorEffectTriggerSourceType` or `m_NeighborActorEffectTriggerSourceType`.</text:p>
      </table:table-cell>
     </table:table-row>
-    <table:table-row table:style-name="ro12">
+    <table:table-row table:style-name="ro10">
      <table:table-cell table:style-name="ce16" office:value-type="string" calcext:value-type="string">
       <text:p>m_NeighborFrontCount</text:p>
      </table:table-cell>
@@ -6502,9 +6477,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ActorStatus" table:style-name="ta1">
-    <table:table-column table:style-name="co38" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co39" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co40" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co38" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co39" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co40" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -6531,13 +6506,13 @@
     <table:table-column table:style-name="co42" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co43" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6574,13 +6549,13 @@
     <table:table-column table:style-name="co45" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co46" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6617,13 +6592,13 @@
     <table:table-column table:style-name="co48" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co49" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6741,13 +6716,13 @@
     <table:table-column table:style-name="co51" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co52" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6829,13 +6804,13 @@
     <table:table-column table:style-name="co54" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co55" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -6908,13 +6883,13 @@
     <table:table-column table:style-name="co42" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co57" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7241,13 +7216,13 @@
     <table:table-column table:style-name="co59" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co52" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7302,13 +7277,13 @@
     <table:table-column table:style-name="co61" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co62" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7354,13 +7329,13 @@
     <table:table-column table:style-name="co64" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co65" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7433,13 +7408,13 @@
     <table:table-column table:style-name="co67" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co68" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7563,13 +7538,13 @@
     <table:table-column table:style-name="co70" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co71" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7642,13 +7617,13 @@
     <table:table-column table:style-name="co72" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co73" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7759,13 +7734,13 @@
     <table:table-column table:style-name="co75" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co76" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7798,9 +7773,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="BiomeUpgrade" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co77" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co78" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co77" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co78" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -7827,13 +7802,13 @@
     <table:table-column table:style-name="co79" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co80" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -7978,13 +7953,13 @@
     <table:table-column table:style-name="co82" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co83" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8048,13 +8023,13 @@
     <table:table-column table:style-name="co85" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co86" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8167,13 +8142,13 @@
     <table:table-column table:style-name="co88" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co89" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8210,13 +8185,13 @@
     <table:table-column table:style-name="co91" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co92" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8329,13 +8304,13 @@
     <table:table-column table:style-name="co2" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co94" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8422,9 +8397,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="DataAffinityTickTriggers" table:style-name="ta1">
-    <table:table-column table:style-name="co95" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co96" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co8" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co95" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co96" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co8" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -8447,8 +8422,8 @@
     </table:table-row>
    </table:table>
    <table:table table:name="DataExternalBuffs" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co97" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co97" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -8471,9 +8446,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="DataNodeReplacements" table:style-name="ta1">
-    <table:table-column table:style-name="co98" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co99" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co100" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co98" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co99" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co100" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -8496,9 +8471,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="DataStoryChoiceReplacements" table:style-name="ta1">
-    <table:table-column table:style-name="co101" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co102" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co103" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co101" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co102" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co103" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -8525,13 +8500,13 @@
     <table:table-column table:style-name="co105" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co106" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8568,13 +8543,13 @@
     <table:table-column table:style-name="co108" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co109" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -8665,10 +8640,10 @@
     <table:table-column table:style-name="co111" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co112" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -9390,9 +9365,7 @@
      <table:table-cell table:style-name="ce16" office:value-type="string" calcext:value-type="string">
       <text:p>bool</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce18" office:value-type="string" calcext:value-type="string">
-      <text:p>Shuffle target team.</text:p>
-     </table:table-cell>
+     <table:table-cell table:style-name="ce18"/>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell table:style-name="ce16" office:value-type="string" calcext:value-type="string">
@@ -9874,13 +9847,13 @@
     <table:table-column table:style-name="co114" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co115" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10016,13 +9989,13 @@
     <table:table-column table:style-name="co116" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co79" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10086,13 +10059,13 @@
     <table:table-column table:style-name="co111" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co15" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10183,13 +10156,13 @@
     <table:table-column table:style-name="co118" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co119" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10213,8 +10186,8 @@
     </table:table-row>
    </table:table>
    <table:table table:name="HapticsDisabledAudio" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co120" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co120" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -10237,8 +10210,8 @@
     </table:table-row>
    </table:table>
    <table:table table:name="HapticsDuration" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co121" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co121" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -10265,13 +10238,13 @@
     <table:table-column table:style-name="co122" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co123" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10353,13 +10326,13 @@
     <table:table-column table:style-name="co125" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co126" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10594,13 +10567,13 @@
     <table:table-column table:style-name="co128" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co129" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10691,13 +10664,13 @@
     <table:table-column table:style-name="co130" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co131" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10725,13 +10698,13 @@
     <table:table-column table:style-name="co133" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co14" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10768,13 +10741,13 @@
     <table:table-column table:style-name="co135" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co136" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -10948,13 +10921,13 @@
     <table:table-column table:style-name="co138" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co139" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11375,9 +11348,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="ItemBlock" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co140" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co141" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co140" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co141" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -11404,13 +11377,13 @@
     <table:table-column table:style-name="co143" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co144" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11458,13 +11431,13 @@
     <table:table-column table:style-name="co146" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co147" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11582,13 +11555,13 @@
     <table:table-column table:style-name="co61" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co149" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11720,10 +11693,10 @@
     </table:table-row>
    </table:table>
    <table:table table:name="KingdomMap" table:style-name="ta1">
-    <table:table-column table:style-name="co92" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co150" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co5" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co92" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co150" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co5" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -11747,13 +11720,13 @@
     <table:table-column table:style-name="co26" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co152" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11804,9 +11777,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="KingdomSiegeDefense" table:style-name="ta1">
-    <table:table-column table:style-name="co153" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co154" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co155" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co153" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co154" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co155" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -11833,13 +11806,13 @@
     <table:table-column table:style-name="co157" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co158" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11903,13 +11876,13 @@
     <table:table-column table:style-name="co160" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co151" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -11982,13 +11955,13 @@
     <table:table-column table:style-name="co161" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co162" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12097,13 +12070,13 @@
     <table:table-column table:style-name="co164" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co165" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12149,13 +12122,13 @@
     <table:table-column table:style-name="co77" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co167" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12201,13 +12174,13 @@
     <table:table-column table:style-name="co169" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co170" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12291,13 +12264,13 @@
     <table:table-column table:style-name="co172" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co173" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12343,13 +12316,13 @@
     <table:table-column table:style-name="co175" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co176" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12395,13 +12368,13 @@
     <table:table-column table:style-name="co177" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co178" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12483,13 +12456,13 @@
     <table:table-column table:style-name="co39" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co179" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12571,13 +12544,13 @@
     <table:table-column table:style-name="co181" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co182" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12623,13 +12596,13 @@
     <table:table-column table:style-name="co119" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co184" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12805,13 +12778,13 @@
     <table:table-column table:style-name="co54" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co185" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12848,13 +12821,13 @@
     <table:table-column table:style-name="co166" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co97" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -12931,10 +12904,10 @@
     <table:table-column table:style-name="co187" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co188" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -14348,13 +14321,13 @@
     <table:table-column table:style-name="co187" table:default-cell-style-name="ce19"/>
     <table:table-column table:style-name="co189" table:default-cell-style-name="Default"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14429,13 +14402,13 @@
     <table:table-column table:style-name="co190" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co191" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14540,9 +14513,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="RunGoalCategory" table:style-name="ta1">
-    <table:table-column table:style-name="co151" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co192" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co193" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co151" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co192" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co193" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -14569,13 +14542,13 @@
     <table:table-column table:style-name="co5" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co195" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14612,13 +14585,13 @@
     <table:table-column table:style-name="co197" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co198" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14684,13 +14657,13 @@
     <table:table-column table:style-name="co200" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co201" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14736,13 +14709,13 @@
     <table:table-column table:style-name="co203" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co204" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14779,13 +14752,13 @@
     <table:table-column table:style-name="co206" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co207" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14831,13 +14804,13 @@
     <table:table-column table:style-name="co156" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co208" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14876,13 +14849,13 @@
     <table:table-column table:style-name="co128" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co209" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14906,8 +14879,8 @@
     </table:table-row>
    </table:table>
    <table:table table:name="StageCoachSkin" table:style-name="ta1">
-    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co184" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co5" table:number-columns-repeated="2" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co184" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -14934,13 +14907,13 @@
     <table:table-column table:style-name="co211" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co212" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -14968,13 +14941,13 @@
     <table:table-column table:style-name="co213" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co116" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15182,13 +15155,13 @@
     <table:table-column table:style-name="co215" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co165" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15225,13 +15198,13 @@
     <table:table-column table:style-name="co217" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co218" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15286,13 +15259,13 @@
     <table:table-column table:style-name="co219" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co220" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15374,13 +15347,13 @@
     <table:table-column table:style-name="co222" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co223" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15408,13 +15381,13 @@
     <table:table-column table:style-name="co224" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co225" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15460,10 +15433,10 @@
     <table:table-column table:style-name="co227" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co228" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -15828,13 +15801,13 @@
     <table:table-column table:style-name="co230" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co231" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15925,13 +15898,13 @@
     <table:table-column table:style-name="co197" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co233" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -15964,9 +15937,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="TorchLevelGroup" table:style-name="ta1">
-    <table:table-column table:style-name="co234" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co235" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co236" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co234" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co235" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co236" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -15993,13 +15966,13 @@
     <table:table-column table:style-name="co135" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co238" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -16032,9 +16005,9 @@
     </table:table-row>
    </table:table>
    <table:table table:name="TrinketSet" table:style-name="ta1">
-    <table:table-column table:style-name="co219" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co239" table:default-cell-style-name="ce15"/>
-    <table:table-column table:style-name="co182" table:default-cell-style-name="ce15"/>
+    <table:table-column table:style-name="co219" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co239" table:default-cell-style-name="ce1"/>
+    <table:table-column table:style-name="co182" table:default-cell-style-name="ce1"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
@@ -16061,13 +16034,13 @@
     <table:table-column table:style-name="co240" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co241" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -16095,10 +16068,10 @@
     <table:table-column table:style-name="co243" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co244" table:default-cell-style-name="ce19"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ce17" office:value-type="string" calcext:value-type="string">
@@ -16164,13 +16137,13 @@
     <table:table-column table:style-name="co245" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co246" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
@@ -16198,13 +16171,13 @@
     <table:table-column table:style-name="co248" table:default-cell-style-name="ce16"/>
     <table:table-column table:style-name="co249" table:default-cell-style-name="ce16"/>
     <table:table-row table:style-name="ro1">
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Field Name</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Input Type</text:p>
      </table:table-cell>
-     <table:table-cell table:style-name="ce15" office:value-type="string" calcext:value-type="string">
+     <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string">
       <text:p>Comment</text:p>
      </table:table-cell>
     </table:table-row>
