@@ -279,6 +279,9 @@ export class CompletionProvider {
 				case TypeID.sub:
 					const KWGroup = keywords[definition.group];
 					valueCompletionRecursive({ type: TypeID.kw, group: definition.group });
+					if (field.values.length === 0) {
+						return;
+					}
 					const valueDesc = KWGroup[field.values[0].text];
 					if (!valueDesc) {
 						return;
