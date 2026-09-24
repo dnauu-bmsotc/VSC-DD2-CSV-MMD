@@ -3,7 +3,7 @@
 	"description": "CSV Language support for modding Darkest Dungeon 2",
 	"author": "dnauu-bmsotc",
 	"license": "MIT",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/dnauu-bmsotc/VSC-DD2-CSV-MMD"
